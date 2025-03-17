@@ -56,8 +56,8 @@ public final class LocationUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Calculate the distance of two given geography location. (Unit: Kilometers)</h3>
-	 * <h3 class="zh-CN">计算两个物理坐标之间的距离，单位：公里</h3>
+	 * <h3 class="en-US">Calculate the straight line distance of two given geography location. (Unit: Meters)</h3>
+	 * <h3 class="zh-CN">计算两个物理坐标之间的直线距离，单位：米</h3>
 	 *
 	 * @param beginPoint <span class="en-US">GroPoint instance of beginning geography location</span>
 	 *                   <span class="zh-CN">起始位置坐标的GroPoint实例</span>
@@ -76,7 +76,6 @@ public final class LocationUtils {
 				* Math.cos(((beginGPSPoint.getLatitude() + endGPSPoint.getLatitude()) / 2) * Math.PI / 180) / 180;
 		double tmpY = (endGPSPoint.getLatitude() - beginGPSPoint.getLatitude()) * Math.PI * EARTH_R / 180;
 		return Math.hypot(tmpX, tmpY);
-
 	}
 
 	/**
@@ -103,7 +102,8 @@ public final class LocationUtils {
 				GeoPoint gcjPoint = BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
 				return GCJ02ToGPS(gcjPoint.getLongitude(), gcjPoint.getLatitude());
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error");
+				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
+						currentPoint.getLocationType().toString());
 		}
 	}
 
@@ -130,7 +130,8 @@ public final class LocationUtils {
 			case BD_09:
 				return BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error");
+				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
+						currentPoint.getLocationType().toString());
 		}
 	}
 
@@ -158,7 +159,8 @@ public final class LocationUtils {
 			case BD_09:
 				return currentPoint;
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error");
+				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
+						currentPoint.getLocationType().toString());
 		}
 	}
 

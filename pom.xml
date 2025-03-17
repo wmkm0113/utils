@@ -6,7 +6,7 @@
     <version>1.2.2</version>
     <packaging>jar</packaging>
     <name>Nervousync Java Utility Collections</name>
-    <url>https://nervousync.org/projects/gene/jdk11/index.shtml</url>
+    <url>https://nervousync.org/projects/utils/jdk11/index.shtml</url>
     <inceptionYear>2016</inceptionYear>
     <description>Java utility collections, development by Nervousync Studio (NSYC)</description>
     <issueManagement>
@@ -43,8 +43,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <junit.jupiter.version>5.11.4</junit.jupiter.version>
-        <junit.platform.version>1.11.4</junit.platform.version>
+        <junit.jupiter.version>5.12.1</junit.jupiter.version>
+        <junit.platform.version>1.12.1</junit.platform.version>
         <jakarta.activation.version>2.1.3</jakarta.activation.version>
         <jakarta.mail.version>2.1.3</jakarta.mail.version>
         <angus.version>2.0.3</angus.version>
@@ -55,12 +55,12 @@
         <jakarta.xml.soap.version>3.0.2</jakarta.xml.soap.version>
         <bcprov.version>1.80</bcprov.version>
         <log4j.version>2.24.3</log4j.version>
-        <slf4j.version>2.0.16</slf4j.version>
-        <jackson.version>2.18.2</jackson.version>
-        <yaml.version>2.3</yaml.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <jackson.version>2.18.3</jackson.version>
+        <yaml.version>2.4</yaml.version>
         <jersey.version>3.1.10</jersey.version>
         <hk2.version>3.1.1</hk2.version>
-        <snmp4j.version>3.8.2</snmp4j.version>
+        <snmp4j.version>3.9.0</snmp4j.version>
         <jcifs.version>2.1.39</jcifs.version>
         <poi.version>5.4.0</poi.version>
         <zxing.version>3.5.3</zxing.version>
@@ -129,7 +129,6 @@
             <groupId>org.eclipse.angus</groupId>
             <artifactId>angus-core</artifactId>
             <version>${angus.version}</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>jakarta.activation</groupId>
@@ -180,8 +179,25 @@
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
+            <artifactId>bcutil-jdk18on</artifactId>
+            <version>${bcprov.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk18on</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk18on</artifactId>
             <version>${bcprov.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcutil-jdk18on</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
@@ -189,8 +205,8 @@
             <version>${bcprov.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.sun.mail</groupId>
-                    <artifactId>jakarta.mail</artifactId>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk18on</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -564,12 +580,18 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>${zxing.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.zxing</groupId>
+                    <artifactId>core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Markdown Support -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.18.3</version>
+            <version>1.19.1</version>
         </dependency>
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>

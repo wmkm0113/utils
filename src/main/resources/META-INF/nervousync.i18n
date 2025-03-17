@@ -454,7 +454,7 @@
         },
         {
           "key": "Not_Support_Type_Location_Error",
-          "content": "Unknown location type"
+          "content": "Unknown location type: {0}"
         },
         {
           "key": "Out_Of_Index_Raw_Error",
@@ -1308,7 +1308,7 @@
         },
         {
           "key": "Not_Support_Type_Location_Error",
-          "content": "未知的坐标类型"
+          "content": "未知的坐标类型：{0}"
         },
         {
           "key": "Out_Of_Index_Raw_Error",

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public final class MultilingualTest extends BaseTest {
 
-    private final MultilingualUtils.Agent multiAgent = MultilingualUtils.newAgent("org.nervousync", "utils-jdk11");
+    private final MultilingualUtils.Agent multiAgent = MultilingualUtils.newAgent("org.nervousync", "utils");
 
     @Test
     @Order(10)

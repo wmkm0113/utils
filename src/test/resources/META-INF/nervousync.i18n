@@ -369,6 +369,18 @@
         {
           "key": "Collection_Length",
           "content": "Check collection type: {0}, length : {1}"
+        },
+        {
+          "key": "Location_Calculate_Distance",
+          "content": "Calculate location distance: {0} meters"
+        },
+        {
+          "key": "Location_Convert_GCJ02",
+          "content": "Convert location point to GCJ02, Longitude: {0}, Latitude: {1}"
+        },
+        {
+          "key": "Location_Convert_BD09",
+          "content": "Convert location point to BD09, Longitude: {0}, Latitude: {1}"
         }
       ]
     },
@@ -739,6 +751,18 @@
         {
           "key": "Collection_Length",
           "content": "检查集合类型：{0}，集合长度：{1}"
+        },
+        {
+          "key": "Location_Calculate_Distance",
+          "content": "计算两地距离为：{0} 米"
+        },
+        {
+          "key": "Location_Convert_GCJ02",
+          "content": "转换坐标为GCJ02座标系，经度：{0}，纬度：{1}"
+        },
+        {
+          "key": "Location_Convert_BD09",
+          "content": "转换坐标为BD09座标系，经度：{0}，纬度：{1}"
         }
       ]
     }
