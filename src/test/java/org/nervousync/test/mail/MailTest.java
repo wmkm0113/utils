@@ -1,14 +1,16 @@
 package org.nervousync.test.mail;
 
 import org.junit.jupiter.api.*;
+import org.nervousync.annotations.configs.Configuration;
 import org.nervousync.commons.Globals;
+import org.nervousync.configs.AutoConfig;
 import org.nervousync.configs.ConfigureManager;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.exceptions.builder.BuilderException;
 import org.nervousync.mail.MailObject;
 import org.nervousync.mail.config.MailConfig;
 import org.nervousync.mail.config.MailConfigBuilder;
-import org.nervousync.security.factory.SecureFactory;
+import org.nervousync.security.config.SecureSettings;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.*;
 
@@ -41,16 +43,16 @@ public final class MailTest extends BaseTest {
 	@AfterAll
 	public static void clear() {
 		CONFIGURE_MANAGER.removeConfigure(MailConfig.class);
-		CONFIGURE_MANAGER.removeConfigure(SecureFactory.class);
+		CONFIGURE_MANAGER.removeConfigure(SecureSettings.class);
 	}
 
 	@Test
 	@Order(0)
 	public void generateConfig() throws BuilderException {
+		this.logger.info("Mail_Config_Exist", CONFIGURE_MANAGER.checkExists(MailConfig.class));
 		if (SKIP_TEST) {
 			return;
 		}
-		SecureFactory.systemConfig(SecureFactory.SecureAlgorithm.SM4);
 		long currentTime = DateTimeUtils.currentUTCTimeMillis();
 		KeyPair keyPair = SecurityUtils.RSAKeyPair(1024);
 		X509Certificate x509Certificate = CertificateUtils.x509(keyPair.getPublic(), IDUtils.snowflake(),
@@ -82,13 +84,22 @@ public final class MailTest extends BaseTest {
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
 				.signer(x509Certificate, keyPair.getPrivate())
 				.confirm();
-		String xmlContent = mailConfig.toXML(Boolean.TRUE);
+		String xmlContent = mailConfig.toString();
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
 		MailConfig parseConfig = StringUtils.stringToObject(xmlContent, MailConfig.class, "https://nervousync.org/schemas/mail");
-		this.logger.info("Mail_Parse_Config_Info", parseConfig.toFormattedJson());
+		this.logger.info("Mail_Config_Validate", parseConfig.validate());
+		this.logger.info("Mail_Parse_Config_Info", parseConfig.toString());
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
 		Optional.ofNullable(CONFIGURE_MANAGER.readConfigure(MailConfig.class))
-				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", readConfig.toFormattedJson()));
+				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", readConfig.toString()));
+		this.logger.info("Mail_Config_Convert",
+				CONFIGURE_MANAGER.convertType(MailConfig.class, StringUtils.StringType.XML, StringUtils.StringType.JSON));
+		this.logger.info("Mail_Config_Convert",
+				CONFIGURE_MANAGER.convertType(MailConfig.class, StringUtils.StringType.JSON, StringUtils.StringType.XML,
+						Globals.DEFAULT_VALUE_STRING));
+
+		AutomaticConfig automaticConfig = new AutomaticConfig();
+		this.logger.info("Mail_Generate_Config_Info", automaticConfig.getMailConfig().toString());
 	}
 
 	@Test
@@ -276,5 +287,31 @@ public final class MailTest extends BaseTest {
 					this.logger.info("Send_Count: {}", mailAgent.mailCount(Globals.DEFAULT_EMAIL_FOLDER_SENT));
 					this.logger.info("Trash_Count: {}", mailAgent.mailCount(Globals.DEFAULT_EMAIL_FOLDER_TRASH));
 				});
+	}
+
+	private static final class AutomaticConfig extends AutoConfig {
+
+		@Configuration
+		private MailConfig mailConfig;
+
+		/**
+		 * <h3 class="en-US">Getter method for </h3>
+		 * <h3 class="zh-CN">的Getter方法</h3>
+		 *
+		 * @return
+		 */
+		public MailConfig getMailConfig() {
+			return this.mailConfig;
+		}
+
+		/**
+		 * <h3 class="en-US">Setter method for </h3>
+		 * <h3 class="zh-CN">的Setter方法</h3>
+		 *
+		 * @param mailConfig
+		 */
+		public void setMailConfig(final MailConfig mailConfig) {
+			this.mailConfig = mailConfig;
+		}
 	}
 }

@@ -1,4 +1,35 @@
 Nervousync Java Utils Package
+[08/04/2025]
+[Add] Add automatic loaded configure file support
+[Add] Add LocationTest for testing the LocationUtils
+[Add] Add Immutable support
+[Update] BeanObject add digital signature support
+[Update] Update the Junit version to 5.12.1
+[Update] Update the slf4j version to 2.0.17
+[Update] Update the jackson version to 2.18.3
+[Update] Update the yaml version to 2.4
+[Update] Update the snmp4j version to 3.9.0
+[Fix] Match base64 string failed while using regex
+
+[08/25/2023]
+[Add] Add xsd mapping, users can add /META-INF/nervousync.schemas to mapping namespaceURI and xsd location file
+[Add] Add internationalize support
+[Add] StringUtils add string check method: isLuhn/isChnId/isChnSocialCredit/isMD5/isUUID/isXML/isPhoneNumber
+[Add] LoggerUtils program to initialize Log4j
+[Update] Update FileUtils.readFileBytes support resource path in jar/zip file
+[Update] Update FileUtils.loadFile support resource path in jar/zip file
+[Update] Update the bouncy-castle version to 1.76, jcifs version to 2.1.36, jaxb version to 4.0.3
+[Update] Update XML Schema Define file
+[Update] Deprecated MD5 method
+[Update] ResponseInfo parseObject using content-type value to identify data type automatic
+[Update] Detect i18n message resource by class replace identify message resource by bundle string
+[Update] Update MessageResource support message update operate
+[Fix] Fixed read long from byte arrays got error value when using BigEndian
+[Fix] Failed to load XML schema file from jar file
+[Remove] Remove RawUtils.Endian enumeration using ByteOrder instead
+[Test] Add RawTest for testing RawUtils
+[Document] Format all java doc information
+
 [03/06/2023]
 [Update] Rewrite BeanUtils.java
 [Update] Update Slf4j version to 2.0.5

@@ -2376,8 +2376,10 @@ public final class StringUtils {
 				case "yml":
 				case "yaml":
 					return streamToObject(inputStream, StringType.YAML, beanClass, Globals.DEFAULT_VALUE_STRING);
-				default:
+				case "dat":
 					return streamToObject(inputStream, StringType.SERIALIZABLE, beanClass, Globals.DEFAULT_VALUE_STRING);
+				default:
+					return null;
 			}
 		} catch (IOException e) {
 			LOGGER.error("Parse_File_Error");

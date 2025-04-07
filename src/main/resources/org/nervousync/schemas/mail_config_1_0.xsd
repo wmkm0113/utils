@@ -5,6 +5,11 @@
     <xsd:import namespace="https://nervousync.org/schemas/proxy" schemaLocation="https://nervousync.org/schemas/proxy_config_1_0.xsd" />
     <xsd:complexType name="mail_config">
         <xsd:all>
+            <xsd:element name="signature" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Digital signature</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
             <xsd:element name="username" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation>Mail account username</xsd:documentation>

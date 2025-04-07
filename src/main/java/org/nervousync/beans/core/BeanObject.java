@@ -16,26 +16,30 @@
  */
 package org.nervousync.beans.core;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlTransient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.annotation.Nonnull;
+import jakarta.xml.bind.annotation.*;
 import org.nervousync.annotations.beans.OutputConfig;
+import org.nervousync.annotations.beans.Signature;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.*;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TreeMap;
 
 /**
  * <h2 class="en-US">Abstract class of JavaBean</h2>
  * <span class="en-US">
- * If JavaBean class extends the current abstract class, it's can easier convert object to JSON/XML/YAML string.
- * Default encoding is UTF-8
- * Convert object to XML must add annotation to class and fields, using JAXB annotation
- * Convert custom fields in object to JSON/YAML must add annotation to fields, using jackson annotation
+ * <p>If JavaBean class extends the current abstract class, it can easier convert the object to JSON/XML/YAML string.
+ * The default encoding is UTF-8</p>
+ * <p>Convert objects to XML must add annotation to class and fields, using JAXB annotation</p>
+ * <p>Convert custom fields in objects to JSON/YAML must add annotation to fields, using jackson annotation</p>
  * </span>
  * <h2 class="zh-CN">JavaBean的抽象类</h2>
  * <span class="zh-CN">
@@ -49,128 +53,13 @@ import java.util.Optional;
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(type = StringUtils.StringType.XML, formatted = true)
+@OutputConfig(formatted = true)
 public abstract class BeanObject implements Serializable, Cloneable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
 	private static final long serialVersionUID = 6900853002518080456L;
-
-	/**
-	 * <h3 class="en-US">Convert the current object to not formatted JSON string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为未经格式化的JSON字符串</h3>
-	 *
-	 * @return <span class="en-US">Converted JSON string</span>
-	 * <span class="zh-CN">转换后的JSON字符串</span>
-	 */
-	public final String toJson() {
-		return StringUtils.objectToString(this, StringUtils.StringType.JSON, Boolean.FALSE);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to formatted JSON string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为格式化的JSON字符串</h3>
-	 *
-	 * @return <span class="en-US">Converted JSON string</span>
-	 * <span class="zh-CN">转换后的JSON字符串</span>
-	 */
-	public final String toFormattedJson() {
-		return StringUtils.objectToString(this, StringUtils.StringType.JSON, Boolean.TRUE);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to not formatted YAML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为未经格式化的YAML字符串</h3>
-	 *
-	 * @return <span class="en-US">Converted YAML string</span>
-	 * <span class="zh-CN">转换后的YAML字符串</span>
-	 */
-	public final String toYaml() {
-		return StringUtils.objectToString(this, StringUtils.StringType.YAML, Boolean.FALSE);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to formatted YAML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为格式化的YAML字符串</h3>
-	 *
-	 * @return <span class="en-US">Converted JSON string</span>
-	 * <span class="zh-CN">转换后的JSON字符串</span>
-	 */
-	public final String toFormattedYaml() {
-		return StringUtils.objectToString(this, StringUtils.StringType.YAML, Boolean.TRUE);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to not formatted XML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为未经格式化的XML字符串</h3>
-	 *
-	 * @return <span class="en-US">Converted XML string, or empty string "" if an error occurs</span>
-	 * <span class="zh-CN">转换后的XML字符串，如果转换过程中出现异常则返回空字符串</span>
-	 */
-	public final String toXML() {
-		return this.toXML(Boolean.FALSE);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to XML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为XML字符串</h3>
-	 *
-	 * @param formattedOutput <span class="en-US">Output formatted XML string status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出格式化的XML字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @return <span class="en-US">Converted XML string, or empty string "" if an error occurs</span>
-	 * <span class="zh-CN">转换后的XML字符串，如果转换过程中出现异常则返回空字符串</span>
-	 */
-	public final String toXML(final boolean formattedOutput) {
-		return this.toXML(Boolean.TRUE, formattedOutput);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to XML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为XML字符串</h3>
-	 *
-	 * @param formattedOutput <span class="en-US">Output formatted XML string status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出格式化的XML字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @param encoding        <span class="en-US">Output string encoding</span>
-	 *                        <span class="zh-CN">输出字符串使用的字符集</span>
-	 * @return <span class="en-US">Converted XML string, or empty string "" if an error occurs</span>
-	 * <span class="zh-CN">转换后的XML字符串，如果转换过程中出现异常则返回空字符串</span>
-	 */
-	public final String toXML(final boolean formattedOutput, final String encoding) {
-		return this.toXML(Boolean.TRUE, formattedOutput, encoding);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to XML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为XML字符串</h3>
-	 *
-	 * @param outputFragment  <span class="en-US">Output XML fragment status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出的XML声明字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @param formattedOutput <span class="en-US">Output formatted XML string status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出格式化的XML字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @return <span class="en-US">Converted XML string, or empty string "" if an error occurs</span>
-	 * <span class="zh-CN">转换后的XML字符串，如果转换过程中出现异常则返回空字符串</span>
-	 */
-	public final String toXML(final boolean outputFragment, final boolean formattedOutput) {
-		return this.toXML(outputFragment, formattedOutput, Globals.DEFAULT_ENCODING);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the current object to XML string</h3>
-	 * <h3 class="zh-CN">转换当前实例对象为XML字符串</h3>
-	 *
-	 * @param outputFragment  <span class="en-US">Output XML fragment status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出的XML声明字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @param formattedOutput <span class="en-US">Output formatted XML string status. <code>TRUE</code> or <code>FALSE</code></span>
-	 *                        <span class="zh-CN">输出格式化的XML字符串状态。<code>TRUE</code>或<code>FALSE</code></span>
-	 * @param encoding        <span class="en-US">Output string encoding</span>
-	 *                        <span class="zh-CN">输出字符串使用的字符集</span>
-	 * @return <span class="en-US">Converted XML string, or empty string "" if an error occurs</span>
-	 * <span class="zh-CN">转换后的XML字符串，如果转换过程中出现异常则返回空字符串</span>
-	 */
-	public final String toXML(final boolean outputFragment, final boolean formattedOutput, final String encoding) {
-		return StringUtils.objectToString(this, StringUtils.StringType.XML, formattedOutput, outputFragment, encoding);
-	}
 
 	/**
 	 * (non-javadoc)
@@ -219,20 +108,25 @@ public abstract class BeanObject implements Serializable, Cloneable {
 	@Override
 	public final String toString() {
 		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
-				.map(outputConfig -> this.toString(outputConfig.type(), outputConfig.formatted()))
-				.orElse(this.toString(StringUtils.StringType.SIMPLE, Boolean.FALSE));
+				.map(outputConfig ->
+						this.toString(outputConfig.type(), outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(this.toString(StringUtils.StringType.SIMPLE, Boolean.FALSE, Globals.DEFAULT_ENCODING));
 	}
 
-	public final String toString(final StringUtils.StringType stringType, final boolean formatOutput) {
+	public final String toString(@Nonnull final StringUtils.StringType stringType) {
+		Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
+				.map(Signature::value)
+				.filter(StringUtils::notBlank)
+				.ifPresent(fieldName ->
+						ReflectionUtils.setField(fieldName, this, this.signature(stringType, fieldName)));
 		switch (stringType) {
 			case XML:
-				return this.toXML(formatOutput);
+				return StringUtils.objectToString(this, StringUtils.StringType.XML, Boolean.TRUE,
+						Boolean.FALSE, Globals.DEFAULT_ENCODING);
 			case JSON:
-				return formatOutput ? this.toFormattedJson() : this.toJson();
 			case YAML:
-				return formatOutput ? this.toFormattedYaml() : this.toYaml();
 			case SERIALIZABLE:
-				return StringUtils.objectToString(this, StringUtils.StringType.SERIALIZABLE, formatOutput);
+				return StringUtils.objectToString(this, stringType, Boolean.TRUE);
 			default:
 				return super.toString();
 		}
@@ -257,5 +151,97 @@ public abstract class BeanObject implements Serializable, Cloneable {
 				throw new AssertionError("Clone object failed! ", e);
 			}
 		}
+	}
+
+	public final boolean validate() {
+		OutputConfig config = this.getClass().getAnnotation(OutputConfig.class);
+		if (config == null) {
+			return Boolean.FALSE;
+		}
+
+		return Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
+				.map(Signature::value)
+				.filter(StringUtils::notBlank)
+				.map(fieldName ->
+						Optional.ofNullable((String) ReflectionUtils.getFieldValue(fieldName, this))
+								.map(signature ->
+										ObjectUtils.nullSafeEquals(signature, this.signature(config.type(), fieldName)))
+								.orElse(Boolean.FALSE))
+				.orElse(Boolean.TRUE);
+	}
+
+	private String toString(final StringUtils.StringType stringType, final boolean formatOutput, final String encoding) {
+		Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
+				.map(Signature::value)
+				.filter(StringUtils::notBlank)
+				.ifPresent(fieldName ->
+						ReflectionUtils.setField(fieldName, this, this.signature(stringType, fieldName)));
+		switch (stringType) {
+			case XML:
+				return StringUtils.objectToString(this, StringUtils.StringType.XML, formatOutput, Boolean.TRUE, encoding);
+			case JSON:
+			case YAML:
+			case SERIALIZABLE:
+				return StringUtils.objectToString(this, stringType, formatOutput);
+			default:
+				return super.toString();
+		}
+	}
+
+	private String signature(final StringUtils.StringType stringType, final String fieldName) {
+		String[] ignoreFields = Optional.ofNullable(this.getClass().getAnnotation(JsonIgnoreProperties.class))
+				.map(JsonIgnoreProperties::value)
+				.map(fieldNames -> (String[]) CollectionUtils.addObjectToArray(fieldNames, fieldName))
+				.orElse(new String[]{fieldName});
+		TreeMap<String, Object> fieldsMap = this.fieldsMap(stringType, ignoreFields);
+		if (fieldsMap.isEmpty()) {
+			return Globals.DEFAULT_VALUE_STRING;
+		}
+		return ConvertUtils.toHex(SecurityUtils.SHA256(fieldsMap));
+	}
+
+	private TreeMap<String, Object> fieldsMap(final StringUtils.StringType stringType, final String... ignoreFields) {
+		TreeMap<String, Object> fieldsMap = new TreeMap<>();
+		ReflectionUtils.getAllDeclaredFields(this.getClass(), Boolean.TRUE, ReflectionUtils.NON_STATIC_FINAL_MEMBERS)
+				.stream()
+				.filter(field -> {
+					if (Arrays.stream(ignoreFields).anyMatch(ignoreField -> field.getName().equalsIgnoreCase(ignoreField))) {
+						return Boolean.FALSE;
+					}
+					switch (stringType) {
+						case JSON:
+						case YAML:
+							if (field.isAnnotationPresent(JsonIgnore.class)) {
+								return Boolean.FALSE;
+							}
+							Method getterMethod = ReflectionUtils.getterMethod(field.getName(), this.getClass());
+							if (getterMethod != null && getterMethod.isAnnotationPresent(JsonIgnore.class)) {
+								return Boolean.FALSE;
+							}
+							Method setterMethod = ReflectionUtils.setterMethod(field.getName(), this.getClass());
+							if (setterMethod != null && setterMethod.isAnnotationPresent(JsonIgnore.class)) {
+								return Boolean.FALSE;
+							}
+							return Boolean.TRUE;
+						case XML:
+							if (field.isAnnotationPresent(XmlElement.class) || field.isAnnotationPresent(XmlElementWrapper.class)
+									|| field.isAnnotationPresent(XmlAttribute.class)) {
+								return Boolean.TRUE;
+							}
+							return Boolean.FALSE;
+						default:
+							return Boolean.TRUE;
+					}
+				})
+				.forEach(field ->
+						Optional.ofNullable(ReflectionUtils.getFieldValue(field, this))
+								.ifPresent(fieldValue -> {
+									if (fieldValue instanceof BeanObject) {
+										fieldsMap.put(field.getName(), ((BeanObject) fieldValue).fieldsMap(stringType));
+									} else {
+										fieldsMap.put(field.getName(), ConvertUtils.toHex(ConvertUtils.toByteArray(fieldValue)));
+									}
+								}));
+		return fieldsMap;
 	}
 }

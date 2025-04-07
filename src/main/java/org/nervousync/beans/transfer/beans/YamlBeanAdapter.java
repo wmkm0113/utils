@@ -39,7 +39,7 @@ public final class YamlBeanAdapter extends AbstractBeanAdapter {
 	@Override
 	public String marshal(final Object object) {
 		if (object instanceof BeanObject) {
-			return ((BeanObject) object).toYaml();
+			return ((BeanObject) object).toString(StringUtils.StringType.YAML);
 		}
 		return Globals.DEFAULT_VALUE_STRING;
 	}

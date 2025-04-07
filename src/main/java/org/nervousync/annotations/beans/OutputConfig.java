@@ -53,5 +53,4 @@ public @interface OutputConfig {
 	 * <span class="zh-CN">字符串编码集</span>
 	 */
 	String encoding() default Globals.DEFAULT_ENCODING;
-
 }

@@ -51,6 +51,18 @@
           "content": "Generated e-mail configure information: {0}"
         },
         {
+          "key": "Mail_Config_Exist",
+          "content": "E-mail configure information existed: {0}"
+        },
+        {
+          "key": "Mail_Config_Validate",
+          "content": "E-mail configure information validate success: {0}"
+        },
+        {
+          "key": "Mail_Config_Convert",
+          "content": "E-mail configure information convert type success: {0}"
+        },
+        {
           "key": "Mail_Parse_Config_Info",
           "content": "Parse and verified e-mail configure information: {0}"
         },
@@ -431,6 +443,18 @@
         {
           "key": "Mail_Generate_Config_Info",
           "content": "生成的电子邮件配置信息：{0}"
+        },
+        {
+          "key": "Mail_Config_Exist",
+          "content": "电子邮件配置信息已存在：{0}"
+        },
+        {
+          "key": "Mail_Config_Validate",
+          "content": "电子邮件配置信息验证通过：{0}"
+        },
+        {
+          "key": "Mail_Config_Convert",
+          "content": "电子邮件配置信息类型转换成功：{0}"
         },
         {
           "key": "Mail_Parse_Config_Info",

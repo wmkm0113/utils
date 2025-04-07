@@ -39,7 +39,7 @@ public final class JsonBeanAdapter extends AbstractBeanAdapter {
 	@Override
 	public String marshal(final Object object) {
 		if (object instanceof BeanObject) {
-			return ((BeanObject) object).toJson();
+			return ((BeanObject) object).toString(StringUtils.StringType.JSON);
 		}
 		return Globals.DEFAULT_VALUE_STRING;
 	}

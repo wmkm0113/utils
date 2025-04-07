@@ -18,12 +18,15 @@ package org.nervousync.mail.config;
 
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.nervousync.annotations.beans.OutputConfig;
+import org.nervousync.annotations.beans.Signature;
 import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.beans.transfer.enumerations.MailProtocolAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.proxy.ProxyConfig;
+import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Mail configure information define</h2>
@@ -32,8 +35,10 @@ import org.nervousync.proxy.ProxyConfig;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2021 19:06:18 $
  */
+@Signature("signature")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
+@OutputConfig(type = StringUtils.StringType.XML, formatted = true)
 public final class MailConfig extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -99,6 +104,13 @@ public final class MailConfig extends BeanObject {
 	 */
 	@XmlElement(name = "last_modified")
 	private long lastModified = Globals.DEFAULT_VALUE_LONG;
+
+	/**
+	 * <span class="en-US">Digital Signature</span>
+	 * <span class="zh-CN">数字签名</span>
+	 */
+	@XmlElement
+	private String signature;
 
 	/**
 	 * <h3 class="en-US">Constructor method for MailConfig</h3>
@@ -305,6 +317,28 @@ public final class MailConfig extends BeanObject {
 	 */
 	public void setLastModified(final long lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the digital signature</h3>
+	 * <h3 class="zh-CN">数字签名的Getter方法</h3>
+	 *
+	 * @return <span class="en-US">Digital Signature</span>
+	 * <span class="zh-CN">数字签名</span>
+	 */
+	public String getSignature() {
+		return this.signature;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the digital signature</h3>
+	 * <h3 class="zh-CN">数字签名的Setter方法</h3>
+	 *
+	 * @param signature <span class="en-US">Digital Signature</span>
+	 *                  <span class="zh-CN">数字签名</span>
+	 */
+	public void setSignature(final String signature) {
+		this.signature = signature;
 	}
 
 	/**

@@ -117,7 +117,7 @@ public final class Globals {
 	 * <span class="en-US">Default value for XML annotations</span>
 	 * <span class="zh-CN">XML注解的默认值</span>
 	 */
-	public static final String DEFAULT_XML_ANNOTATION_NAME = "##default";
+	public static final String DEFAULT_XML_ANNOTATION_VALUE = "##default";
 	/**
 	 * <span class="en-US">The constant value of SAMBA protocol prefix</span>
 	 * <span class="zh-CN">Samba协议的起始前缀值</span>

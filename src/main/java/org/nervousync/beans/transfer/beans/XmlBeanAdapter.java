@@ -39,7 +39,7 @@ public final class XmlBeanAdapter extends AbstractBeanAdapter {
 	@Override
 	public String marshal(final Object object) {
 		if (object instanceof BeanObject) {
-			return ((BeanObject) object).toXML();
+			return ((BeanObject) object).toString(StringUtils.StringType.XML);
 		}
 		return Globals.DEFAULT_VALUE_STRING;
 	}

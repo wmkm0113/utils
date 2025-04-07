@@ -721,6 +721,14 @@
           "content": "Error reading schema file"
         },
         {
+          "key": "Match_Signature_Debug",
+          "content": "Match digital signature processing, calculate signature: {0}, match signature: {1}"
+        },
+        {
+          "key": "Match_Signature_Failed",
+          "content": "Match digital signature failed! Configure file name: {0}"
+        },
+        {
           "key": "Parse_String_Debug",
           "content": "Parse string: {0} use encoding: {1} to bean: {2} "
         },
@@ -1573,6 +1581,14 @@
         {
           "key": "Load_Schemas_Error",
           "content": "读取资源描述文件出错"
+        },
+        {
+          "key": "Match_Signature_Debug",
+          "content": "检查数字签名，计算签名：{0}，预期签名：{1}"
+        },
+        {
+          "key": "Match_Signature_Failed",
+          "content": "检查数字签名失败！配置文件名：{0}"
         },
         {
           "key": "Parse_String_Debug",

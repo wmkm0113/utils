@@ -18,7 +18,6 @@ package org.nervousync.security.factory;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
-import org.nervousync.configs.ConfigureManager;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.api.SecureAdapter;
 import org.nervousync.security.config.AbstractConfig;
@@ -65,6 +64,12 @@ public final class SecureFactory {
 	private static final String DEFAULT_SECURE_FACTORY_CONFIG =
 			DEFAULT_SECURE_FOLDER_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "secure_factory.xml";
 	/**
+	 * <span class="en-US">Security factory configuration information storage path</span>
+	 * <span class="zh-CN">安全工厂配置信息存储地址</span>
+	 */
+	private static final String DEFAULT_SECURE_SETTINGS_CONFIG =
+			DEFAULT_SECURE_FOLDER_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "secure_settings.xml";
+	/**
 	 * <span class="en-US">System default security configuration name</span>
 	 * <span class="zh-CN">系统默认安全配置名称</span>
 	 */
@@ -106,7 +111,7 @@ public final class SecureFactory {
 			factoryConfig = new FactoryConfig();
 			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA1024);
 			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA1024)));
-			FileUtils.saveFile(SystemUtils.USER_HOME + DEFAULT_SECURE_FACTORY_CONFIG, factoryConfig.toXML(Boolean.TRUE));
+			FileUtils.saveFile(factoryPath, factoryConfig.toString(StringUtils.StringType.XML));
 		}
 		FACTORY_NODE = new SecureNode(factoryConfig);
 		initialize(Boolean.FALSE);
@@ -118,13 +123,28 @@ public final class SecureFactory {
 	 */
 	private SecureFactory() {
 		this.registeredNodes = new HashMap<>();
-		Optional.ofNullable(ConfigureManager.getInstance())
-				.map(configureManager -> configureManager.readConfigure(SecureSettings.class))
-				.ifPresent(secureSettings -> {
-					Optional.ofNullable(secureSettings.getSystemSecure()).ifPresent(this::register);
-					Optional.ofNullable(secureSettings.getCustomSecures())
-							.ifPresent(customSecures -> customSecures.forEach(this::register));
-				});
+		SecureSettings secureSettings = readConfigure();
+		if (secureSettings == null) {
+			//  Initialize system secure configure
+			systemConfig(SecureAlgorithm.AES256);
+		} else {
+			Optional.ofNullable(secureSettings.getSystemSecure()).ifPresent(this::register);
+			Optional.ofNullable(secureSettings.getCustomSecures())
+					.ifPresent(customSecures -> customSecures.forEach(this::register));
+		}
+	}
+
+	private static SecureSettings readConfigure() {
+		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
+		return Optional.of(FileUtils.readFile(configPath))
+				.filter(StringUtils::notBlank)
+				.map(string -> StringUtils.stringToObject(string, SecureSettings.class))
+				.orElse(null);
+	}
+
+	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
+		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
+		return FileUtils.saveFile(configPath, secureSettings.toString());
 	}
 
 	/**
@@ -155,22 +175,17 @@ public final class SecureFactory {
 			return Boolean.FALSE;
 		}
 
-		ConfigureManager configureManager = ConfigureManager.getInstance();
-		if (configureManager == null) {
-			return Boolean.FALSE;
-		}
-
-		return Optional.ofNullable(configureManager.readConfigure(SecureSettings.class))
+		return Optional.ofNullable(readConfigure())
 				.map(secureSettings -> {
 					List<SecureConfig> customSecures = secureSettings.getCustomSecures();
 					if (customSecures.removeIf(existConfig ->
 							ObjectUtils.nullSafeEquals(existConfig.getSecureName(), secureName))) {
 						secureSettings.setCustomSecures(customSecures);
-						return configureManager.saveConfigure(secureSettings);
+						return saveConfigure(secureSettings);
 					}
 					return Boolean.TRUE;
 				})
-				.orElse(Boolean.TRUE);
+				.orElse(systemConfig(SecureAlgorithm.AES256));
 	}
 
 	/**
@@ -296,11 +311,7 @@ public final class SecureFactory {
 		if (StringUtils.isEmpty(secureConfig.getSecureName())) {
 			return Boolean.FALSE;
 		}
-		ConfigureManager configureManager = ConfigureManager.getInstance();
-		if (configureManager == null) {
-			return Boolean.FALSE;
-		}
-		SecureSettings secureSettings = configureManager.readConfigure(SecureSettings.class);
+		SecureSettings secureSettings = readConfigure();
 		if (secureSettings == null) {
 			secureSettings = new SecureSettings();
 		}
@@ -321,7 +332,7 @@ public final class SecureFactory {
 			}
 			secureSettings.setCustomSecures(customSecures);
 		}
-		return configureManager.saveConfigure(secureSettings);
+		return saveConfigure(secureSettings);
 	}
 
 	/**

@@ -36,7 +36,7 @@ public final class RegexGlobals {
 	 * <span class="en-US">Regular expression to match Base64 encoded strings.</span>
 	 * <span class="zh-CN">正则表达式，用于匹配Base64编码字符串</span>
 	 */
-	public static final String BASE64 = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
+	public static final String BASE64 = "^([A-Za-z0-9\\+\\/]{4})*([A-Za-z0-9\\+\\/]{4}|[A-Za-z0-9\\+\\/]{3}=|[A-Za-z0-9\\+\\/]{2}==)$";
 	/**
 	 * <span class="en-US">Regular expression to match UUID string.</span>
 	 * <span class="zh-CN">正则表达式，用于匹配UUID字符串</span>

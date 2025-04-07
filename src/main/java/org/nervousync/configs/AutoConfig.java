@@ -17,11 +17,11 @@
 
 package org.nervousync.configs;
 
-import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.configs.Configuration;
+import org.nervousync.beans.core.BeanObject;
+import org.nervousync.utils.ClassUtils;
 import org.nervousync.utils.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
@@ -33,21 +33,21 @@ import java.util.Optional;
  */
 public abstract class AutoConfig {
 
+	@SuppressWarnings("unchecked")
 	protected AutoConfig() {
-		ReflectionUtils.getAllDeclaredFields(this.getClass(), Boolean.TRUE)
-				.stream()
-				.filter(field -> field.isAnnotationPresent(Configuration.class))
-				.forEach(this::configure);
-	}
-
-	private void configure(@Nonnull final Field field) {
-		Configuration configuration = field.getAnnotation(Configuration.class);
-		if (configuration == null) {
-			return;
+		final ConfigureManager configureManager = ConfigureManager.getInstance();
+		if (configureManager != null) {
+			ReflectionUtils.getAllDeclaredFields(this.getClass(), Boolean.TRUE)
+					.stream()
+					.filter(field -> field.isAnnotationPresent(Configuration.class))
+					.filter(field -> ClassUtils.isAssignable(BeanObject.class, field.getType()))
+					.forEach(field -> {
+						Class<? extends BeanObject> fieldType = (Class<? extends BeanObject>) field.getType();
+						Configuration configuration = field.getAnnotation(Configuration.class);
+						Optional.ofNullable(configureManager.readConfigure(fieldType, configuration.value()))
+										.ifPresent(configure ->
+												ReflectionUtils.setField(field, this, configure));
+					});
 		}
-		Optional.ofNullable(ConfigureManager.getInstance())
-				.map(configureManager ->
-						configureManager.readConfigure(field.getType(), configuration.value()))
-				.ifPresent(configure -> ReflectionUtils.setField(field, this, configure));
 	}
 }

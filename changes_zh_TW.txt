@@ -1,4 +1,16 @@
 Nervousync Java 工具包
+[08/04/2025]
+[添加] 添加自動加載配置文件支持
+[添加] 添加LocationTest用於測試LocationUtils
+[添加] 添加不可變數據支持
+[更新] BeanObject增加數字簽名
+[更新] 更新 Junit 版本為 5.12.1
+[更新] 更新 slf4j 版本為 2.0.17
+[更新] 更新 jackson 版本為 2.18.3
+[更新] 更新 yaml 版本為 2.4
+[更新] 更新 snmp4j 版本為 3.9.0
+[修復] 使用正則表達式檢查base64字符串失敗
+
 [08/25/2023]
 [添加] 添加xsd映射，用戶可以添加/META-INF/nervousync.schemas來映射namespaceURI和xsd位置文件
 [添加] 添加國際化支持
