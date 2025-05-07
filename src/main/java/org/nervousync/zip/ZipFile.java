@@ -1290,12 +1290,13 @@ public final class ZipFile implements Cloneable {
 		}
 		this.removeFilesIfExists(entryList);
 
-		try (ZipOutputStream outputStream = this.openOutputStream(); InputStream
-				inputStream = FileUtils.loadFile(filePath)) {
+		InputStream inputStream = null;
+		try (ZipOutputStream outputStream = this.openOutputStream()) {
 			byte[] readBuffer = new byte[Globals.BUFFER_SIZE];
 			int readLength;
 
 			for (String filePath : fileList) {
+				inputStream = FileUtils.loadFile(filePath);
 				ZipOptions fileOptions = (ZipOptions) zipOptions.clone();
 
 				if (!FileUtils.isDirectory(filePath)) {
@@ -1319,6 +1320,7 @@ public final class ZipFile implements Cloneable {
 					outputStream.write(readBuffer, 0, readLength);
 				}
 				outputStream.closeEntry();
+				IOUtils.closeStream(inputStream);
 			}
 
 			outputStream.finish();
@@ -1328,6 +1330,8 @@ public final class ZipFile implements Cloneable {
 			} else {
 				throw new ZipException(0x0000001B0015L, e);
 			}
+		} finally {
+			IOUtils.closeStream(inputStream);
 		}
 	}
 
@@ -1582,7 +1586,11 @@ public final class ZipFile implements Cloneable {
 		}
 
 		try {
-			String filePath = destPath + generalFileHeader.getEntryPath();
+			String filePath = destPath;
+			if (!filePath.endsWith(Globals.DEFAULT_PAGE_SEPARATOR)) {
+				filePath += Globals.DEFAULT_PAGE_SEPARATOR;
+			}
+			filePath += generalFileHeader.getEntryPath();
 			if (generalFileHeader.getExternalFileAttr() != null && !ignoreFileAttr) {
 				if (generalFileHeader.getExternalFileAttr()[0] == Globals.FILE_MODE_READ_ONLY) {
 					setFileReadOnly(FileUtils.getFile(filePath));

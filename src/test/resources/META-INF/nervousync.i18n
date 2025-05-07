@@ -393,6 +393,26 @@
         {
           "key": "Location_Convert_BD09",
           "content": "Convert location point to BD09, Longitude: {0}, Latitude: {1}"
+        },
+        {
+          "key": "Zip_Create_Success",
+          "content": "Create Zip File Success! "
+        },
+        {
+          "key": "Zip_Entry_Path",
+          "content": "Entry path: {0}"
+        },
+        {
+          "key": "Zip_Entry_Size",
+          "content": "Entry size: {0}"
+        },
+        {
+          "key": "Zip_Read_Comment",
+          "content": "Read comment: {0} "
+        },
+        {
+          "key": "Zip_Read_Path",
+          "content": "Read file path: {0}"
         }
       ]
     },
@@ -787,6 +807,26 @@
         {
           "key": "Location_Convert_BD09",
           "content": "转换坐标为BD09座标系，经度：{0}，纬度：{1}"
+        },
+        {
+          "key": "Zip_Create_Success",
+          "content": "创建ZIP文件成功！"
+        },
+        {
+          "key": "Zip_Entry_Path",
+          "content": "压缩实体路径：{0}"
+        },
+        {
+          "key": "Zip_Entry_Size",
+          "content": "压缩实体大小：{0}"
+        },
+        {
+          "key": "Zip_Read_Comment",
+          "content": "读取的备注信息：{0} "
+        },
+        {
+          "key": "Zip_Read_Path",
+          "content": "读取文件路径：{0}"
         }
       ]
     }
