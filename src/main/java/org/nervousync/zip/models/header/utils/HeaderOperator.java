@@ -62,7 +62,7 @@ public final class HeaderOperator {
 	 * @return the int
 	 * @throws ZipException the zip exception
 	 */
-	public static int saltLength(int aesStrength) throws ZipException {
+	public static int saltLength(final int aesStrength) throws ZipException {
 		int saltLength;
 		switch (aesStrength) {
 			case Globals.AES_STRENGTH_128:
@@ -75,7 +75,7 @@ public final class HeaderOperator {
 				saltLength = 16;
 				break;
 			default:
-				throw new ZipException("unable to determine salt length: invalid aes key strength");
+				throw new ZipException(0x0000001B0005L);
 		}
 		return saltLength;
 	}
@@ -89,10 +89,10 @@ public final class HeaderOperator {
 	 * @throws ZipException the zip exception
 	 * @throws IOException  the io exception
 	 */
-	public static int writeExtendedLocalHeader(LocalFileHeader localFileHeader, OutputStream outputStream)
+	public static int writeExtendedLocalHeader(final LocalFileHeader localFileHeader, final OutputStream outputStream)
 			throws ZipException, DataInvalidException, IOException {
 		if (localFileHeader == null || outputStream == null) {
-			throw new ZipException("input parameters is null, cannot write extended local header");
+			throw new ZipException(0x0000001B002EL);
 		}
 
 		List<String> byteArrayList = new ArrayList<>();
@@ -134,9 +134,9 @@ public final class HeaderOperator {
 	 * @return the byte [ ]
 	 * @throws ZipException the zip exception
 	 */
-	public static byte[] convertByteArrayListToByteArray(List<String> arrayList) throws ZipException {
+	public static byte[] convertByteArrayListToByteArray(final List<String> arrayList) throws ZipException {
 		if (arrayList == null) {
-			throw new ZipException("input byte array list is null, cannot convert to byte array");
+			throw new ZipException(0x0000001B0053L);
 		}
 
 		if (!arrayList.isEmpty()) {
@@ -159,7 +159,7 @@ public final class HeaderOperator {
 	 * @param arrayList the array list
 	 * @throws ZipException the zip exception
 	 */
-	public static void appendShortToArrayList(short value, List<String> arrayList)
+	public static void appendShortToArrayList(final short value, final List<String> arrayList)
 			throws ZipException, DataInvalidException {
 		byte[] shortBuffer = new byte[2];
 		RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, value);
@@ -173,7 +173,7 @@ public final class HeaderOperator {
 	 * @param arrayList the array list
 	 * @throws ZipException the zip exception
 	 */
-	public static void appendIntToArrayList(int value, List<String> arrayList)
+	public static void appendIntToArrayList(final int value, final List<String> arrayList)
 			throws ZipException, DataInvalidException {
 		byte[] intBuffer = new byte[4];
 		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, value);
@@ -187,7 +187,7 @@ public final class HeaderOperator {
 	 * @param arrayList the array list
 	 * @throws ZipException the zip exception
 	 */
-	public static void appendLongToArrayList(long value, List<String> arrayList)
+	public static void appendLongToArrayList(final long value, final List<String> arrayList)
 			throws ZipException, DataInvalidException {
 		byte[] longBuffer = new byte[8];
 		RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, value);
@@ -201,9 +201,9 @@ public final class HeaderOperator {
 	 * @param arrayList the array list
 	 * @throws ZipException the zip exception
 	 */
-	public static void copyByteArrayToList(byte[] byteArray, List<String> arrayList) throws ZipException {
+	public static void copyByteArrayToList(final byte[] byteArray, final List<String> arrayList) throws ZipException {
 		if (arrayList == null || byteArray == null) {
-			throw new ZipException("one of the input parameters is null, cannot copy byte array to array list");
+			throw new ZipException(0x0000001B0054L);
 		}
 
 		for (byte b : byteArray) {
@@ -218,7 +218,7 @@ public final class HeaderOperator {
 	 * @param arrayList the array list
 	 * @throws ZipException the zip exception
 	 */
-	public static void copyByteArrayToList(String entryPath, List<String> arrayList) throws ZipException {
+	public static void copyByteArrayToList(final String entryPath, final List<String> arrayList) throws ZipException {
 		copyByteArrayToList(convertCharset(entryPath), arrayList);
 	}
 
@@ -229,7 +229,7 @@ public final class HeaderOperator {
 	 * @return the byte [ ]
 	 * @throws ZipException the zip exception
 	 */
-	private static byte[] convertCharset(String string) throws ZipException {
+	private static byte[] convertCharset(final String string) throws ZipException {
 		try {
 			byte[] converted;
 			String charSet = StringUtils.detectCharset(string);
@@ -251,7 +251,7 @@ public final class HeaderOperator {
 		} catch (UnsupportedEncodingException err) {
 			return string.getBytes(Charset.defaultCharset());
 		} catch (Exception e) {
-			throw new ZipException("", e);
+			throw new ZipException(0x000000FF0002L, e);
 		}
 	}
 }

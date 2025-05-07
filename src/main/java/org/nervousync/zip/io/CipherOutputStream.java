@@ -294,8 +294,7 @@ public class CipherOutputStream extends OutputStream {
 		this.zipFile.getCentralDirectory().getFileHeaders().add(this.generalFileHeader);
 
 		try {
-			this.totalWriteBytes +=
-					HeaderOperator.writeExtendedLocalHeader(this.localFileHeader, this.outputStream);
+			this.totalWriteBytes += HeaderOperator.writeExtendedLocalHeader(this.localFileHeader, this.outputStream);
 		} catch (DataInvalidException e) {
 			throw new IOException(e);
 		}

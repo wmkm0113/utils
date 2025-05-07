@@ -92,20 +92,20 @@ public class SplitOutputStream extends OutputStream {
 	public static SplitOutputStream newInstance(final String savePath, final long splitLength)
 			throws FileNotFoundException, ZipException {
 		if (splitLength >= 0 && splitLength < Globals.MIN_SPLIT_LENGTH) {
-			throw new ZipException("split length less than minimum allowed split length of " + Globals.MIN_SPLIT_LENGTH + " Bytes");
+			throw new ZipException(0x0000001B0057L, Globals.MIN_SPLIT_LENGTH);
 		}
 		return new SplitOutputStream(savePath, splitLength);
 	}
 
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		byte[] buffer = new byte[1];
 		buffer[0] = (byte) b;
 		this.write(buffer, 0, 1);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b) throws IOException {
+	public void write(final @Nonnull byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}
 
@@ -116,7 +116,7 @@ public class SplitOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void write(final @Nonnull byte[] b, final int off, final int len) throws IOException {
 		if (len < 0) {
 			return;
 		}
@@ -159,32 +159,32 @@ public class SplitOutputStream extends OutputStream {
 	 * @return the boolean
 	 * @throws ZipException the zip exception
 	 */
-	public boolean checkBufferSizeAndStartNextSplitFile(int bufferSize) throws ZipException {
+	public boolean checkBufferSizeAndStartNextSplitFile(final int bufferSize) throws ZipException {
 		if (bufferSize < 0) {
-			throw new ZipException("negative buffer size for checkBuffSizeAndStartNextSplitFile");
+			throw new ZipException(0x0000001B0056L);
 		}
 
 		if (!this.isBufferSizeFitForCurrentSplitFile(bufferSize)) {
 			try {
 				this.startNextSplitFile();
 				this.bytesWrittenForThisPart = 0;
-				return true;
+				return Boolean.TRUE;
 			} catch (IOException e) {
-				throw new ZipException("check Buffer Size And Start Next Split File error! ", e);
+				throw new ZipException(0x0000001B0057L, e);
 			}
 		}
 		return Boolean.FALSE;
 	}
 
-	private boolean isBufferSizeFitForCurrentSplitFile(int bufferSize) throws ZipException {
+	private boolean isBufferSizeFitForCurrentSplitFile(final int bufferSize) throws ZipException {
 		if (bufferSize < 0) {
-			throw new ZipException("negative buffer size for checkBuffSizeAndStartNextSplitFile");
+			throw new ZipException(0x0000001B0056L);
 		}
 
 		if (this.splitLength >= Globals.MIN_SPLIT_LENGTH) {
 			return (this.bytesWrittenForThisPart + bufferSize <= this.splitLength);
 		} else {
-			return true;
+			return Boolean.TRUE;
 		}
 	}
 
@@ -273,7 +273,7 @@ public class SplitOutputStream extends OutputStream {
 		}
 	}
 
-	private boolean isHeaderData(byte[] buffer) throws IOException {
+	private boolean isHeaderData(final byte[] buffer) throws IOException {
 		if (buffer != null && buffer.length >= 4) {
 			try {
 				int signature = RawUtils.readInt(buffer, 0, ByteOrder.LITTLE_ENDIAN);

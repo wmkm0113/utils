@@ -291,6 +291,210 @@
       "key": "Null_Input_Stream_Zip_Error"
     },
     {
+      "code": "0x0000001B0023",
+      "key": "Null_Destination_Path_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0024",
+      "key": "Invalid_Central_Directory_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0025",
+      "key": "Null_Entry_Path_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0026",
+      "key": "Entry_Path_Not_Directory_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0027",
+      "key": "Null_Remove_Entry_Path_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0028",
+      "key": "Invalid_File_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0029",
+      "key": "Null_End_Central_Directory_Zip_Error"
+    },
+    {
+      "code": "0x0000001B002A",
+      "key": "Invalid_Comment_Length_Zip_Error"
+    },
+    {
+      "code": "0x0000001B002B",
+      "key": "Write_Comment_Zip_Error"
+    },
+    {
+      "code": "0x0000001B002C",
+      "key": "Not_Split_File_Zip_Error"
+    },
+    {
+      "code": "0x0000001B002D",
+      "key": "Merge_Split_File_Zip_Error"
+    },
+    {
+      "code": "0x0000001B002E",
+      "key": "Null_Output_Stream_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0030",
+      "key": "Unknown_File_Header_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0031",
+      "key": "Null_Target_File_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0032",
+      "key": "Process_File_Attribute_ReadOnly_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0033",
+      "key": "Process_File_Attribute_Last_Modify_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0034",
+      "key": "Invalid_Last_Modify_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0035",
+      "key": "Invalid_Binary_Data_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0036",
+      "key": "Not_Folder_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0037",
+      "key": "Cannot_Read_Folder_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0038",
+      "key": "Invalid_Output_Folder_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0039",
+      "key": "Read_Extra_Data_Zip_Error"
+    },
+    {
+      "code": "0x0000001B003A",
+      "key": "Read_Zip64_Extend_Data_Zip_Error"
+    },
+    {
+      "code": "0x0000001B003B",
+      "key": "Process_AES_Extra_Data_Zip_Error"
+    },
+    {
+      "code": "0x0000001B003C",
+      "key": "Read_Zip64_ECDR_Zip_Error"
+    },
+    {
+      "code": "0x0000001B003D",
+      "key": "Invalid_Signature_Zip64_ECDR_Zip_Error"
+    },
+    {
+      "code": "0x0000001B003E",
+      "key": "Read_Central_Directory_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0040",
+      "key": "Entry_Central_Directory_Not_Found_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0041",
+      "key": "Read_Zip64_ECDRL_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0042",
+      "key": "Read_ECDR_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0043",
+      "key": "Extract_File_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0044",
+      "key": "Remove_Entry_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0045",
+      "key": "Write_Zip64_ECDRL_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0046",
+      "key": "Write_ECDR_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0047",
+      "key": "Write_Header_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0048",
+      "key": "Write_Zip64_Header_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0049",
+      "key": "Read_Entry_Zip_Error"
+    },
+    {
+      "code": "0x0000001B004A",
+      "key": "Unknown_Compress_Type_Zip_Error"
+    },
+    {
+      "code": "0x0000001B004B",
+      "key": "Invalid_Compress_Level_Zip_Error"
+    },
+    {
+      "code": "0x0000001B004C",
+      "key": "Need_Password_Zip_Error"
+    },
+    {
+      "code": "0x0000001B004D",
+      "key": "Copy_Data_Zip_Error"
+    },
+    {
+      "code": "0x0000001B004E",
+      "key": "Invalid_CRC_Check_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0050",
+      "key": "Invalid_Decryptor_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0051",
+      "key": "Invalid_Local_Header_Signature_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0052",
+      "key": "Not_Found_Header_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0053",
+      "key": "Convert_Object_To_Array_Error"
+    },
+    {
+      "code": "0x0000001B0054",
+      "key": "Convert_Array_To_Object_Error"
+    },
+    {
+      "code": "0x0000001B0055",
+      "key": "Read_AES_Bytes_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0056",
+      "key": "Invalid_Buffer_Size_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0057",
+      "key": "Min_Split_Size_Zip_Error"
+    },
+    {
+      "code": "0x0000001B0058",
+      "key": "Open_Split_File_Zip_Error"
+    },
+    {
       "code": "0x0000001D0001",
       "key": "Code_Size_Invalid"
     },
@@ -611,6 +815,202 @@
         {
           "key": "Null_Input_Stream_Zip_Error",
           "content": "Input stream instance is null"
+        },
+        {
+          "key": "Null_Destination_Path_Zip_Error",
+          "content": "Destination path is null!"
+        },
+        {
+          "key": "Invalid_Central_Directory_Zip_Error",
+          "content": "Invalid central directory in zip entity"
+        },
+        {
+          "key": "Invalid_Last_Modify_Zip_Error",
+          "content": "Invalid last modify time value"
+        },
+        {
+          "key": "Invalid_Binary_Data_Zip_Error",
+          "content": "Invalid binary data"
+        },
+        {
+          "key": "Not_Folder_Zip_Error",
+          "content": "Current file path is not a folder, path: {0}"
+        },
+        {
+          "key": "Cannot_Read_Folder_Zip_Error",
+          "content": "Read folder data error! Folder path: {0}"
+        },
+        {
+          "key": "Invalid_Output_Folder_Zip_Error",
+          "content": "Invalid output folder path! Folder path: {0}"
+        },
+        {
+          "key": "Read_Extra_Data_Zip_Error",
+          "content": "Read extra data records error!"
+        },
+        {
+          "key": "Read_Zip64_Extend_Data_Zip_Error",
+          "content": "Read ZIP64 extend data information error!"
+        },
+        {
+          "key": "Process_AES_Extra_Data_Zip_Error",
+          "content": "Read and save AES extra data record error"
+        },
+        {
+          "key": "Read_Zip64_ECDR_Zip_Error",
+          "content": "Read Zip64 end central directory record error"
+        },
+        {
+          "key": "Invalid_Signature_Zip64_ECDR_Zip_Error",
+          "content": "Invalid signature for Zip64 end central directory record"
+        },
+        {
+          "key": "Read_Central_Directory_Zip_Error",
+          "content": "Read central directory data error! "
+        },
+        {
+          "key": "Entry_Central_Directory_Not_Found_Zip_Error",
+          "content": "Expected central directory entry not found! Index: {0}"
+        },
+        {
+          "key": "Read_Zip64_ECDRL_Zip_Error",
+          "content": "Read Zip64 end central directory locator record error"
+        },
+        {
+          "key": "Read_ECDR_Zip_Error",
+          "content": "Read end central directory record error"
+        },
+        {
+          "key": "Remove_Entry_Zip_Error",
+          "content": "Remove zip entry error"
+        },
+        {
+          "key": "Write_Zip64_ECDRL_Zip_Error",
+          "content": "Write Zip64 end central directory locator record error"
+        },
+        {
+          "key": "Write_ECDR_Zip_Error",
+          "content": "Write end central directory record error"
+        },
+        {
+          "key": "Write_Header_Zip_Error",
+          "content": "Write zip header bytes error"
+        },
+        {
+          "key": "Write_Zip64_Header_Zip_Error",
+          "content": "Write zip64 header bytes error"
+        },
+        {
+          "key": "Read_Entry_Zip_Error",
+          "content": "Read zip entry data error"
+        },
+        {
+          "key": "Unknown_Compress_Type_Zip_Error",
+          "content": "Unsupported compression type!"
+        },
+        {
+          "key": "Invalid_Compress_Level_Zip_Error",
+          "content": "Invalid compression level. compression level dor deflate should be in the range of 0-9"
+        },
+        {
+          "key": "Need_Password_Zip_Error",
+          "content": "Need password for encrypt!"
+        },
+        {
+          "key": "Copy_Data_Zip_Error",
+          "content": "Copy data error! "
+        },
+        {
+          "key": "Invalid_CRC_Check_Zip_Error",
+          "content": "Zip file process crc check error! "
+        },
+        {
+          "key": "Invalid_Decryptor_Zip_Error",
+          "content": "Invalid decryptor when trying to calculate compressed size for AES encrypted file: {0}"
+        },
+        {
+          "key": "Invalid_Local_Header_Signature_Zip_Error",
+          "content": "Invalid local header signature for file: {0}"
+        },
+        {
+          "key": "Not_Found_Header_Zip_Error",
+          "content": "Zip headers not found. probably not a zip file"
+        },
+        {
+          "key": "Read_AES_Bytes_Zip_Error",
+          "content": "Error occurred while reading stored AES authentication bytes"
+        },
+        {
+          "key": "Invalid_Buffer_Size_Zip_Error",
+          "content": "Negative buffer size"
+        },
+        {
+          "key": "Min_Split_Size_Zip_Error",
+          "content": "Split length less than minimum allowed split length of {0} bytes"
+        },
+        {
+          "key": "Open_Split_File_Zip_Error",
+          "content": "Check buffer size and start next split file error! "
+        },
+        {
+          "key": "Extract_File_Zip_Error",
+          "content": "Extract zip file error"
+        },
+        {
+          "key": "Null_Entry_Path_Zip_Error",
+          "content": "Entry path is null or empty string"
+        },
+        {
+          "key": "Entry_Path_Not_Directory_Zip_Error",
+          "content": "Entry path: {0} is not directory entry!"
+        },
+        {
+          "key": "Null_Remove_Entry_Path_Zip_Error",
+          "content": "Remove entry path arrays is null"
+        },
+        {
+          "key": "Invalid_File_Zip_Error",
+          "content": "Invalid zip file! "
+        },
+        {
+          "key": "Null_End_Central_Directory_Zip_Error",
+          "content": "End of central directory is null!"
+        },
+        {
+          "key": "Invalid_Comment_Length_Zip_Error",
+          "content": "Comment length exceeds maximum length"
+        },
+        {
+          "key": "Write_Comment_Zip_Error",
+          "content": "Write comment information error! "
+        },
+        {
+          "key": "Not_Split_File_Zip_Error",
+          "content": "Archive not a split zip file"
+        },
+        {
+          "key": "Merge_Split_File_Zip_Error",
+          "content": "Merge split zip file error! "
+        },
+        {
+          "key": "Null_Output_Stream_Zip_Error",
+          "content": "Output stream parameters is null, cannot finalize zip file"
+        },
+        {
+          "key": "Unknown_File_Header_Zip_Error",
+          "content": "Unknown file header"
+        },
+        {
+          "key": "Null_Target_File_Zip_Error",
+          "content": "Target file is null"
+        },
+        {
+          "key": "Process_File_Attribute_ReadOnly_Zip_Error",
+          "content": "Process file read only attribute error! "
+        },
+        {
+          "key": "Process_File_Attribute_Last_Modify_Zip_Error",
+          "content": "Process file last modify time attribute error! "
         },
         {
           "key": "Code_Size_Invalid",
@@ -1473,6 +1873,202 @@
         {
           "key": "Null_Input_Stream_Zip_Error",
           "content": "输入流为空"
+        },
+        {
+          "key": "Null_Destination_Path_Zip_Error",
+          "content": "目标路径为空"
+        },
+        {
+          "key": "Invalid_Central_Directory_Zip_Error",
+          "content": "压缩实体中的中心目录无效"
+        },
+        {
+          "key": "Null_Entry_Path_Zip_Error",
+          "content": "压缩实体路径为空或空字符串"
+        },
+        {
+          "key": "Entry_Path_Not_Directory_Zip_Error",
+          "content": "压缩实体路径：{0} 不是目录！"
+        },
+        {
+          "key": "Null_Remove_Entry_Path_Zip_Error",
+          "content": "要删除的压缩实体路径数组为空"
+        },
+        {
+          "key": "Invalid_File_Zip_Error",
+          "content": "非法的ZIP文件！"
+        },
+        {
+          "key": "Null_End_Central_Directory_Zip_Error",
+          "content": "中央目录结束数据为空！"
+        },
+        {
+          "key": "Invalid_Comment_Length_Zip_Error",
+          "content": "备注信息长度超出最大长度"
+        },
+        {
+          "key": "Write_Comment_Zip_Error",
+          "content": "写入备注信息出错！"
+        },
+        {
+          "key": "Not_Split_File_Zip_Error",
+          "content": "压缩包不是分卷压缩文件"
+        },
+        {
+          "key": "Merge_Split_File_Zip_Error",
+          "content": "合并分卷文件出错！"
+        },
+        {
+          "key": "Null_Output_Stream_Zip_Error",
+          "content": "输出流参数为空，无法写入压缩文件"
+        },
+        {
+          "key": "Unknown_File_Header_Zip_Error",
+          "content": "未知的文件头信息"
+        },
+        {
+          "key": "Null_Target_File_Zip_Error",
+          "content": "目标文件为空"
+        },
+        {
+          "key": "Process_File_Attribute_ReadOnly_Zip_Error",
+          "content": "处理文件只读属性出错！"
+        },
+        {
+          "key": "Process_File_Attribute_Last_Modify_Zip_Error",
+          "content": "处理文件最终修改时间属性出错！"
+        },
+        {
+          "key": "Invalid_Last_Modify_Zip_Error",
+          "content": "非法的最终修改时间值"
+        },
+        {
+          "key": "Invalid_Binary_Data_Zip_Error",
+          "content": "非法二进制数据"
+        },
+        {
+          "key": "Not_Folder_Zip_Error",
+          "content": "当前文件路径不是目录，路径信息：{0}"
+        },
+        {
+          "key": "Cannot_Read_Folder_Zip_Error",
+          "content": "读取文件夹信息出错！文件夹路径：{0}"
+        },
+        {
+          "key": "Invalid_Output_Folder_Zip_Error",
+          "content": "输出文件夹出错！文件夹路径：{0}"
+        },
+        {
+          "key": "Read_Extra_Data_Zip_Error",
+          "content": "读取扩展信息数据出错！"
+        },
+        {
+          "key": "Read_Zip64_Extend_Data_Zip_Error",
+          "content": "读取ZIP64扩展数据信息出错！"
+        },
+        {
+          "key": "Process_AES_Extra_Data_Zip_Error",
+          "content": "读取及保存AES扩展数据记录出错！"
+        },
+        {
+          "key": "Read_Zip64_ECDR_Zip_Error",
+          "content": "读取Zip64终止中央目录记录出错！"
+        },
+        {
+          "key": "Invalid_Signature_Zip64_ECDR_Zip_Error",
+          "content": "非法的Zip64终止中央目录签名"
+        },
+        {
+          "key": "Read_Central_Directory_Zip_Error",
+          "content": "读取中央目录信息出错！"
+        },
+        {
+          "key": "Entry_Central_Directory_Not_Found_Zip_Error",
+          "content": "预期的压缩实体中央目录信息未找到！索引值：{0}"
+        },
+        {
+          "key": "Read_Zip64_ECDRL_Zip_Error",
+          "content": "读取Zip64终止中央目录记录定位信息出错！"
+        },
+        {
+          "key": "Read_ECDR_Zip_Error",
+          "content": "读取终止中央目录记录出错"
+        },
+        {
+          "key": "Remove_Entry_Zip_Error",
+          "content": "删除压缩实体出错"
+        },
+        {
+          "key": "Write_Zip64_ECDRL_Zip_Error",
+          "content": "写入Zip64终止中央目录记录定位信息出错！"
+        },
+        {
+          "key": "Write_ECDR_Zip_Error",
+          "content": "写入终止中央目录记录出错"
+        },
+        {
+          "key": "Write_Header_Zip_Error",
+          "content": "写入ZIP头数据出错"
+        },
+        {
+          "key": "Write_Zip64_Header_Zip_Error",
+          "content": "写入ZIP64头数据出错"
+        },
+        {
+          "key": "Read_Entry_Zip_Error",
+          "content": "读取压缩实体数据出错"
+        },
+        {
+          "key": "Unknown_Compress_Type_Zip_Error",
+          "content": "不支持的压缩方式！"
+        },
+        {
+          "key": "Invalid_Compress_Level_Zip_Error",
+          "content": "非法的压缩等级。压缩级别应该在0-9的范围内。"
+        },
+        {
+          "key": "Need_Password_Zip_Error",
+          "content": "需要设置密码用于数据加密！"
+        },
+        {
+          "key": "Copy_Data_Zip_Error",
+          "content": "拷贝数据出错！"
+        },
+        {
+          "key": "Invalid_CRC_Check_Zip_Error",
+          "content": "ZIP文件执行CRC检查出错！"
+        },
+        {
+          "key": "Invalid_Decryptor_Zip_Error",
+          "content": "错误的解密器用于尝试计算AES压缩大小，压缩文件：{0}"
+        },
+        {
+          "key": "Invalid_Local_Header_Signature_Zip_Error",
+          "content": "非法的数据头签名！文件路径：{0}"
+        },
+        {
+          "key": "Not_Found_Header_Zip_Error",
+          "content": "ZIP头信息未找到。可能不是ZIP文件"
+        },
+        {
+          "key": "Read_AES_Bytes_Zip_Error",
+          "content": "读取存储的AES验证数据出错"
+        },
+        {
+          "key": "Invalid_Buffer_Size_Zip_Error",
+          "content": "非法的缓冲区大小"
+        },
+        {
+          "key": "Min_Split_Size_Zip_Error",
+          "content": "分卷大小小于允许的最小分卷大小：{0} bytes"
+        },
+        {
+          "key": "Open_Split_File_Zip_Error",
+          "content": "检查缓冲区大小及打开下一个分卷文件出错！"
+        },
+        {
+          "key": "Extract_File_Zip_Error",
+          "content": "解压缩ZIP文件出错！"
         },
         {
           "key": "Code_Size_Invalid",

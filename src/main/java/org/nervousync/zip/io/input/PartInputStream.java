@@ -222,12 +222,12 @@ public class PartInputStream extends InputStream {
 
 					readLength += newReadLength;
 				} else {
-					throw new ZipException("Error occurred while reading stored AES authentication bytes");
+					throw new ZipException(0x0000001B0055L);
 				}
 			}
 
 			if (readLength != Globals.AES_AUTH_LENGTH) {
-				throw new ZipException("Error occurred while reading stored AES authentication bytes");
+				throw new ZipException(0x0000001B0055L);
 			}
 
 			((AESDecryptor) this.decryptor).setStoredMac(storedMac);

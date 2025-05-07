@@ -75,7 +75,7 @@ public class DeflaterOutputStream extends CipherOutputStream {
 			this.deflater.reset();
 			if ((zipOptions.getCompressionLevel() < 0 || zipOptions.getCompressionLevel() > 9)
 					&& zipOptions.getCompressionLevel() != Globals.DEFAULT_VALUE_INT) {
-				throw new ZipException("invalid compression level for deflater. compression level should be in the range of 0-9");
+				throw new ZipException(0x0000001B004BL);
 			}
 			this.deflater.setLevel(zipOptions.getCompressionLevel());
 		}
