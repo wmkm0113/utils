@@ -51,23 +51,28 @@ public class PartInputStream extends InputStream {
 	 *
 	 * @param zipFile            the zip file
 	 * @param currentIndex       the current index
-	 * @param seekPosition       the seek position
 	 * @param length             the length
 	 * @param decryptor          the decryptor
 	 * @param isAESEncryptedFile is aes encrypted file
-	 * @throws IOException the io exception
 	 */
-	public PartInputStream(final ZipFile zipFile, final int currentIndex, final long seekPosition,
-	                       final long length, final Decryptor decryptor, final boolean isAESEncryptedFile)
-			throws IOException, ZipException {
+	protected PartInputStream(@Nonnull final ZipFile zipFile, final int currentIndex, @Nonnull final StandardFile input,
+	                        final long length, final Decryptor decryptor, final boolean isAESEncryptedFile) {
 		this.zipFile = zipFile;
 		this.currentIndex = currentIndex;
-		this.input = this.zipFile.openSplitFile(currentIndex);
-		this.input.seek(seekPosition);
+		this.input = input;
 		this.readBytes = 0L;
 		this.length = length;
 		this.decryptor = decryptor;
 		this.isAESEncryptedFile = isAESEncryptedFile;
+	}
+
+	public static PartInputStream newInstance(@Nonnull final ZipFile zipFile, final int currentIndex,
+	                                          final long seekPosition, final long length, final Decryptor decryptor,
+	                                          final boolean isAESEncryptedFile)
+			throws IOException {
+		final StandardFile input = zipFile.openSplitFile(currentIndex);
+		input.seek(seekPosition);
+		return new PartInputStream(zipFile, currentIndex, input, length, decryptor, isAESEncryptedFile);
 	}
 
 	@Override

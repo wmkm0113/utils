@@ -50,6 +50,7 @@ Or one-time password support, X.509 certificate operation, task manager, etc., t
   + [Zip file operate](#zip-file-operate)
   + [Random access file operates](#random-access-file-operates)
 * [Contributions and feedback](#contributions-and-feedback)
+* [Donations](#donations)
 * [Sponsorship and Thanks To](#sponsorship-and-thanks-to)
 
 ## JDK Version：
@@ -436,6 +437,13 @@ If you are submitting information about adding new features, please ensure that 
 If you need to add customized special requirements, I will charge a certain custom development fee.
 The specific fee amount will be assessed based on the workload of the customized special requirements.   
 For customized special features, please send an email directly to [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=payment_features). At the same time, please try to indicate the budget amount of development cost you can afford in the email.
+
+## Donations
+To support this project, you can make a donation to:
+
+* Bitcoin address: bc1q0n05a5r7vyph40lv0kshxscxwptr3z4pwpq5nd
+* Ethereum address: 0xeA448C14f65657Fce8020955807345ae5Fb0722B
+* Solana address: CiBFDVETZLFGUYTN6izbofCZ7oVAdghoMDpFgaUyetPf
 
 ## Sponsorship and Thanks To
 <span id="JetBrains">

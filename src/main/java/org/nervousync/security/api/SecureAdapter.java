@@ -38,7 +38,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final void append(String strIn) throws CryptoException {
+	public final void append(final String strIn) throws CryptoException {
 		this.append(strIn.getBytes(StandardCharsets.UTF_8));
 	}
 
@@ -51,7 +51,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final void append(byte[] dataBytes) throws CryptoException {
+	public final void append(final byte[] dataBytes) throws CryptoException {
 		this.append(dataBytes, 0, dataBytes.length);
 	}
 
@@ -64,7 +64,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final void append(ByteBuffer inBuffer) throws CryptoException {
+	public final void append(final ByteBuffer inBuffer) throws CryptoException {
 		this.append(inBuffer.array());
 	}
 
@@ -92,7 +92,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final byte[] finish(String strIn) throws CryptoException {
+	public final byte[] finish(final String strIn) throws CryptoException {
 		return this.finish(strIn.getBytes(StandardCharsets.UTF_8));
 	}
 
@@ -107,7 +107,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final byte[] finish(byte[] dataBytes) throws CryptoException {
+	public final byte[] finish(final byte[] dataBytes) throws CryptoException {
 		return this.finish(dataBytes, 0, dataBytes.length);
 	}
 
@@ -122,7 +122,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public final byte[] finish(ByteBuffer inBuffer) throws CryptoException {
+	public final byte[] finish(final ByteBuffer inBuffer) throws CryptoException {
 		return this.finish(inBuffer.array());
 	}
 
@@ -139,10 +139,10 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public abstract void append(byte[] dataBytes, int position, int length) throws CryptoException;
+	public abstract void append(final byte[] dataBytes, final int position, final int length) throws CryptoException;
 
 	/**
-	 * <h3 class="en-US">Append parts of the given binary data array to current adapter and calculate final result</h3>
+	 * <h3 class="en-US">Append parts of the given binary data array to the current adapter and calculate the final result</h3>
 	 * <h3 class="zh-CN">追加给定的二进制字节数组到当前适配器并计算最终结果</h3>
 	 *
 	 * @param dataBytes <span class="en-US">binary data array</span>
@@ -156,7 +156,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public abstract byte[] finish(byte[] dataBytes, int position, int length) throws CryptoException;
+	public abstract byte[] finish(final byte[] dataBytes, final int position, final int length) throws CryptoException;
 
 	/**
 	 * <h3 class="en-US">Verify given signature data bytes is valid</h3>
@@ -169,7 +169,7 @@ public abstract class SecureAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when process data</span>
 	 *                         <span class="zh-CN">当处理数据时出现异常</span>
 	 */
-	public abstract boolean verify(byte[] signature) throws CryptoException;
+	public abstract boolean verify(final byte[] signature) throws CryptoException;
 
 	/**
 	 * <h3 class="en-US">Reset current adapter</h3>

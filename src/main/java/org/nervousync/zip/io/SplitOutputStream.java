@@ -65,27 +65,11 @@ public class SplitOutputStream extends OutputStream {
 	/**
 	 * Instantiates a new Split output stream.
 	 *
-	 * @param filePath the file path
-	 * @throws FileNotFoundException the file was not found exception
-	 * @throws ZipException          the zip exception
-	 */
-	public SplitOutputStream(String filePath) throws FileNotFoundException, ZipException {
-		this(filePath, Globals.DEFAULT_VALUE_LONG);
-	}
-
-	/**
-	 * Instantiates a new Split output stream.
-	 *
 	 * @param savePath    the save path
 	 * @param splitLength the split length
 	 * @throws FileNotFoundException the file was not found exception
-	 * @throws ZipException          the zip exception
 	 */
-	public SplitOutputStream(String savePath, long splitLength) throws FileNotFoundException, ZipException {
-		if (splitLength >= 0 && splitLength < Globals.MIN_SPLIT_LENGTH) {
-			throw new ZipException("split length less than minimum allowed split length of " + Globals.MIN_SPLIT_LENGTH + " Bytes");
-		}
-
+	private SplitOutputStream(final String savePath, final long splitLength) throws FileNotFoundException {
 		int beginIndex;
 		if (savePath.startsWith(Globals.SAMBA_PROTOCOL)) {
 			beginIndex = savePath.lastIndexOf(Globals.DEFAULT_URL_SEPARATOR);
@@ -99,6 +83,18 @@ public class SplitOutputStream extends OutputStream {
 		this.splitLength = splitLength;
 		this.currentSplitFileIndex = 0;
 		this.bytesWrittenForThisPart = 0L;
+	}
+
+	public static SplitOutputStream newInstance(final String savePath) throws FileNotFoundException, ZipException {
+		return new SplitOutputStream(savePath, Globals.DEFAULT_VALUE_LONG);
+	}
+
+	public static SplitOutputStream newInstance(final String savePath, final long splitLength)
+			throws FileNotFoundException, ZipException {
+		if (splitLength >= 0 && splitLength < Globals.MIN_SPLIT_LENGTH) {
+			throw new ZipException("split length less than minimum allowed split length of " + Globals.MIN_SPLIT_LENGTH + " Bytes");
+		}
+		return new SplitOutputStream(savePath, splitLength);
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * <span class="en-US">Instance of RandomAccessFile/SmbRandomAccessFile</span>
 	 * <span class="zh-CN">RandomAccessFile的SmbRandomAccessFile的实例对象</span>
 	 */
-	private Object originObject = null;
+	private final Object originObject;
 
 	/**
 	 * <h3 class="en-US">Constructor for using NervousyncRandomAccessFile open local file</h3>
@@ -142,7 +142,13 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 			this.userName = Globals.DEFAULT_VALUE_STRING;
 			this.passWord = Globals.DEFAULT_VALUE_STRING;
 		}
-		this.openFile(writable ? "rw" : "r");
+		String mode = writable ? "rw" : "r";
+		if (this.filePath.startsWith(Globals.SAMBA_PROTOCOL)) {
+			this.originObject = FileUtils.getFile(this.filePath,
+					FileUtils.smbAuthenticator(this.domain, this.userName, this.passWord));
+		} else {
+			this.originObject = new RandomAccessFile(this.filePath, mode);
+		}
 	}
 
 	/**
@@ -633,25 +639,6 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 			return ((SmbRandomAccessFile) this.originObject).readUTF();
 		} else {
 			return ((RandomAccessFile) this.originObject).readUTF();
-		}
-	}
-
-	/**
-	 * Open target file
-	 *
-	 * @param mode Open type(Read-Only/Read-Write)
-	 * @throws FileNotFoundException if the target file was not found
-	 */
-	private void openFile(String mode) throws FileNotFoundException {
-		if (this.filePath.startsWith(Globals.SAMBA_PROTOCOL)) {
-			try {
-				this.originObject = FileUtils.getFile(this.filePath,
-						FileUtils.smbAuthenticator(this.domain, this.userName, this.passWord));
-			} catch (Exception e) {
-				throw new FileNotFoundException("Open file error! File location: " + this.filePath);
-			}
-		} else {
-			this.originObject = new RandomAccessFile(this.filePath, mode);
 		}
 	}
 }

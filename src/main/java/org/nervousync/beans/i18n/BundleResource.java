@@ -149,7 +149,7 @@ public final class BundleResource extends BeanObject {
 	 * <span class="zh-CN">信息语言、识别代码与信息内容的定义列表</span>
 	 */
 	public List<BundleLanguage> getBundleLanguages() {
-		return bundleLanguages;
+		return this.bundleLanguages;
 	}
 
 	/**

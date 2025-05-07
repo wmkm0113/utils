@@ -27,6 +27,7 @@ import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 /**
@@ -93,6 +94,7 @@ public final class ClassUtils {
 	 * <span class="en-US">Default classloader of utilities</span>
 	 * <span class="zh-CN">工具集用的默认类加载器</span>
 	 */
+	private static AtomicReference<ClassLoader> DEFAULT_CLASS_LOADER = new AtomicReference<>();
 	private static ClassLoader DEFAULT_CLASSLOADER = null;
 
 	static {
@@ -269,8 +271,8 @@ public final class ClassUtils {
 	 * @see java.lang.Thread#getContextClassLoader() java.lang.Thread#getContextClassLoader()
 	 */
 	public static ClassLoader getDefaultClassLoader() {
-		if (DEFAULT_CLASSLOADER != null) {
-			return DEFAULT_CLASSLOADER;
+		if (DEFAULT_CLASS_LOADER.get() != null) {
+			return DEFAULT_CLASS_LOADER.get();
 		}
 		try {
 			return Thread.currentThread().getContextClassLoader();
@@ -299,7 +301,7 @@ public final class ClassUtils {
 		ClassLoader contextClassLoader = thread.getContextClassLoader();
 		if (classLoaderToUse != null && !classLoaderToUse.equals(contextClassLoader)) {
 			thread.setContextClassLoader(classLoaderToUse);
-			DEFAULT_CLASSLOADER = classLoaderToUse;
+			DEFAULT_CLASS_LOADER.set(classLoaderToUse);
 			return contextClassLoader;
 		}
 		return null;

@@ -23,6 +23,7 @@ import java.util.zip.Inflater;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.io.StandardFile;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.Decryptor;
 import org.nervousync.zip.ZipFile;
@@ -46,21 +47,28 @@ public class InflaterInputStream extends PartInputStream {
 	 *
 	 * @param zipFile            the zip file
 	 * @param currentIndex       the current index
-	 * @param seekPosition       the seek position
+	 * @param input             the seek position
 	 * @param length             the length
 	 * @param originalSize       the original size
 	 * @param decryptor          the decryptor
 	 * @param isAESEncryptedFile is aes encrypted file
-	 * @throws IOException the io exception
 	 */
-	public InflaterInputStream(final ZipFile zipFile, final int currentIndex, final long seekPosition, final long length,
-	                           final long originalSize, final Decryptor decryptor, final boolean isAESEncryptedFile)
-			throws IOException, ZipException {
-		super(zipFile, currentIndex, seekPosition, length, decryptor, isAESEncryptedFile);
+	private InflaterInputStream(final ZipFile zipFile, final int currentIndex, final StandardFile input, final long length,
+	                           final long originalSize, final Decryptor decryptor, final boolean isAESEncryptedFile) {
+		super(zipFile, currentIndex, input, length, decryptor, isAESEncryptedFile);
 		this.inflater = new Inflater(Boolean.TRUE);
 		this.buffer = new byte[Globals.DEFAULT_BUFFER_SIZE];
 		this.writeBytes = 0L;
 		this.originalSize = originalSize;
+	}
+
+	public static InflaterInputStream newInstance(final ZipFile zipFile, final int currentIndex,
+	                                              final long seekPosition, final long length, final long originalSize,
+	                                              final Decryptor decryptor, final boolean isAESEncryptedFile)
+			throws IOException {
+		final StandardFile input = zipFile.openSplitFile(currentIndex);
+		input.seek(seekPosition);
+		return new InflaterInputStream(zipFile, currentIndex, input, length, originalSize, decryptor, isAESEncryptedFile);
 	}
 
 	public int read() throws IOException {

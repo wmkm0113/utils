@@ -66,7 +66,6 @@ import java.lang.Character.UnicodeBlock;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.security.SecureRandom;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -378,7 +377,7 @@ public final class StringUtils {
 			index++;
 		}
 
-		while (stringBuilder.length() % 3 > 0) {
+		while (stringBuilder.length() % 4 > 0) {
 			stringBuilder.append((char) PADDING);
 		}
 		return stringBuilder.toString();
@@ -2725,9 +2724,8 @@ public final class StringUtils {
 	 */
 	public static String randomString(final int length) {
 		StringBuilder generateKey = new StringBuilder();
-		SecureRandom random = new SecureRandom();
 		for (int i = 0; i < length; i++) {
-			generateKey.append(AUTHORIZATION_CODE_ITEMS.charAt(random.nextInt(AUTHORIZATION_CODE_ITEMS.length())));
+			generateKey.append(AUTHORIZATION_CODE_ITEMS.charAt(Globals.random(AUTHORIZATION_CODE_ITEMS.length())));
 		}
 		return generateKey.toString();
 	}
@@ -2896,7 +2894,7 @@ public final class StringUtils {
 					int result = 0, length = code.length();
 					for (int i = 0; i < length; i++) {
 						int currentCode = Character.getNumericValue(code.charAt(length - i - 1));
-						if (i % 2 == 1) {
+						if ((i % 2) != 0) {
 							currentCode *= 2;
 							if (currentCode > 9) {
 								currentCode -= 9;

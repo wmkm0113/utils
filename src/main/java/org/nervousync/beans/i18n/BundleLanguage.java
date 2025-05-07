@@ -111,18 +111,18 @@ public final class BundleLanguage extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for internationalization information data list</h3>
+	 * <h3 class="en-US">Getter method for the internationalization information data list</h3>
 	 * <h3 class="zh-CN">国际化信息数据列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Internationalization Information Data List</span>
 	 * <span class="zh-CN">国际化信息数据列表</span>
 	 */
 	public List<BundleMessage> getBundleMessages() {
-		return bundleMessages;
+		return this.bundleMessages;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for internationalization information data list</h3>
+	 * <h3 class="en-US">Setter method for the internationalization information data list</h3>
 	 * <h3 class="zh-CN">国际化信息数据列表的Setter方法</h3>
 	 *
 	 * @param bundleMessages <span class="en-US">Internationalization Information Data List</span>

@@ -18,7 +18,6 @@
 package org.nervousync.commons.collect;
 
 import jakarta.annotation.Nonnull;
-import org.jetbrains.annotations.NotNull;
 import org.nervousync.utils.CollectionUtils;
 
 import java.util.ArrayList;
@@ -74,13 +73,13 @@ public abstract class AbstractCollection<E> implements Collection<E> {
 	}
 
 	@Override
-	public final Object @NotNull [] toArray() {
+	public final @Nonnull Object[] toArray() {
 		return this.elements.toArray();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final <T> T @NotNull [] toArray(final T @NotNull [] a) {
+	public final @Nonnull <T> T[] toArray(@Nonnull final T[] a) {
 		Class<T> clazz = (Class<T>) a.getClass().getComponentType();
 		List<T> collection = new ArrayList<>();
 		for (E element : this.elements) {
@@ -93,7 +92,7 @@ public abstract class AbstractCollection<E> implements Collection<E> {
 	}
 
 	@Override
-	public final @NotNull Iterator<E> iterator() {
+	public final @Nonnull Iterator<E> iterator() {
 		return new ImmutableIterator<>(this.elements.iterator());
 	}
 
@@ -108,22 +107,22 @@ public abstract class AbstractCollection<E> implements Collection<E> {
 	}
 
 	@Override
-	public final boolean containsAll(@NotNull final Collection<?> c) {
+	public final boolean containsAll(@Nonnull final Collection<?> c) {
 		return this.elements.containsAll(c);
 	}
 
 	@Override
-	public final boolean addAll(@NotNull final Collection<? extends E> c) {
+	public final boolean addAll(@Nonnull final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public final boolean retainAll(@NotNull final Collection<?> c) {
+	public final boolean retainAll(@Nonnull final Collection<?> c) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public final boolean removeAll(@NotNull final Collection<?> c) {
+	public final boolean removeAll(@Nonnull final Collection<?> c) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -17,9 +17,7 @@
 package org.nervousync.zip.crypto.impl.aes;
 
 import java.nio.ByteOrder;
-import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.nervousync.commons.Globals;
@@ -347,8 +345,7 @@ public class AESCrypto {
 
 		this.saltBytes = new byte[this.saltLength];
 		for (int i = 0; i < rounds; i++) {
-			Random random = new SecureRandom();
-			int temp = random.nextInt();
+			int temp = Globals.random();
 			this.saltBytes[i * 4] = (byte) (temp >> 24);
 			this.saltBytes[1 + i * 4] = (byte) (temp >> 16);
 			this.saltBytes[2 + i * 4] = (byte) (temp >> 8);

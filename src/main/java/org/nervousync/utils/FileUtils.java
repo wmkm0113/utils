@@ -21,10 +21,7 @@ import jcifs.CIFSException;
 import jcifs.Config;
 import jcifs.config.PropertyConfiguration;
 import jcifs.context.BaseContext;
-import jcifs.smb.NtlmPasswordAuthenticator;
-import jcifs.smb.SmbFile;
-import jcifs.smb.SmbFileInputStream;
-import jcifs.smb.SmbFileOutputStream;
+import jcifs.smb.*;
 import org.nervousync.beans.path.TargetPath;
 import org.nervousync.beans.xml.files.SegmentationBlock;
 import org.nervousync.beans.xml.files.SegmentationInfo;
@@ -845,7 +842,7 @@ public final class FileUtils {
 		try (RandomAccessFile randomAccessFile = new RandomAccessFile(resourceLocation, "r")) {
 			randomAccessFile.seek(offset);
 			randomAccessFile.read(readByte);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			readByte = new byte[0];
 		}
 
@@ -1911,7 +1908,7 @@ public final class FileUtils {
 				outputStream.write(fileData);
 				outputStream.flush();
 				return Boolean.TRUE;
-			} catch (Exception e) {
+			} catch (IOException e) {
 				return Boolean.FALSE;
 			}
 		} else {
@@ -3875,7 +3872,7 @@ public final class FileUtils {
 				}
 			}
 			return processResult;
-		} catch (Exception e) {
+		} catch (IOException e) {
 			LOGGER.error("Directory_Move_Error");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Stack_Message_Error", e);

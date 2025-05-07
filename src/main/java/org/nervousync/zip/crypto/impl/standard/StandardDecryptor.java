@@ -36,21 +36,9 @@ public class StandardDecryptor implements Decryptor {
 	 *
 	 * @param localFileHeader the local file header
 	 * @param decryptorHeader the decryptor header
-	 * @throws ZipException the zip exception
 	 */
-	public StandardDecryptor(LocalFileHeader localFileHeader, byte[] decryptorHeader)
-			throws ZipException {
-		if (localFileHeader == null) {
-			throw new ZipException(0x0000001B000FL, "Null_General_File_Header_Zip_Error");
-		}
-
+	private StandardDecryptor(final LocalFileHeader localFileHeader, final byte[] decryptorHeader) {
 		this.standardCryptoEngine = new StandardCryptoEngine();
-
-		if (localFileHeader.getPassword() == null
-				|| localFileHeader.getPassword().length == 0) {
-			throw new ZipException(0x0000001B000DL, "Wrong_Password_Zip_Error");
-		}
-
 		this.standardCryptoEngine.initKeys(localFileHeader.getPassword());
 
 		int result = decryptorHeader[0];
@@ -60,6 +48,19 @@ public class StandardDecryptor implements Decryptor {
 				result = decryptorHeader[i + 1];
 			}
 		}
+	}
+
+	public static StandardDecryptor newInstance(final LocalFileHeader localFileHeader, final byte[] decryptorHeader)
+			throws ZipException {
+		if (localFileHeader == null) {
+			throw new ZipException(0x0000001B000FL, "Null_General_File_Header_Zip_Error");
+		}
+
+		if (localFileHeader.getPassword() == null || localFileHeader.getPassword().length == 0) {
+			throw new ZipException(0x0000001B000DL, "Wrong_Password_Zip_Error");
+		}
+
+		return new StandardDecryptor(localFileHeader, decryptorHeader);
 	}
 
 	@Override

@@ -117,7 +117,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the externalFileAttr
 	 */
 	public byte[] getExternalFileAttr() {
-		return externalFileAttr == null ? new byte[0] : externalFileAttr.clone();
+		return externalFileAttr;
 	}
 
 	/**
@@ -125,8 +125,8 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param externalFileAttr the externalFileAttr to set
 	 */
-	public void setExternalFileAttr(byte[] externalFileAttr) {
-		this.externalFileAttr = externalFileAttr == null ? new byte[0] : externalFileAttr.clone();
+	public void setExternalFileAttr(final byte[] externalFileAttr) {
+		this.externalFileAttr = externalFileAttr;
 	}
 
 	/**

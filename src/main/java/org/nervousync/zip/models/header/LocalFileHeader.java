@@ -17,6 +17,7 @@
 package org.nervousync.zip.models.header;
 
 import java.io.DataInput;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 
@@ -146,7 +147,7 @@ public final class LocalFileHeader extends FileHeader {
 			} else {
 				throw new ZipException(0x0000001B0001L, "Not_Supported_Encryption_Mode_Zip_Error");
 			}
-		} catch (Exception e) {
+		} catch (IOException | ZipException e) {
 			return Boolean.FALSE;
 		}
 	}

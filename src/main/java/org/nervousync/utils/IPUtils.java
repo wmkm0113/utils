@@ -112,7 +112,7 @@ public final class IPUtils {
 	 * @return <span class="en-US">CIDR value</span>
 	 * <span class="zh-CN">CIDR值</span>
 	 */
-	public static int NetmaskToCIDR(@Nonnull final String netmask) {
+	public static int netmaskToCIDR(@Nonnull final String netmask) {
 		int result = 0;
 		String[] splitItems = StringUtils.tokenizeToStringArray(netmask, SPLIT_CHARACTER_IPV4);
 
@@ -435,7 +435,7 @@ public final class IPUtils {
 	 * @return <span class="en-US">Converted IPv4 address string</span>
 	 * <span class="zh-CN">转换后的IPv4地址字符串</span>
 	 */
-	public static String BigIntegerToIPv4(@Nonnull final BigInteger bigInteger) {
+	public static String bigIntegerToIPv4(@Nonnull final BigInteger bigInteger) {
 		StringBuilder ipv4Address = new StringBuilder();
 		BigInteger calcInteger = new BigInteger(bigInteger.toByteArray());
 		BigInteger ff = BigInteger.valueOf(0xFFL);
@@ -455,7 +455,7 @@ public final class IPUtils {
 	 * @return <span class="en-US">Converted IPv6 address string</span>
 	 * <span class="zh-CN">转换后的IPv6地址字符串</span>
 	 */
-	public static String BigIntegerToIPv6Address(@Nonnull final BigInteger bigInteger) {
+	public static String bigIntegerToIPv6Address(@Nonnull final BigInteger bigInteger) {
 		StringBuilder ipv6Address = new StringBuilder();
 		BigInteger calcInteger = new BigInteger(bigInteger.toByteArray());
 		BigInteger ff = BigInteger.valueOf(0xFFFFL);

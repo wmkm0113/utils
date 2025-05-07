@@ -77,7 +77,8 @@ public final class CRCConfig {
 	 * @param refOut     <span class="en-US">CRC reverse output data bytes</span>
 	 *                   <span class="en-US">CRC反转输出字节数组</span>
 	 */
-	public CRCConfig(int bit, long polynomial, long init, long xorOut, boolean refIn, boolean refOut) {
+	private CRCConfig(final int bit, final long polynomial, final long init, final long xorOut,
+	                  final boolean refIn, final boolean refOut) {
 		this.bit = bit;
 		this.polynomial = polynomial;
 		this.init = init;
@@ -85,6 +86,31 @@ public final class CRCConfig {
 		this.outLength = (bit % 4 != 0) ? ((bit / 4) + 1) : (bit / 4);
 		this.refIn = refIn;
 		this.refOut = refOut;
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for initialize CRCConfig object instance</h3>
+	 * <h3 class="zh-CN">静态方法用于生成CRC设置的实例对象</h3>
+	 *
+	 * @param bit        <span class="en-US">CRC bit</span>
+	 *                   <span class="zh-CN">CRC比特位</span>
+	 * @param polynomial <span class="en-US">CRC polynomial</span>
+	 *                   <span class="en-US">CRC多项式编码</span>
+	 * @param init       <span class="en-US">CRC initialize value</span>
+	 *                   <span class="en-US">CRC初始值</span>
+	 * @param xorOut     <span class="en-US">CRC XOR out value</span>
+	 *                   <span class="en-US">CRC输出值异或运算</span>
+	 * @param refIn      <span class="en-US">CRC reverse input data bytes</span>
+	 *                   <span class="en-US">CRC反转输入字节数组</span>
+	 * @param refOut     <span class="en-US">CRC reverse output data bytes</span>
+	 *                   <span class="en-US">CRC反转输出字节数组</span>
+	 */
+	public static CRCConfig newInstance(final int bit, final long polynomial, final long init, final long xorOut,
+	                                    final boolean refIn, final boolean refOut) {
+		if (bit < 3 || polynomial <= 0) {
+			return null;
+		}
+		return new CRCConfig(bit, polynomial, init, xorOut, refIn, refOut);
 	}
 
 	/**

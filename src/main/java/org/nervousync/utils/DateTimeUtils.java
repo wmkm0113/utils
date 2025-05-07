@@ -307,7 +307,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">格式化并计算后的日期时间数字格式</span>
 	 */
 	public static long expireMonth(int monthCount) {
-		return currentTimeMillis() + (expireDayCount(monthCount) * 24 * 60 * 60 * 1000L);
+		return currentTimeMillis() + (1000L * 24 * 60 * 60 * expireDayCount(monthCount));
 	}
 
 	/**
@@ -320,7 +320,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">格式化并计算后的UTC日期时间数字格式</span>
 	 */
 	public static long expireUTCMonth(int monthCount) {
-		return currentUTCTimeMillis() + (expireDayCount(monthCount) * 24 * 60 * 60 * 1000L);
+		return currentUTCTimeMillis() + (1000L * 24 * 60 * 60 * expireDayCount(monthCount));
 	}
 
 	/**

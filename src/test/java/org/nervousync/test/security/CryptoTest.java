@@ -7,10 +7,13 @@ import org.nervousync.security.api.SecureAdapter;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.*;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Date;
 
 public final class CryptoTest extends BaseTest {
@@ -30,6 +33,7 @@ public final class CryptoTest extends BaseTest {
             "OAEPWithSHA3-512AndMGF1Padding"
     };
     private static final String ORIGINAL_STRING = "Test测试TestTest测试TestTestTest测试TestTestTestTest测试TestTestTestTestTest测试TestTestTestTestTestTest测试TestTestTestTestTestTestTest测试TestTestTestTestTest测试";
+    private static final String ENC_STRING = "gE1XZYLds5uZEFfI80poxN69fkAQQT3NteM7xSqUIyZSULce3b9lMobxR2aWm/4Hpyg64vvRwv7MLdZy9xMOtBC4+enJOywXyU5+plpOqX5J7VsxHw5Ri94X2C70/XR5z9CHc4n3g/CDKAF5MBBZmh0+362VtrRWkB+nN7XEPregccxg0/4ytwGgcxQYb8wfKfU2CvsfY/dfrlv2ynWfS9HaxHEXmIFT5BTQvgZrd+0B+br4C8X5AOEmONEINv9h1rOsPD6AtN42pHd5022D6l4riwXVO3LfLEFJxomg06w3XDEinMk5EjQ4FgoeJDA68meSPmwF1oBoKgDMH/ElrQ==";
 
     private static final String[] SM4_CIPHER_MODES = new String[]{"ECB", "CBC", "CTR", "CFB", "OFB", "CFB8", "OFB8", "CFB128", "OFB128"};
     private static final String[] RC_CIPHER_MODES = new String[]{"ECB", "CBC", "CTR", "CFB", "OFB", "OFB", "CFB8", "OFB8"};
@@ -159,6 +163,27 @@ public final class CryptoTest extends BaseTest {
         SecureAdapter verifyProvider = SecurityUtils.RSAVerifier(keyPair.getPublic());
         verifyProvider.append(randomString);
         this.logger.info("Verify_Result", "RSA", verifyProvider.verify(signBytes));
+    }
+
+    @Test
+    @Order(45)
+    public void JS_RSA() throws CryptoException, NoSuchAlgorithmException, InvalidKeySpecException {
+        BigInteger modulus = new BigInteger("b03d0b864320ffd2f3ebe84e3e59217ab4a3691262931634ab308b69ae1cb158c8affd02bbc3ab87e923804f7a135078b73cffafc8c1b557403fd96b0e22cec65c2767f9a6f028d80c64bdc601caaf2b74f1d0dac9ecf3837b0222ea9aa46a5b4613eb9b1a9dec2ec88d75653606085658e7858a2b0fc039de85213ef3b51dd3", 16);
+        BigInteger privateExponent = new BigInteger("1f51b1df19c5df009f9d604aab54ce98ce4a2ded78fc1799a3847c79fad99980a425764a8a90a2c683dd6dbb71ffc5b0b62b8e6ab03c105c618c1738a9a9f0e1ce2779294edb5df516bfd88e13f55eec0efc48f100034eca1553008fafb9d78af9811a5a82c3a67cea7b886a108112e00f2aa55597b042004033170839729f0d", 16);
+        BigInteger publicExponent = new BigInteger("10001", 16);
+
+        RSAPrivateKeySpec privateKeySpec = new RSAPrivateKeySpec(modulus, privateExponent);
+        PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(privateKeySpec);
+        SecureAdapter encryptProvider = SecurityUtils.RSAEncryptor("PKCS1Padding", privateKey);
+        String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
+        this.logger.info("Encrypt_Result", "RSA", "ECB", "PKCS1Padding", encResult);
+
+        RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(modulus, publicExponent);
+        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(publicKeySpec);
+        SecureAdapter decryptProvider = SecurityUtils.RSADecryptor("PKCS1Padding", publicKey);
+        decryptProvider.append(StringUtils.base64Decode(encResult));
+        this.logger.info("Decrypt_Result", "RSA", "ECB", "PKCS1Padding",
+                new String(decryptProvider.finish(), StandardCharsets.UTF_8));
     }
 
     @Test

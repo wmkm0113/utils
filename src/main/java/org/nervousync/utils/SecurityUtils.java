@@ -76,207 +76,207 @@ public final class SecurityUtils {
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 		SecurityUtils.registerConfig("CRC-3/GSM",
-				new CRCConfig(3, 0x3, 0x0, 0x7, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(3, 0x3, 0x0, 0x7, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-3/ROHC",
-				new CRCConfig(3, 0x3, 0x7, 0x0, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(3, 0x3, 0x7, 0x0, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-4/G-704",
-				new CRCConfig(4, 0x3, 0x0, 0x0, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(4, 0x3, 0x0, 0x0, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-4/INTERLAKEN",
-				new CRCConfig(4, 0x3, 0xF, 0xF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(4, 0x3, 0xF, 0xF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-5/EPC-C1G2",
-				new CRCConfig(5, 0x09, 0x09, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(5, 0x09, 0x09, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-5/G-704",
-				new CRCConfig(5, 0x15, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(5, 0x15, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-5/USB",
-				new CRCConfig(5, 0x05, 0x1F, 0x1F, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(5, 0x05, 0x1F, 0x1F, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-6/CDMA2000-A",
-				new CRCConfig(6, 0x27, 0x3F, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(6, 0x27, 0x3F, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-6/CDMA2000-B",
-				new CRCConfig(6, 0x07, 0x3F, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(6, 0x07, 0x3F, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-6/DARC",
-				new CRCConfig(6, 0x19, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(6, 0x19, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-6/G-704",
-				new CRCConfig(6, 0x03, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(6, 0x03, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-6/GSM",
-				new CRCConfig(6, 0x2F, 0x00, 0x3F, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(6, 0x2F, 0x00, 0x3F, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-7/MMC",
-				new CRCConfig(7, 0x09, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(7, 0x09, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-7/ROHC",
-				new CRCConfig(7, 0x4F, 0x7F, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(7, 0x4F, 0x7F, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-7/UMTS",
-				new CRCConfig(7, 0x45, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(7, 0x45, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/AUTOSAR",
-				new CRCConfig(8, 0x2F, 0xFF, 0xFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x2F, 0xFF, 0xFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/BLUETOOTH",
-				new CRCConfig(8, 0xA7, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0xA7, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-8/CDMA2000",
-				new CRCConfig(8, 0x9B, 0xFF, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x9B, 0xFF, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/DARC",
-				new CRCConfig(8, 0x39, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0x39, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-8/DVB-S2",
-				new CRCConfig(8, 0xD5, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0xD5, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/GSM-A",
-				new CRCConfig(8, 0x1D, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x1D, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/GSM-B",
-				new CRCConfig(8, 0x49, 0x00, 0xFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x49, 0x00, 0xFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/I-432-1",
-				new CRCConfig(8, 0x07, 0x00, 0x55, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x07, 0x00, 0x55, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/I-CODE",
-				new CRCConfig(8, 0x1D, 0xFD, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x1D, 0xFD, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/LTE",
-				new CRCConfig(8, 0x9B, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x9B, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/MAXIM-DOW",
-				new CRCConfig(8, 0x31, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0x31, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-8/MIFARE-MAD",
-				new CRCConfig(8, 0x1D, 0xC7, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x1D, 0xC7, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/NRSC-5",
-				new CRCConfig(8, 0x31, 0xFF, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x31, 0xFF, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/OPENSAFETY",
-				new CRCConfig(8, 0x2F, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x2F, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/ROHC",
-				new CRCConfig(8, 0x07, 0xFF, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0x07, 0xFF, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-8/SAE-J1850",
-				new CRCConfig(8, 0x1D, 0xFF, 0xFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x1D, 0xFF, 0xFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/SMBUS",
-				new CRCConfig(8, 0x07, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(8, 0x07, 0x00, 0x00, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-8/TECH-3250",
-				new CRCConfig(8, 0x1D, 0xFF, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0x1D, 0xFF, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-8/WCDMA",
-				new CRCConfig(8, 0x9B, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(8, 0x9B, 0x00, 0x00, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-10/ATM",
-				new CRCConfig(10, 0x233, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(10, 0x233, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-10/CDMA2000",
-				new CRCConfig(10, 0x3D9, 0x3FF, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(10, 0x3D9, 0x3FF, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-10/GSM",
-				new CRCConfig(10, 0x175, 0x000, 0x3FF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(10, 0x175, 0x000, 0x3FF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-11/FLEXRAY",
-				new CRCConfig(11, 0x385, 0x01A, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(11, 0x385, 0x01A, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-11/UMTS",
-				new CRCConfig(11, 0x307, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(11, 0x307, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-12/CDMA2000",
-				new CRCConfig(12, 0xF13, 0xFFF, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(12, 0xF13, 0xFFF, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-12/DECT",
-				new CRCConfig(12, 0x80F, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(12, 0x80F, 0x000, 0x000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-12/GSM",
-				new CRCConfig(12, 0xD31, 0x000, 0xFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(12, 0xD31, 0x000, 0xFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-12/UMTS",
-				new CRCConfig(12, 0x80F, 0x000, 0x000, Boolean.FALSE, Boolean.TRUE));
+				CRCConfig.newInstance(12, 0x80F, 0x000, 0x000, Boolean.FALSE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-13/BBC",
-				new CRCConfig(13, 0x1CF5, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(13, 0x1CF5, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-14/DARC",
-				new CRCConfig(14, 0x0805, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(14, 0x0805, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-14/GSM",
-				new CRCConfig(14, 0x202D, 0x0000, 0x3FFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(14, 0x202D, 0x0000, 0x3FFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-15/CAN",
-				new CRCConfig(15, 0x4599, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(15, 0x4599, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-15/MPT1327",
-				new CRCConfig(15, 0x6815, 0x0000, 0x0001, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(15, 0x6815, 0x0000, 0x0001, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/ARC",
-				new CRCConfig(16, 0x8005, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x8005, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/CDMA2000",
-				new CRCConfig(16, 0xC867, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0xC867, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/CMS",
-				new CRCConfig(16, 0x8005, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x8005, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/DDS-110",
-				new CRCConfig(16, 0x8005, 0x800D, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x8005, 0x800D, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/DECT-R",
-				new CRCConfig(16, 0x0589, 0x0000, 0x0001, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x0589, 0x0000, 0x0001, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/DECT-X",
-				new CRCConfig(16, 0x0589, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x0589, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/DNP",
-				new CRCConfig(16, 0x3D65, 0x0000, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x3D65, 0x0000, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/EN-13757",
-				new CRCConfig(16, 0x3D65, 0x0000, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x3D65, 0x0000, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/GENIBUS",
-				new CRCConfig(16, 0x1021, 0xFFFF, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1021, 0xFFFF, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/GSM",
-				new CRCConfig(16, 0x1021, 0x0000, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1021, 0x0000, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/IBM-3740",
-				new CRCConfig(16, 0x1021, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1021, 0xFFFF, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/IBM-SDLC",
-				new CRCConfig(16, 0x1021, 0xFFFF, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0xFFFF, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/ISO-IEC-14443-3-A",
-				new CRCConfig(16, 0x1021, 0xC6C6, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0xC6C6, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/KERMIT",
-				new CRCConfig(16, 0x1021, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0x0000, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/LJ1200",
-				new CRCConfig(16, 0x6F63, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x6F63, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/MAXIM-DOW",
-				new CRCConfig(16, 0x8005, 0x0000, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x8005, 0x0000, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/MCRF4XX",
-				new CRCConfig(16, 0x1021, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/MODBUS",
-				new CRCConfig(16, 0x8005, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x8005, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/NRSC-5",
-				new CRCConfig(16, 0x080B, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x080B, 0xFFFF, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/OPENSAFETY-A",
-				new CRCConfig(16, 0x5935, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x5935, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/OPENSAFETY-B",
-				new CRCConfig(16, 0x755B, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x755B, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/PROFIBUS",
-				new CRCConfig(16, 0x1DCF, 0xFFFF, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1DCF, 0xFFFF, 0xFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/RIELLO",
-				new CRCConfig(16, 0x1021, 0xB2AA, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0xB2AA, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/SPI-FUJITSU",
-				new CRCConfig(16, 0x1021, 0x1D0F, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1021, 0x1D0F, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/T10-DIF",
-				new CRCConfig(16, 0x8BB7, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x8BB7, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/TELEDISK",
-				new CRCConfig(16, 0xA097, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0xA097, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/TMS37157",
-				new CRCConfig(16, 0x1021, 0x89EC, 0x0000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x1021, 0x89EC, 0x0000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/UMTS",
-				new CRCConfig(16, 0x8005, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x8005, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-16/USB",
-				new CRCConfig(16, 0x8005, 0xFFFF, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(16, 0x8005, 0xFFFF, 0xFFFF, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-16/XMODEM",
-				new CRCConfig(16, 0x1021, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(16, 0x1021, 0x0000, 0x0000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-17/CAN-FD",
-				new CRCConfig(17, 0x1685B, 0x00000, 0x00000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(17, 0x1685B, 0x00000, 0x00000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-21/CAN-FD",
-				new CRCConfig(21, 0x102899, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(21, 0x102899, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/BLE",
-				new CRCConfig(24, 0x00065B, 0x555555, 0x000000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(24, 0x00065B, 0x555555, 0x000000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-24/FLEXRAY-A",
-				new CRCConfig(24, 0x5D6DCB, 0xFEDCBA, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x5D6DCB, 0xFEDCBA, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/FLEXRAY-B",
-				new CRCConfig(24, 0x5D6DCB, 0xABCDEF, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x5D6DCB, 0xABCDEF, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/INTERLAKEN",
-				new CRCConfig(24, 0x328B63, 0xFFFFFF, 0xFFFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x328B63, 0xFFFFFF, 0xFFFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/LTE-A",
-				new CRCConfig(24, 0x864CFB, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x864CFB, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/LTE-B",
-				new CRCConfig(24, 0x800063, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x800063, 0x000000, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/OPENPGP",
-				new CRCConfig(24, 0x864CFB, 0xB704CE, 0x000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x864CFB, 0xB704CE, 0x000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-24/OS-9",
-				new CRCConfig(24, 0x800063, 0xFFFFFF, 0xFFFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(24, 0x800063, 0xFFFFFF, 0xFFFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-30/CDMA",
-				new CRCConfig(30, 0x2030B9C7, 0x3FFFFFFF, 0x3FFFFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(30, 0x2030B9C7, 0x3FFFFFFF, 0x3FFFFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-31/PHILIPS",
-				new CRCConfig(31, 0x04C11DB7, 0x7FFFFFFF, 0x7FFFFFFF, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(31, 0x04C11DB7, 0x7FFFFFFF, 0x7FFFFFFF, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-32/AIXM",
-				new CRCConfig(32, 0x814141ABL, 0x00000000, 0x00000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(32, 0x814141ABL, 0x00000000, 0x00000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-32/AUTOSAR",
-				new CRCConfig(32, 0xF4ACFB13L, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0xF4ACFB13L, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/BASE91-D",
-				new CRCConfig(32, 0xA833982BL, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0xA833982BL, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/BZIP2",
-				new CRCConfig(32, 0x04C11DB7, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(32, 0x04C11DB7, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-32/CD-ROM-EDC",
-				new CRCConfig(32, 0x8001801BL, 0x00000000, 0x00000000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0x8001801BL, 0x00000000, 0x00000000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/CKSUM",
-				new CRCConfig(32, 0x04C11DB7, 0x00000000, 0xFFFFFFFFL, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(32, 0x04C11DB7, 0x00000000, 0xFFFFFFFFL, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-32/ISCSI",
-				new CRCConfig(32, 0x1EDC6F41, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0x1EDC6F41, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/ISO-HDLC",
-				new CRCConfig(32, 0x04C11DB7, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0x04C11DB7, 0xFFFFFFFFL, 0xFFFFFFFFL, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/JAMCRC",
-				new CRCConfig(32, 0x04C11DB7, 0xFFFFFFFFL, 0x00000000, Boolean.TRUE, Boolean.TRUE));
+				CRCConfig.newInstance(32, 0x04C11DB7, 0xFFFFFFFFL, 0x00000000, Boolean.TRUE, Boolean.TRUE));
 		SecurityUtils.registerConfig("CRC-32/MPEG-2",
-				new CRCConfig(32, 0x04C11DB7, 0xFFFFFFFFL, 0x00000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(32, 0x04C11DB7, 0xFFFFFFFFL, 0x00000000, Boolean.FALSE, Boolean.FALSE));
 		SecurityUtils.registerConfig("CRC-32/XFER",
-				new CRCConfig(32, 0x000000AF, 0x00000000, 0x00000000, Boolean.FALSE, Boolean.FALSE));
+				CRCConfig.newInstance(32, 0x000000AF, 0x00000000, 0x00000000, Boolean.FALSE, Boolean.FALSE));
 		LOGGER.info("Registered_CRC_Algorithm",
 				String.join(",", new ArrayList<>(REGISTERED_CRC_CONFIG.keySet())));
 	}
@@ -392,7 +392,7 @@ public final class SecurityUtils {
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	@Deprecated
+	@Deprecated(since = "1.1.4")
 	public static SecureAdapter MD5() throws CryptoException {
 		return new MD5DigestAdapterImpl();
 	}
@@ -406,7 +406,7 @@ public final class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	@Deprecated
+	@Deprecated(since = "1.1.4")
 	public static byte[] MD5(final Object source) {
 		try {
 			return calculate(source, MD5());
@@ -822,7 +822,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA512/224 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA512/224值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA512/224的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -892,7 +892,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA512/256 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA512/256值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA512/256的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -962,7 +962,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA3-224 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-224值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-224的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -1032,7 +1032,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA3-256 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-256值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-256的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -1102,7 +1102,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA3-384 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-384值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-384的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -1172,7 +1172,7 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Calculate SHA3-512 value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-512值</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的SHA3-512的值</h3>
 	 *
 	 * @param source <span class="en-US">source object</span>
 	 *               <span class="zh-CN">原始数据对象</span>
@@ -2678,7 +2678,7 @@ public final class SecurityUtils {
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	public static byte[] symmetricKey(final String algorithm, final int keySize, final String randomAlgorithm)
+	private static byte[] symmetricKey(final String algorithm, final int keySize, final String randomAlgorithm)
 			throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
 			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);

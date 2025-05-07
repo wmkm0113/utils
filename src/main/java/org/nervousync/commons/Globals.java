@@ -18,6 +18,7 @@ package org.nervousync.commons;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 import java.util.Locale;
 
 /**
@@ -28,6 +29,8 @@ import java.util.Locale;
  * @version $Revision: 1.1.4 $ $Date: Jul 2, 2018 18:44:29 $
  */
 public final class Globals {
+
+	private static final SecureRandom RANDOM = new SecureRandom();
 	/**
 	 * <span class="en-US">Multiplier value of calculate hash result.</span>
 	 * <span class="zh-CN">计算哈希值需要用到的乘数</span>
@@ -463,6 +466,14 @@ public final class Globals {
 	 * The constant ZIP_ENTRY_SEPARATOR.
 	 */
 	public static final String DEFAULT_ZIP_ENTRY_SEPARATOR = ":" + Globals.DEFAULT_ZIP_PAGE_SEPARATOR;
+
+	public static int random() {
+		return random(Globals.DEFAULT_VALUE_INT);
+	}
+
+	public static int random(final int bound) {
+		return bound > INITIALIZE_INT_VALUE ? RANDOM.nextInt(bound) : RANDOM.nextInt();
+	}
 
 	private Globals() {
 	}

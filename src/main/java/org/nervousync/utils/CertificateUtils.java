@@ -38,6 +38,7 @@ import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.*;
@@ -494,7 +495,7 @@ public final class CertificateUtils {
 			return null;
 		}
 
-		try (FileReader fileReader = new FileReader(pemPath)) {
+		try (FileReader fileReader = new FileReader(pemPath, Charset.forName(Globals.DEFAULT_ENCODING))) {
 			PEMParser pemParser = new PEMParser(fileReader);
 			PemObject readObject;
 			while ((readObject = pemParser.readPemObject()) != null) {
@@ -550,7 +551,7 @@ public final class CertificateUtils {
 			return null;
 		}
 
-		try (FileReader fileReader = new FileReader(pemPath)) {
+		try (FileReader fileReader = new FileReader(pemPath, Charset.forName(Globals.DEFAULT_ENCODING))) {
 			PEMParser pemParser = new PEMParser(fileReader);
 			JcaPEMKeyConverter jcaPEMKeyConverter = new JcaPEMKeyConverter();
 			return jcaPEMKeyConverter.getPrivateKey(PrivateKeyInfo.getInstance(pemParser.readObject()));

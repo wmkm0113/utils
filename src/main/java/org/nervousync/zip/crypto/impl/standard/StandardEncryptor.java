@@ -101,10 +101,8 @@ public final class StandardEncryptor implements Encryptor {
 	private byte[] generateRandomBytes() {
 		byte[] buffer = new byte[Globals.STD_DEC_HDR_SIZE];
 
-		Random rand = new Random();
-
 		for (int i = 0; i < Globals.STD_DEC_HDR_SIZE; i++) {
-			buffer[i] = this.encryptByte((byte) rand.nextInt(256));
+			buffer[i] = this.encryptByte((byte) Globals.random(256));
 		}
 
 		return buffer;
