@@ -22,7 +22,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.*;
 import org.nervousync.beans.servlet.request.RequestAttribute;
 import org.nervousync.beans.servlet.request.RequestInfo;
-import org.nervousync.beans.servlet.response.ResponseInfo;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.web.HttpMethodOption;
 import org.nervousync.http.cookie.CookieEntity;
@@ -46,7 +45,8 @@ import java.security.cert.*;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * <h2 class="en-US">Http Request utilities</h2>
@@ -282,27 +282,25 @@ public final class RequestUtils {
 	 * <span class="zh-CN">响应数据长度，如果请求失败则返回-1</span>
 	 */
 	public static int contentLength(final String requestUrl) {
-		RequestInfo requestInfo = RequestInfo.builder(HttpMethodOption.GET).requestUrl(requestUrl).build();
-		return Optional.ofNullable(sendRequest(requestInfo, ResponseInfo.class))
-				.filter(responseInfo -> responseInfo.getStatusCode() == HttpURLConnection.HTTP_OK)
-				.map(ResponseInfo::getContentLength)
-				.orElse(Globals.DEFAULT_VALUE_INT);
+		try {
+			RequestInfo requestInfo = RequestInfo.builder(HttpMethodOption.GET).requestUrl(requestUrl).build();
+			HttpRequest httpRequest = buildRequest(requestInfo);
+			return buildClient(requestInfo)
+					.send(httpRequest, HttpResponse.BodyHandlers.ofByteArray())
+					.body()
+					.length;
+		} catch (IOException | InterruptedException e) {
+			LOGGER.error("Send_Request_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+			return Globals.DEFAULT_VALUE_INT;
+		} finally {
+			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
+		}
 	}
 
-	/**
-	 * <h3 class="en-US">Send request and parse response data to given target class instance</h3>
-	 * <h3 class="zh-CN">发送请求并解析返回数据为给定的目标类型</h3>
-	 *
-	 * @param <T>         <span class="en-US">target type class</span>
-	 *                    <span class="zh-CN">目标类型</span>
-	 * @param requestInfo <span class="en-US">Request info</span>
-	 *                    <span class="zh-CN">请求信息</span>
-	 * @param targetClass <span class="en-US">target type class</span>
-	 *                    <span class="zh-CN">目标类型</span>
-	 * @return <span class="en-US">Parsed target type class instance or <code>null</code> if an error occurs</span>
-	 * <span class="zh-CN">解析的目标类型实例对象，如果请求失败则返回<code>null</code></span>
-	 */
-	public static <T> T sendRequest(final RequestInfo requestInfo, final Class<T> targetClass) {
+	private static HttpRequest buildRequest(final RequestInfo requestInfo) {
 		HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
 		HttpEntity httpEntity = null;
 		switch (requestInfo.getMethodOption()) {
@@ -369,17 +367,26 @@ public final class RequestUtils {
 				uri = appendParams(uri, requestInfo.getParameters());
 			}
 		} else {
-			requestBuilder.header("Content-Type",
-					requestInfo.getContentType() + ";charset=" + requestInfo.getCharset());
+			String contentType = requestInfo.getContentType();
+			if (StringUtils.notBlank(requestInfo.getCharset())) {
+				contentType += "; charset=" + requestInfo.getCharset();
+			}
+			requestBuilder.header("Content-Type", contentType);
 		}
 
 		requestInfo.getHeaders()
 				.forEach(simpleHeader ->
 						requestBuilder.setHeader(simpleHeader.getHeaderName(), simpleHeader.getHeaderValue()));
 		requestBuilder.uri(URI.create(uri));
+		if (requestInfo.getRequestTimeOut() > 0) {
+			requestBuilder.timeout(Duration.ofSeconds(requestInfo.getRequestTimeOut()));
+		}
 
-		requestBuilder.setHeader("Accept", "text/html,text/javascript,text/xml");
-		requestBuilder.setHeader("Accept-Encoding", "gzip, deflate");
+		if (requestInfo.getHeaders().stream().noneMatch(simpleHeader ->
+				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName()))) {
+			requestBuilder.setHeader("Accept", "text/html,text/javascript,text/xml");
+			requestBuilder.setHeader("Accept-Encoding", "gzip, deflate");
+		}
 		if (StringUtils.isEmpty(requestInfo.getUserAgent())) {
 			requestBuilder.setHeader("User-Agent", "NervousyncBot");
 		} else {
@@ -390,27 +397,31 @@ public final class RequestUtils {
 			requestBuilder.setHeader("Cookie", cookie);
 		}
 
+		Optional.ofNullable(requestInfo.getProxyInfo())
+				.filter(proxyConfig -> StringUtils.notBlank(proxyConfig.getUserName()))
+				.ifPresent(proxyConfig -> {
+					String authentication = proxyConfig.getUserName() + ":";
+					if (StringUtils.notBlank(proxyConfig.getPassword())) {
+						authentication += proxyConfig.getPassword();
+					}
+					requestBuilder.setHeader("Proxy-Authorization",
+							StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
+				});
+		return requestBuilder.build();
+	}
+
+	private static @Nonnull HttpClient buildClient(final RequestInfo requestInfo) {
 		HttpClient.Builder clientBuilder = HttpClient.newBuilder()
 				.version(HttpClient.Version.HTTP_2)
 				.followRedirects(HttpClient.Redirect.NORMAL);
-		if (requestInfo.getTimeOut() > 0) {
-			clientBuilder.connectTimeout(Duration.ofSeconds(requestInfo.getTimeOut()));
+		if (requestInfo.getConnectTimeOut() > 0) {
+			clientBuilder.connectTimeout(Duration.ofSeconds(requestInfo.getConnectTimeOut()));
 		}
 
 		if (requestInfo.getProxyInfo() != null) {
 			ProxyConfig proxyConfig = requestInfo.getProxyInfo();
 			clientBuilder.proxy(ProxySelector.of(new InetSocketAddress(proxyConfig.getProxyAddress(), proxyConfig.getProxyPort())));
-			if (StringUtils.notBlank(proxyConfig.getUserName())) {
-				String authentication = proxyConfig.getUserName() + ":";
-				if (StringUtils.notBlank(proxyConfig.getPassword())) {
-					authentication += proxyConfig.getPassword();
-				}
-
-				requestBuilder.setHeader("Proxy-Authorization",
-						StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
-			}
 		}
-
 		if (requestInfo.getTrustCertInfos() != null && !requestInfo.getTrustCertInfos().isEmpty()) {
 			try {
 				System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
@@ -426,22 +437,43 @@ public final class RequestUtils {
 			}
 		}
 
+		return clientBuilder.build();
+	}
+
+	/**
+	 * <h3 class="en-US">Send request and parse response data to given target class instance</h3>
+	 * <h3 class="zh-CN">发送请求并解析返回数据为给定的目标类型</h3>
+	 *
+	 * @param <T>         <span class="en-US">target type class</span>
+	 *                    <span class="zh-CN">目标类型</span>
+	 * @param requestInfo <span class="en-US">Request info</span>
+	 *                    <span class="zh-CN">请求信息</span>
+	 * @param targetClass <span class="en-US">target type class</span>
+	 *                    <span class="zh-CN">目标类型</span>
+	 * @return <span class="en-US">Parsed target type class instance or <code>null</code> if an error occurs</span>
+	 * <span class="zh-CN">解析的目标类型实例对象，如果请求失败则返回<code>null</code></span>
+	 */
+	public static <T> T sendRequest(final RequestInfo requestInfo, final Class<T> targetClass) {
 		try {
-			return Optional.ofNullable(clientBuilder.build()
-							.send(requestBuilder.build(), new ResponseContentHandler())
-							.body()
-							.get())
-					.map(responseInfo -> {
-						if (ResponseInfo.class.equals(targetClass)) {
-							return targetClass.cast(responseInfo);
-						}
-						if (targetClass.isArray() || ClassUtils.isAssignable(targetClass, Collection.class)) {
-							return targetClass.cast(responseInfo.parseList(ClassUtils.componentType(targetClass)));
-						} else {
-							return responseInfo.parseObject(targetClass);
-						}
-					})
-					.orElse(null);
+			HttpRequest httpRequest = buildRequest(requestInfo);
+			Object response;
+			if (requestInfo.octetStreamResponse()) {
+				if (!byte[].class.equals(targetClass)) {
+					return null;
+				}
+				response = buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofByteArray()).body();
+			} else {
+				String responseData =
+						buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofString()).body();
+				if (String.class.equals(targetClass)) {
+					response = responseData;
+				} else if (targetClass.isArray() || ClassUtils.isAssignable(targetClass, Collection.class)) {
+					response = StringUtils.stringToList(responseData, "", targetClass);
+				} else {
+					response = StringUtils.stringToObject(responseData, targetClass);
+				}
+			}
+			return (response == null) ? null : targetClass.cast(response);
 		} catch (IOException | InterruptedException e) {
 			LOGGER.error("Send_Request_Error");
 			if (LOGGER.isDebugEnabled()) {
@@ -450,6 +482,41 @@ public final class RequestUtils {
 			return null;
 		} finally {
 			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Send asynchronous request</h3>
+	 * <h3 class="zh-CN">发送异步请求</h3>
+	 *
+	 * @param requestInfo     <span class="en-US">Request info</span>
+	 *                        <span class="zh-CN">请求信息</span>
+	 * @param successFunction <span class="en-US">Process function for success response data</span>
+	 *                        <span class="zh-CN">请求成功数据处理方法</span>
+	 * @param errorFunction   <span class="en-US">Process function for request failed</span>
+	 *                        <span class="zh-CN">请求出错处理方法</span>
+	 */
+	public static void sendAsyncRequest(final RequestInfo requestInfo, final Consumer<String> successFunction,
+	                                    final Function<Throwable, Void> errorFunction) {
+		HttpRequest httpRequest = buildRequest(requestInfo);
+
+		if (requestInfo.eventStreamResponse()) {
+			buildClient(requestInfo)
+					.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofLines())
+					.thenAccept(response ->
+							response.body()
+									.filter(StringUtils::notBlank)
+									.filter(line -> line.startsWith("data:"))
+									.forEach(line ->
+											successFunction.accept(line.substring("data:".length()).trim())))
+					.exceptionally(errorFunction)
+					.join();
+		} else {
+			buildClient(requestInfo)
+					.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
+					.thenAccept(response -> successFunction.accept(response.body()))
+					.exceptionally(errorFunction)
+					.join();
 		}
 	}
 
@@ -1050,32 +1117,5 @@ public final class RequestUtils {
 		}
 
 		return httpEntity;
-	}
-
-	/**
-	 * <h2 class="en-US">Response Content Handler</h2>
-	 * <h2 class="zh-CN">响应体拦截处理器</h2>
-	 *
-	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
-	 * @version $Revision: 1.0.0 $ $Date: May 13, 2014 17:22:48 $
-	 */
-	private static final class ResponseContentHandler implements HttpResponse.BodyHandler<Supplier<ResponseInfo>> {
-		/**
-		 * <h3 class="en-US">Constructor for ResponseContentHandler</h3>
-		 * <h3 class="zh-CN">响应体拦截处理器的构造方法</h3>
-		 */
-		ResponseContentHandler() {
-		}
-
-		/**
-		 * (Non-Javadoc)
-		 *
-		 * @see HttpResponse.BodyHandler#apply(HttpResponse.ResponseInfo)
-		 */
-		public HttpResponse.BodySubscriber<Supplier<ResponseInfo>> apply(HttpResponse.ResponseInfo responseInfo) {
-			HttpResponse.BodySubscriber<InputStream> upstream = HttpResponse.BodySubscribers.ofInputStream();
-			return HttpResponse.BodySubscribers.mapping(upstream,
-					inputStream -> () -> new ResponseInfo(responseInfo, inputStream));
-		}
 	}
 }

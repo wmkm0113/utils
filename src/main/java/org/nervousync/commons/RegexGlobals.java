@@ -43,6 +43,11 @@ public final class RegexGlobals {
 	 */
 	public static final String UUID = "^([0-9a-f]{8}((-[0-9a-f]{4}){3})-[0-9a-f]{12})|([0-9a-f]{32})\\b";
 	/**
+	 * <span class="en-US">Regular expression to match hex string of unicode value.</span>
+	 * <span class="zh-CN">正则表达式，用于匹配Unicode值的十六进制字符串</span>
+	 */
+	public static final String UNICODE_VALUE = "\\\\u([0-9|a-f]{4})";
+	/**
 	 * <span class="en-US">Regular expression to match hex string of MD5 value.</span>
 	 * <span class="zh-CN">正则表达式，用于匹配MD5值的十六进制字符串</span>
 	 */

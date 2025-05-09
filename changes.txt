@@ -1,4 +1,11 @@
 Nervousync Java Utils Package
+[07/05/2025]
+[Update] Using global SecureRandom instance replace the local parameter
+[Update] Using static method CRCConfig.newInstance replace the constructor method
+[Update] Update Zip file exception to multilingual
+[Update] Update the snmp4j version to 3.9.1
+[Update] Update the poi version to 5.4.1
+
 [08/04/2025]
 [Add] Add automatic loaded configure file support
 [Add] Add LocationTest for testing the LocationUtils

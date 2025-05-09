@@ -1,4 +1,11 @@
 Nervousync Java 工具包
+[07/05/2025]
+[更新] 使用全域的SecureRandom物件取代局部變量
+[更新] 使用靜態方法CRCConfig.newInstance取代原有的建構方法
+[更新] 更新ZIP檔案異常為多語言
+[更新] 更新 snmp4j 版本為 3.9.1
+[更新] 更新 poi 版本為 5.4.1
+
 [08/04/2025]
 [添加] 添加自動加載配置文件支持
 [添加] 添加LocationTest用於測試LocationUtils

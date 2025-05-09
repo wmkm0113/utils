@@ -29,6 +29,7 @@ import org.nervousync.http.cookie.CookieEntity;
 import org.nervousync.http.header.SimpleHeader;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.utils.FileUtils;
+import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Request information define</h2>
@@ -91,10 +92,15 @@ public final class RequestInfo {
 	 */
 	private final String contentType;
 	/**
+	 * <span class="en-US">Connect timeout setting</span>
+	 * <span class="zh-CN">连接超时时间</span>
+	 */
+	private final int connectTimeOut;
+	/**
 	 * <span class="en-US">Request timeout setting</span>
 	 * <span class="zh-CN">请求超时时间</span>
 	 */
-	private final int timeOut;
+	private final int requestTimeOut;
 	/**
 	 * <span class="en-US">Binary data array of current request will post</span>
 	 * <span class="zh-CN">当前请求要发送的二进制数据数组</span>
@@ -127,27 +133,30 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">RequestInfo的构造方法</h3>
 	 * <p class="zh-CN">仅用于请求构造器生成RequestInfo实例对象使用</p>
 	 *
-	 * @param methodOption <span class="en-US">Enumeration value of HttpMethodOption</span>
-	 *                     <span class="zh-CN">HttpMethodOption的枚举值</span>
-	 * @param requestUrl   <span class="en-US">Current request url path</span>
-	 *                     <span class="zh-CN">当前请求地址</span>
-	 * @param charset      <span class="en-US">Character encoding for http request header "Content-Type" and send request body</span>
-	 *                     <span class="zh-CN">请求头"Content-Type"及发送请求体使用的编码集</span>
-	 * @param timeOut      <span class="en-US">Request timeout setting</span>
-	 *                     <span class="zh-CN">请求超时时间</span>
-	 * @param headers      <span class="en-US">Request header information list</span>
-	 *                     <span class="zh-CN">发送请求的请求头信息列表</span>
-	 * @param parameters   <span class="en-US">Request parameters information mapping</span>
-	 *                     <span class="zh-CN">发送请求的参数信息映射</span>
-	 * @param uploadParams <span class="en-US">Upload files of request parameters mapping</span>
-	 *                     <span class="zh-CN">发送请求的上传文件参数信息映射</span>
-	 * @param cookieList   <span class="en-US">Request cookies information list</span>
-	 *                     <span class="zh-CN">发送请求的Cookie信息列表</span>
+	 * @param methodOption   <span class="en-US">Enumeration value of HttpMethodOption</span>
+	 *                       <span class="zh-CN">HttpMethodOption的枚举值</span>
+	 * @param requestUrl     <span class="en-US">Current request url path</span>
+	 *                       <span class="zh-CN">当前请求地址</span>
+	 * @param charset        <span class="en-US">Character encoding for http request header "Content-Type" and send request body</span>
+	 *                       <span class="zh-CN">请求头"Content-Type"及发送请求体使用的编码集</span>
+	 * @param connectTimeOut <span class="en-US">Connect timeout setting</span>
+	 *                       <span class="zh-CN">连接超时时间</span>
+	 * @param requestTimeOut <span class="en-US">Request timeout setting</span>
+	 *                       <span class="zh-CN">请求超时时间</span>
+	 * @param headers        <span class="en-US">Request header information list</span>
+	 *                       <span class="zh-CN">发送请求的请求头信息列表</span>
+	 * @param parameters     <span class="en-US">Request parameters information mapping</span>
+	 *                       <span class="zh-CN">发送请求的参数信息映射</span>
+	 * @param uploadParams   <span class="en-US">Upload files of request parameters mapping</span>
+	 *                       <span class="zh-CN">发送请求的上传文件参数信息映射</span>
+	 * @param cookieList     <span class="en-US">Request cookies information list</span>
+	 *                       <span class="zh-CN">发送请求的Cookie信息列表</span>
 	 */
 	private RequestInfo(final HttpMethodOption methodOption, final ProxyConfig proxyConfig,
 	                    final List<TrustCert> trustTrustCerts, final String passPhrase, final String userAgent,
-	                    final String requestUrl, final String charset, final String contentType, final int timeOut,
-	                    final byte[] postData, final List<SimpleHeader> headers, final Map<String, String[]> parameters,
+	                    final String requestUrl, final String charset, final String contentType,
+	                    final int connectTimeOut, final int requestTimeOut, final byte[] postData,
+	                    final List<SimpleHeader> headers, final Map<String, String[]> parameters,
 	                    final Map<String, File> uploadParams, final List<CookieEntity> cookieList) {
 		this.methodOption = methodOption;
 		this.proxyConfig = proxyConfig;
@@ -157,7 +166,8 @@ public final class RequestInfo {
 		this.requestUrl = requestUrl;
 		this.charset = charset;
 		this.contentType = contentType;
-		this.timeOut = timeOut;
+		this.connectTimeOut = connectTimeOut;
+		this.requestTimeOut = requestTimeOut;
 		this.postData = postData;
 		this.headers = headers;
 		this.parameters = parameters;
@@ -256,11 +266,19 @@ public final class RequestInfo {
 	}
 
 	/**
+	 * <h3 class="en-US">Getter method for the connecting time out</h3>
+	 * <h3 class="zh-CN">连接超时时间的Getter方法</h3>
+	 */
+	public int getConnectTimeOut() {
+		return this.connectTimeOut;
+	}
+
+	/**
 	 * <h3 class="en-US">Getter method for request time out</h3>
 	 * <h3 class="zh-CN">请求超时时间的Getter方法</h3>
 	 */
-	public int getTimeOut() {
-		return timeOut;
+	public int getRequestTimeOut() {
+		return this.requestTimeOut;
 	}
 
 	/**
@@ -293,6 +311,32 @@ public final class RequestInfo {
 	 */
 	public Map<String, File> getUploadParam() {
 		return uploadParams;
+	}
+
+	/**
+	 * <h3 class="en-US">Check the acceptance mime-type is application/octet-stream</h3>
+	 * <h3 class="zh-CN">检查当前请求是否为字节流</h3>
+	 *
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public boolean octetStreamResponse() {
+		return this.headers.stream().anyMatch(simpleHeader ->
+				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName())
+						&& "application/octet-stream".equalsIgnoreCase(simpleHeader.getHeaderValue()));
+	}
+
+	/**
+	 * <h3 class="en-US">Check the acceptance mime-type is text/event-stream</h3>
+	 * <h3 class="zh-CN">检查当前请求是否为事件流</h3>
+	 *
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public boolean eventStreamResponse() {
+		return this.headers.stream().anyMatch(simpleHeader ->
+				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName())
+						&& "text/event-stream".equalsIgnoreCase(simpleHeader.getHeaderValue()));
 	}
 
 	/**
@@ -351,10 +395,15 @@ public final class RequestInfo {
 		 */
 		private String contentType;
 		/**
+		 * <span class="en-US">Connect timeout setting</span>
+		 * <span class="zh-CN">连接超时时间</span>
+		 */
+		private int connectTimeOut = Globals.DEFAULT_TIME_OUT;
+		/**
 		 * <span class="en-US">Request timeout setting</span>
 		 * <span class="zh-CN">请求超时时间</span>
 		 */
-		private int timeOut = Globals.DEFAULT_TIME_OUT;
+		private int requestTimeOut = Globals.DEFAULT_TIME_OUT;
 		/**
 		 * <span class="en-US">Binary data array of current request will post</span>
 		 * <span class="zh-CN">当前请求要发送的二进制数据数组</span>
@@ -394,8 +443,8 @@ public final class RequestInfo {
 		 */
 		public RequestInfo build() {
 			return new RequestInfo(this.methodOption, this.proxyConfig, this.trustTrustCerts, this.passPhrase,
-					this.userAgent, this.requestUrl, this.charset, this.contentType, this.timeOut,
-					this.postData, this.headers, this.parameters, this.uploadParams, this.cookieList);
+					this.userAgent, this.requestUrl, this.charset, this.contentType, this.connectTimeOut,
+					this.requestTimeOut, this.postData, this.headers, this.parameters, this.uploadParams, this.cookieList);
 		}
 
 		/**
@@ -519,6 +568,54 @@ public final class RequestInfo {
 		}
 
 		/**
+		 * <h3 class="en-US">Configure HTTP headers: Accept</h3>
+		 * <h3 class="zh-CN">设置HTTP头的"Accept"值</h3>
+		 *
+		 * @param acceptType <span class="en-US">Accept type string</span>
+		 *                   <span class="zh-CN">接受的MIME类型字符串</span>
+		 * @return <span class="en-US">Current RequestBuilder instance</span>
+		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
+		 */
+		public RequestBuilder acceptType(final String acceptType) {
+			return this.acceptType(acceptType, Globals.DEFAULT_VALUE_STRING);
+		}
+
+		/**
+		 * <h3 class="en-US">Configure HTTP headers: Accept and Accept-Encoding</h3>
+		 * <h3 class="zh-CN">设置HTTP头的"Accept"和“Accept-Encoding”值</h3>
+		 *
+		 * @param acceptType     <span class="en-US">Accept type string</span>
+		 *                       <span class="zh-CN">接受的MIME类型字符串</span>
+		 * @param acceptEncoding <span class="en-US">Accept charset encoding</span>
+		 *                       <span class="zh-CN">接受的字符集编码</span>
+		 * @return <span class="en-US">Current RequestBuilder instance</span>
+		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
+		 */
+		public RequestBuilder acceptType(final String acceptType, final String acceptEncoding) {
+			if (StringUtils.notBlank(acceptType)) {
+				this.addHeader("Accept", acceptType);
+			}
+			if (StringUtils.notBlank(acceptEncoding)) {
+				this.addHeader("Accept-Encoding", acceptEncoding);
+			}
+			return this;
+		}
+
+		/**
+		 * <h3 class="en-US">Configure connect timeout</h3>
+		 * <h3 class="zh-CN">设置连接超时时间</h3>
+		 *
+		 * @param timeOut <span class="en-US">Timeout value</span>
+		 *                <span class="zh-CN">超时时间</span>
+		 * @return <span class="en-US">Current RequestBuilder instance</span>
+		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
+		 */
+		public RequestBuilder connectTimeOut(final int timeOut) {
+			this.connectTimeOut = timeOut;
+			return this;
+		}
+
+		/**
 		 * <h3 class="en-US">Configure request timeout</h3>
 		 * <h3 class="zh-CN">设置请求超时时间</h3>
 		 *
@@ -527,8 +624,8 @@ public final class RequestInfo {
 		 * @return <span class="en-US">Current RequestBuilder instance</span>
 		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
 		 */
-		public RequestBuilder timeOut(final int timeOut) {
-			this.timeOut = timeOut;
+		public RequestBuilder requestTimeOut(final int timeOut) {
+			this.requestTimeOut = timeOut;
 			return this;
 		}
 

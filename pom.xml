@@ -649,7 +649,8 @@
                                     </manifest>
                                     <manifestEntries>
                                         <Built-By>${project.organization.name}</Built-By>
-                                        <Build-Jdk>${java.vm.name} ${java.vendor.version} (${java.runtime.version})</Build-Jdk>
+                                        <Build-Jdk>${java.vm.name} ${java.vendor.version} (${java.runtime.version})
+                                        </Build-Jdk>
                                         <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
                                         <Automatic-Module-Name>org.nervousync.utils.jdk11on</Automatic-Module-Name>
                                     </manifestEntries>
