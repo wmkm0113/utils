@@ -53,13 +53,6 @@ public final class BundleError extends BeanObject {
 	private String messageKey = Globals.DEFAULT_VALUE_STRING;
 
 	/**
-	 * <h3 class="en-US">Constructor for internationalization error data</h3>
-	 * <h3 class="zh-CN">国际化错误信息的构造方法</h3>
-	 */
-	public BundleError() {
-	}
-
-	/**
 	 * <h3 class="en-US">Getter method for error code</h3>
 	 * <h3 class="zh-CN">错误代码的Getter方法</h3>
 	 *

@@ -322,7 +322,7 @@ public final class TargetHost implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for authentication type</h3>
+	 * <h3 class="en-US">Getter method for the authentication type</h3>
 	 * <h3 class="zh-CN">身份验证方式的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">SNMP Authentication Type</span>
@@ -355,7 +355,7 @@ public final class TargetHost implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for type of encryption for the privacy password</h3>
+	 * <h3 class="en-US">Getter method for the type of encryption for the privacy password</h3>
 	 * <h3 class="zh-CN">私有密码加密方式的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Type of encryption for the privacy password if authentication level is AUTH_PRIV</span>

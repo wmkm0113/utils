@@ -53,13 +53,6 @@ public final class IPRange implements Serializable {
 	private String endAddress = Globals.DEFAULT_VALUE_STRING;
 
 	/**
-	 * <h3 class="en-US">Constructor for IPRange</h3>
-	 * <h3 class="zh-CN">IPRange默认构造方法</h3>
-	 */
-	public IPRange() {
-	}
-
-	/**
 	 * <h3 class="en-US">Getter method for IP type</h3>
 	 * <h3 class="zh-CN">地址类型的Getter方法</h3>
 	 *

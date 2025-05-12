@@ -868,7 +868,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for Attribute configure map</h3>
+		 * <h3 class="en-US">Getter method for the attribute configure map</h3>
 		 * <h3 class="zh-CN">参数设置映射的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Attribute configure map</span>
@@ -879,7 +879,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for Attribute configure map</h3>
+		 * <h3 class="en-US">Setter method for the attribute configure map</h3>
 		 * <h3 class="zh-CN">参数设置映射的Setter方法</h3>
 		 *
 		 * @param attributesMap <span class="en-US">Attribute configure map</span>
@@ -1005,7 +1005,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for appender component list</h3>
+		 * <h3 class="en-US">Getter method for the appender component list</h3>
 		 * <h3 class="zh-CN">日志输出目标组件列表的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Appender component list</span>
@@ -1016,7 +1016,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for appender component list</h3>
+		 * <h3 class="en-US">Setter method for the appender component list</h3>
 		 * <h3 class="zh-CN">日志输出目标组件列表的Setter方法</h3>
 		 *
 		 * @param appenderComponents the appender components
@@ -1180,7 +1180,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for component attributes map</h3>
+		 * <h3 class="en-US">Getter method for the component attributes map</h3>
 		 * <h3 class="zh-CN">组件属性映射的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Component attributes map</span>
@@ -1191,7 +1191,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for component attributes map</h3>
+		 * <h3 class="en-US">Setter method for the component attributes map</h3>
 		 * <h3 class="zh-CN">组件属性映射的Setter方法</h3>
 		 *
 		 * @param componentAttributes <span class="en-US">Component attributes map</span>
@@ -1202,7 +1202,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for child component configure list</h3>
+		 * <h3 class="en-US">Getter method for the child component configure list</h3>
 		 * <h3 class="zh-CN">子组件配置信息列表的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Child component configure list</span>
@@ -1213,7 +1213,7 @@ public final class LoggerUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for child component configure list</h3>
+		 * <h3 class="en-US">Setter method for the child component configure list</h3>
 		 * <h3 class="zh-CN">子组件配置信息列表的Setter方法</h3>
 		 *
 		 * @param childComponents <span class="en-US">Child component configure list</span>

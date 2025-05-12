@@ -28,7 +28,7 @@ import java.util.*;
  * <span class="en-US">
  * <span>Current utilities implements features:</span>
  *     <ul>Copy object fields value from source object to target object-based field name</ul>
- *     <ul>Copy object fields value from the source object array to target object based annotation: BeanProperty</ul>
+ *     <ul>Copy object fields value from the source object array to target object-based annotation: BeanProperty</ul>
  *     <ul>Copy object fields value from source object to target object arrays based annotation: BeanProperty</ul>
  * </span>
  * <h2 class="zh-CN">JavaBean工具集</h2>

@@ -52,13 +52,6 @@ public final class BundleMessage extends BeanObject {
 	private String messageContent = Globals.DEFAULT_VALUE_STRING;
 
 	/**
-	 * <h3 class="en-US">Constructor for internationalization information data</h3>
-	 * <h3 class="zh-CN">国际化信息数据的构造方法</h3>
-	 */
-	public BundleMessage() {
-	}
-
-	/**
 	 * <h3 class="en-US">Getter method for message identify key</h3>
 	 * <h3 class="zh-CN">信息识别键值的Getter方法</h3>
 	 *

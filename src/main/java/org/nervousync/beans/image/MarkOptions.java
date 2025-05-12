@@ -153,7 +153,7 @@ public final class MarkOptions {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for mark type</h3>
+	 * <h3 class="en-US">Getter method for the mark type</h3>
 	 * <h3 class="zh-CN">水印类型的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Value of mark type</span>
@@ -397,7 +397,7 @@ public final class MarkOptions {
 		 * <h3 class="en-US">Getter method for position Y</h3>
 		 * <h3 class="zh-CN">起始Y坐标的Getter方法</h3>
 		 *
-		 * @return <span class="en-US">Value of the begin position Y</span>
+		 * @return <span class="en-US">Value of begin position Y</span>
 		 * <span class="zh-CN">起始Y坐标值</span>
 		 */
 		public int getPositionY() {

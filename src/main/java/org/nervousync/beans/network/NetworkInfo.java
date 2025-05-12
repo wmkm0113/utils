@@ -141,7 +141,7 @@ public final class NetworkInfo implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for IP address list</h3>
+	 * <h3 class="en-US">Getter method for the IP address list</h3>
 	 * <h3 class="zh-CN">网卡IP地址列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">IP address list of current network interface</span>
@@ -252,7 +252,7 @@ public final class NetworkInfo implements Serializable {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for site local flag</h3>
+		 * <h3 class="en-US">Getter method for the site local flag</h3>
 		 * <h3 class="zh-CN">私网地址标识的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">SiteLocal address flag</span>

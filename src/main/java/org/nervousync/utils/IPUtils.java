@@ -84,21 +84,21 @@ public final class IPUtils {
 	 */
 	public static IPRange calcRange(@Nonnull final String ipAddress, final int cidr) {
 		IPRange ipRange = new IPRange();
-		final String beginAddress;
-		final String endAddress;
-		if (ipAddress.contains(SPLIT_CHARACTER_IPV6)) {
-			ipRange.setIpType(IPType.IPv6);
-			beginAddress = beginIPv6(ipAddress, cidr);
-			endAddress = endIPv6(beginAddress, cidr);
-		} else {
+		if (StringUtils.matches(ipAddress, RegexGlobals.IPV4_REGEX)) {
 			ipRange.setIpType(IPType.IPv4);
 			String netmask = CIDRToNetmask(cidr);
-			beginAddress = beginIPv4(ipAddress, netmask);
-			endAddress = endIPv4(beginAddress, netmask);
+			String beginAddress = beginIPv4(ipAddress, netmask);
+			ipRange.setBeginAddress(beginAddress);
+			ipRange.setEndAddress(endIPv4(beginAddress, netmask));
+		} else if (StringUtils.matches(ipAddress, RegexGlobals.IPV6_REGEX)
+				|| StringUtils.matches(ipAddress, RegexGlobals.IPV6_COMPRESS_REGEX)) {
+			ipRange.setIpType(IPType.IPv6);
+			String beginAddress = beginIPv6(ipAddress, cidr);
+			ipRange.setBeginAddress(beginAddress);
+			ipRange.setEndAddress(endIPv6(beginAddress, cidr));
+		} else {
+			ipRange.setIpType(IPType.Unknown);
 		}
-
-		ipRange.setBeginAddress(beginAddress);
-		ipRange.setEndAddress(endAddress);
 
 		return ipRange;
 	}

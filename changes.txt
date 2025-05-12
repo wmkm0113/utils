@@ -32,10 +32,10 @@ Nervousync Java Utils Package
 [Update] Detect i18n message resource by class replace identify message resource by bundle string
 [Update] Update MessageResource support message update operate
 [Fix] Fixed read long from byte arrays got error value when using BigEndian
-[Fix] Failed to load XML schema file from jar file
+[Fix] Failed to load the XML schema file from the jar file
 [Remove] Remove RawUtils.Endian enumeration using ByteOrder instead
 [Test] Add RawTest for testing RawUtils
-[Document] Format all java doc information
+[Document] Format all Javadoc information
 
 [03/06/2023]
 [Update] Rewrite BeanUtils.java

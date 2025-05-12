@@ -128,7 +128,7 @@ public final class GeoPoint implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for location type</h3>
+	 * <h3 class="en-US">Getter method for the location type</h3>
 	 * <h3 class="zh-CN">坐标类型的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Value of location type</span>
@@ -163,7 +163,7 @@ public final class GeoPoint implements Serializable {
 	/**
 	 * <h3 class="en-US">Override method for toString</h3>
 	 * <p class="en-US">
-	 * Join longitude and latitude using split character: ", ",
+	 * Join longitude and latitude using split character: ",",
 	 * longitude value is before the split character, latitude value is after the split character
 	 * </p>
 	 * <h3 class="zh-CN">覆写的toString方法</h3>

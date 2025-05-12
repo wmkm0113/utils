@@ -300,7 +300,7 @@ public final class ZipFile implements Cloneable {
 	/**
 	 * Generate the entity path
 	 *
-	 * @param file            Which file path will add to the zip file.
+	 * @param file            Which file path will add to the target zip file.
 	 * @param rootFolderInZip prefix path of the zip file
 	 * @param rootFolderPath  root path of folder
 	 * @return Generated entry path

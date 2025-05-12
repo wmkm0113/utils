@@ -24,7 +24,7 @@ package org.nervousync.launcher;
  * StartupManager will load launcher instance by Java SPI, and invoke startup method at system start,
  * invoke destroy method at system shutdown.
  * Users can add parameter value (type: int) at annotation org.nervousync.annotations.launcher.Launcher
- * to move the sort of launcher execute, sort type: DESC
+ * to move the sort of launcher executing, sort type: DESC
  * </span>
  * <h2 class="zh-CN">启动器接口</h2>
  * <span class="zh-CN">

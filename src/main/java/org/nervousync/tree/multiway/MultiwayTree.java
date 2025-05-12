@@ -49,7 +49,7 @@ public final class MultiwayTree<T> {
 	private final List<MultiwayTree<T>> childNodes;
 
 	/**
-	 * <h3 class="en-US">Constructor method for multi-node tree</h3>
+	 * <h3 class="en-US">Constructor method for the multi-node tree</h3>
 	 * <h3 class="zh-CN">多叉树构造方法</h3>
 	 *
 	 * @param nodeValue <span class="en-US">Node value</span>
@@ -60,7 +60,7 @@ public final class MultiwayTree<T> {
 	}
 
 	/**
-	 * <h3 class="en-US">Constructor method for multi-node tree</h3>
+	 * <h3 class="en-US">Constructor method for the multi-node tree</h3>
 	 * <h3 class="zh-CN">多叉树构造方法</h3>
 	 *
 	 * @param nodeValue  <span class="en-US">Node value</span>
@@ -119,7 +119,7 @@ public final class MultiwayTree<T> {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for child node list</h3>
+	 * <h3 class="en-US">Getter method for the child node list</h3>
 	 * <h3 class="zh-CN">子节点列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Child node list</span>

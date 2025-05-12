@@ -72,7 +72,6 @@ public final class ConfigureManager {
 	 * <span class="zh-CN">定时调度任务服务</span>
 	 */
 	private final ScheduledExecutorService scheduledExecutorService;
-	private static final List<String> AUTO_CONFIG_CLASSES = new ArrayList<>();
 	/**
 	 * <span class="en-US">Scheduled task running status</span>
 	 * <span class="zh-CN">定时调度任务执行状态</span>

@@ -60,13 +60,6 @@ public final class BundleLanguage extends BeanObject {
 	private List<BundleMessage> bundleMessages;
 
 	/**
-	 * <h3 class="en-US">Constructor for internationalization language data</h3>
-	 * <h3 class="zh-CN">国际化语言数据的构造方法</h3>
-	 */
-	public BundleLanguage() {
-	}
-
-	/**
 	 * <h3 class="en-US">Getter method for language code</h3>
 	 * <h3 class="zh-CN">语言代码的Getter方法</h3>
 	 *

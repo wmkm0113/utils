@@ -70,7 +70,6 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 	 *                                <span class="zh-CN">如果文件不是XLSX格式</span>
 	 */
 	public EventModelReaderImpl(final String filePath) throws InvalidFormatException {
-		super(filePath);
 		this.opcPackage = OPCPackage.open(filePath, PackageAccess.READ);
 		this.parseSheetNames();
 	}

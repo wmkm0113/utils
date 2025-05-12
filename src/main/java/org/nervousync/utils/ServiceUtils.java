@@ -362,8 +362,10 @@ public final class ServiceUtils {
 				throw new NetworkInfoException(0x0000001A0004L, "Unknown_Path_Restful_Service_Method");
 			}
 
-			String methodName = method.getAnnotation(Path.class).value();
-			if (methodName.isEmpty()) {
+			String methodName = Optional.ofNullable(method.getAnnotation(Path.class))
+					.map(Path::value)
+					.orElse(Globals.DEFAULT_VALUE_STRING);
+			if (StringUtils.isEmpty(methodName)) {
 				methodName = method.getName();
 			} else if (methodName.startsWith("/")) {
 				methodName = methodName.substring(1);
@@ -395,9 +397,10 @@ public final class ServiceUtils {
 			Map<String, String> queryParameters = new HashMap<>();
 			Map<String, String[]> matrixParameters = new HashMap<>();
 
-			String[] mediaTypes = method.isAnnotationPresent(Consumes.class)
-					? method.getAnnotation(Consumes.class).value()
-					: new String[0];
+			String[] mediaTypes =
+					Optional.ofNullable(method.getAnnotation(Consumes.class))
+							.map(Consumes::value)
+							.orElse(new String[0]);
 
 			for (int i = 0; i < objects.length; i++) {
 				Object paramObj = objects[i];
@@ -530,16 +533,17 @@ public final class ServiceUtils {
 				WebTarget webTarget = client.target(servicePath);
 				queryParameters.forEach(webTarget::queryParam);
 				matrixParameters.forEach(webTarget::matrixParam);
-				String[] acceptTypes = method.isAnnotationPresent(Produces.class)
-						? method.getAnnotation(Produces.class).value()
-						: new String[]{"*/*"};
+				String[] acceptTypes =
+						Optional.ofNullable(method.getAnnotation(Produces.class))
+								.map(Produces::value)
+								.orElse(new String[]{"*/*"});
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Accept data types: {}", String.join(",", acceptTypes));
 				}
 				Invocation.Builder builder = webTarget.request(acceptTypes);
-				if (method.isAnnotationPresent(Consumes.class)) {
-					builder.accept(method.getAnnotation(Consumes.class).value());
-				}
+				Optional.ofNullable(method.getAnnotation(Consumes.class))
+						.map(Consumes::value)
+						.ifPresent(builder::accept);
 				this.headerMap.forEach(builder::header);
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Service request path: {}", servicePath);
@@ -771,17 +775,28 @@ public final class ServiceUtils {
 				} else {
 					String stringValue = transferConfig.marshal(fieldValue);
 					if (field.isAnnotationPresent(QueryParam.class)) {
-						this.queryParameters.put(field.getAnnotation(QueryParam.class).value(), stringValue);
+						Optional.ofNullable(field.getAnnotation(QueryParam.class))
+								.map(QueryParam::value)
+								.ifPresent(paramName -> this.queryParameters.put(paramName, stringValue));
 					} else if (field.isAnnotationPresent(FormParam.class)) {
-						this.formParameters.put(field.getAnnotation(FormParam.class).value(), stringValue);
+						Optional.ofNullable(field.getAnnotation(FormParam.class))
+								.map(FormParam::value)
+								.ifPresent(paramName -> this.formParameters.put(paramName, stringValue));
 					} else if (field.isAnnotationPresent(MatrixParam.class)) {
-						String paramName = field.getAnnotation(MatrixParam.class).value();
-						String[] paramValues = this.matrixParameters.getOrDefault(paramName, new String[0]);
-						this.matrixParameters.put(paramName, appendValue(paramValues, stringValue));
+						Optional.ofNullable(field.getAnnotation(MatrixParam.class))
+								.map(MatrixParam::value)
+								.ifPresent(paramName -> {
+									String[] paramValues = this.matrixParameters.getOrDefault(paramName, new String[0]);
+									this.matrixParameters.put(paramName, appendValue(paramValues, stringValue));
+								});
 					} else if (field.isAnnotationPresent(HeaderParam.class)) {
-						this.headers.put(field.getAnnotation(HeaderParam.class).value(), stringValue);
+						Optional.ofNullable(field.getAnnotation(HeaderParam.class))
+								.map(HeaderParam::value)
+								.ifPresent(paramName -> this.headers.put(paramName, stringValue));
 					} else if (field.isAnnotationPresent(PathParam.class)) {
-						this.paths.put(field.getAnnotation(HeaderParam.class).value(), stringValue);
+						Optional.ofNullable(field.getAnnotation(PathParam.class))
+								.map(PathParam::value)
+								.ifPresent(paramName -> this.paths.put(paramName, stringValue));
 					}
 				}
 			});
@@ -832,7 +847,7 @@ public final class ServiceUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for path parameter map</h3>
+		 * <h3 class="en-US">Getter method for the path parameter map</h3>
 		 * <h3 class="zh-CN">请求路径信息映射的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Path parameter map</span>

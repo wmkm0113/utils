@@ -237,7 +237,7 @@ public final class ConvertUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read a properties file and convert data to hash map</h3>
+	 * <h3 class="en-US">Read a properties file and convert data to a hash map</h3>
 	 * <h3 class="zh-CN">读取属性文件并转换数据为哈希表</h3>
 	 *
 	 * @param propertiesFilePath <span class="en-US">The properties file path</span>
@@ -265,7 +265,7 @@ public final class ConvertUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read a properties file from URL instance and convert data to hash map</h3>
+	 * <h3 class="en-US">Read a properties file from URL instance and convert data to a hash map</h3>
 	 * <h3 class="zh-CN">从URL实例对象读取属性文件并转换数据为哈希表</h3>
 	 *
 	 * @param url <span class="en-US">The url instance of properties file</span>
@@ -293,7 +293,7 @@ public final class ConvertUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert property instance to hash map and merge data with given hash map</h3>
+	 * <h3 class="en-US">Convert property instance to hash map and merge data with the given hash map</h3>
 	 * <h3 class="zh-CN">转换属性实例对象为哈希表并将数据与给定的哈希表合并</h3>
 	 *
 	 * @param properties <span class="en-US">The properties instance</span>
@@ -306,7 +306,7 @@ public final class ConvertUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert property instance to hash map and merge data with given hash map</h3>
+	 * <h3 class="en-US">Convert property instance to hash map and merge data with the given hash map</h3>
 	 * <h3 class="zh-CN">转换属性实例对象为哈希表并将数据与给定的哈希表合并</h3>
 	 *
 	 * @param properties <span class="en-US">The properties instance</span>

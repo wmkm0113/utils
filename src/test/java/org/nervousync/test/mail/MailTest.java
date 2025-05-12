@@ -295,20 +295,22 @@ public final class MailTest extends BaseTest {
 		private MailConfig mailConfig;
 
 		/**
-		 * <h3 class="en-US">Getter method for </h3>
-		 * <h3 class="zh-CN">的Getter方法</h3>
+		 * <h3 class="en-US">Getter method for the mail configure information</h3>
+		 * <h3 class="zh-CN">邮件配置信息的Getter方法</h3>
 		 *
-		 * @return
+		 * @return <span class="en-US">Mail configure information</span>
+		 * <span class="zh-CN">邮件配置信息</span>
 		 */
 		public MailConfig getMailConfig() {
 			return this.mailConfig;
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for </h3>
-		 * <h3 class="zh-CN">的Setter方法</h3>
+		 * <h3 class="en-US">Setter method for the mail configure information</h3>
+		 * <h3 class="zh-CN">邮件配置信息的Setter方法</h3>
 		 *
-		 * @param mailConfig
+		 * @param mailConfig <span class="en-US">Mail configure information</span>
+		 *                   <span class="zh-CN">邮件配置信息</span>
 		 */
 		public void setMailConfig(final MailConfig mailConfig) {
 			this.mailConfig = mailConfig;

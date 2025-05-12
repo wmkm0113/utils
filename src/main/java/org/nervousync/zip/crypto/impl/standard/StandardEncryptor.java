@@ -16,8 +16,6 @@
  */
 package org.nervousync.zip.crypto.impl.standard;
 
-import java.util.Random;
-
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.Encryptor;

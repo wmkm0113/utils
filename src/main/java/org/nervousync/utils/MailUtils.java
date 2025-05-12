@@ -346,7 +346,7 @@ public final class MailUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Read the mail UID list from given folder name limit index from the begin to end</h3>
+		 * <h3 class="en-US">Read the mail UID list from given folder name limit index from beginning to end</h3>
 		 * <h3 class="zh-CN">读取给定文件夹中的部分邮件唯一标识列表，从给定的起始索引号到终止索引号</h3>
 		 *
 		 * @param folderName <span class="en-US">folder name</span>

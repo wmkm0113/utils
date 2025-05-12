@@ -33,7 +33,7 @@ public interface Decryptor {
 	 * @return processed data length
 	 * @throws ZipException if decrypt engine was not initialized or data index out of size
 	 */
-	int decryptData(byte[] buff) throws ZipException;
+	int decryptData(final byte[] buff) throws ZipException;
 
 	/**
 	 * Decrypt given data array which index from start and process data length was given
@@ -44,5 +44,5 @@ public interface Decryptor {
 	 * @return processed data length
 	 * @throws ZipException if decrypt engine was not initialized or data index out of size
 	 */
-	int decryptData(byte[] buff, int start, int len) throws ZipException;
+	int decryptData(final byte[] buff, final int start, final int len) throws ZipException;
 }

@@ -3497,7 +3497,7 @@ public final class StringUtils {
 		}
 
 		/**
-		 * Writes a XML comment with the data enclosed
+		 * Writes an XML comment with the data enclosed
 		 *
 		 * @param data the data contained in the comment, may be null
 		 * @throws XMLStreamException XMLStreamException

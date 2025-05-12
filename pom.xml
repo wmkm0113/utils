@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nervousync</groupId>
     <artifactId>utils-jdk11</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Nervousync Java Utility Collections</name>
     <url>https://nervousync.org/projects/utils/jdk11/index.shtml</url>
@@ -21,7 +21,7 @@
         </license>
     </licenses>
     <scm>
-        <tag>v1.2.2</tag>
+        <tag>v1.2.3</tag>
         <url>https://github.com/wmkm0113/utils-jdk11</url>
         <connection>scm:git:https://github.com/wmkm0113/utils-jdk11.git</connection>
         <developerConnection>scm:git:https://github.com/wmkm0113/utils-jdk11.git</developerConnection>
@@ -613,18 +613,6 @@
     <profiles>
         <profile>
             <id>release</id>
-            <distributionManagement>
-                <!-- Repository for SNAPSHOT -->
-                <snapshotRepository>
-                    <id>OSS</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <!-- Repository for RELEASE -->
-                <repository>
-                    <id>OSS</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -660,6 +648,15 @@
                     </plugins>
                 </pluginManagement>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.7.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>OSS</publishingServerId>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>

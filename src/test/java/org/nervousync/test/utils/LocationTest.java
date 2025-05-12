@@ -30,13 +30,13 @@ public final class LocationTest extends BaseTest {
 
 	@Test
 	@Order(10)
-	public void calculate() throws Exception {
+	public void calculate() {
 		this.logger.info("Location_Calculate_Distance", LocationUtils.calcDistance(PEKING, CANTON));
 	}
 
 	@Test
 	@Order(20)
-	public void convert() throws Exception {
+	public void convert() {
 		GeoPoint gcj02 = LocationUtils.anyToGCJ02(PEKING);
 		this.logger.info("Location_Convert_GCJ02",
 				Double.toString(gcj02.getLongitude()), Double.toString(gcj02.getLatitude()));

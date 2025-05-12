@@ -39,11 +39,6 @@ public abstract class AbstractExcelReader implements ExcelReader {
 	 */
 	protected transient final LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
 	/**
-	 * <span class="en-US">File storage path</span>
-	 * <span class="zh-CN">文件存储路径</span>
-	 */
-	protected final String filePath;
-	/**
 	 * <span class="en-US">List of data sheet names contained in the file</span>
 	 * <span class="zh-CN">文件中包含的数据表名列表</span>
 	 */
@@ -52,12 +47,8 @@ public abstract class AbstractExcelReader implements ExcelReader {
 	/**
 	 * <h3 class="en-US">Constructor method for Excel reader</h3>
 	 * <h3 class="zh-CN">读取器构造方法</h3>
-	 *
-	 * @param filePath <span class="en-US">File storage path</span>
-	 *                 <span class="zh-CN">文件存储路径</span>
 	 */
-	protected AbstractExcelReader(final String filePath) {
-		this.filePath = filePath;
+	protected AbstractExcelReader() {
 		this.sheetNames = new ArrayList<>();
 	}
 

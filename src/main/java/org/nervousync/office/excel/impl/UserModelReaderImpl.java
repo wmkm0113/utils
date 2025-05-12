@@ -62,7 +62,6 @@ public final class UserModelReaderImpl extends AbstractExcelReader {
 	 *                     <span class="zh-CN">如果文件不存在或读取出错</span>
 	 */
 	public UserModelReaderImpl(final String filePath) throws IOException {
-		super(filePath);
 		this.inputStream = FileUtils.getURL(filePath).openStream();
 		this.workbook = WorkbookFactory.create(this.inputStream);
 		this.parseSheetNames();

@@ -89,7 +89,7 @@ public final class StartupConfig extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for registered startup launcher configure information list</h3>
+	 * <h3 class="en-US">Getter method for the registered startup launcher configuring information list</h3>
 	 * <h3 class="zh-CN">已注册的启动器配置信息列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Registered startup launcher configure information list</span>
@@ -100,7 +100,7 @@ public final class StartupConfig extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for registered startup launcher configure information list</h3>
+	 * <h3 class="en-US">Setter method for the registered startup launcher configuring information list</h3>
 	 * <h3 class="zh-CN">已注册的启动器配置信息列表的Setter方法</h3>
 	 *
 	 * @param registeredLaunchers <span class="en-US">Registered startup launcher configure information list</span>

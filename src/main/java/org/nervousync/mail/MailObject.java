@@ -278,7 +278,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for mail receive address list</h3>
+	 * <h3 class="en-US">Getter method for the mail receive address list</h3>
 	 * <h3 class="zh-CN">邮件收件地址列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Mail receive address list</span>
@@ -289,7 +289,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for mail receive address list</h3>
+	 * <h3 class="en-US">Setter method for the mail receive address list</h3>
 	 * <h3 class="zh-CN">邮件收件地址列表的Setter方法</h3>
 	 *
 	 * @param receiveAddress <span class="en-US">Mail receive address list</span>
@@ -300,7 +300,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for mail carbon copy address list</h3>
+	 * <h3 class="en-US">Getter method for the mail carbon copy address list</h3>
 	 * <h3 class="zh-CN">邮件抄送地址列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Mail carbon copy address list</span>
@@ -311,7 +311,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for mail carbon copy address list</h3>
+	 * <h3 class="en-US">Setter method for the mail carbon copy address list</h3>
 	 * <h3 class="zh-CN">邮件抄送地址列表的Setter方法</h3>
 	 *
 	 * @param ccAddress <span class="en-US">Mail carbon copy address list</span>
@@ -322,7 +322,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for mail blind carbon copy address list</h3>
+	 * <h3 class="en-US">Getter method for the mail blind carbon copy address list</h3>
 	 * <h3 class="zh-CN">邮件暗抄送地址列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Mail blind carbon copy address list</span>
@@ -333,7 +333,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for mail blind carbon copy address list</h3>
+	 * <h3 class="en-US">Setter method for the mail blind carbon copy address list</h3>
 	 * <h3 class="zh-CN">邮件暗抄送地址列表的Setter方法</h3>
 	 *
 	 * @param bccAddress <span class="en-US">Mail blind carbon copy address list</span>
@@ -344,7 +344,7 @@ public final class MailObject implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for mail attachment file list</h3>
+	 * <h3 class="en-US">Getter method for the mail attachment file list</h3>
 	 * <h3 class="zh-CN">邮件附件文件列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Mail attachment file list</span>

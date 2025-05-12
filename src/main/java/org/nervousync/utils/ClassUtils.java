@@ -79,7 +79,7 @@ public final class ClassUtils {
 	 * Map with the primitive wrapper type as a key and corresponding primitive type as value,
 	 * for example, Integer.class -> int.class.
 	 * </span>
-	 * <span class="zh-CN">以原始包装类型作为键并以相应的原始类型作为值进行映射，例如：Integer.class -> int.class。</span>
+	 * <span class="zh-CN">以原始包装类型作为键并以相应的原始类型作为值进行映射，例如：Integer.class -> int.class</span>
 	 */
 	private static final Map<Object, Object> PRIMITIVE_WRAPPER_TYPE_MAP = new HashMap<>(8);
 	/**
@@ -94,8 +94,7 @@ public final class ClassUtils {
 	 * <span class="en-US">Default classloader of utilities</span>
 	 * <span class="zh-CN">工具集用的默认类加载器</span>
 	 */
-	private static AtomicReference<ClassLoader> DEFAULT_CLASS_LOADER = new AtomicReference<>();
-	private static ClassLoader DEFAULT_CLASSLOADER = null;
+	private static final AtomicReference<ClassLoader> DEFAULT_CLASS_LOADER = new AtomicReference<>();
 
 	static {
 		PRIMITIVE_WRAPPER_TYPE_MAP.put(Boolean.class, boolean.class);
@@ -848,7 +847,7 @@ public final class ClassUtils {
 	/**
 	 * <h3 class="en-US">Given an input class object, return a string which consists of the class's package name as a pathname.</h3>
 	 * <span class="en-US">
-	 * For example, all dots ('.') are replaced by slashes ('/'). Neither a leading nor trailing slash is added.
+	 * For example, slashes ('/') replace all dots ('.'). Neither a leading nor trailing slash is added.
 	 * The result could be concatenated with a slash and the name of a resource, and fed directly
 	 * to <code>ClassLoader.getResource()</code>. For it to be fed to <code>Class.getResource</code> instead,
 	 * a leading slash would also have to be prepended to the returned value.

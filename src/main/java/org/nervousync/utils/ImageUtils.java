@@ -225,7 +225,7 @@ public final class ImageUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Resize the original image file to the given width and height, save to target path</h3>
+	 * <h3 class="en-US">Resize the original image file to the given width and height, and save to the target path</h3>
 	 * <h3 class="zh-CN">将原始图片调整到指定的宽度、高度，并存储到目标地址</h3>
 	 *
 	 * @param origPath     <span class="en-US">original image file path</span>
@@ -245,7 +245,7 @@ public final class ImageUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Resize the original image file to the given width and height, save to target path, and add mark to target image if configured</h3>
+	 * <h3 class="en-US">Resize the original image file to the given width and height, save to the target path, and add mark to target image if configured</h3>
 	 * <h3 class="zh-CN">将原始图片调整到指定的宽度、高度，并存储到目标地址，并添加水印到目标图片（如果设置了水印选项）</h3>
 	 *
 	 * @param origPath     <span class="en-US">original image file path</span>

@@ -147,7 +147,7 @@ public final class SystemUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check the current operating system is Windows</h3>
+	 * <h3 class="en-US">Check the current operating system it Windows</h3>
 	 * <h3 class="zh-CN">判断当前操作系统为Windows</h3>
 	 *
 	 * @return <span class="en-US">Check result</span>

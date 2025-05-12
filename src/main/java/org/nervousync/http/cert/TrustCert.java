@@ -83,7 +83,7 @@ public final class TrustCert {
 	}
 
 	/**
-	 * <h3 class="en-US">Read the certificate library and generate key manager array</h3>
+	 * <h3 class="en-US">Read the certificate library and generate a key manager array</h3>
 	 * <h3 class="zh-CN">读取证书库中的证书并生成密钥管理器数组</h3>
 	 *
 	 * @return the key manager [ ]

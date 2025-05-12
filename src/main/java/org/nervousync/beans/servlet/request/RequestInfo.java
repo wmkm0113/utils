@@ -202,7 +202,7 @@ public final class RequestInfo {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the cookies list</h3>
+	 * <h3 class="en-US">Getter method for the cookie list</h3>
 	 * <h3 class="zh-CN">请求发送的Cookie信息列表的Getter方法</h3>
 	 */
 	public List<CookieEntity> getCookieList() {
@@ -218,7 +218,7 @@ public final class RequestInfo {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for trusted certificate list</h3>
+	 * <h3 class="en-US">Getter method for the trusted certificate list</h3>
 	 * <h3 class="zh-CN">信任证书列表的Getter方法</h3>
 	 */
 	public List<TrustCert> getTrustCertInfos() {
@@ -571,32 +571,30 @@ public final class RequestInfo {
 		 * <h3 class="en-US">Configure HTTP headers: Accept</h3>
 		 * <h3 class="zh-CN">设置HTTP头的"Accept"值</h3>
 		 *
-		 * @param acceptType <span class="en-US">Accept type string</span>
-		 *                   <span class="zh-CN">接受的MIME类型字符串</span>
+		 * @param acceptType     <span class="en-US">Accept type string</span>
+		 *                       <span class="zh-CN">接受的MIME类型字符串</span>
 		 * @return <span class="en-US">Current RequestBuilder instance</span>
 		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
 		 */
 		public RequestBuilder acceptType(final String acceptType) {
-			return this.acceptType(acceptType, Globals.DEFAULT_VALUE_STRING);
+			if (StringUtils.notBlank(acceptType)) {
+				return this.addHeader("Accept", acceptType);
+			}
+			return this;
 		}
 
 		/**
-		 * <h3 class="en-US">Configure HTTP headers: Accept and Accept-Encoding</h3>
-		 * <h3 class="zh-CN">设置HTTP头的"Accept"和“Accept-Encoding”值</h3>
+		 * <h3 class="en-US">Configure HTTP headers: Accept-Encoding</h3>
+		 * <h3 class="zh-CN">设置HTTP头的“Accept-Encoding”值</h3>
 		 *
-		 * @param acceptType     <span class="en-US">Accept type string</span>
-		 *                       <span class="zh-CN">接受的MIME类型字符串</span>
-		 * @param acceptEncoding <span class="en-US">Accept charset encoding</span>
-		 *                       <span class="zh-CN">接受的字符集编码</span>
+		 * @param acceptEncoding <span class="en-US">Accept encoding</span>
+		 *                       <span class="zh-CN">接受的编码类型</span>
 		 * @return <span class="en-US">Current RequestBuilder instance</span>
 		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
 		 */
-		public RequestBuilder acceptType(final String acceptType, final String acceptEncoding) {
-			if (StringUtils.notBlank(acceptType)) {
-				this.addHeader("Accept", acceptType);
-			}
+		public RequestBuilder acceptEncoding(final String acceptEncoding) {
 			if (StringUtils.notBlank(acceptEncoding)) {
-				this.addHeader("Accept-Encoding", acceptEncoding);
+				return this.addHeader("Accept-Encoding", acceptEncoding);
 			}
 			return this;
 		}

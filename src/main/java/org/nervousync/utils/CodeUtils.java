@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Hashtable;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * <h2 class="en-US">Barcode Utilities</h2>
@@ -130,23 +129,22 @@ public final class CodeUtils {
 			int width = contents.length() * DEFAULT_CODE_CHARACTER_WIDTH + DEFAULT_CODE_BORDER_WIDTH;
 			BufferedImage bufferedImage = new BufferedImage(width, DEFAULT_CODE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 			Graphics graphics = bufferedImage.getGraphics();
-			Random random = new Random();
-			graphics.setColor(new Color(random.nextInt(50) + 200, random.nextInt(50) + 200, random.nextInt(50) + 200));
+			graphics.setColor(new Color(Globals.random(50) + 200, Globals.random(50) + 200, Globals.random(50) + 200));
 			graphics.fillRect(0, 0, width, DEFAULT_CODE_HEIGHT);
 			graphics.setFont(new Font("Monospaced", Font.BOLD, 20));
-			graphics.setColor(new Color(random.nextInt(80), random.nextInt(80), random.nextInt(80)));
+			graphics.setColor(new Color(Globals.random(80), Globals.random(80), Globals.random(80)));
 			int length = contents.length();
 			for (int i = 0; i < length; i++) {
 				String code = contents.substring(i, i + 1);
-				graphics.setColor(new Color(random.nextInt(80), random.nextInt(80), random.nextInt(80)));
-				graphics.drawString(code, 12 * i + 1 + random.nextInt(2), 15);
+				graphics.setColor(new Color(Globals.random(80), Globals.random(80), Globals.random(80)));
+				graphics.drawString(code, 12 * i + 1 + Globals.random(2), 15);
 				graphics.drawString(" ", 0, length * (i + 2));
 			}
 
 			int noisePoint = 5 * length;
 			for (int i = 0; i < noisePoint; i++) {
-				graphics.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-				graphics.drawOval(random.nextInt(width), random.nextInt(DEFAULT_CODE_HEIGHT), 1, 1);
+				graphics.setColor(new Color(Globals.random(255), Globals.random(255), Globals.random(255)));
+				graphics.drawOval(Globals.random(width), Globals.random(DEFAULT_CODE_HEIGHT), 1, 1);
 			}
 			graphics.dispose();
 

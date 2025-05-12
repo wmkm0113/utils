@@ -120,7 +120,7 @@ public final class BundleResource extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for definition list of error codes and message identification codes</h3>
+	 * <h3 class="en-US">Getter method for the definition list of error codes and message identification codes</h3>
 	 * <h3 class="zh-CN">错误代码与信息识别代码的定义列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Definition list of error codes and message identification codes</span>
@@ -131,7 +131,7 @@ public final class BundleResource extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for definition list of error codes and message identification codes</h3>
+	 * <h3 class="en-US">Setter method for the definition list of error codes and message identification codes</h3>
 	 * <h3 class="zh-CN">错误代码与信息识别代码的定义列表的Setter方法</h3>
 	 *
 	 * @param bundleErrors <span class="en-US">Definition list of error codes and message identification codes</span>

@@ -45,6 +45,7 @@ import java.security.cert.*;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -222,25 +223,6 @@ public final class RequestUtils {
 		return Globals.DEFAULT_VALUE_STRING;
 	}
 
-	private static String domainName(final String urlAddress) {
-		if (StringUtils.notBlank(urlAddress)) {
-			int beginIndex, endIndex;
-			if (urlAddress.toLowerCase().startsWith(Globals.SECURE_HTTP_PROTOCOL)) {
-				beginIndex = Globals.SECURE_HTTP_PROTOCOL.length();
-			} else if (urlAddress.toLowerCase().startsWith(Globals.HTTP_PROTOCOL)) {
-				beginIndex = Globals.HTTP_PROTOCOL.length();
-			} else {
-				beginIndex = Globals.INITIALIZE_INT_VALUE;
-			}
-			endIndex = urlAddress.indexOf("/", beginIndex);
-			if (endIndex < 0) {
-				endIndex = urlAddress.length();
-			}
-			return urlAddress.substring(beginIndex, endIndex);
-		}
-		return null;
-	}
-
 	/**
 	 * <h3 class="en-US">Read server certificate by given url address</h3>
 	 * <h3 class="zh-CN">根据给定的url地址获取服务器证书</h3>
@@ -251,7 +233,23 @@ public final class RequestUtils {
 	 * <span class="zh-CN">读取的x509证书，如果出现异常则返回<code>null</code></span>
 	 */
 	public static Certificate serverCertificate(final String urlAddress) {
-		return Optional.ofNullable(domainName(urlAddress))
+		return Optional.ofNullable(urlAddress)
+				.filter(StringUtils::notBlank)
+				.map(url -> {
+					int beginIndex, endIndex;
+					if (urlAddress.toLowerCase().startsWith(Globals.SECURE_HTTP_PROTOCOL)) {
+						beginIndex = Globals.SECURE_HTTP_PROTOCOL.length();
+					} else if (urlAddress.toLowerCase().startsWith(Globals.HTTP_PROTOCOL)) {
+						beginIndex = Globals.HTTP_PROTOCOL.length();
+					} else {
+						beginIndex = Globals.INITIALIZE_INT_VALUE;
+					}
+					endIndex = urlAddress.indexOf("/", beginIndex);
+					if (endIndex < 0) {
+						endIndex = urlAddress.length();
+					}
+					return urlAddress.substring(beginIndex, endIndex);
+				})
 				.map(domainName -> {
 					try {
 						HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(urlAddress).openConnection();
@@ -298,146 +296,6 @@ public final class RequestUtils {
 		} finally {
 			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
 		}
-	}
-
-	private static HttpRequest buildRequest(final RequestInfo requestInfo) {
-		HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
-		HttpEntity httpEntity = null;
-		switch (requestInfo.getMethodOption()) {
-			case GET:
-				requestBuilder.GET();
-				httpEntity = generateEntity(requestInfo.getParameters(), null);
-				break;
-			case POST:
-				if (requestInfo.getPostData() != null) {
-					requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(requestInfo.getPostData()));
-				} else {
-					try {
-						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-						httpEntity = generateEntity(requestInfo.getParameters(), requestInfo.getUploadParam());
-						httpEntity.writeData(requestInfo.getCharset(), byteArrayOutputStream);
-						requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(byteArrayOutputStream.toByteArray()));
-					} catch (IOException e) {
-						if (LOGGER.isDebugEnabled()) {
-							LOGGER.debug("Process_Data_Request_Error", e);
-						}
-						return null;
-					}
-				}
-				break;
-			case PUT:
-				if (requestInfo.getPostData() != null) {
-					requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(requestInfo.getPostData()));
-				} else {
-					try {
-						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-						httpEntity = generateEntity(requestInfo.getParameters(), requestInfo.getUploadParam());
-						httpEntity.writeData(requestInfo.getCharset(), byteArrayOutputStream);
-						requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(byteArrayOutputStream.toByteArray()));
-					} catch (IOException e) {
-						if (LOGGER.isDebugEnabled()) {
-							LOGGER.debug("Process_Data_Request_Error", e);
-						}
-						return null;
-					}
-				}
-				break;
-			case DELETE:
-				requestBuilder.DELETE();
-				httpEntity = generateEntity(requestInfo.getParameters(), null);
-				break;
-			default:
-				requestBuilder.method(requestInfo.getMethodOption().toString(), HttpRequest.BodyPublishers.noBody());
-				httpEntity = generateEntity(requestInfo.getParameters(), null);
-				break;
-		}
-
-		String uri = requestInfo.getRequestUrl();
-		if (httpEntity != null) {
-			try {
-				requestBuilder.header("Content-Type",
-						httpEntity.generateContentType(requestInfo.getCharset(), requestInfo.getMethodOption()));
-			} catch (UnsupportedEncodingException e) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Process_Content_Type_Request_Error", e);
-				}
-			}
-			if (!HttpMethodOption.POST.equals(requestInfo.getMethodOption())
-					&& !HttpMethodOption.PUT.equals(requestInfo.getMethodOption())) {
-				uri = appendParams(uri, requestInfo.getParameters());
-			}
-		} else {
-			String contentType = requestInfo.getContentType();
-			if (StringUtils.notBlank(requestInfo.getCharset())) {
-				contentType += "; charset=" + requestInfo.getCharset();
-			}
-			requestBuilder.header("Content-Type", contentType);
-		}
-
-		requestInfo.getHeaders()
-				.forEach(simpleHeader ->
-						requestBuilder.setHeader(simpleHeader.getHeaderName(), simpleHeader.getHeaderValue()));
-		requestBuilder.uri(URI.create(uri));
-		if (requestInfo.getRequestTimeOut() > 0) {
-			requestBuilder.timeout(Duration.ofSeconds(requestInfo.getRequestTimeOut()));
-		}
-
-		if (requestInfo.getHeaders().stream().noneMatch(simpleHeader ->
-				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName()))) {
-			requestBuilder.setHeader("Accept", "text/html,text/javascript,text/xml");
-			requestBuilder.setHeader("Accept-Encoding", "gzip, deflate");
-		}
-		if (StringUtils.isEmpty(requestInfo.getUserAgent())) {
-			requestBuilder.setHeader("User-Agent", "NervousyncBot");
-		} else {
-			requestBuilder.setHeader("User-Agent", requestInfo.getUserAgent());
-		}
-		String cookie = generateCookie(requestInfo.getRequestUrl(), requestInfo.getCookieList());
-		if (StringUtils.notBlank(cookie)) {
-			requestBuilder.setHeader("Cookie", cookie);
-		}
-
-		Optional.ofNullable(requestInfo.getProxyInfo())
-				.filter(proxyConfig -> StringUtils.notBlank(proxyConfig.getUserName()))
-				.ifPresent(proxyConfig -> {
-					String authentication = proxyConfig.getUserName() + ":";
-					if (StringUtils.notBlank(proxyConfig.getPassword())) {
-						authentication += proxyConfig.getPassword();
-					}
-					requestBuilder.setHeader("Proxy-Authorization",
-							StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
-				});
-		return requestBuilder.build();
-	}
-
-	private static @Nonnull HttpClient buildClient(final RequestInfo requestInfo) {
-		HttpClient.Builder clientBuilder = HttpClient.newBuilder()
-				.version(HttpClient.Version.HTTP_2)
-				.followRedirects(HttpClient.Redirect.NORMAL);
-		if (requestInfo.getConnectTimeOut() > 0) {
-			clientBuilder.connectTimeout(Duration.ofSeconds(requestInfo.getConnectTimeOut()));
-		}
-
-		if (requestInfo.getProxyInfo() != null) {
-			ProxyConfig proxyConfig = requestInfo.getProxyInfo();
-			clientBuilder.proxy(ProxySelector.of(new InetSocketAddress(proxyConfig.getProxyAddress(), proxyConfig.getProxyPort())));
-		}
-		if (requestInfo.getTrustCertInfos() != null && !requestInfo.getTrustCertInfos().isEmpty()) {
-			try {
-				System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
-				SSLContext sslContext = SSLContext.getInstance("TLS");
-				GeneX509TrustManager x509TrustManager =
-						GeneX509TrustManager.newInstance(requestInfo.getPassPhrase(), requestInfo.getTrustCertInfos());
-				sslContext.init(new KeyManager[0], new TrustManager[]{x509TrustManager}, new SecureRandom());
-				clientBuilder.sslContext(sslContext);
-			} catch (Exception e) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Process_SSL_Certificate_Request_Error", e);
-				}
-			}
-		}
-
-		return clientBuilder.build();
 	}
 
 	/**
@@ -489,6 +347,23 @@ public final class RequestUtils {
 	 * <h3 class="en-US">Send asynchronous request</h3>
 	 * <h3 class="zh-CN">发送异步请求</h3>
 	 *
+	 * @param requestInfo <span class="en-US">Request info</span>
+	 *                    <span class="zh-CN">请求信息</span>
+	 * @param bodyHandler <span class="en-US">Response body data handler instance object</span>
+	 *                    <span class="zh-CN">相应数据转换处理器</span>
+	 * @return <span class="en-US">Generated CompletableFuture instance object</span>
+	 * <span class="zh-CN">生成的任务执行框架实例对象</span>
+	 */
+	public static <T> CompletableFuture<HttpResponse<T>> sendAsyncRequest(final RequestInfo requestInfo,
+	                                                                      final HttpResponse.BodyHandler<T> bodyHandler)
+			throws IOException {
+		return buildClient(requestInfo).sendAsync(buildRequest(requestInfo), bodyHandler);
+	}
+
+	/**
+	 * <h3 class="en-US">Send asynchronous request</h3>
+	 * <h3 class="zh-CN">发送异步请求</h3>
+	 *
 	 * @param requestInfo     <span class="en-US">Request info</span>
 	 *                        <span class="zh-CN">请求信息</span>
 	 * @param successFunction <span class="en-US">Process function for success response data</span>
@@ -498,25 +373,30 @@ public final class RequestUtils {
 	 */
 	public static void sendAsyncRequest(final RequestInfo requestInfo, final Consumer<String> successFunction,
 	                                    final Function<Throwable, Void> errorFunction) {
-		HttpRequest httpRequest = buildRequest(requestInfo);
-
-		if (requestInfo.eventStreamResponse()) {
-			buildClient(requestInfo)
-					.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofLines())
-					.thenAccept(response ->
-							response.body()
-									.filter(StringUtils::notBlank)
-									.filter(line -> line.startsWith("data:"))
-									.forEach(line ->
-											successFunction.accept(line.substring("data:".length()).trim())))
-					.exceptionally(errorFunction)
-					.join();
-		} else {
-			buildClient(requestInfo)
-					.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
-					.thenAccept(response -> successFunction.accept(response.body()))
-					.exceptionally(errorFunction)
-					.join();
+		try {
+			if (requestInfo.eventStreamResponse()) {
+				sendAsyncRequest(requestInfo, HttpResponse.BodyHandlers.ofLines())
+						.thenAccept(response ->
+								response.body()
+										.filter(StringUtils::notBlank)
+										.filter(line -> line.startsWith("data:"))
+										.forEach(line ->
+												successFunction.accept(line.substring("data:".length()).trim())))
+						.exceptionally(errorFunction)
+						.join();
+			} else {
+				sendAsyncRequest(requestInfo, HttpResponse.BodyHandlers.ofString())
+						.thenAccept(response -> successFunction.accept(response.body()))
+						.exceptionally(errorFunction)
+						.join();
+			}
+		} catch (IOException e) {
+			LOGGER.error("Send_Request_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+		} finally {
+			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
 		}
 	}
 
@@ -1005,6 +885,164 @@ public final class RequestUtils {
 			}
 		}
 		return rewriteUrl;
+	}
+
+	/**
+	 * <h3 class="en-US">Create HttpRequest instance object</h3>
+	 * <h3 class="zh-CN">创建HTTP请求实例对象</h3>
+	 *
+	 * @param requestInfo <span class="en-US">Request info</span>
+	 *                    <span class="zh-CN">请求信息</span>
+	 * @return <span class="en-US">HttpRequest instance object or <code>null</code> if an error occurs</span>
+	 * <span class="zh-CN">HTTP请求实例对象，如果处理请求数据失败则返回<code>null</code></span>
+	 */
+	private static @Nonnull HttpRequest buildRequest(final RequestInfo requestInfo) throws IOException {
+		HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
+		HttpEntity httpEntity = null;
+		switch (requestInfo.getMethodOption()) {
+			case GET:
+				requestBuilder.GET();
+				httpEntity = generateEntity(requestInfo.getParameters(), null);
+				break;
+			case POST:
+				if (requestInfo.getPostData() != null) {
+					requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(requestInfo.getPostData()));
+				} else {
+					try {
+						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+						httpEntity = generateEntity(requestInfo.getParameters(), requestInfo.getUploadParam());
+						httpEntity.writeData(requestInfo.getCharset(), byteArrayOutputStream);
+						requestBuilder.POST(HttpRequest.BodyPublishers.ofByteArray(byteArrayOutputStream.toByteArray()));
+					} catch (IOException e) {
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("Process_Data_Request_Error", e);
+						}
+						throw e;
+					}
+				}
+				break;
+			case PUT:
+				if (requestInfo.getPostData() != null) {
+					requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(requestInfo.getPostData()));
+				} else {
+					try {
+						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+						httpEntity = generateEntity(requestInfo.getParameters(), requestInfo.getUploadParam());
+						httpEntity.writeData(requestInfo.getCharset(), byteArrayOutputStream);
+						requestBuilder.PUT(HttpRequest.BodyPublishers.ofByteArray(byteArrayOutputStream.toByteArray()));
+					} catch (IOException e) {
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("Process_Data_Request_Error", e);
+						}
+						throw e;
+					}
+				}
+				break;
+			case DELETE:
+				requestBuilder.DELETE();
+				httpEntity = generateEntity(requestInfo.getParameters(), null);
+				break;
+			default:
+				requestBuilder.method(requestInfo.getMethodOption().toString(), HttpRequest.BodyPublishers.noBody());
+				httpEntity = generateEntity(requestInfo.getParameters(), null);
+				break;
+		}
+
+		String uri = requestInfo.getRequestUrl();
+		if (httpEntity != null) {
+			try {
+				requestBuilder.header("Content-Type",
+						httpEntity.generateContentType(requestInfo.getCharset(), requestInfo.getMethodOption()));
+			} catch (UnsupportedEncodingException e) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Process_Content_Type_Request_Error", e);
+				}
+			}
+			if (!HttpMethodOption.POST.equals(requestInfo.getMethodOption())
+					&& !HttpMethodOption.PUT.equals(requestInfo.getMethodOption())) {
+				uri = appendParams(uri, requestInfo.getParameters());
+			}
+		} else {
+			String contentType = requestInfo.getContentType();
+			if (StringUtils.notBlank(requestInfo.getCharset())) {
+				contentType += "; charset=" + requestInfo.getCharset();
+			}
+			requestBuilder.header("Content-Type", contentType);
+		}
+
+		requestInfo.getHeaders()
+				.forEach(simpleHeader ->
+						requestBuilder.setHeader(simpleHeader.getHeaderName(), simpleHeader.getHeaderValue()));
+		requestBuilder.uri(URI.create(uri));
+		if (requestInfo.getRequestTimeOut() > 0) {
+			requestBuilder.timeout(Duration.ofSeconds(requestInfo.getRequestTimeOut()));
+		}
+
+		if (requestInfo.getHeaders().stream().noneMatch(simpleHeader ->
+				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName()))) {
+			requestBuilder.setHeader("Accept", "text/html,text/javascript,text/xml");
+			requestBuilder.setHeader("Accept-Encoding", "gzip, deflate");
+		}
+		if (StringUtils.isEmpty(requestInfo.getUserAgent())) {
+			requestBuilder.setHeader("User-Agent", "NervousyncBot");
+		} else {
+			requestBuilder.setHeader("User-Agent", requestInfo.getUserAgent());
+		}
+		String cookie = generateCookie(requestInfo.getRequestUrl(), requestInfo.getCookieList());
+		if (StringUtils.notBlank(cookie)) {
+			requestBuilder.setHeader("Cookie", cookie);
+		}
+
+		Optional.ofNullable(requestInfo.getProxyInfo())
+				.filter(proxyConfig -> StringUtils.notBlank(proxyConfig.getUserName()))
+				.ifPresent(proxyConfig -> {
+					String authentication = proxyConfig.getUserName() + ":";
+					if (StringUtils.notBlank(proxyConfig.getPassword())) {
+						authentication += proxyConfig.getPassword();
+					}
+					requestBuilder.setHeader("Proxy-Authorization",
+							StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
+				});
+		return requestBuilder.build();
+	}
+
+	/**
+	 * <h3 class="en-US">Create HttpClient instance object</h3>
+	 * <h3 class="zh-CN">创建HTTP客户端实例对象</h3>
+	 *
+	 * @param requestInfo <span class="en-US">Request info</span>
+	 *                    <span class="zh-CN">请求信息</span>
+	 * @return <span class="en-US">HttpClient instance object</span>
+	 * <span class="zh-CN">HTTP客户端实例对象</span>
+	 */
+	private static @Nonnull HttpClient buildClient(final RequestInfo requestInfo) {
+		HttpClient.Builder clientBuilder = HttpClient.newBuilder()
+				.version(HttpClient.Version.HTTP_2)
+				.followRedirects(HttpClient.Redirect.NORMAL);
+		if (requestInfo.getConnectTimeOut() > 0) {
+			clientBuilder.connectTimeout(Duration.ofSeconds(requestInfo.getConnectTimeOut()));
+		}
+
+		if (requestInfo.getProxyInfo() != null) {
+			ProxyConfig proxyConfig = requestInfo.getProxyInfo();
+			clientBuilder.proxy(ProxySelector.of(new InetSocketAddress(proxyConfig.getProxyAddress(), proxyConfig.getProxyPort())));
+		}
+		if (requestInfo.getTrustCertInfos() != null && !requestInfo.getTrustCertInfos().isEmpty()) {
+			try {
+				System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+				SSLContext sslContext = SSLContext.getInstance("TLS");
+				GeneX509TrustManager x509TrustManager =
+						GeneX509TrustManager.newInstance(requestInfo.getPassPhrase(), requestInfo.getTrustCertInfos());
+				sslContext.init(new KeyManager[0], new TrustManager[]{x509TrustManager}, new SecureRandom());
+				clientBuilder.sslContext(sslContext);
+			} catch (Exception e) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Process_SSL_Certificate_Request_Error", e);
+				}
+			}
+		}
+
+		return clientBuilder.build();
 	}
 
 	/**

@@ -76,7 +76,7 @@ public final class SecureSettings extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for customized security configuration information list</h3>
+	 * <h3 class="en-US">Getter method for the customized security configuration information list</h3>
 	 * <h3 class="zh-CN">自定义安全配置信息列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Customized security configuration information list</span>
@@ -87,7 +87,7 @@ public final class SecureSettings extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for customized security configuration information list</h3>
+	 * <h3 class="en-US">Setter method for the customized security configuration information list</h3>
 	 * <h3 class="zh-CN">自定义安全配置信息列表的Setter方法</h3>
 	 *
 	 * @param customSecures <span class="en-US">Customized security configuration information list</span>

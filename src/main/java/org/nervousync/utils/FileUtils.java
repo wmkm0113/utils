@@ -2279,7 +2279,7 @@ public final class FileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move a file from base path to target samba path</h3>
+	 * <h3 class="en-US">Move a file from base path to the target samba path</h3>
 	 * <h3 class="zh-CN">从原文件地址移动到目标samba文件地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original path</span>
@@ -2296,7 +2296,7 @@ public final class FileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move a file from base path to target samba path</h3>
+	 * <h3 class="en-US">Move a file from base path to the target samba path</h3>
 	 * <h3 class="zh-CN">从原文件地址移动到目标samba文件地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original path</span>
@@ -2753,7 +2753,7 @@ public final class FileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy file from samba path to the target path</h3>
+	 * <h3 class="en-US">Copy files from samba path to the target path</h3>
 	 * <h3 class="zh-CN">从原samba文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original path</span>
@@ -2770,7 +2770,7 @@ public final class FileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy file from samba path to the target path</h3>
+	 * <h3 class="en-US">Copy files from samba path to the target path</h3>
 	 * <h3 class="zh-CN">从原samba文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original path</span>
@@ -3114,25 +3114,12 @@ public final class FileUtils {
 		}
 
 		if (filePath.toLowerCase().endsWith(URL_PROTOCOL_JAR)) {
-			JarFile jarFile = null;
-			try {
-				jarFile = new JarFile(getFile(filePath));
+			try (JarFile jarFile = new JarFile(getFile(filePath))) {
 				return jarFile.getJarEntry(entryPath) != null;
 			} catch (Exception e) {
 				LOGGER.error("Entry_Content_Load_Error");
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Stack_Message_Error", e);
-				}
-			} finally {
-				if (jarFile != null) {
-					try {
-						jarFile.close();
-					} catch (Exception e) {
-						LOGGER.error("Archive_Close_File_Error");
-						if (LOGGER.isDebugEnabled()) {
-							LOGGER.debug("Stack_Message_Error", e);
-						}
-					}
 				}
 			}
 		} else if (filePath.toLowerCase().endsWith(URL_PROTOCOL_ZIP)) {

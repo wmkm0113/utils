@@ -43,10 +43,11 @@ public abstract class AutoConfig {
 					.filter(field -> ClassUtils.isAssignable(BeanObject.class, field.getType()))
 					.forEach(field -> {
 						Class<? extends BeanObject> fieldType = (Class<? extends BeanObject>) field.getType();
-						Configuration configuration = field.getAnnotation(Configuration.class);
-						Optional.ofNullable(configureManager.readConfigure(fieldType, configuration.value()))
-										.ifPresent(configure ->
-												ReflectionUtils.setField(field, this, configure));
+						Optional.ofNullable(field.getAnnotation(Configuration.class))
+								.map(Configuration::value)
+								.map(suffix -> configureManager.readConfigure(fieldType, suffix))
+								.ifPresent(configure ->
+										ReflectionUtils.setField(field, this, configure));
 					});
 		}
 	}

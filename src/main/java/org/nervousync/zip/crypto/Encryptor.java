@@ -32,7 +32,7 @@ public interface Encryptor {
 	 * @param buff data array
 	 * @throws ZipException if encrypt engine was not initialized or data index out of size
 	 */
-	void encryptData(byte[] buff) throws ZipException;
+	void encryptData(final byte[] buff) throws ZipException;
 
 	/**
 	 * Encrypt given data array which index from start and process data length was given
@@ -42,6 +42,6 @@ public interface Encryptor {
 	 * @param len   process length
 	 * @throws ZipException if encrypt engine was not initialized or data index out of size
 	 */
-	void encryptData(byte[] buff, int start, int len) throws ZipException;
+	void encryptData(final byte[] buff, final int start, final int len) throws ZipException;
 
 }

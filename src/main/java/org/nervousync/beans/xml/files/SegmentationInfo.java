@@ -147,7 +147,7 @@ public final class SegmentationInfo extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for block data list</h3>
+	 * <h3 class="en-US">Getter method for the block data list</h3>
 	 * <h3 class="zh-CN">数据块列表的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Block data list</span>

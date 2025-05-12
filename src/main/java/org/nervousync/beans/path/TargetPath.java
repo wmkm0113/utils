@@ -94,7 +94,7 @@ public class TargetPath {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for file path</h3>
+	 * <h3 class="en-US">Getter method for the file path</h3>
 	 * <h3 class="zh-CN">Jar文件路径的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Jar file path</span>
@@ -105,7 +105,7 @@ public class TargetPath {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for entry path</h3>
+	 * <h3 class="en-US">Getter method for the entry path</h3>
 	 * <h3 class="zh-CN">Jar资源路径的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Jar entry path</span>
