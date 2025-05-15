@@ -30,7 +30,7 @@ import org.nervousync.zip.models.header.utils.HeaderOperator;
  * The type Local file header.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 2:29:26 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 14:29:26 $
  */
 public final class LocalFileHeader extends FileHeader {
 
@@ -58,7 +58,7 @@ public final class LocalFileHeader extends FileHeader {
 	 *
 	 * @param extraField the extraField to set
 	 */
-	public void setExtraField(byte[] extraField) {
+	public void setExtraField(final byte[] extraField) {
 		this.extraField = extraField == null ? new byte[0] : extraField.clone();
 	}
 
@@ -76,7 +76,7 @@ public final class LocalFileHeader extends FileHeader {
 	 *
 	 * @param offsetStartOfData the offsetStartOfData to set
 	 */
-	public void setOffsetStartOfData(long offsetStartOfData) {
+	public void setOffsetStartOfData(final long offsetStartOfData) {
 		this.offsetStartOfData = offsetStartOfData;
 	}
 
@@ -94,7 +94,7 @@ public final class LocalFileHeader extends FileHeader {
 	 *
 	 * @param writeCompressSizeInZip64ExtraRecord the writeCompressSizeInZip64ExtraRecord to set
 	 */
-	public void setWriteCompressSizeInZip64ExtraRecord(boolean writeCompressSizeInZip64ExtraRecord) {
+	public void setWriteCompressSizeInZip64ExtraRecord(final boolean writeCompressSizeInZip64ExtraRecord) {
 		this.writeCompressSizeInZip64ExtraRecord = writeCompressSizeInZip64ExtraRecord;
 	}
 
@@ -104,7 +104,7 @@ public final class LocalFileHeader extends FileHeader {
 	 * @param input the input
 	 * @return the boolean
 	 */
-	public boolean verifyPassword(DataInput input) {
+	public boolean verifyPassword(final DataInput input) {
 		if (!this.isEncrypted()) {
 			return Boolean.TRUE;
 		}

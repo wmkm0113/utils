@@ -22,7 +22,7 @@ import org.nervousync.commons.Globals;
  * The type Aes extra data record.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:50:18 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:50:18 $
  */
 public final class AESExtraDataRecord {
 
@@ -59,7 +59,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param signature the signature to set
 	 */
-	public void setSignature(long signature) {
+	public void setSignature(final long signature) {
 		this.signature = signature;
 	}
 
@@ -77,7 +77,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param dataSize the dataSize to set
 	 */
-	public void setDataSize(int dataSize) {
+	public void setDataSize(final int dataSize) {
 		this.dataSize = dataSize;
 	}
 
@@ -95,7 +95,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param versionNumber the versionNumber to set
 	 */
-	public void setVersionNumber(int versionNumber) {
+	public void setVersionNumber(final int versionNumber) {
 		this.versionNumber = versionNumber;
 	}
 
@@ -113,7 +113,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param vendorID the vendorID to set
 	 */
-	public void setVendorID(String vendorID) {
+	public void setVendorID(final String vendorID) {
 		this.vendorID = vendorID;
 	}
 
@@ -131,7 +131,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param aesStrength the aesStrength to set
 	 */
-	public void setAesStrength(int aesStrength) {
+	public void setAesStrength(final int aesStrength) {
 		this.aesStrength = aesStrength;
 	}
 
@@ -149,7 +149,7 @@ public final class AESExtraDataRecord {
 	 *
 	 * @param compressionMethod the compressionMethod to set
 	 */
-	public void setCompressionMethod(int compressionMethod) {
+	public void setCompressionMethod(final int compressionMethod) {
 		this.compressionMethod = compressionMethod;
 	}
 }

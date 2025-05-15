@@ -22,7 +22,7 @@ import org.nervousync.commons.Globals;
  * The type Zip 64 extend info.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:48:01 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:48:01 $
  */
 public final class Zip64ExtendInfo {
 
@@ -53,7 +53,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param header the header to set
 	 */
-	public void setHeader(int header) {
+	public void setHeader(final int header) {
 		this.header = header;
 	}
 
@@ -71,7 +71,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param size the size to set
 	 */
-	public void setSize(int size) {
+	public void setSize(final int size) {
 		this.size = size;
 	}
 
@@ -89,7 +89,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param compressedSize the compressedSize to set
 	 */
-	public void setCompressedSize(long compressedSize) {
+	public void setCompressedSize(final long compressedSize) {
 		this.compressedSize = compressedSize;
 	}
 
@@ -107,7 +107,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param originalSize the originalSize to set
 	 */
-	public void setOriginalSize(long originalSize) {
+	public void setOriginalSize(final long originalSize) {
 		this.originalSize = originalSize;
 	}
 
@@ -125,7 +125,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param offsetLocalHeader the offsetLocalHeader to set
 	 */
-	public void setOffsetLocalHeader(long offsetLocalHeader) {
+	public void setOffsetLocalHeader(final long offsetLocalHeader) {
 		this.offsetLocalHeader = offsetLocalHeader;
 	}
 
@@ -143,7 +143,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param diskNumberStart the diskNumberStart to set
 	 */
-	public void setDiskNumberStart(int diskNumberStart) {
+	public void setDiskNumberStart(final int diskNumberStart) {
 		this.diskNumberStart = diskNumberStart;
 	}
 }

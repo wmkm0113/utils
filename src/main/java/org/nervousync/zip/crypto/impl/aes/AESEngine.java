@@ -28,7 +28,7 @@ import java.util.List;
  * AES Engine
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 30, 2017 2:55:56 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 30, 2017 14:55:56 $
  */
 public final class AESEngine {
 
@@ -42,7 +42,7 @@ public final class AESEngine {
 	 * @param keys the keys
 	 * @throws ZipException the zip exception
 	 */
-	public AESEngine(byte[] keys) throws ZipException {
+	public AESEngine(final byte[] keys) throws ZipException {
 		this.generateWorkingKeys(keys);
 	}
 
@@ -53,7 +53,7 @@ public final class AESEngine {
 	 * @param out the out
 	 * @throws ZipException the zip exception
 	 */
-	public void processBlock(byte[] in, byte[] out) throws ZipException {
+	public void processBlock(final byte[] in, final byte[] out) throws ZipException {
 		if (this.workingKeys == null) {
 			throw new ZipException(0x0000001B0002L, "Not_Initialized_AES_Engine_Zip_Error");
 		}
@@ -77,7 +77,7 @@ public final class AESEngine {
 	 * @param aesExtraDataRecord the aes extra data record
 	 * @param headerBytesList    the header bytes list
 	 */
-	public static void processHeader(AESExtraDataRecord aesExtraDataRecord, List<String> headerBytesList)
+	public static void processHeader(final AESExtraDataRecord aesExtraDataRecord, final List<String> headerBytesList)
 			throws ZipException, DataInvalidException {
 		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getSignature(), headerBytesList);
 		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getDataSize(), headerBytesList);
@@ -91,7 +91,7 @@ public final class AESEngine {
 		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getCompressionMethod(), headerBytesList);
 	}
 
-	private void stateIn(byte[] bytes) {
+	private void stateIn(final byte[] bytes) {
 		int index = 0;
 
 		this.C0 = (bytes[index++] & 0xFF);
@@ -137,7 +137,7 @@ public final class AESEngine {
 		this.calcBySubWord(calcBlock, r);
 	}
 
-	private void calcBySubWord(int[] calcBlock, int indexKey) {
+	private void calcBySubWord(final int[] calcBlock, final int indexKey) {
 		this.C0 = (SUB_WORD_TABLE[calcBlock[0] & 255] & 255) ^ ((SUB_WORD_TABLE[(calcBlock[1] >> 8) & 255] & 255) << 8)
 				^ ((SUB_WORD_TABLE[(calcBlock[2] >> 16) & 255] & 255) << 16) ^ (SUB_WORD_TABLE[(calcBlock[3] >> 24) & 255] << 24)
 				^ this.workingKeys[indexKey][0];
@@ -152,7 +152,7 @@ public final class AESEngine {
 				^ this.workingKeys[indexKey][3];
 	}
 
-	private int[] calcBlock(int r) {
+	private int[] calcBlock(final int r) {
 		return new int[]{
 				T0[this.C0 & 255] ^ shift(T0[(this.C1 >> 8) & 255], 24) ^ shift(T0[(this.C2 >> 16) & 255], 16)
 						^ shift(T0[(this.C3 >> 24) & 255], 8) ^ this.workingKeys[r][0],
@@ -164,7 +164,7 @@ public final class AESEngine {
 						^ shift(T0[(this.C2 >> 24) & 255], 8) ^ this.workingKeys[r][3]};
 	}
 
-	private void calcByT0(int[] calcBlock, int indexKey) {
+	private void calcByT0(final int[] calcBlock, final int indexKey) {
 		this.C0 = T0[calcBlock[0] & 255] ^ shift(T0[(calcBlock[1] >> 8) & 255], 24) ^ shift(T0[(calcBlock[2] >> 16) & 255], 16)
 				^ shift(T0[(calcBlock[3] >> 24) & 255], 8) ^ this.workingKeys[indexKey][0];
 		this.C1 = T0[calcBlock[1] & 255] ^ shift(T0[(calcBlock[2] >> 8) & 255], 24) ^ shift(T0[(calcBlock[3] >> 16) & 255], 16)
@@ -175,7 +175,7 @@ public final class AESEngine {
 				^ shift(T0[(calcBlock[2] >> 24) & 255], 8) ^ this.workingKeys[indexKey][3];
 	}
 
-	private void stateOut(byte[] bytes) {
+	private void stateOut(final byte[] bytes) {
 		int index = 0;
 
 		bytes[index++] = (byte) this.C0;
@@ -199,7 +199,7 @@ public final class AESEngine {
 		bytes[index] = (byte) (this.C3 >> 24);
 	}
 
-	private void generateWorkingKeys(byte[] keys) throws ZipException {
+	private void generateWorkingKeys(final byte[] keys) throws ZipException {
 		int kc = keys.length / 4;
 		if (((kc != 4) && (kc != 6) && (kc != 8)) || ((kc * 4) != keys.length)) {
 			throw new ZipException(0x0000001B0004L, "Invalid_Key_Length_AES_Zip_Error");
@@ -229,11 +229,11 @@ public final class AESEngine {
 		}
 	}
 
-	private int shift(int r, int shift) {
+	private int shift(final int r, final int shift) {
 		return (r >>> shift) | (r << -shift);
 	}
 
-	private int subWord(int value) {
+	private int subWord(final int value) {
 		return (SUB_WORD_TABLE[value & 255] & 255 | ((SUB_WORD_TABLE[(value >> 8) & 255] & 255) << 8)
 				| ((SUB_WORD_TABLE[(value >> 16) & 255] & 255) << 16) | SUB_WORD_TABLE[(value >> 24) & 255] << 24);
 	}

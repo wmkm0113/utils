@@ -20,7 +20,7 @@ package org.nervousync.zip.models.central;
  * The type End central directory record.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:34:55 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:34:55 $
  */
 public final class EndCentralDirectoryRecord {
 
@@ -54,7 +54,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param signature the signature to set
 	 */
-	public void setSignature(long signature) {
+	public void setSignature(final long signature) {
 		this.signature = signature;
 	}
 
@@ -72,7 +72,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param indexOfThisDisk the indexOfThisDisk to set
 	 */
-	public void setIndexOfThisDisk(int indexOfThisDisk) {
+	public void setIndexOfThisDisk(final int indexOfThisDisk) {
 		this.indexOfThisDisk = indexOfThisDisk;
 	}
 
@@ -90,7 +90,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param indexOfThisDiskStartOfCentralDirectory the indexOfThisDiskStartOfCentralDirectory to set
 	 */
-	public void setIndexOfThisDiskStartOfCentralDirectory(int indexOfThisDiskStartOfCentralDirectory) {
+	public void setIndexOfThisDiskStartOfCentralDirectory(final int indexOfThisDiskStartOfCentralDirectory) {
 		this.indexOfThisDiskStartOfCentralDirectory = indexOfThisDiskStartOfCentralDirectory;
 	}
 
@@ -108,7 +108,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param totalOfEntriesInCentralDirectoryOnThisDisk the totalOfEntriesInCentralDirectoryOnThisDisk to set
 	 */
-	public void setTotalOfEntriesInCentralDirectoryOnThisDisk(int totalOfEntriesInCentralDirectoryOnThisDisk) {
+	public void setTotalOfEntriesInCentralDirectoryOnThisDisk(final int totalOfEntriesInCentralDirectoryOnThisDisk) {
 		this.totalOfEntriesInCentralDirectoryOnThisDisk = totalOfEntriesInCentralDirectoryOnThisDisk;
 	}
 
@@ -126,7 +126,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param totalOfEntriesInCentralDirectory the totalOfEntriesInCentralDirectory to set
 	 */
-	public void setTotalOfEntriesInCentralDirectory(int totalOfEntriesInCentralDirectory) {
+	public void setTotalOfEntriesInCentralDirectory(final int totalOfEntriesInCentralDirectory) {
 		this.totalOfEntriesInCentralDirectory = totalOfEntriesInCentralDirectory;
 	}
 
@@ -144,7 +144,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param sizeOfCentralDirectory the sizeOfCentralDirectory to set
 	 */
-	public void setSizeOfCentralDirectory(int sizeOfCentralDirectory) {
+	public void setSizeOfCentralDirectory(final int sizeOfCentralDirectory) {
 		this.sizeOfCentralDirectory = sizeOfCentralDirectory;
 	}
 
@@ -162,7 +162,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param offsetOfStartOfCentralDirectory the offsetOfStartOfCentralDirectory to set
 	 */
-	public void setOffsetOfStartOfCentralDirectory(long offsetOfStartOfCentralDirectory) {
+	public void setOffsetOfStartOfCentralDirectory(final long offsetOfStartOfCentralDirectory) {
 		this.offsetOfStartOfCentralDirectory = offsetOfStartOfCentralDirectory;
 	}
 
@@ -180,7 +180,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param commentLength the commentLength to set
 	 */
-	public void setCommentLength(int commentLength) {
+	public void setCommentLength(final int commentLength) {
 		this.commentLength = commentLength;
 	}
 
@@ -198,7 +198,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param commentBytes the commentBytes to set
 	 */
-	public void setCommentBytes(byte[] commentBytes) {
+	public void setCommentBytes(final byte[] commentBytes) {
 		this.commentBytes = commentBytes == null ? new byte[0] : commentBytes.clone();
 	}
 }

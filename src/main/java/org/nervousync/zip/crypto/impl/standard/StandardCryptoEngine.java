@@ -20,7 +20,7 @@ package org.nervousync.zip.crypto.impl.standard;
  * Standard Crypto Engine
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 4:58:52 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 16:58:52 $
  */
 public class StandardCryptoEngine {
 
@@ -52,7 +52,7 @@ public class StandardCryptoEngine {
 	 *
 	 * @param password the password
 	 */
-	public void initKeys(char[] password) {
+	public void initKeys(final char[] password) {
 		this.keys[0] = 305419896;
 		this.keys[1] = 591751049;
 		this.keys[2] = 878082192;
@@ -67,7 +67,7 @@ public class StandardCryptoEngine {
 	 *
 	 * @param b the b
 	 */
-	public void updateKeys(byte b) {
+	public void updateKeys(final byte b) {
 		this.keys[0] = crc32(this.keys[0], b);
 		this.keys[1] += this.keys[0] & 0xff;
 		this.keys[1] = this.keys[1] * 134775813 + 1;
@@ -84,7 +84,7 @@ public class StandardCryptoEngine {
 		return (byte) ((temp * (temp ^ 1)) >>> 8);
 	}
 
-	private static int crc32(int currentCrc, byte b) {
+	private static int crc32(final int currentCrc, final byte b) {
 		return ((currentCrc >>> 8) ^ CRC_TABLE[(currentCrc ^ b) & 0xFF]);
 	}
 }

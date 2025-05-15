@@ -27,7 +27,7 @@ import org.nervousync.zip.models.Zip64ExtendInfo;
  * The type File header.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 2:30:48 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 14:30:48 $
  */
 public class FileHeader {
 
@@ -72,7 +72,7 @@ public class FileHeader {
 	 *
 	 * @param signature the signature to set
 	 */
-	public void setSignature(int signature) {
+	public void setSignature(final int signature) {
 		this.signature = signature;
 	}
 
@@ -90,7 +90,7 @@ public class FileHeader {
 	 *
 	 * @param extractNeeded the extractNeeded to set
 	 */
-	public void setExtractNeeded(int extractNeeded) {
+	public void setExtractNeeded(final int extractNeeded) {
 		this.extractNeeded = extractNeeded;
 	}
 
@@ -108,7 +108,7 @@ public class FileHeader {
 	 *
 	 * @param generalPurposeFlag the generalPurposeFlag to set
 	 */
-	public void setGeneralPurposeFlag(byte[] generalPurposeFlag) {
+	public void setGeneralPurposeFlag(final byte[] generalPurposeFlag) {
 		this.generalPurposeFlag = generalPurposeFlag == null ? new byte[0] : generalPurposeFlag.clone();
 		if (generalPurposeFlag != null) {
 			this.setEncrypted((generalPurposeFlag[0] & 1) != 0);
@@ -129,7 +129,7 @@ public class FileHeader {
 	 *
 	 * @param compressionMethod the compressionMethod to set
 	 */
-	public void setCompressionMethod(int compressionMethod) {
+	public void setCompressionMethod(final int compressionMethod) {
 		this.compressionMethod = compressionMethod;
 	}
 
@@ -147,7 +147,7 @@ public class FileHeader {
 	 *
 	 * @param lastModFileTime the lastModFileTime to set
 	 */
-	public void setLastModFileTime(int lastModFileTime) {
+	public void setLastModFileTime(final int lastModFileTime) {
 		this.lastModFileTime = lastModFileTime;
 	}
 
@@ -165,7 +165,7 @@ public class FileHeader {
 	 *
 	 * @param crc32 the crc32 to set
 	 */
-	public void setCrc32(long crc32) {
+	public void setCrc32(final long crc32) {
 		this.crc32 = crc32;
 	}
 
@@ -183,7 +183,7 @@ public class FileHeader {
 	 *
 	 * @param crcBuffer the crcBuffer to set
 	 */
-	public void setCrcBuffer(byte[] crcBuffer) {
+	public void setCrcBuffer(final byte[] crcBuffer) {
 		this.crcBuffer = crcBuffer == null ? new byte[0] : crcBuffer.clone();
 	}
 
@@ -201,7 +201,7 @@ public class FileHeader {
 	 *
 	 * @param compressedSize the compressedSize to set
 	 */
-	public void setCompressedSize(long compressedSize) {
+	public void setCompressedSize(final long compressedSize) {
 		this.compressedSize = compressedSize;
 	}
 
@@ -219,7 +219,7 @@ public class FileHeader {
 	 *
 	 * @param originalSize the originalSize to set
 	 */
-	public void setOriginalSize(long originalSize) {
+	public void setOriginalSize(final long originalSize) {
 		this.originalSize = originalSize;
 	}
 
@@ -237,7 +237,7 @@ public class FileHeader {
 	 *
 	 * @param fileNameLength the fileNameLength to set
 	 */
-	public void setFileNameLength(int fileNameLength) {
+	public void setFileNameLength(final int fileNameLength) {
 		this.fileNameLength = fileNameLength;
 	}
 
@@ -255,7 +255,7 @@ public class FileHeader {
 	 *
 	 * @param extraFieldLength the extraFieldLength to set
 	 */
-	public void setExtraFieldLength(int extraFieldLength) {
+	public void setExtraFieldLength(final int extraFieldLength) {
 		this.extraFieldLength = extraFieldLength;
 	}
 
@@ -273,7 +273,7 @@ public class FileHeader {
 	 *
 	 * @param entryPath the entryPath to set
 	 */
-	public void setEntryPath(String entryPath) {
+	public void setEntryPath(final String entryPath) {
 		this.entryPath = entryPath;
 	}
 
@@ -291,7 +291,7 @@ public class FileHeader {
 	 *
 	 * @param isEncrypted the isEncrypted to set
 	 */
-	public void setEncrypted(boolean isEncrypted) {
+	public void setEncrypted(final boolean isEncrypted) {
 		this.isEncrypted = isEncrypted;
 	}
 
@@ -309,7 +309,7 @@ public class FileHeader {
 	 *
 	 * @param password the password to set
 	 */
-	public void setPassword(char[] password) {
+	public void setPassword(final char[] password) {
 		this.password = password == null ? new char[0] : password.clone();
 	}
 
@@ -327,7 +327,7 @@ public class FileHeader {
 	 *
 	 * @param dataDescriptorExists the dataDescriptorExists to set
 	 */
-	public void setDataDescriptorExists(boolean dataDescriptorExists) {
+	public void setDataDescriptorExists(final boolean dataDescriptorExists) {
 		this.dataDescriptorExists = dataDescriptorExists;
 	}
 
@@ -345,7 +345,7 @@ public class FileHeader {
 	 *
 	 * @param zip64ExtendInfo the zip64ExtendInfo to set
 	 */
-	public void setZip64ExtendInfo(Zip64ExtendInfo zip64ExtendInfo) {
+	public void setZip64ExtendInfo(final Zip64ExtendInfo zip64ExtendInfo) {
 		this.zip64ExtendInfo = zip64ExtendInfo;
 	}
 
@@ -363,7 +363,7 @@ public class FileHeader {
 	 *
 	 * @param aesExtraDataRecord the aesExtraDataRecord to set
 	 */
-	public void setAesExtraDataRecord(AESExtraDataRecord aesExtraDataRecord) {
+	public void setAesExtraDataRecord(final AESExtraDataRecord aesExtraDataRecord) {
 		this.aesExtraDataRecord = aesExtraDataRecord;
 	}
 
@@ -381,7 +381,7 @@ public class FileHeader {
 	 *
 	 * @param extraDataRecords the extraDataRecords to set
 	 */
-	public void setExtraDataRecords(List<ExtraDataRecord> extraDataRecords) {
+	public void setExtraDataRecords(final List<ExtraDataRecord> extraDataRecords) {
 		this.extraDataRecords = extraDataRecords;
 	}
 
@@ -399,7 +399,7 @@ public class FileHeader {
 	 *
 	 * @param fileNameUTF8Encoded the fileNameUTF8Encoded to set
 	 */
-	public void setFileNameUTF8Encoded(boolean fileNameUTF8Encoded) {
+	public void setFileNameUTF8Encoded(final boolean fileNameUTF8Encoded) {
 		this.fileNameUTF8Encoded = fileNameUTF8Encoded;
 	}
 
@@ -417,7 +417,7 @@ public class FileHeader {
 	 *
 	 * @param encryptionMethod the encryptionMethod to set
 	 */
-	public void setEncryptionMethod(int encryptionMethod) {
+	public void setEncryptionMethod(final int encryptionMethod) {
 		this.encryptionMethod = encryptionMethod;
 	}
 }

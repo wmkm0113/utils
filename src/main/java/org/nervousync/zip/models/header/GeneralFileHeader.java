@@ -20,7 +20,7 @@ package org.nervousync.zip.models.header;
  * The type General file header.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:44:25 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:44:25 $
  */
 public final class GeneralFileHeader extends FileHeader {
 
@@ -53,7 +53,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param madeVersion the madeVersion to set
 	 */
-	public void setMadeVersion(int madeVersion) {
+	public void setMadeVersion(final int madeVersion) {
 		this.madeVersion = madeVersion;
 	}
 
@@ -71,7 +71,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param fileCommentLength the fileCommentLength to set
 	 */
-	public void setFileCommentLength(int fileCommentLength) {
+	public void setFileCommentLength(final int fileCommentLength) {
 		this.fileCommentLength = fileCommentLength;
 	}
 
@@ -89,7 +89,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param diskNumberStart the diskNumberStart to set
 	 */
-	public void setDiskNumberStart(int diskNumberStart) {
+	public void setDiskNumberStart(final int diskNumberStart) {
 		this.diskNumberStart = diskNumberStart;
 	}
 
@@ -107,7 +107,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param internalFileAttr the internalFileAttr to set
 	 */
-	public void setInternalFileAttr(byte[] internalFileAttr) {
+	public void setInternalFileAttr(final byte[] internalFileAttr) {
 		this.internalFileAttr = internalFileAttr == null ? new byte[0] : internalFileAttr.clone();
 	}
 
@@ -143,7 +143,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param offsetLocalHeader the offsetLocalHeader to set
 	 */
-	public void setOffsetLocalHeader(long offsetLocalHeader) {
+	public void setOffsetLocalHeader(final long offsetLocalHeader) {
 		this.offsetLocalHeader = offsetLocalHeader;
 	}
 
@@ -161,7 +161,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param fileComment the fileComment to set
 	 */
-	public void setFileComment(String fileComment) {
+	public void setFileComment(final String fileComment) {
 		this.fileComment = fileComment;
 	}
 
@@ -179,7 +179,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param isDirectory the isDirectory to set
 	 */
-	public void setDirectory(boolean isDirectory) {
+	public void setDirectory(final boolean isDirectory) {
 		this.isDirectory = isDirectory;
 	}
 }

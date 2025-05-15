@@ -20,7 +20,7 @@ package org.nervousync.zip.models.central;
  * The type Zip64 end central directory locator.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:32:41 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:32:41 $
  */
 public final class Zip64EndCentralDirectoryLocator {
 
@@ -49,7 +49,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param signature the signature to set
 	 */
-	public void setSignature(long signature) {
+	public void setSignature(final long signature) {
 		this.signature = signature;
 	}
 
@@ -67,7 +67,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param indexOfZip64EndOfCentralDirectoryRecord the indexOfZip64EndOfCentralDirectoryRecord to set
 	 */
-	public void setIndexOfZip64EndOfCentralDirectoryRecord(int indexOfZip64EndOfCentralDirectoryRecord) {
+	public void setIndexOfZip64EndOfCentralDirectoryRecord(final int indexOfZip64EndOfCentralDirectoryRecord) {
 		this.indexOfZip64EndOfCentralDirectoryRecord = indexOfZip64EndOfCentralDirectoryRecord;
 	}
 
@@ -85,7 +85,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param offsetZip64EndOfCentralDirectoryRecord the offsetZip64EndOfCentralDirectoryRecord to set
 	 */
-	public void setOffsetZip64EndOfCentralDirectoryRecord(long offsetZip64EndOfCentralDirectoryRecord) {
+	public void setOffsetZip64EndOfCentralDirectoryRecord(final long offsetZip64EndOfCentralDirectoryRecord) {
 		this.offsetZip64EndOfCentralDirectoryRecord = offsetZip64EndOfCentralDirectoryRecord;
 	}
 
@@ -103,7 +103,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param totalNumberOfDiscs the totalNumberOfDiscs to set
 	 */
-	public void setTotalNumberOfDiscs(int totalNumberOfDiscs) {
+	public void setTotalNumberOfDiscs(final int totalNumberOfDiscs) {
 		this.totalNumberOfDiscs = totalNumberOfDiscs;
 	}
 }

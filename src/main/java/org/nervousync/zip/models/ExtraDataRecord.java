@@ -20,7 +20,7 @@ package org.nervousync.zip.models;
  * The type Extra data record.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:43:23 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:43:23 $
  */
 public final class ExtraDataRecord {
 
@@ -48,7 +48,7 @@ public final class ExtraDataRecord {
 	 *
 	 * @param header the header to set
 	 */
-	public void setHeader(long header) {
+	public void setHeader(final long header) {
 		this.header = header;
 	}
 
@@ -66,7 +66,7 @@ public final class ExtraDataRecord {
 	 *
 	 * @param dataSize the dataSize to set
 	 */
-	public void setDataSize(int dataSize) {
+	public void setDataSize(final int dataSize) {
 		this.dataSize = dataSize;
 	}
 
@@ -84,7 +84,7 @@ public final class ExtraDataRecord {
 	 *
 	 * @param dataContent the dataContent to set
 	 */
-	public void setDataContent(byte[] dataContent) {
+	public void setDataContent(final byte[] dataContent) {
 		this.dataContent = dataContent == null ? new byte[0] : dataContent.clone();
 	}
 }

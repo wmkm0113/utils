@@ -17,17 +17,17 @@
 package org.nervousync.zip.crypto.impl.standard;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.models.header.LocalFileHeader;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.zip.crypto.Decryptor;
 
 /**
  * Decryptor implement of the standard
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 12:23:51 PM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 12:23:51 $
  */
-public class StandardDecryptor implements Decryptor {
+public class StandardDecryptor implements Cryptor {
 
 	private final StandardCryptoEngine standardCryptoEngine;
 
@@ -64,12 +64,7 @@ public class StandardDecryptor implements Decryptor {
 	}
 
 	@Override
-	public int decryptData(byte[] buff) throws ZipException {
-		return this.decryptData(buff, 0, buff.length);
-	}
-
-	@Override
-	public int decryptData(byte[] buff, int start, int len) throws ZipException {
+	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (start < 0 || len < 0) {
 			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
 		}
@@ -80,10 +75,8 @@ public class StandardDecryptor implements Decryptor {
 				this.standardCryptoEngine.updateKeys((byte) value);
 				buff[i] = (byte) value;
 			}
-			return len;
 		} catch (Exception e) {
 			throw new ZipException(0x0000001B000BL, "Decrypt_Crypto_Zip_Error", e);
 		}
 	}
-
 }

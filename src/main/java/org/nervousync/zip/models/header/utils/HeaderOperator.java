@@ -51,7 +51,7 @@ import org.nervousync.utils.RawUtils;
  * The type Header operator.
  *
  * @author Steven Wee   <a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 6:07:27 PM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 18:07:27 $
  */
 public final class HeaderOperator {
 

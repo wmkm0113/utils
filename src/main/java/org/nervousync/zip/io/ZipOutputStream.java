@@ -26,7 +26,7 @@ import org.nervousync.zip.ZipFile;
  * The type Zip output stream.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 1, 2017 12:37:14 PM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 1, 2017 12:37:14 $
  */
 public class ZipOutputStream extends DeflaterOutputStream {
 
@@ -40,19 +40,19 @@ public class ZipOutputStream extends DeflaterOutputStream {
 		super(outputStream, zipFile);
 	}
 
-	public void write(int value) throws IOException {
+	public void write(final int value) throws IOException {
 		byte[] b = new byte[1];
 		b[0] = (byte) value;
 		this.write(b, 0, 1);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b) throws IOException {
+	public void write(@Nonnull final byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		this.crc.update(b, off, len);
 		this.updateTotalBytesRead(len);
 		super.write(b, off, len);

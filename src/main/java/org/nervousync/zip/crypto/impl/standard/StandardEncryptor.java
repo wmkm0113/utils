@@ -18,15 +18,15 @@ package org.nervousync.zip.crypto.impl.standard;
 
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.zip.crypto.Encryptor;
+import org.nervousync.zip.crypto.Cryptor;
 
 /**
  * Encryptor implement of the standard
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 5:08:31 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 17:08:31 $
  */
-public final class StandardEncryptor implements Encryptor {
+public final class StandardEncryptor implements Cryptor {
 
 	private final StandardCryptoEngine standardCryptoEngine;
 	private byte[] headerBytes;
@@ -38,7 +38,7 @@ public final class StandardEncryptor implements Encryptor {
 	 * @param crc      the crc
 	 * @throws ZipException the zip exception
 	 */
-	public StandardEncryptor(char[] password, int crc) throws ZipException {
+	public StandardEncryptor(final char[] password, final int crc) throws ZipException {
 		if (password == null || password.length == 0) {
 			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
 		}
@@ -49,15 +49,7 @@ public final class StandardEncryptor implements Encryptor {
 	}
 
 	@Override
-	public void encryptData(byte[] buff) throws ZipException {
-		if (buff == null) {
-			throw new NullPointerException();
-		}
-		encryptData(buff, 0, buff.length);
-	}
-
-	@Override
-	public void encryptData(byte[] buff, int start, int len) throws ZipException {
+	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (len < 0) {
 			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
 		}
@@ -80,7 +72,7 @@ public final class StandardEncryptor implements Encryptor {
 		return headerBytes == null ? new byte[0] : headerBytes.clone();
 	}
 
-	private void init(char[] password, int crc) throws ZipException {
+	private void init(final char[] password, final int crc) throws ZipException {
 		if (password == null || password.length == 0) {
 			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
 		}
@@ -93,7 +85,7 @@ public final class StandardEncryptor implements Encryptor {
 		this.headerBytes[Globals.STD_DEC_HDR_SIZE - 1] = (byte) (crc >>> 24);
 		this.headerBytes[Globals.STD_DEC_HDR_SIZE - 2] = (byte) (crc >>> 16);
 
-		this.encryptData(this.headerBytes);
+		this.process(this.headerBytes);
 	}
 
 	private byte[] generateRandomBytes() {
@@ -106,7 +98,7 @@ public final class StandardEncryptor implements Encryptor {
 		return buffer;
 	}
 
-	private byte encryptByte(byte b) {
+	private byte encryptByte(final byte b) {
 		byte temp = (byte) (b ^ this.standardCryptoEngine.processByte() & 0xFF);
 		this.standardCryptoEngine.updateKeys(b);
 		return temp;

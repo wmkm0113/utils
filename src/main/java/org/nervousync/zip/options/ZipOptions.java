@@ -18,158 +18,174 @@ package org.nervousync.zip.options;
 
 import java.util.TimeZone;
 
-import org.nervousync.enumerations.zip.CompressLevel;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.StringUtils;
 
 /**
- * ZIP options
+ * <h2 class="en-US">ZIP options</h2>
+ * <h2 class="zh-CN">ZIP压缩属性</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 3:51:12 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 15:51:12 $
  */
 public final class ZipOptions implements Cloneable {
 
 	/**
-	 * Folder, file name and comment charset encoding
+	 * <span class="en-US">Folder, file name and comment charset encoding</span>
+	 * <span class="zh-CN">目录名、文件名、备注信息的字符集编码</span>
 	 */
 	private String charsetEncoding = Globals.DEFAULT_SYSTEM_CHARSET;
 	/**
-	 * Compress method
+	 * <span class="en-US">Compress method</span>
+	 * <span class="zh-CN">压缩方式</span>
 	 */
 	private int compressionMethod = Globals.COMP_DEFLATE;
 	/**
-	 * Compress level
+	 * <span class="en-US">Compress level</span>
+	 * <span class="zh-CN">压缩等级</span>
 	 */
 	private int compressionLevel = Globals.DEFLATE_LEVEL_NORMAL;
 	/**
-	 * Encrypt files status
+	 * <span class="en-US">Encrypt files status</span>
+	 * <span class="zh-CN">文件加密标记</span>
 	 */
 	private boolean encryptFiles;
 	/**
-	 * Encrypt method
+	 * <span class="en-US">Encrypt method code</span>
+	 * <span class="zh-CN">文件加密方式代码</span>
 	 */
 	private int encryptionMethod;
 	/**
-	 * Status of the read hidden file
+	 * <span class="en-US">Status of the read hidden file</span>
+	 * <span class="zh-CN">读取隐藏文件标记</span>
 	 */
 	private boolean readHiddenFiles = Boolean.TRUE;
 	/**
-	 * Encrypt/Decrypt password
+	 * <span class="en-US">Encrypt/Decrypt password</span>
+	 * <span class="zh-CN">加密/解密密码</span>
 	 */
 	private final char[] password;
 	/**
-	 * AES key length
+	 * <span class="en-US">AES key strength</span>
+	 * <span class="zh-CN">AES密钥强度</span>
 	 */
 	private final int aesKeyStrength;
 	/**
-	 * Include root folder
+	 * <span class="en-US">Include root folder</span>
+	 * <span class="zh-CN">包含根目录标记</span>
 	 */
 	private boolean includeRootFolder = Boolean.TRUE;
 	/**
-	 * Root folder path
+	 * <span class="en-US">Root folder path</span>
+	 * <span class="zh-CN">根目录路径</span>
 	 */
-	private String rootFolderInZip = "";
+	private String rootFolderInZip = Globals.DEFAULT_VALUE_STRING;
 	/**
-	 * Timezone setting
+	 * <span class="en-US">Timezone setting</span>
+	 * <span class="zh-CN">时区设置</span>
 	 *
 	 * @see java.util.TimeZone
 	 */
 	private TimeZone timeZone = TimeZone.getDefault();
 	/**
-	 * CRC
+	 * <span class="en-US">Source file CRC result</span>
+	 * <span class="zh-CN">源文件CRC值</span>
 	 */
 	private long sourceFileCRC = Globals.DEFAULT_VALUE_LONG;
 	/**
-	 * Default folder path
+	 * <span class="en-US">Default folder path</span>
+	 * <span class="zh-CN">默认目录路径</span>
 	 */
-	private String defaultFolderPath = "";
+	private String defaultFolderPath = Globals.DEFAULT_VALUE_STRING;
 	/**
-	 * File name in zip
+	 * <span class="en-US">File entry path</span>
+	 * <span class="zh-CN">文件在压缩包内的路径</span>
 	 */
 	private String fileNameInZip = null;
 	/**
-	 * Status of source external stream
+	 * <span class="en-US">Status of source external stream</span>
+	 * <span class="zh-CN">源外部流的标记</span>
 	 */
 	private boolean sourceExternalStream = Boolean.FALSE;
 
 	/**
-	 * Default Constructor
-	 */
-	private ZipOptions() {
-		this(Boolean.FALSE, Globals.DEFAULT_VALUE_STRING, Globals.ENC_NO_ENCRYPTION, Globals.AES_STRENGTH_128);
-	}
-
-	/**
-	 * Constructor by given password
+	 * <h3 class="en-US">Private constructor method for ZIP options</h3>
+	 * <h3 class="zh-CN">ZIP压缩属性的私有构造方法</h3>
 	 *
-	 * @param password password
+	 * @param encryptFiles     <span class="en-US">Encrypt files status</span>
+	 *                         <span class="zh-CN">文件加密标记</span>
+	 * @param password         <span class="en-US">Encrypt/Decrypt password</span>
+	 *                         <span class="zh-CN">加密/解密密码</span>
+	 * @param encryptionMethod <span class="en-US">Encrypt method code</span>
+	 *                         <span class="zh-CN">文件加密方式代码</span>
+	 * @param aesKeyStrength   <span class="en-US">AES key strength</span>
+	 *                         <span class="zh-CN">AES密钥强度</span>
 	 */
-	private ZipOptions(final String password) {
-		this(Boolean.TRUE, password, Globals.ENC_METHOD_STANDARD, Globals.AES_STRENGTH_128);
-	}
-
-	/**
-	 * Constructor by given password and key strength
-	 *
-	 * @param password       encrypt password
-	 * @param aesKeyStrength AES key strength
-	 */
-	private ZipOptions(final String password, final int aesKeyStrength) {
-		this(Boolean.TRUE, password, Globals.ENC_METHOD_AES, aesKeyStrength);
-	}
-
 	private ZipOptions(final boolean encryptFiles, final String password, final int encryptionMethod,
 	                   final int aesKeyStrength) {
 		this.encryptFiles = encryptFiles;
 		this.password = password.toCharArray();
 		this.encryptionMethod = encryptionMethod;
 		this.aesKeyStrength = aesKeyStrength;
-		this.compressLevel(CompressLevel.NORMAL);
 	}
 
 	/**
-	 * Generate default ZipOptions instance
+	 * <h3 class="en-US">Static method for generate the default ZIP options</h3>
+	 * <h3 class="zh-CN">静态方法用于生成默认的ZIP压缩属性</h3>
 	 *
-	 * @return generated instance
+	 * @return <span class="en-US">ZIP options instance object</span>
+	 * <span class="zh-CN">ZIP压缩属性实例对象</span>
 	 */
 	public static ZipOptions newOptions() {
-		return new ZipOptions();
+		return new ZipOptions(Boolean.FALSE, Globals.DEFAULT_VALUE_STRING, Globals.ENC_NO_ENCRYPTION, Globals.AES_STRENGTH_128);
 	}
 
 	/**
-	 * Generate a standard encrypt ZipOptions instance by given password
+	 * <h3 class="en-US">Static method for generate the standard encrypt ZIP options</h3>
+	 * <h3 class="zh-CN">静态方法用于生成标准加密的ZIP压缩属性</h3>
 	 *
-	 * @param password encrypt password
-	 * @return generated instance
-	 * @throws ZipException if password is null
+	 * @param password <span class="en-US">Encrypt/Decrypt password</span>
+	 *                 <span class="zh-CN">加密/解密密码</span>
+	 * @return <span class="en-US">ZIP options instance object</span>
+	 * <span class="zh-CN">ZIP压缩属性实例对象</span>
+	 * @throws ZipException <span class="en-US">If the given password is empty string or <code>null</code></span>
+	 *                      <span class="zh-CN">如果给定的密码为空字符串或<code>null</code></span>
 	 */
 	public static ZipOptions standardEncryptOptions(final String password) throws ZipException {
 		if (StringUtils.isEmpty(password)) {
 			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
 		}
-		return new ZipOptions(password);
+		return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_STANDARD, Globals.AES_STRENGTH_128);
 	}
 
 	/**
-	 * Generate an AES encrypt ZipOptions instance by given password
+	 * <h3 class="en-US">Static method for generate the AES encrypt ZIP options</h3>
+	 * <h3 class="zh-CN">静态方法用于生成AES加密的ZIP压缩属性</h3>
 	 *
-	 * @param password encrypt password
-	 * @return generated instance
-	 * @throws ZipException if password is null
+	 * @param password <span class="en-US">Encrypt/Decrypt password</span>
+	 *                 <span class="zh-CN">加密/解密密码</span>
+	 * @return <span class="en-US">ZIP options instance object</span>
+	 * <span class="zh-CN">ZIP压缩属性实例对象</span>
+	 * @throws ZipException <span class="en-US">If the given password is empty string or <code>null</code></span>
+	 *                      <span class="zh-CN">如果给定的密码为空字符串或<code>null</code></span>
 	 */
 	public static ZipOptions aesEncryptOptions(final String password) throws ZipException {
 		return ZipOptions.aesEncryptOptions(password, 128);
 	}
 
 	/**
-	 * Generate an AES encrypt ZipOptions instance by given password and key strength
+	 * <h3 class="en-US">Static method for generate the AES encrypt ZIP options</h3>
+	 * <h3 class="zh-CN">静态方法用于生成AES加密的ZIP压缩属性</h3>
 	 *
-	 * @param password     encrypt password
-	 * @param aesKeyLength the aes key length
-	 * @return generated instance
-	 * @throws ZipException if password is null
+	 * @param password     <span class="en-US">Encrypt/Decrypt password</span>
+	 *                     <span class="zh-CN">加密/解密密码</span>
+	 * @param aesKeyLength <span class="en-US">AES key length</span>
+	 *                     <span class="zh-CN">AES密钥长度</span>
+	 * @return <span class="en-US">ZIP options instance object</span>
+	 * <span class="zh-CN">ZIP压缩属性实例对象</span>
+	 * @throws ZipException <span class="en-US">If the given password is empty string or <code>null</code></span>
+	 *                      <span class="zh-CN">如果给定的密码为空字符串或<code>null</code></span>
 	 */
 	public static ZipOptions aesEncryptOptions(final String password, final int aesKeyLength) throws ZipException {
 		if (StringUtils.isEmpty(password)) {
@@ -178,282 +194,326 @@ public final class ZipOptions implements Cloneable {
 
 		switch (aesKeyLength) {
 			case 128:
-				return new ZipOptions(password, Globals.AES_STRENGTH_128);
+				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_128);
 			case 192:
-				return new ZipOptions(password, Globals.AES_STRENGTH_192);
+				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_192);
 			case 256:
-				return new ZipOptions(password, Globals.AES_STRENGTH_256);
+				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_256);
 			default:
 				throw new ZipException(0x0000001B0005L, "Invalid_Key_Strength_AES_Zip_Error");
 		}
 	}
 
 	/**
-	 * Gets charset encoding.
+	 * <h3 class="en-US">Getter method for the folder, file name and comment charset encoding</h3>
+	 * <h3 class="zh-CN">目录名、文件名、备注信息的字符集编码的Getter方法</h3>
 	 *
-	 * @return the charset encoding
+	 * @return <span class="en-US">Folder, file name and comment charset encoding</span>
+	 * <span class="zh-CN">目录名、文件名、备注信息的字符集编码</span>
 	 */
 	public String getCharsetEncoding() {
-		return charsetEncoding;
+		return this.charsetEncoding;
 	}
 
 	/**
-	 * Sets charset encoding.
+	 * <h3 class="en-US">Setter method for the folder, file name and comment charset encoding</h3>
+	 * <h3 class="zh-CN">目录名、文件名、备注信息的字符集编码的Setter方法</h3>
 	 *
-	 * @param charsetEncoding the charset encoding
+	 * @param charsetEncoding <span class="en-US">Folder, file name and comment charset encoding</span>
+	 *                        <span class="zh-CN">目录名、文件名、备注信息的字符集编码</span>
 	 */
 	public void setCharsetEncoding(final String charsetEncoding) {
 		this.charsetEncoding = charsetEncoding;
 	}
 
 	/**
-	 * Gets compression method.
+	 * <h3 class="en-US">Getter method for the compress method</h3>
+	 * <h3 class="zh-CN">压缩方式的Getter方法</h3>
 	 *
-	 * @return the compressionMethod
+	 * @return <span class="en-US">Compress method</span>
+	 * <span class="zh-CN">压缩方式</span>
 	 */
 	public int getCompressionMethod() {
-		return compressionMethod;
+		return this.compressionMethod;
 	}
 
 	/**
-	 * Sets compression method.
+	 * <h3 class="en-US">Setter method for the compress method</h3>
+	 * <h3 class="zh-CN">压缩方式的Setter方法</h3>
 	 *
-	 * @param compressionMethod the compressionMethod to set
+	 * @param compressionMethod <span class="en-US">Compress method</span>
+	 *                          <span class="zh-CN">压缩方式</span>
 	 */
 	public void setCompressionMethod(final int compressionMethod) {
 		this.compressionMethod = compressionMethod;
 	}
 
 	/**
-	 * Gets compression level.
+	 * <h3 class="en-US">Getter method for the compress level</h3>
+	 * <h3 class="zh-CN">压缩等级的Getter方法</h3>
 	 *
-	 * @return the compressionLevel
+	 * @return <span class="en-US">Compress level</span>
+	 * <span class="zh-CN">压缩等级</span>
 	 */
 	public int getCompressionLevel() {
-		return compressionLevel;
-	}
-
-	public void compressLevel(final CompressLevel compressLevel) {
-		switch (compressLevel) {
-			case FASTEST:
-				this.compressionLevel = Globals.DEFLATE_LEVEL_FASTEST;
-				break;
-			case FAST:
-				this.compressionLevel = Globals.DEFLATE_LEVEL_FAST;
-				break;
-			case NORMAL:
-				this.compressionLevel = Globals.DEFLATE_LEVEL_NORMAL;
-				break;
-			case MAXIMUM:
-				this.compressionLevel = Globals.DEFLATE_LEVEL_MAXIMUM;
-				break;
-			case ULTRA:
-				this.compressionLevel = Globals.DEFLATE_LEVEL_ULTRA;
-				break;
-			default:
-
-		}
+		return this.compressionLevel;
 	}
 
 	/**
-	 * encrypt files boolean.
+	 * <h3 class="en-US">Setter method for the compress level</h3>
+	 * <h3 class="zh-CN">压缩等级的Setter方法</h3>
 	 *
-	 * @return the encryptFiles
+	 * @param compressionLevel <span class="en-US">Compress level</span>
+	 *                         <span class="zh-CN">压缩等级</span>
+	 */
+	public void setCompressionLevel(final int compressionLevel) {
+		this.compressionLevel = compressionLevel;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for encrypt files status</h3>
+	 * <h3 class="zh-CN">文件加密标记的Getter方法</h3>
+	 *
+	 * @return <span class="en-US">Encrypt files status</span>
+	 * <span class="zh-CN">文件加密标记</span>
 	 */
 	public boolean isEncryptFiles() {
-		return encryptFiles;
+		return this.encryptFiles;
 	}
 
 	/**
-	 * Sets the encryptFiles.
+	 * <h3 class="en-US">Setter method for encrypt files status</h3>
+	 * <h3 class="zh-CN">文件加密标记的Setter方法</h3>
 	 *
-	 * @param encryptFiles encryptFiles
+	 * @param encryptFiles <span class="en-US">Encrypt files status</span>
+	 *                     <span class="zh-CN">文件加密标记</span>
 	 */
 	public void setEncryptFiles(final boolean encryptFiles) {
 		this.encryptFiles = encryptFiles;
 	}
 
 	/**
-	 * Gets encryption method.
+	 * <h3 class="en-US">Getter method for the encrypt method code</h3>
+	 * <h3 class="zh-CN">文件加密方式代码的Getter方法</h3>
 	 *
-	 * @return the encryptionMethod
+	 * @return <span class="en-US">Encrypt method code</span>
+	 * <span class="zh-CN">文件加密方式代码</span>
 	 */
 	public int getEncryptionMethod() {
-		return encryptionMethod;
+		return this.encryptionMethod;
 	}
 
 	/**
-	 * Sets the encryptionMethod.
+	 * <h3 class="en-US">Setter method for the encrypt method code</h3>
+	 * <h3 class="zh-CN">文件加密方式代码的Setter方法</h3>
 	 *
-	 * @param encryptionMethod encryptionMethod
+	 * @param encryptionMethod <span class="en-US">Encrypt method code</span>
+	 *                         <span class="zh-CN">文件加密方式代码</span>
 	 */
 	public void setEncryptionMethod(final int encryptionMethod) {
 		this.encryptionMethod = encryptionMethod;
 	}
 
 	/**
-	 * Is read hidden files boolean.
+	 * <h3 class="en-US">Getter method for the status of the read hidden file</h3>
+	 * <h3 class="zh-CN">读取隐藏文件标记的Getter方法</h3>
 	 *
-	 * @return the readHiddenFiles
+	 * @return <span class="en-US">Status of the read hidden file</span>
+	 * <span class="zh-CN">读取隐藏文件标记</span>
 	 */
 	public boolean isReadHiddenFiles() {
-		return readHiddenFiles;
+		return this.readHiddenFiles;
 	}
 
 	/**
-	 * Sets read hidden files.
+	 * <h3 class="en-US">Setter method for the status of the read hidden file</h3>
+	 * <h3 class="zh-CN">读取隐藏文件标记的Setter方法</h3>
 	 *
-	 * @param readHiddenFiles the readHiddenFiles to set
+	 * @param readHiddenFiles <span class="en-US">Status of the read hidden file</span>
+	 *                        <span class="zh-CN">读取隐藏文件标记</span>
 	 */
 	public void setReadHiddenFiles(final boolean readHiddenFiles) {
 		this.readHiddenFiles = readHiddenFiles;
 	}
 
 	/**
-	 * Get password char [ ].
+	 * <h3 class="en-US">Getter method for the encrypt/decrypt password</h3>
+	 * <h3 class="zh-CN">加密/解密密码的Getter方法</h3>
 	 *
-	 * @return the password
+	 * @return <span class="en-US">Encrypt/Decrypt password</span>
+	 * <span class="zh-CN">加密/解密密码</span>
 	 */
 	public char[] getPassword() {
-		return password == null ? new char[0] : password.clone();
+		return this.password;
 	}
 
 	/**
-	 * Gets aes key strength.
+	 * <h3 class="en-US">Getter method for the AES key strength</h3>
+	 * <h3 class="zh-CN">AES密钥强度的Getter方法</h3>
 	 *
-	 * @return the aesKeyStrength
+	 * @return <span class="en-US">AES key strength</span>
+	 * <span class="zh-CN">AES密钥强度</span>
 	 */
 	public int getAesKeyStrength() {
-		return aesKeyStrength;
+		return this.aesKeyStrength;
 	}
 
 	/**
-	 * include root folder boolean.
+	 * <h3 class="en-US">Getter method for the include root folder flag</h3>
+	 * <h3 class="zh-CN">包含根目录标记的Getter方法</h3>
 	 *
-	 * @return the includeRootFolder
+	 * @return <span class="en-US">Include root folder flag</span>
+	 * <span class="zh-CN">包含根目录标记</span>
 	 */
 	public boolean isIncludeRootFolder() {
-		return includeRootFolder;
+		return this.includeRootFolder;
 	}
 
 	/**
-	 * Sets include root folder.
+	 * <h3 class="en-US">Setter method for the include root folder flag</h3>
+	 * <h3 class="zh-CN">包含根目录标记的Setter方法</h3>
 	 *
-	 * @param includeRootFolder the includeRootFolder to set
+	 * @param includeRootFolder <span class="en-US">Include root folder flag</span>
+	 *                          <span class="zh-CN">包含根目录标记</span>
 	 */
 	public void setIncludeRootFolder(final boolean includeRootFolder) {
 		this.includeRootFolder = includeRootFolder;
 	}
 
 	/**
-	 * Gets root folder in zip.
+	 * <h3 class="en-US">Getter method for the root folder path</h3>
+	 * <h3 class="zh-CN">根目录路径的Getter方法</h3>
 	 *
-	 * @return the rootFolderInZip
+	 * @return <span class="en-US">Root folder path</span>
+	 * <span class="zh-CN">根目录路径</span>
 	 */
 	public String getRootFolderInZip() {
-		return rootFolderInZip;
+		return this.rootFolderInZip;
 	}
 
 	/**
-	 * Sets root folder in zip.
+	 * <h3 class="en-US">Setter method for the root folder path</h3>
+	 * <h3 class="zh-CN">根目录路径的Setter方法</h3>
 	 *
-	 * @param rootFolderInZip the rootFolderInZip to set
+	 * @param rootFolderInZip <span class="en-US">Root folder path</span>
+	 *                        <span class="zh-CN">根目录路径</span>
 	 */
 	public void setRootFolderInZip(final String rootFolderInZip) {
 		if (!rootFolderInZip.endsWith(Globals.DEFAULT_PAGE_SEPARATOR)) {
 			this.rootFolderInZip = rootFolderInZip + Globals.DEFAULT_PAGE_SEPARATOR;
 		}
-		this.rootFolderInZip = StringUtils.replace(rootFolderInZip, Globals.DEFAULT_PAGE_SEPARATOR, "/");
+		this.rootFolderInZip =
+				StringUtils.replace(rootFolderInZip, Globals.DEFAULT_PAGE_SEPARATOR, Globals.DEFAULT_ZIP_PAGE_SEPARATOR);
 	}
 
 	/**
-	 * Gets time zone.
+	 * <h3 class="en-US">Getter method for the timezone setting</h3>
+	 * <h3 class="zh-CN">时区设置的Getter方法</h3>
 	 *
-	 * @return the timeZone
+	 * @return <span class="en-US">Timezone setting</span>
+	 * <span class="zh-CN">时区设置</span>
 	 */
 	public TimeZone getTimeZone() {
-		return timeZone;
+		return this.timeZone;
 	}
 
 	/**
-	 * Sets time zone.
+	 * <h3 class="en-US">Setter method for the timezone setting</h3>
+	 * <h3 class="zh-CN">时区设置的Setter方法</h3>
 	 *
-	 * @param timeZone the timeZone to set
+	 * @param timeZone <span class="en-US">Timezone setting</span>
+	 *                 <span class="zh-CN">时区设置</span>
 	 */
 	public void setTimeZone(final TimeZone timeZone) {
 		this.timeZone = timeZone;
 	}
 
 	/**
-	 * Gets source file crc.
+	 * <h3 class="en-US">Getter method for the source file CRC result</h3>
+	 * <h3 class="zh-CN">源文件CRC值的Getter方法</h3>
 	 *
-	 * @return the sourceFileCRC
+	 * @return <span class="en-US">Source file CRC result</span>
+	 * <span class="zh-CN">源文件CRC值</span>
 	 */
 	public long getSourceFileCRC() {
-		return sourceFileCRC;
+		return this.sourceFileCRC;
 	}
 
 	/**
-	 * Sets source file crc.
+	 * <h3 class="en-US">Setter method for the source file CRC result</h3>
+	 * <h3 class="zh-CN">源文件CRC值的Setter方法</h3>
 	 *
-	 * @param sourceFileCRC the sourceFileCRC to set
+	 * @param sourceFileCRC <span class="en-US">Source file CRC result</span>
+	 *                      <span class="zh-CN">源文件CRC值</span>
 	 */
 	public void setSourceFileCRC(final long sourceFileCRC) {
 		this.sourceFileCRC = sourceFileCRC;
 	}
 
 	/**
-	 * Gets the default folder path.
+	 * <h3 class="en-US">Getter method for the default folder path</h3>
+	 * <h3 class="zh-CN">默认目录路径的Getter方法</h3>
 	 *
-	 * @return the defaultFolderPath
+	 * @return <span class="en-US">Default folder path</span>
+	 * <span class="zh-CN">默认目录路径</span>
 	 */
 	public String getDefaultFolderPath() {
-		return defaultFolderPath;
+		return this.defaultFolderPath;
 	}
 
 	/**
-	 * Sets default folder path.
+	 * <h3 class="en-US">Setter method for the default folder path</h3>
+	 * <h3 class="zh-CN">默认目录路径的Setter方法</h3>
 	 *
-	 * @param defaultFolderPath the defaultFolderPath to set
+	 * @param defaultFolderPath <span class="en-US">Default folder path</span>
+	 *                          <span class="zh-CN">默认目录路径</span>
 	 */
 	public void setDefaultFolderPath(final String defaultFolderPath) {
 		this.defaultFolderPath = defaultFolderPath;
 	}
 
 	/**
-	 * Gets file name in zip.
+	 * <h3 class="en-US">Getter method for the file entry path</h3>
+	 * <h3 class="zh-CN">文件在压缩包内的路径的Getter方法</h3>
 	 *
-	 * @return the fileNameInZip
+	 * @return <span class="en-US">File entry path</span>
+	 * <span class="zh-CN">文件在压缩包内的路径</span>
 	 */
 	public String getFileNameInZip() {
-		return fileNameInZip;
+		return this.fileNameInZip;
 	}
 
 	/**
-	 * Sets file name in zip.
+	 * <h3 class="en-US">Setter method for the file entry path</h3>
+	 * <h3 class="zh-CN">文件在压缩包内的路径的Setter方法</h3>
 	 *
-	 * @param fileNameInZip the fileNameInZip to set
+	 * @param fileNameInZip <span class="en-US">File entry path</span>
+	 *                      <span class="zh-CN">文件在压缩包内的路径</span>
 	 */
 	public void setFileNameInZip(final String fileNameInZip) {
 		this.fileNameInZip = fileNameInZip;
 	}
 
 	/**
-	 * Is source external stream boolean.
+	 * <h3 class="en-US">Getter method for the status of source external stream</h3>
+	 * <h3 class="zh-CN">源外部流的标记的Getter方法</h3>
 	 *
-	 * @return the isSourceExternalStream
+	 * @return <span class="en-US">Status of source external stream</span>
+	 * <span class="zh-CN">源外部流的标记</span>
 	 */
 	public boolean isSourceExternalStream() {
-		return sourceExternalStream;
+		return this.sourceExternalStream;
 	}
 
 	/**
-	 * Sets source external stream.
+	 * <h3 class="en-US">Setter method for the status of source external stream</h3>
+	 * <h3 class="zh-CN">源外部流的标记的Setter方法</h3>
 	 *
-	 * @param isSourceExternalStream the isSourceExternalStream to set
+	 * @param sourceExternalStream <span class="en-US">Status of source external stream</span>
+	 *                             <span class="zh-CN">源外部流的标记</span>
 	 */
-	public void setSourceExternalStream(final boolean isSourceExternalStream) {
-		this.sourceExternalStream = isSourceExternalStream;
+	public void setSourceExternalStream(final boolean sourceExternalStream) {
+		this.sourceExternalStream = sourceExternalStream;
 	}
 
 	public Object clone() throws CloneNotSupportedException {

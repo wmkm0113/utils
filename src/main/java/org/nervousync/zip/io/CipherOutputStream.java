@@ -27,8 +27,8 @@ import java.util.zip.CRC32;
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.utils.DataInvalidException;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.options.ZipOptions;
-import org.nervousync.zip.crypto.Encryptor;
 import org.nervousync.zip.crypto.impl.aes.AESEncryptor;
 import org.nervousync.zip.crypto.impl.standard.StandardEncryptor;
 import org.nervousync.zip.crypto.impl.aes.AESEngine;
@@ -49,7 +49,7 @@ import org.nervousync.utils.StringUtils;
  * The type Cipher output stream.
  *
  * @author Steven Wee <a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 2:39:25 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 29, 2017 14:39:25 $
  */
 public class CipherOutputStream extends OutputStream {
 
@@ -63,7 +63,7 @@ public class CipherOutputStream extends OutputStream {
 	private File sourceFile;
 	private GeneralFileHeader generalFileHeader;
 	private LocalFileHeader localFileHeader;
-	private Encryptor encryptor;
+	private Cryptor encryptor;
 	/**
 	 * The Zip options.
 	 */
@@ -91,7 +91,7 @@ public class CipherOutputStream extends OutputStream {
 	 * @param outputStream the output stream
 	 * @param zipFile      the zip file
 	 */
-	CipherOutputStream(OutputStream outputStream, ZipFile zipFile) {
+	CipherOutputStream(final OutputStream outputStream, final ZipFile zipFile) {
 		this.outputStream = outputStream;
 		this.zipFile = zipFile;
 		this.initZipFile();
@@ -110,7 +110,7 @@ public class CipherOutputStream extends OutputStream {
 	 * @param zipOptions the zip options
 	 * @throws ZipException the zip exception
 	 */
-	public void putNextEntry(File file, ZipOptions zipOptions) throws ZipException {
+	public void putNextEntry(final File file, final ZipOptions zipOptions) throws ZipException {
 		if (!zipOptions.isSourceExternalStream() && file == null) {
 			throw new ZipException(0x0000001B0013L, "Null_Input_File_Zip_Error");
 		}
@@ -199,14 +199,14 @@ public class CipherOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		byte[] buffer = new byte[1];
 		buffer[0] = (byte) b;
 		this.write(buffer, 0, 1);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b) throws IOException {
+	public void write(@Nonnull final byte[] b) throws IOException {
 		if (b.length == 0) {
 			return;
 		}
@@ -215,36 +215,37 @@ public class CipherOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (len == 0) {
 			return;
 		}
 
+		int offset = off, length = len;
 		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
 			if (this.pendingBufferLength != 0) {
 				if (len >= (Globals.AES_BLOCK_SIZE - this.pendingBufferLength)) {
 					System.arraycopy(b, off, this.pendingBuffer, this.pendingBufferLength,
 							(Globals.AES_BLOCK_SIZE - this.pendingBufferLength));
 					this.encryptAndWrite(this.pendingBuffer, 0, this.pendingBuffer.length);
-					off = (Globals.AES_BLOCK_SIZE - this.pendingBufferLength);
-					len -= off;
+					offset = (Globals.AES_BLOCK_SIZE - this.pendingBufferLength);
+					length -= offset;
 					this.pendingBufferLength = 0;
 				} else {
-					System.arraycopy(b, off, this.pendingBuffer, this.pendingBufferLength, len);
-					this.pendingBufferLength += len;
+					System.arraycopy(b, offset, this.pendingBuffer, this.pendingBufferLength, length);
+					this.pendingBufferLength += length;
 					return;
 				}
 			}
 
-			if (len % 16 != 0) {
-				System.arraycopy(b, (len + off) - (len % 16), this.pendingBuffer, 0, len % 16);
-				this.pendingBufferLength = len % 16;
-				len -= this.pendingBufferLength;
+			if (length % 16 != 0) {
+				System.arraycopy(b, (length + offset) - (length % 16), this.pendingBuffer, 0, length % 16);
+				this.pendingBufferLength = length % 16;
+				length -= this.pendingBufferLength;
 			}
 		}
 
-		if (len != 0) {
-			this.encryptAndWrite(b, off, len);
+		if (length != 0) {
+			this.encryptAndWrite(b, offset, length);
 		}
 	}
 
@@ -332,10 +333,10 @@ public class CipherOutputStream extends OutputStream {
 		}
 	}
 
-	private void encryptAndWrite(byte[] b, int off, int len) throws IOException {
+	private void encryptAndWrite(final byte[] b, final int off, final int len) throws IOException {
 		if (this.encryptor != null) {
 			try {
-				this.encryptor.encryptData(b, off, len);
+				this.encryptor.process(b, off, len);
 			} catch (ZipException e) {
 				throw new IOException(e);
 			}
@@ -523,7 +524,7 @@ public class CipherOutputStream extends OutputStream {
 		this.generalFileHeader.setAesExtraDataRecord(aesExtraDataRecord);
 	}
 
-	private int getFileAttributes(File file) throws ZipException {
+	private int getFileAttributes(final File file) throws ZipException {
 		if (file == null) {
 			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
 		}
@@ -543,7 +544,7 @@ public class CipherOutputStream extends OutputStream {
 		}
 	}
 
-	private int[] generateGeneralPurposeBitArray(boolean isEncrypted, int compressionMethod) {
+	private int[] generateGeneralPurposeBitArray(final boolean isEncrypted, final int compressionMethod) {
 		int[] generalPurposeFlag = new int[8];
 
 		if (isEncrypted) {
@@ -602,8 +603,8 @@ public class CipherOutputStream extends OutputStream {
 		}
 	}
 
-	private int writeLocalFileHeader(LocalFileHeader localFileHeader,
-	                                 OutputStream outputStream) throws ZipException {
+	private int writeLocalFileHeader(final LocalFileHeader localFileHeader, final OutputStream outputStream)
+			throws ZipException {
 		if (localFileHeader == null) {
 			throw new ZipException(0x0000001B000EL, "Null_Local_File_Header_Zip_Error");
 		}

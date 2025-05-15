@@ -31,7 +31,7 @@ import org.nervousync.zip.ZipFile;
  * Deflater output stream
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 1, 2017 12:19:07 PM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 1, 2017 12:19:07 $
  */
 public class DeflaterOutputStream extends CipherOutputStream {
 
@@ -39,25 +39,25 @@ public class DeflaterOutputStream extends CipherOutputStream {
 	private final byte[] buffer = new byte[Globals.BUFFER_SIZE];
 	private boolean firstBytesRead = Boolean.FALSE;
 
-	DeflaterOutputStream(OutputStream outputStream, ZipFile zipFile) {
+	DeflaterOutputStream(final OutputStream outputStream, final ZipFile zipFile) {
 		super(outputStream, zipFile);
 		this.deflater = new Deflater();
 	}
 
 	@Override
-	public void write(int value) throws IOException {
+	public void write(final int value) throws IOException {
 		byte[] b = new byte[1];
 		b[0] = (byte) value;
 		this.write(b, 0, 1);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b) throws IOException {
+	public void write(@Nonnull final byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}
 
 	@Override
-	public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (this.zipOptions.getCompressionMethod() != Globals.COMP_DEFLATE) {
 			super.write(b, off, len);
 		} else {
@@ -68,7 +68,7 @@ public class DeflaterOutputStream extends CipherOutputStream {
 		}
 	}
 
-	public void putNextEntry(File file, ZipOptions zipOptions) throws ZipException {
+	public void putNextEntry(final File file, final ZipOptions zipOptions) throws ZipException {
 		super.putNextEntry(file, zipOptions);
 
 		if (zipOptions.getCompressionMethod() == Globals.COMP_DEFLATE) {
@@ -118,7 +118,7 @@ public class DeflaterOutputStream extends CipherOutputStream {
 		}
 	}
 
-	private void decrementCompressedFileSize(int value) {
+	private void decrementCompressedFileSize(final int value) {
 		if (value > 0 && value <= this.bytesWrittenForThisFile) {
 			this.bytesWrittenForThisFile -= value;
 		}

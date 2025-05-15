@@ -27,7 +27,7 @@ import org.nervousync.commons.Globals;
  * The type Zip input stream.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:29:09 AM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:29:09 $
  */
 public class ZipInputStream extends InputStream {
 
@@ -39,7 +39,7 @@ public class ZipInputStream extends InputStream {
 	 *
 	 * @param inputStream the input stream
 	 */
-	public ZipInputStream(InputStream inputStream) {
+	public ZipInputStream(final InputStream inputStream) {
 		this.inputStream = inputStream;
 		this.crc = new CRC32();
 	}
@@ -54,12 +54,12 @@ public class ZipInputStream extends InputStream {
 	}
 
 	@Override
-	public int read(@Nonnull byte[] b) throws IOException {
+	public int read(@Nonnull final byte[] b) throws IOException {
 		return this.read(b, 0, b.length);
 	}
 
 	@Override
-	public int read(@Nonnull byte[] b, int off, int len) throws IOException {
+	public int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		int readLength = this.inputStream.read(b, off, len);
 		if (readLength != Globals.DEFAULT_VALUE_INT) {
 			this.crc.update(b, off, readLength);

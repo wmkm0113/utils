@@ -18,7 +18,7 @@ package org.nervousync.zip.models;
 
 /**
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:56:08 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:56:08 $
  */
 public final class ArchiveExtraDataRecord {
 
@@ -50,7 +50,7 @@ public final class ArchiveExtraDataRecord {
 	/**
 	 * @param extraFieldLength the extraFieldLength to set
 	 */
-	public void setExtraFieldLength(int extraFieldLength) {
+	public void setExtraFieldLength(final int extraFieldLength) {
 		this.extraFieldLength = extraFieldLength;
 	}
 
@@ -64,7 +64,7 @@ public final class ArchiveExtraDataRecord {
 	/**
 	 * @param extraFieldData the extraFieldData to set
 	 */
-	public void setExtraFieldData(String extraFieldData) {
+	public void setExtraFieldData(final String extraFieldData) {
 		this.extraFieldData = extraFieldData;
 	}
 }

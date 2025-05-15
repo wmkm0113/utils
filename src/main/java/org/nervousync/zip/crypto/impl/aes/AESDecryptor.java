@@ -18,17 +18,17 @@ package org.nervousync.zip.crypto.impl.aes;
 
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.crypto.CryptoException;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.models.header.LocalFileHeader;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.zip.crypto.Decryptor;
 
 /**
  * Decryptor implement of AES
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:55:30 AM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:55:30 $
  */
-public final class AESDecryptor extends AESCrypto implements Decryptor {
+public final class AESDecryptor extends AESCrypto implements Cryptor {
 
 	private byte[] storedMac = null;
 
@@ -40,8 +40,8 @@ public final class AESDecryptor extends AESCrypto implements Decryptor {
 	 * @param passwordBytes   the password bytes
 	 * @throws ZipException the zip exception
 	 */
-	public AESDecryptor(LocalFileHeader localFileHeader,
-	                    byte[] salt, byte[] passwordBytes) throws ZipException {
+	public AESDecryptor(final LocalFileHeader localFileHeader,
+	                    final byte[] salt, final byte[] passwordBytes) throws ZipException {
 		if (localFileHeader == null) {
 			throw new ZipException(0x0000001B000EL, "Null_Local_File_Header_Zip_Error");
 		}
@@ -59,12 +59,7 @@ public final class AESDecryptor extends AESCrypto implements Decryptor {
 	}
 
 	@Override
-	public int decryptData(byte[] buff) throws ZipException {
-		return this.decryptData(buff, 0, buff.length);
-	}
-
-	@Override
-	public int decryptData(byte[] buff, int start, int len) throws ZipException {
+	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (this.aesEngine == null) {
 			throw new ZipException(0x0000001B0002L, "Not_Initialized_AES_Engine_Zip_Error");
 		}
@@ -75,7 +70,6 @@ public final class AESDecryptor extends AESCrypto implements Decryptor {
 				this.macBasedPRF.append(buff, i, this.loopCount);
 				super.processData(buff, i);
 			}
-			return len;
 		} catch (Exception e) {
 			throw new ZipException(0x0000001B000BL, "Decrypt_Crypto_Zip_Error", e);
 		}
@@ -114,7 +108,7 @@ public final class AESDecryptor extends AESCrypto implements Decryptor {
 	 *
 	 * @param storedMac the storedMac to set
 	 */
-	public void setStoredMac(byte[] storedMac) {
+	public void setStoredMac(final byte[] storedMac) {
 		this.storedMac = storedMac == null ? new byte[0] : storedMac.clone();
 	}
 }

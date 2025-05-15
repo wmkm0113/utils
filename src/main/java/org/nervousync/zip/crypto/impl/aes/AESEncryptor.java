@@ -20,15 +20,15 @@ import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.zip.crypto.Encryptor;
+import org.nervousync.zip.crypto.Cryptor;
 
 /**
  * Encryptor implement of AES
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 30, 2017 3:42:11 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 30, 2017 15:42:11 $
  */
-public final class AESEncryptor extends AESCrypto implements Encryptor {
+public final class AESEncryptor extends AESCrypto implements Cryptor {
 
 	private boolean finished = Boolean.FALSE;
 
@@ -39,21 +39,13 @@ public final class AESEncryptor extends AESCrypto implements Encryptor {
 	 * @param aesStrength the aes strength
 	 * @throws ZipException the zip exception
 	 */
-	public AESEncryptor(char[] password, int aesStrength) throws ZipException {
+	public AESEncryptor(final char[] password, final int aesStrength) throws ZipException {
 		super.preInit(aesStrength);
 		this.init(password);
 	}
 
 	@Override
-	public void encryptData(byte[] buff) throws ZipException {
-		if (buff == null) {
-			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
-		}
-		this.encryptData(buff, 0, buff.length);
-	}
-
-	@Override
-	public void encryptData(byte[] buff, int start, int len) throws ZipException {
+	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (this.finished) {
 			throw new ZipException(0x0000001B0012L, "Finished_Encryptor_AES_Zip_Error");
 		}

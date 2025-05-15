@@ -34,7 +34,7 @@ import org.nervousync.utils.RawUtils;
  * AES Crypto
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 11:16:18 AM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 11:16:18 $
  */
 public class AESCrypto {
 
@@ -105,8 +105,8 @@ public class AESCrypto {
 	 * @param passwordBytes password bytes
 	 * @return verify result
 	 */
-	public static boolean verifyPassword(int aesStrength, byte[] salt, char[] password, byte[] passwordBytes)
-			throws ZipException {
+	public static boolean verifyPassword(final int aesStrength, final byte[] salt,
+	                                     final char[] password, final byte[] passwordBytes) throws ZipException {
 		if (password == null || password.length == 0 || passwordBytes == null || passwordBytes.length == 0) {
 			return Boolean.FALSE;
 		}
@@ -130,7 +130,7 @@ public class AESCrypto {
 	 *
 	 * @param aesStrength AES key strength
 	 */
-	void preInit(int aesStrength) throws ZipException {
+	void preInit(final int aesStrength) throws ZipException {
 		this.iv = new byte[Globals.AES_BLOCK_SIZE];
 		this.countBlock = new byte[Globals.AES_BLOCK_SIZE];
 
@@ -161,7 +161,7 @@ public class AESCrypto {
 	 * @param password password
 	 * @throws ZipException the zip exception
 	 */
-	void init(char[] password) throws ZipException {
+	void init(final char[] password) throws ZipException {
 		if (password == null || password.length == 0) {
 			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
 		}
@@ -180,7 +180,7 @@ public class AESCrypto {
 	 * @param password password char arrays
 	 * @throws ZipException the zip exception
 	 */
-	void init(byte[] salt, char[] password) throws ZipException {
+	void init(final byte[] salt, final char[] password) throws ZipException {
 		if (password == null || password.length == 0) {
 			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
 		}
@@ -198,7 +198,7 @@ public class AESCrypto {
 	 * @param buff  the buff
 	 * @param index the index
 	 */
-	void processData(byte[] buff, int index) throws ZipException, DataInvalidException {
+	void processData(final byte[] buff, final int index) throws ZipException, DataInvalidException {
 		this.iv = new byte[16];
 		RawUtils.writeInt(this.iv, ByteOrder.LITTLE_ENDIAN, this.nonce);
 		this.aesEngine.processBlock(this.iv, this.countBlock);
@@ -217,7 +217,7 @@ public class AESCrypto {
 	 * @param dkLen     length
 	 * @return processed data bytes
 	 */
-	private byte[] deriveKey(byte[] saltBytes, char[] password, int dkLen)
+	private byte[] deriveKey(final byte[] saltBytes, final char[] password, final int dkLen)
 			throws CryptoException, DataInvalidException {
 		//	PBKDF2
 		if (password == null || password.length == 0) {
@@ -226,27 +226,22 @@ public class AESCrypto {
 		byte[] passwordBytes = RawUtils.charArrayToByteArray(password);
 		BaseDigestAdapter digestProvider = (BaseDigestAdapter) SecurityUtils.HmacSHA1(passwordBytes);
 
-		if (dkLen == 0) {
-			dkLen = digestProvider.macLength();
-		}
-
-		if (saltBytes == null) {
-			saltBytes = new byte[0];
-		}
+		int dkLength = (dkLen == 0) ? digestProvider.macLength() : dkLen;
+		byte[] salt = (saltBytes == null) ? new byte[0] : saltBytes;
 
 		int length = digestProvider.macLength();
-		int l = ceil(dkLen, length);
-		int r = dkLen - (l - 1) * length;
+		int l = ceil(dkLength, length);
+		int r = dkLength - (l - 1) * length;
 		byte[] tempBytes = new byte[l * length];
 		int offset = 0;
 		for (int i = 1; i <= l; i++) {
-			process(digestProvider, tempBytes, offset, saltBytes, i);
+			process(digestProvider, tempBytes, offset, salt, i);
 			offset += length;
 		}
 
 		if (r < length) {
-			byte[] bytes = new byte[dkLen];
-			System.arraycopy(tempBytes, 0, bytes, 0, dkLen);
+			byte[] bytes = new byte[dkLength];
+			System.arraycopy(tempBytes, 0, bytes, 0, dkLength);
 			return bytes;
 		}
 		return tempBytes;
@@ -258,7 +253,7 @@ public class AESCrypto {
 	 * @param password password
 	 * @return verify result
 	 */
-	boolean verifyPassword(byte[] password) throws ZipException {
+	boolean verifyPassword(final byte[] password) throws ZipException {
 		if (this.derivedPasswordVerifier == null) {
 			throw new ZipException(0x0000001B0007L, "Invalid_Derived_Password_Verifier_Zip_Error");
 		}
@@ -266,7 +261,7 @@ public class AESCrypto {
 		return Arrays.equals(password, this.derivedPasswordVerifier);
 	}
 
-	private static int ceil(int a, int b) {
+	private static int ceil(final int a, final int b) {
 		int m = 0;
 		if (a % b > 0) {
 			m = 1;
@@ -274,8 +269,8 @@ public class AESCrypto {
 		return a / b + m;
 	}
 
-	private static void process(BaseDigestAdapter baseDigestProvider,
-	                            byte[] dest, int offset, byte[] source, int blockIndex)
+	private static void process(final BaseDigestAdapter baseDigestProvider,
+	                            final byte[] dest, final int offset, final byte[] source, final int blockIndex)
 			throws CryptoException, DataInvalidException {
 		int length = baseDigestProvider.macLength();
 		byte[] tempBytes = new byte[length];
@@ -291,7 +286,7 @@ public class AESCrypto {
 		System.arraycopy(tempBytes, Globals.INITIALIZE_INT_VALUE, dest, offset, length);
 	}
 
-	private static void XOR(byte[] dest, byte[] source) {
+	private static void XOR(final byte[] dest, final byte[] source) {
 		for (int i = 0; i < dest.length; i++) {
 			dest[i] ^= source[i];
 		}
@@ -302,7 +297,7 @@ public class AESCrypto {
 	 *
 	 * @param password password
 	 */
-	private void initCrypto(char[] password) throws CryptoException, ZipException {
+	private void initCrypto(final char[] password) throws CryptoException, ZipException {
 		byte[] keyBytes;
 		try {
 			keyBytes = this.deriveKey(this.saltBytes, password,

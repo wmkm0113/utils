@@ -21,7 +21,7 @@ import java.io.InputStream;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
-import org.nervousync.zip.crypto.Decryptor;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.crypto.impl.aes.AESDecryptor;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.commons.io.StandardFile;
@@ -31,7 +31,7 @@ import org.nervousync.zip.ZipFile;
  * The type Part input stream.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:30:23 AM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:30:23 $
  */
 public class PartInputStream extends InputStream {
 
@@ -40,7 +40,7 @@ public class PartInputStream extends InputStream {
 	private int currentIndex;
 	private long readBytes;
 	private final long length;
-	private final Decryptor decryptor;
+	private final Cryptor decryptor;
 	private final byte[] oneByteBuffer = new byte[1];
 	private final byte[] aesBlockBuffer = new byte[Globals.AES_BLOCK_SIZE];
 	private int aesBytesReturned = 0;
@@ -56,7 +56,7 @@ public class PartInputStream extends InputStream {
 	 * @param isAESEncryptedFile is aes encrypted file
 	 */
 	protected PartInputStream(@Nonnull final ZipFile zipFile, final int currentIndex, @Nonnull final StandardFile input,
-	                        final long length, final Decryptor decryptor, final boolean isAESEncryptedFile) {
+	                          final long length, final Cryptor decryptor, final boolean isAESEncryptedFile) {
 		this.zipFile = zipFile;
 		this.currentIndex = currentIndex;
 		this.input = input;
@@ -67,7 +67,7 @@ public class PartInputStream extends InputStream {
 	}
 
 	public static PartInputStream newInstance(@Nonnull final ZipFile zipFile, final int currentIndex,
-	                                          final long seekPosition, final long length, final Decryptor decryptor,
+	                                          final long seekPosition, final long length, final Cryptor decryptor,
 	                                          final boolean isAESEncryptedFile)
 			throws IOException {
 		final StandardFile input = zipFile.openSplitFile(currentIndex);
@@ -96,26 +96,27 @@ public class PartInputStream extends InputStream {
 	}
 
 	@Override
-	public synchronized int read(@Nonnull byte[] b, int off, int len) throws IOException {
+	public synchronized int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		try {
-			if (len > (this.length - this.readBytes)) {
-				len = (int) (this.length - this.readBytes);
+			int length = len;
+			if (length > (this.length - this.readBytes)) {
+				length = (int) (this.length - this.readBytes);
 
-				if (len == 0) {
+				if (length == 0) {
 					this.checkAndReadAESMacBytes();
 					return Globals.DEFAULT_VALUE_INT;
 				}
 			}
 
 			if (this.decryptor instanceof AESDecryptor) {
-				if ((this.readBytes + len) < this.length
-						&& (len % 16 != 0)) {
-					len -= (len % 16);
+				if ((this.readBytes + length) < this.length
+						&& (length % 16 != 0)) {
+					length -= (length % 16);
 				}
 			}
 
-			int count = this.input.read(b, off, len);
-			if ((count < len) && this.zipFile.isSplitArchive()) {
+			int count = this.input.read(b, off, length);
+			if ((count < length) && this.zipFile.isSplitArchive()) {
 				this.input.close();
 				this.currentIndex++;
 				this.input = this.zipFile.openSplitFile(this.currentIndex);
@@ -124,7 +125,7 @@ public class PartInputStream extends InputStream {
 					count = 0;
 				}
 
-				int readCount = this.input.read(b, count, len - count);
+				int readCount = this.input.read(b, count, length - count);
 				if (readCount > 0) {
 					count += readCount;
 				}
@@ -133,7 +134,7 @@ public class PartInputStream extends InputStream {
 			if (count > 0) {
 				if (this.decryptor != null) {
 					try {
-						this.decryptor.decryptData(b, off, count);
+						this.decryptor.process(b, off, count);
 					} catch (ZipException e) {
 						throw new IOException(e);
 					}
@@ -160,17 +161,18 @@ public class PartInputStream extends InputStream {
 		return (int) amount;
 	}
 
-	public long skip(long length) throws IOException {
+	public long skip(final long length) throws IOException {
 		if (length < 0L) {
 			throw new IllegalArgumentException();
 		}
 
-		if (length > (this.length - this.readBytes)) {
-			length = this.length - this.readBytes;
+		long skipLength = length;
+		if (skipLength > (this.length - this.readBytes)) {
+			skipLength = this.length - this.readBytes;
 		}
 
-		this.readBytes += length;
-		return length;
+		this.readBytes += skipLength;
+		return skipLength;
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class PartInputStream extends InputStream {
 	 * @param pos the pos
 	 * @throws IOException the io exception
 	 */
-	public void seek(long pos) throws IOException {
+	public void seek(final long pos) throws IOException {
 		this.input.seek(pos);
 	}
 

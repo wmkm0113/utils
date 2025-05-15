@@ -23,7 +23,7 @@ import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.utils.*;
-import org.nervousync.zip.crypto.Decryptor;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.crypto.impl.aes.AESDecryptor;
 import org.nervousync.zip.crypto.impl.aes.AESEngine;
 import org.nervousync.zip.crypto.impl.standard.StandardDecryptor;
@@ -94,82 +94,88 @@ public final class ZipFile implements Cloneable {
 	 */
 	private boolean numberFormattedName = Boolean.FALSE;
 	/**
-	 * List of local file headers
+	 * <span class="en-US">File header information list</span>
+	 * <span class="zh-CN">文件头信息列表</span>
 	 */
 	private List<LocalFileHeader> localFileHeaderList = null;
 	/**
-	 * Record of archive extra data
+	 * <span class="en-US">Record of archive extra data</span>
+	 * <span class="zh-CN">压缩包扩展数据记录</span>
 	 *
 	 * @see ArchiveExtraDataRecord
 	 */
 	private ArchiveExtraDataRecord archiveExtraDataRecord = null;
 	/**
-	 * Object of central directory
+	 * <span class="en-US">Central directory instance object</span>
+	 * <span class="zh-CN">中央目录实例对象</span>
 	 *
 	 * @see CentralDirectory
 	 */
 	private CentralDirectory centralDirectory = null;
 	/**
-	 * Record of end central directory
+	 * <span class="en-US">End central directory record instance object</span>
+	 * <span class="zh-CN">中央目录终止记录实例对象</span>
 	 *
 	 * @see EndCentralDirectoryRecord
 	 */
 	private EndCentralDirectoryRecord endCentralDirectoryRecord = null;
 	/**
-	 * Locator of Zip64 end central directory
+	 * <span class="en-US">ZIP 64 end central directory locator instance object</span>
+	 * <span class="zh-CN">ZIP64中央目录定位信息实例对象</span>
 	 *
 	 * @see Zip64EndCentralDirectoryLocator
 	 */
 	private Zip64EndCentralDirectoryLocator zip64EndCentralDirectoryLocator = null;
 	/**
-	 * Record of Zip64 end central directory
+	 * <span class="en-US">ZIP 64 end central directory record instance object</span>
+	 * <span class="zh-CN">ZIP64中央目录终止记录实例对象</span>
 	 *
 	 * @see Zip64EndCentralDirectoryRecord
 	 */
 	private Zip64EndCentralDirectoryRecord zip64EndCentralDirectoryRecord = null;
 	/**
-	 * Decryptor instance
-	 *
-	 * @see Decryptor
+	 * <span class="en-US">Decryptor instance object</span>
+	 * <span class="zh-CN">解密器实例对象</span>
 	 */
-	private Decryptor decryptor = null;
+	private Cryptor decryptor = null;
 	/**
-	 * Archive is split file status
+	 * <span class="en-US">Archive is split file status</span>
+	 * <span class="zh-CN">分卷压缩包标记</span>
 	 */
 	private boolean splitArchive;
 	/**
-	 * Maximum length of split item
+	 * <span class="en-US">Maximum length of split item</span>
+	 * <span class="zh-CN">分卷大小</span>
 	 */
 	private long splitLength;
+	/**
+	 * <span class="en-US">Current split count of archive</span>
+	 * <span class="zh-CN">当前的分卷计数</span>
+	 */
 	private int splitCount = Globals.INITIALIZE_INT_VALUE;
 	/**
-	 * Is Zip64 format
+	 * <span class="en-US">ZIP64 format archive flag</span>
+	 * <span class="zh-CN">压缩包为ZIP64标记</span>
 	 */
 	private boolean zip64Format = Boolean.FALSE;
 
 	/**
-	 * ZipFile Constructor
+	 * <h3 class="en-US">Private constructor method for ZIP file</h3>
+	 * <h3 class="zh-CN">ZIP文件的私有构造方法</h3>
 	 *
-	 * @param filePath        Zip file path
-	 * @param charsetEncoding Charset encoding
-	 * @throws ZipException Zip file cannot access and read
-	 */
-	private ZipFile(final String filePath, final String charsetEncoding) throws ZipException {
-		this(filePath, charsetEncoding, Boolean.FALSE, Globals.DEFAULT_VALUE_LONG);
-	}
-
-	/**
-	 * ZipFile Constructor
-	 *
-	 * @param filePath        Zip file path
-	 * @param charsetEncoding Charset encoding
-	 * @param splitArchive    Split archive
-	 * @param splitLength     Split length
+	 * @param filePath        <span class="en-US">Current zip file path</span>
+	 *                        <span class="zh-CN">当前压缩文件路径</span>
+	 * @param charsetEncoding <span class="en-US">Using charset encoding</span>
+	 *                        <span class="zh-CN">使用的字符集</span>
+	 * @param splitArchive    <span class="en-US">Archive is split file status</span>
+	 *                        <span class="zh-CN">分卷压缩包标记</span>
+	 * @param splitLength     <span class="en-US">Maximum length of split item</span>
+	 *                        <span class="zh-CN">分卷大小</span>
 	 */
 	private ZipFile(final String filePath, final String charsetEncoding, final boolean splitArchive,
 	                final long splitLength) throws ZipException {
 		this.filePath = filePath;
-		this.charsetEncoding = charsetEncoding == null ? Globals.DEFAULT_ENCODING : charsetEncoding;
+		this.charsetEncoding = StringUtils.isEmpty(charsetEncoding) ? Globals.DEFAULT_ENCODING : charsetEncoding;
 		this.splitArchive = splitArchive;
 		this.splitLength = splitLength;
 		if (FileUtils.isExists(this.filePath)) {
@@ -181,37 +187,51 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Open zip file
+	 * <h3 class="en-US">Static method for open the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于打开ZIP文件</h3>
 	 *
-	 * @param filePath the file path
-	 * @return the zip file
-	 * @throws ZipException the zip exception
+	 * @param filePath <span class="en-US">Current zip file path</span>
+	 *                 <span class="zh-CN">当前压缩文件路径</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when open the ZIP file</span>
+	 *                      <span class="zh-CN">读取ZIP文件时出错</span>
 	 */
 	public static ZipFile openZipFile(final String filePath) throws ZipException {
 		return openZipFile(filePath, Globals.DEFAULT_ENCODING);
 	}
 
 	/**
-	 * Open zip file
+	 * <h3 class="en-US">Static method for open the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于打开ZIP文件</h3>
 	 *
-	 * @param filePath        the file path
-	 * @param charsetEncoding the charset encoding
-	 * @return the zip file
-	 * @throws ZipException the zip exception
+	 * @param filePath        <span class="en-US">Current zip file path</span>
+	 *                        <span class="zh-CN">当前压缩文件路径</span>
+	 * @param charsetEncoding <span class="en-US">Using charset encoding</span>
+	 *                        <span class="zh-CN">使用的字符集</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when open the ZIP file</span>
+	 *                      <span class="zh-CN">读取ZIP文件时出错</span>
 	 */
 	public static ZipFile openZipFile(final String filePath, final String charsetEncoding) throws ZipException {
-		return new ZipFile(filePath, charsetEncoding);
+		return new ZipFile(filePath, charsetEncoding, Boolean.FALSE, Globals.DEFAULT_VALUE_LONG);
 	}
 
 	/**
-	 * Create the zip file using default character encoding
+	 * <h3 class="en-US">Static method for create the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于创建ZIP文件</h3>
 	 *
-	 * @param filePath   Zip file path
-	 * @param zipOptions Zip options
-	 * @param addFiles   List of files in the zip file
-	 * @return ZipFile instance
-	 * @throws ZipException If the target file exists or add files is null or empty
-	 * @see ZipOptions
+	 * @param filePath   <span class="en-US">Current zip file path</span>
+	 *                   <span class="zh-CN">当前压缩文件路径</span>
+	 * @param zipOptions <span class="en-US">ZipOption instance object</span>
+	 *                   <span class="zh-CN">压缩文件属性</span>
+	 * @param addFiles   <span class="en-US">List of files in the zip file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件列表</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when create the ZIP file</span>
+	 *                      <span class="zh-CN">创建ZIP文件时出错</span>
 	 */
 	public static ZipFile createZipFile(final String filePath, final ZipOptions zipOptions, final String... addFiles)
 			throws ZipException {
@@ -219,16 +239,23 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Create a split archive zip file
+	 * <h3 class="en-US">Static method for create the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于创建ZIP文件</h3>
 	 *
-	 * @param filePath     Zip file path
-	 * @param zipOptions   Zip options
-	 * @param splitArchive Status of split archive
-	 * @param splitLength  Maximum size of the split file
-	 * @param addFiles     List of files in the zip file
-	 * @return ZipFile instance
-	 * @throws ZipException If the target file was existed or add files is null or empty
-	 * @see ZipOptions
+	 * @param filePath     <span class="en-US">Current zip file path</span>
+	 *                     <span class="zh-CN">当前压缩文件路径</span>
+	 * @param zipOptions   <span class="en-US">ZipOption instance object</span>
+	 *                     <span class="zh-CN">压缩文件属性</span>
+	 * @param splitArchive <span class="en-US">Archive is split file status</span>
+	 *                     <span class="zh-CN">分卷压缩包标记</span>
+	 * @param splitLength  <span class="en-US">Maximum length of split item</span>
+	 *                     <span class="zh-CN">分卷大小</span>
+	 * @param addFiles     <span class="en-US">List of files in the zip file</span>
+	 *                     <span class="zh-CN">需要添加到压缩文件的文件列表</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when create the ZIP file</span>
+	 *                      <span class="zh-CN">创建ZIP文件时出错</span>
 	 */
 	public static ZipFile createZipFile(final String filePath, final ZipOptions zipOptions, final boolean splitArchive,
 	                                    final long splitLength, final String... addFiles) throws ZipException {
@@ -243,24 +270,20 @@ public final class ZipFile implements Cloneable {
 		return zipFile;
 	}
 
-	private static void checkFilePath(final String filePath) throws ZipException {
-		if (StringUtils.isEmpty(filePath)) {
-			throw new ZipException(0x0000001B001BL);
-		}
-		if (FileUtils.isExists(filePath)) {
-			throw new ZipException(0x0000001B001CL);
-		}
-	}
-
 	/**
-	 * Create the zip file and add folder to the zip file
+	 * <h3 class="en-US">Static method for create the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于创建ZIP文件</h3>
 	 *
-	 * @param filePath   Zip file path
-	 * @param zipOptions Zip options
-	 * @param folderPath Folder will add to the zip file
-	 * @return ZipFile instance
-	 * @throws ZipException If the target file was existed or the folder is empty
-	 * @see ZipOptions
+	 * @param filePath   <span class="en-US">Current zip file path</span>
+	 *                   <span class="zh-CN">当前压缩文件路径</span>
+	 * @param zipOptions <span class="en-US">ZipOption instance object</span>
+	 *                   <span class="zh-CN">压缩文件属性</span>
+	 * @param folderPath <span class="en-US">Folder path will add to the ZIP file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件夹</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when create the ZIP file</span>
+	 *                      <span class="zh-CN">创建ZIP文件时出错</span>
 	 */
 	public static ZipFile createZipFileFromFolder(final String filePath, final ZipOptions zipOptions,
 	                                              final String folderPath) throws ZipException {
@@ -269,16 +292,23 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Create the zip file and add folder to the zip file
+	 * <h3 class="en-US">Static method for create the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于创建ZIP文件</h3>
 	 *
-	 * @param filePath     Zip file path
-	 * @param zipOptions   Zip options
-	 * @param splitArchive Status of split archive
-	 * @param splitLength  Maximum size of the split file
-	 * @param folderPath   Folder will add to the zip file
-	 * @return ZipFile instance
-	 * @throws ZipException If the target file was existed or the folder is empty
-	 * @see ZipOptions
+	 * @param filePath     <span class="en-US">Current zip file path</span>
+	 *                     <span class="zh-CN">当前压缩文件路径</span>
+	 * @param zipOptions   <span class="en-US">ZipOption instance object</span>
+	 *                     <span class="zh-CN">压缩文件属性</span>
+	 * @param splitArchive <span class="en-US">Archive is split file status</span>
+	 *                     <span class="zh-CN">分卷压缩包标记</span>
+	 * @param splitLength  <span class="en-US">Maximum length of split item</span>
+	 *                     <span class="zh-CN">分卷大小</span>
+	 * @param folderPath   <span class="en-US">Folder path will add to the ZIP file</span>
+	 *                     <span class="zh-CN">需要添加到压缩文件的文件夹</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when create the ZIP file</span>
+	 *                      <span class="zh-CN">创建ZIP文件时出错</span>
 	 */
 	public static ZipFile createZipFileFromFolder(final String filePath, final ZipOptions zipOptions,
 	                                              final boolean splitArchive, final long splitLength,
@@ -298,13 +328,19 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Generate the entity path
+	 * <h3 class="en-US">Static method for generate the entity path</h3>
+	 * <h3 class="zh-CN">静态方法用于生成ZIP内路径</h3>
 	 *
-	 * @param file            Which file path will add to the target zip file.
-	 * @param rootFolderInZip prefix path of the zip file
-	 * @param rootFolderPath  root path of folder
-	 * @return Generated entry path
-	 * @throws ZipException given file is null
+	 * @param file            <span class="en-US">Which file path will add to the target zip file.</span>
+	 *                        <span class="zh-CN">需要添加到ZIP文件的文件路径</span>
+	 * @param rootFolderInZip <span class="en-US">Prefix path of the zip file</span>
+	 *                        <span class="zh-CN">ZIP文件的路径前缀</span>
+	 * @param rootFolderPath  <span class="en-US">Root folder path</span>
+	 *                        <span class="zh-CN">根目录路径</span>
+	 * @return <span class="en-US">Generated entry path</span>
+	 * <span class="zh-CN">生成的路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public static String getRelativeFileName(final String file, final String rootFolderInZip,
 	                                         final String rootFolderPath) throws ZipException {
@@ -365,19 +401,24 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Get the entry path list
+	 * <h3 class="en-US">Get the entry path list which path matched by the given regex string</h3>
+	 * <h3 class="zh-CN">获取满足给定正则表达式的路径列表</h3>
 	 *
-	 * @return entry path list
+	 * @return <span class="en-US">Entry path list</span>
+	 * <span class="zh-CN">路径列表</span>
 	 */
 	public List<String> entryList() {
 		return this.entryList(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
-	 * Get the entry path list
+	 * <h3 class="en-US">Get the entry path list which path matched by the given regex string</h3>
+	 * <h3 class="zh-CN">获取满足给定正则表达式的路径列表</h3>
 	 *
-	 * @param regex the regex
-	 * @return entry path list
+	 * @param regex <span class="en-US">Regex string</span>
+	 *              <span class="zh-CN">正则表达式</span>
+	 * @return <span class="en-US">Entry path list</span>
+	 * <span class="zh-CN">路径列表</span>
 	 */
 	public List<String> entryList(final String regex) {
 		List<String> entryList = new ArrayList<>();
@@ -394,10 +435,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Check the given entry path is existed
+	 * <h3 class="en-US">Check the given entry path is existed</h3>
+	 * <h3 class="zh-CN">检查当前的ZIP文件中是否包含给定路径</h3>
 	 *
-	 * @param entryPath entry path
-	 * @return check result
+	 * @param entryPath <span class="en-US">The path of the file to be read</span>
+	 *                  <span class="zh-CN">需要读取的文件路径</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
 	 */
 	public boolean isEntryExists(final String entryPath) {
 		for (GeneralFileHeader generalFileHeader : this.centralDirectory.getFileHeaders()) {
@@ -409,11 +453,15 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Read entry length
+	 * <h3 class="en-US">Read data length by the given entry path from the current ZIP file</h3>
+	 * <h3 class="zh-CN">从当前的ZIP文件中读取给定路径的数据大小</h3>
 	 *
-	 * @param entryPath Check the entry path
-	 * @return Entry length
-	 * @throws ZipException file list is empty or zipOptions is null
+	 * @param entryPath <span class="en-US">The path of the file to be read</span>
+	 *                  <span class="zh-CN">需要读取的文件路径</span>
+	 * @return <span class="en-US">Entry data length</span>
+	 * <span class="zh-CN">文件大小</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public int readEntryLength(final String entryPath) throws ZipException {
 		if (FileUtils.isExists(this.filePath) && this.splitArchive) {
@@ -423,24 +471,34 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Read entry data bytes
+	 * <h3 class="en-US">Read binary data by the given entry path from the current ZIP file</h3>
+	 * <h3 class="zh-CN">从当前的ZIP文件中读取给定路径的二进制数据</h3>
 	 *
-	 * @param entryPath Check the entry path
-	 * @return entry data bytes
-	 * @throws ZipException file list is empty or zipOptions is null
+	 * @param entryPath <span class="en-US">The path of the file to be read</span>
+	 *                  <span class="zh-CN">需要读取的文件路径</span>
+	 * @return <span class="en-US">Read binary data</span>
+	 * <span class="zh-CN">读取的二进制数据</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public byte[] readEntry(final String entryPath) throws ZipException {
 		return this.readEntry(entryPath, Globals.DEFAULT_VALUE_LONG, Globals.DEFAULT_VALUE_INT);
 	}
 
 	/**
-	 * Read entry data bytes
+	 * <h3 class="en-US">Read binary data by the given entry path from the current ZIP file</h3>
+	 * <h3 class="zh-CN">从当前的ZIP文件中读取给定路径的二进制数据</h3>
 	 *
-	 * @param entryPath  Check the entry path
-	 * @param position   the position
-	 * @param readLength the read length
-	 * @return entry data bytes
-	 * @throws ZipException file list is empty or zipOptions is null
+	 * @param entryPath  <span class="en-US">The path of the file to be read</span>
+	 *                   <span class="zh-CN">需要读取的文件路径</span>
+	 * @param position   <span class="en-US">The beginning position</span>
+	 *                   <span class="zh-CN">读取的起始位置</span>
+	 * @param readLength <span class="en-US">The read length</span>
+	 *                   <span class="zh-CN">读取的长度</span>
+	 * @return <span class="en-US">Read binary data</span>
+	 * <span class="zh-CN">读取的二进制数据</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public byte[] readEntry(final String entryPath, final long position, final int readLength) throws ZipException {
 		if (FileUtils.isExists(this.filePath) && this.splitArchive) {
@@ -451,92 +509,103 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Open input stream by given entry path
+	 * <h3 class="en-US">Get InputStream instance object by the given entry path from the current ZIP file</h3>
+	 * <h3 class="zh-CN">获取给定路径的输入流实例对象</h3>
 	 *
-	 * @param entryPath The zip entry path
-	 * @return Opened input stream
-	 * @throws ZipException File is split archive
+	 * @param entryPath <span class="en-US">The path of the file to be read</span>
+	 *                  <span class="zh-CN">需要读取的文件路径</span>
+	 * @return <span class="en-US">Opened input stream</span>
+	 * <span class="zh-CN">打开的输入流实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public InputStream entryInputStream(final String entryPath) throws ZipException {
 		if (FileUtils.isExists(this.filePath) && this.splitArchive) {
 			throw new ZipException(0x0000001B0018L);
 		}
-
 		return this.openInputStream(this.retrieveGeneralFileHeader(entryPath));
 	}
 
 	/**
-	 * Add file to zip file
+	 * <h3 class="en-US">Add the file to the current ZIP file</h3>
+	 * <h3 class="zh-CN">向当前ZIP文件中添加文件</h3>
 	 *
-	 * @param file Target file will add to zip file
-	 * @throws ZipException file list is empty or zipOptions is null
+	 * @param file <span class="en-US">File instance object will add to the ZIP file</span>
+	 *             <span class="zh-CN">需要添加到压缩文件的文件</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFile(final File file) throws ZipException {
 		this.addFile(file, ZipOptions.newOptions());
 	}
 
 	/**
-	 * Add file to zip file with zip options
+	 * <h3 class="en-US">Add the file to the current ZIP file with zip options</h3>
+	 * <h3 class="zh-CN">使用给定的ZIP压缩属性向当前ZIP文件中添加文件</h3>
 	 *
-	 * @param file       Target file will add to zip file
-	 * @param zipOptions Zip options
-	 * @throws ZipException file list is empty or zipOptions is null
-	 * @see ZipOptions
+	 * @param file       <span class="en-US">File instance object will add to the ZIP file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件</span>
+	 * @param zipOptions <span class="en-US">ZipOption instance object</span>
+	 *                   <span class="zh-CN">压缩文件属性</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFile(final File file, final ZipOptions zipOptions) throws ZipException {
 		this.addFiles(Collections.singletonList(file.getAbsolutePath()), zipOptions);
 	}
 
 	/**
-	 * Add files to zip file
+	 * <h3 class="en-US">Add the file list to the current ZIP file</h3>
+	 * <h3 class="zh-CN">向当前ZIP文件中添加文件</h3>
 	 *
-	 * @param fileList the file list
-	 * @throws ZipException file list is empty or zipOptions is null
+	 * @param fileList <span class="en-US">File path list will add to the ZIP file</span>
+	 *                 <span class="zh-CN">需要添加到压缩文件的文件列表</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFiles(final List<String> fileList) throws ZipException {
 		this.addFiles(fileList, ZipOptions.newOptions());
 	}
 
 	/**
-	 * Add files to zip file with zip options
+	 * <h3 class="en-US">Add the file list to the current ZIP file with zip options</h3>
+	 * <h3 class="zh-CN">使用给定的ZIP压缩属性向当前ZIP文件中添加文件</h3>
 	 *
-	 * @param fileList   the file list
-	 * @param zipOptions Zip options
-	 * @throws ZipException file list is empty or zipOptions is null
-	 * @see ZipOptions
+	 * @param fileList   <span class="en-US">File path list will add to the ZIP file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件列表</span>
+	 * @param zipOptions <span class="en-US">ZipOption instance object</span>
+	 *                   <span class="zh-CN">压缩文件属性</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFiles(final List<String> fileList, final ZipOptions zipOptions) throws ZipException {
 		this.appendCheck(zipOptions);
 		this.addFilesToZip(fileList, zipOptions);
 	}
 
-	private void appendCheck(final ZipOptions zipOptions) throws ZipException {
-		if (zipOptions == null) {
-			throw new ZipException(0x0000001B0021L);
-		}
-
-		if (FileUtils.isExists(this.filePath) && this.splitArchive) {
-			throw new ZipException(0x0000001B0018L);
-		}
-	}
-
 	/**
-	 * Add InputStream to zip file
+	 * <h3 class="en-US">Add InputStream to the current ZIP file</h3>
+	 * <h3 class="zh-CN">向当前ZIP文件中添加数据</h3>
 	 *
-	 * @param inputStream Entity input stream
-	 * @throws ZipException Input stream is null
+	 * @param inputStream <span class="en-US">InputStream instance object will add to the ZIP file</span>
+	 *                    <span class="zh-CN">需要添加到压缩文件的输入流</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addStream(final InputStream inputStream) throws ZipException {
 		this.addStream(inputStream, ZipOptions.newOptions());
 	}
 
 	/**
-	 * Add InputStream to zip file with zip options
+	 * <h3 class="en-US">Add InputStream to the current ZIP file with zip options</h3>
+	 * <h3 class="zh-CN">使用给定的ZIP压缩属性向当前ZIP文件中添加数据</h3>
 	 *
-	 * @param inputStream Entity input stream
-	 * @param zipOptions  Zip options
-	 * @throws ZipException input stream is null or zipOptions is null
-	 * @see ZipOptions
+	 * @param inputStream <span class="en-US">InputStream instance object will add to the ZIP file</span>
+	 *                    <span class="zh-CN">需要添加到压缩文件的输入流</span>
+	 * @param zipOptions  <span class="en-US">ZipOption instance object</span>
+	 *                    <span class="zh-CN">压缩文件属性</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addStream(final InputStream inputStream, final ZipOptions zipOptions) throws ZipException {
 		if (inputStream == null) {
@@ -548,43 +617,56 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Add folder to zip file
+	 * <h3 class="en-US">Add folder to the current ZIP file</h3>
+	 * <h3 class="zh-CN">向当前ZIP文件中添加目录</h3>
 	 *
-	 * @param folderPath Target folder path will add to zip file
-	 * @throws ZipException folder path is null or folder was not existed
+	 * @param folderPath <span class="en-US">Folder path will add to the ZIP file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件夹</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFolder(final String folderPath) throws ZipException {
 		this.addFolder(folderPath, ZipOptions.newOptions(), true);
 	}
 
 	/**
-	 * Add folder to zip file with zip options
+	 * <h3 class="en-US">Add folder to the current ZIP file with zip options</h3>
+	 * <h3 class="zh-CN">使用给定的ZIP压缩属性向当前ZIP文件中添加目录</h3>
 	 *
-	 * @param folderPath Target folder path will add to zip file
-	 * @param zipOptions Zip options
-	 * @throws ZipException folder path is null or folder was not existed, or zipOptions is null
-	 * @see ZipOptions
+	 * @param folderPath <span class="en-US">Folder path will add to the ZIP file</span>
+	 *                   <span class="zh-CN">需要添加到压缩文件的文件夹</span>
+	 * @param zipOptions <span class="en-US">ZipOption instance object</span>
+	 *                   <span class="zh-CN">压缩文件属性</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void addFolder(final String folderPath, final ZipOptions zipOptions) throws ZipException {
 		this.addFolder(folderPath, zipOptions, true);
 	}
 
 	/**
-	 * Extract all entries in zip file to the target extract file path
+	 * <h3 class="en-US">Extract the all files to the target extract file path</h3>
+	 * <h3 class="zh-CN">从ZIP文件中解压缩所有文件到目标路径</h3>
 	 *
-	 * @param destPath Target extract file path
-	 * @throws ZipException Target path is null or file exists
+	 * @param destPath <span class="en-US">Target extract file path</span>
+	 *                 <span class="zh-CN">解压缩目标路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void extractAll(final String destPath) throws ZipException {
 		this.extractAll(destPath, Boolean.FALSE);
 	}
 
 	/**
-	 * Extract all entries in zip file to the target extract file path
+	 * <h3 class="en-US">Extract the all files to the target extract file path</h3>
+	 * <h3 class="zh-CN">从ZIP文件中解压缩所有文件到目标路径</h3>
 	 *
-	 * @param destPath       Target extract file path
-	 * @param ignoreFileAttr Status of process file attribute
-	 * @throws ZipException Target path is null or zip file invalid
+	 * @param destPath       <span class="en-US">Target extract file path</span>
+	 *                       <span class="zh-CN">解压缩目标路径</span>
+	 * @param ignoreFileAttr <span class="en-US">Status of process file attribute</span>
+	 *                       <span class="zh-CN">忽略文件属性标记</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void extractAll(final String destPath, final boolean ignoreFileAttr) throws ZipException {
 		if (StringUtils.isEmpty(destPath)) {
@@ -601,23 +683,32 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Extract entry path file to the target extra file path
+	 * <h3 class="en-US">Extract the entry path file to the target extract file path</h3>
+	 * <h3 class="zh-CN">从ZIP文件中解压缩给定路径文件到目标路径</h3>
 	 *
-	 * @param entryPath Which entry path will extract
-	 * @param destPath  Target extract file path
-	 * @throws ZipException Target path is null or entry path is null/not exists or zip file invalid
+	 * @param entryPath <span class="en-US">Which entry paths will be extract</span>
+	 *                  <span class="zh-CN">需要解压缩的文件路径</span>
+	 * @param destPath  <span class="en-US">Target extract file path</span>
+	 *                  <span class="zh-CN">解压缩目标路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void extractFile(final String entryPath, final String destPath) throws ZipException {
 		this.extractFile(entryPath, destPath, Boolean.FALSE);
 	}
 
 	/**
-	 * Extract entry path file to the target extra file path
+	 * <h3 class="en-US">Extract the entry path file to the target extract file path</h3>
+	 * <h3 class="zh-CN">从ZIP文件中解压缩给定路径文件到目标路径</h3>
 	 *
-	 * @param entryPath      Which entry path will extract
-	 * @param destPath       Target extract file path
-	 * @param ignoreFileAttr Status of process file attribute
-	 * @throws ZipException Target path is null or entry path is null/not exists or zip file invalid
+	 * @param entryPath      <span class="en-US">Which entry paths will be extract</span>
+	 *                       <span class="zh-CN">需要解压缩的文件路径</span>
+	 * @param destPath       <span class="en-US">Target extract file path</span>
+	 *                       <span class="zh-CN">解压缩目标路径</span>
+	 * @param ignoreFileAttr <span class="en-US">Status of process file attribute</span>
+	 *                       <span class="zh-CN">忽略文件属性标记</span>
+	 * @throws ZipException <span class="en-US">An error occurs when processing</span>
+	 *                      <span class="zh-CN">处理操作的过程中出错</span>
 	 */
 	public void extractFile(final String entryPath, final String destPath, final boolean ignoreFileAttr)
 			throws ZipException {
@@ -633,10 +724,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Remove entry folder from zip file
+	 * <h3 class="en-US">Remove the folder path from the ZIP file</h3>
+	 * <h3 class="zh-CN">从ZIP文件中删除给定的文件夹路径</h3>
 	 *
-	 * @param folderPath Which entry folder will be removed
-	 * @throws ZipException Given the path was not a directory
+	 * @param folderPath <span class="en-US">Which folder path will be removed</span>
+	 *                   <span class="zh-CN">需要删除的文件夹路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when remove folder path</span>
+	 *                      <span class="zh-CN">删除文件夹路径的过程中出错</span>
 	 */
 	public void removeFolder(final String folderPath) throws ZipException {
 		if (this.isDirectory(folderPath)) {
@@ -647,20 +741,26 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Remove the entry path from zip file
+	 * <h3 class="en-US">Remove entry paths from the ZIP file</h3>
+	 * <h3 class="zh-CN">从ZIP文件中删除给定的文件路径</h3>
 	 *
-	 * @param entryPath Which entry path will be removed
-	 * @throws ZipException the given entry path is null or zip file was not existed
+	 * @param entryPath <span class="en-US">Which entry paths will be removed</span>
+	 *                  <span class="zh-CN">需要删除的文件路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when remove entry paths</span>
+	 *                      <span class="zh-CN">删除文件路径的过程中出错</span>
 	 */
 	public void removeExistsEntry(final String entryPath) throws ZipException {
 		this.removeExistsEntries(entryPath);
 	}
 
 	/**
-	 * Remove entry paths from zip file
+	 * <h3 class="en-US">Remove entry paths from the ZIP file</h3>
+	 * <h3 class="zh-CN">从ZIP文件中删除给定的文件路径</h3>
 	 *
-	 * @param existsEntries Which entry paths will be removed
-	 * @throws ZipException the given entry path is null or zip file was not existed
+	 * @param existsEntries <span class="en-US">Which entry paths will be removed</span>
+	 *                      <span class="zh-CN">需要删除的文件路径</span>
+	 * @throws ZipException <span class="en-US">An error occurs when remove entry paths</span>
+	 *                      <span class="zh-CN">删除文件路径的过程中出错</span>
 	 */
 	public void removeExistsEntries(final String... existsEntries) throws ZipException {
 		if (existsEntries == null) {
@@ -679,10 +779,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Setting password
+	 * <h3 class="en-US">Setting password</h3>
+	 * <h3 class="zh-CN">设置使用的密码</h3>
 	 *
-	 * @param password password
-	 * @throws ZipException given password is null
+	 * @param password <span class="en-US">Password information</span>
+	 *                 <span class="zh-CN">密码信息</span>
+	 * @throws ZipException <span class="en-US">An error occurs when setting the password</span>
+	 *                      <span class="zh-CN">设置密码的过程中出错</span>
 	 */
 	public void setPassword(final String password) throws ZipException {
 		if (StringUtils.isEmpty(password)) {
@@ -692,10 +795,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Setting password
+	 * <h3 class="en-US">Setting password</h3>
+	 * <h3 class="zh-CN">设置使用的密码</h3>
 	 *
-	 * @param password password char arrays
-	 * @throws ZipException given password is null
+	 * @param password <span class="en-US">Password information</span>
+	 *                 <span class="zh-CN">密码信息</span>
+	 * @throws ZipException <span class="en-US">An error occurs when setting the password</span>
+	 *                      <span class="zh-CN">设置密码的过程中出错</span>
 	 */
 	public void setPassword(final char[] password) throws ZipException {
 		if (this.centralDirectory == null || this.centralDirectory.getFileHeaders() == null) {
@@ -711,10 +817,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Setting comment
+	 * <h3 class="en-US">Setting comment information</h3>
+	 * <h3 class="zh-CN">设置备注信息</h3>
 	 *
-	 * @param comment comment information
-	 * @throws ZipException comment is null or zip file was not existed
+	 * @param comment <span class="en-US">Comment information</span>
+	 *                <span class="zh-CN">备注信息</span>
+	 * @throws ZipException <span class="en-US">An error occurs when setting the comment information</span>
+	 *                      <span class="zh-CN">设置备注信息的过程中出错</span>
 	 */
 	public void setComment(final String comment) throws ZipException {
 		if (StringUtils.isEmpty(comment)) {
@@ -763,21 +872,28 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Read comment
+	 * <h3 class="en-US">Read comment information</h3>
+	 * <h3 class="zh-CN">读取备注信息</h3>
 	 *
-	 * @return Read comment content
-	 * @throws ZipException zip file was not existed
+	 * @return <span class="en-US">Read comment content</span>
+	 * <span class="zh-CN">读取的备注信息</span>
+	 * @throws ZipException <span class="en-US">An error occurs when read the comment information</span>
+	 *                      <span class="zh-CN">读取备注信息的过程中出错</span>
 	 */
 	public String getComment() throws ZipException {
 		return this.getComment(this.charsetEncoding);
 	}
 
 	/**
-	 * Read comment by given charset encoding
+	 * <h3 class="en-US">Read comment by given charset encoding</h3>
+	 * <h3 class="zh-CN">使用给定的字符集读取备注信息</h3>
 	 *
-	 * @param charset charset encoding
-	 * @return Read comment content
-	 * @throws ZipException zip file was not exists, zip file does not include comment content or charset encoding was not supported
+	 * @param charset <span class="en-US">Used charset encoding</span>
+	 *                <span class="zh-CN">使用的字符集</span>
+	 * @return <span class="en-US">Read comment content</span>
+	 * <span class="zh-CN">读取的备注信息</span>
+	 * @throws ZipException <span class="en-US">An error occurs when read the comment information</span>
+	 *                      <span class="zh-CN">读取备注信息的过程中出错</span>
 	 */
 	public String getComment(final String charset) throws ZipException {
 		String charsetEncoding = StringUtils.isEmpty(charset) ? Globals.DEFAULT_SYSTEM_CHARSET : charset;
@@ -803,10 +919,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Merge split files and write merge file to the target output path
+	 * <h3 class="en-US">Merge the split files to the target output path</h3>
+	 * <h3 class="zh-CN">合并分卷ZIP文件到给定的输出地址</h3>
 	 *
-	 * @param outputPath Merge file output path
-	 * @throws ZipException Zip file was not a split file or zip file invalid
+	 * @param outputPath <span class="en-US">The given output path</span>
+	 *                   <span class="zh-CN">给定的输出地址</span>
+	 * @throws ZipException <span class="en-US">An error occurs when merge the split ZIP file</span>
+	 *                      <span class="zh-CN">合并分卷ZIP文件的过程中出错</span>
 	 */
 	public void mergeSplitFile(final String outputPath) throws ZipException {
 		if (!this.splitArchive || this.endCentralDirectoryRecord.getIndexOfThisDisk() <= 0) {
@@ -868,10 +987,13 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Finalize zip file
+	 * <h3 class="en-US">Save the current ZIP file to the given OutputStream instance object</h3>
+	 * <h3 class="zh-CN">将ZIP文件保存到给定的输出流中</h3>
 	 *
-	 * @param outputStream Output stream
-	 * @throws ZipException Write data bytes to output stream error
+	 * @param outputStream <span class="en-US">The given OutputStream instance object</span>
+	 *                     <span class="zh-CN">给定的输出流</span>
+	 * @throws ZipException <span class="en-US">An error occurs when save the current ZIP file</span>
+	 *                      <span class="zh-CN">保存当前ZIP文件的过程中出错</span>
 	 */
 	public void finalizeZipFile(final OutputStream outputStream) throws ZipException {
 		if (outputStream == null) {
@@ -911,113 +1033,173 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Gets central directory.
+	 * <h3 class="en-US">Getter method for the central directory instance object</h3>
+	 * <h3 class="zh-CN">中央目录实例对象的Getter方法</h3>
 	 *
-	 * @return the centralDirectory
+	 * @return <span class="en-US">Central directory instance object</span>
+	 * <span class="zh-CN">中央目录实例对象</span>
 	 */
 	public CentralDirectory getCentralDirectory() {
-		return centralDirectory;
+		return this.centralDirectory;
 	}
 
 	/**
-	 * Sets central directory.
+	 * <h3 class="en-US">Setter method for the central directory instance object</h3>
+	 * <h3 class="zh-CN">中央目录实例对象的Setter方法</h3>
 	 *
-	 * @param centralDirectory the centralDirectory to set
+	 * @param centralDirectory <span class="en-US">Central directory instance object</span>
+	 *                         <span class="zh-CN">中央目录实例对象</span>
 	 */
 	public void setCentralDirectory(final CentralDirectory centralDirectory) {
 		this.centralDirectory = centralDirectory;
 	}
 
 	/**
-	 * Gets charset encoding.
+	 * <h3 class="en-US">Getter method for the using charset encoding</h3>
+	 * <h3 class="zh-CN">使用的字符集的Getter方法</h3>
 	 *
-	 * @return the charset encoding
+	 * @return <span class="en-US">Using charset encoding</span>
+	 * <span class="zh-CN">使用的字符集</span>
 	 */
 	public String getCharsetEncoding() {
-		return charsetEncoding;
+		return this.charsetEncoding;
 	}
 
 	/**
-	 * Gets the local file header list.
+	 * <h3 class="en-US">Getter method for the file header information list</h3>
+	 * <h3 class="zh-CN">文件头信息列表的Getter方法</h3>
 	 *
-	 * @return the localFileHeaderList
+	 * @return <span class="en-US">File header information list</span>
+	 * <span class="zh-CN">文件头信息列表</span>
 	 */
 	public List<LocalFileHeader> getLocalFileHeaderList() {
-		return localFileHeaderList;
+		return this.localFileHeaderList;
 	}
 
 	/**
-	 * Sets the local file header list.
+	 * <h3 class="en-US">Setter method for the file header information list</h3>
+	 * <h3 class="zh-CN">文件头信息列表的Setter方法</h3>
 	 *
-	 * @param localFileHeaderList the localFileHeaderList to set
+	 * @param localFileHeaderList <span class="en-US">File header information list</span>
+	 *                            <span class="zh-CN">文件头信息列表</span>
 	 */
 	public void setLocalFileHeaderList(final List<LocalFileHeader> localFileHeaderList) {
 		this.localFileHeaderList = localFileHeaderList;
 	}
 
 	/**
-	 * Gets archive extra data record.
+	 * <h3 class="en-US">Getter method for the record of archive extra data</h3>
+	 * <h3 class="zh-CN">压缩包扩展数据记录的Getter方法</h3>
 	 *
-	 * @return the archiveExtraDataRecord
+	 * @return <span class="en-US">Record of archive extra data</span>
+	 * <span class="zh-CN">压缩包扩展数据记录</span>
 	 */
 	public ArchiveExtraDataRecord getArchiveExtraDataRecord() {
-		return archiveExtraDataRecord;
+		return this.archiveExtraDataRecord;
 	}
 
 	/**
-	 * Sets archive extra data record.
+	 * <h3 class="en-US">Setter method for the record of archive extra data</h3>
+	 * <h3 class="zh-CN">压缩包扩展数据记录的Setter方法</h3>
 	 *
-	 * @param archiveExtraDataRecord the archiveExtraDataRecord to set
+	 * @param archiveExtraDataRecord <span class="en-US">Record of archive extra data</span>
+	 *                               <span class="zh-CN">压缩包扩展数据记录</span>
 	 */
 	public void setArchiveExtraDataRecord(final ArchiveExtraDataRecord archiveExtraDataRecord) {
 		this.archiveExtraDataRecord = archiveExtraDataRecord;
 	}
 
 	/**
-	 * Gets end central directory record.
+	 * <h3 class="en-US">Getter method for the end central directory record instance object</h3>
+	 * <h3 class="zh-CN">中央目录终止记录实例对象的Getter方法</h3>
 	 *
-	 * @return the endCentralDirectoryRecord
+	 * @return <span class="en-US">End central directory record instance object</span>
+	 * <span class="zh-CN">中央目录终止记录实例对象</span>
 	 */
 	public EndCentralDirectoryRecord getEndCentralDirectoryRecord() {
-		return endCentralDirectoryRecord;
+		return this.endCentralDirectoryRecord;
 	}
 
 	/**
-	 * Sets end central directory record.
+	 * <h3 class="en-US">Setter method for the end central directory record instance object</h3>
+	 * <h3 class="zh-CN">中央目录终止记录实例对象的Setter方法</h3>
 	 *
-	 * @param endCentralDirectoryRecord the endCentralDirectoryRecord to set
+	 * @param endCentralDirectoryRecord <span class="en-US">End central directory record instance object</span>
+	 *                                  <span class="zh-CN">中央目录终止记录实例对象</span>
 	 */
 	public void setEndCentralDirectoryRecord(final EndCentralDirectoryRecord endCentralDirectoryRecord) {
 		this.endCentralDirectoryRecord = endCentralDirectoryRecord;
 	}
 
 	/**
-	 * Is split archive boolean.
+	 * <h3 class="en-US">Getter method for the archive is split file status</h3>
+	 * <h3 class="zh-CN">分卷压缩包标记的Getter方法</h3>
 	 *
-	 * @return the boolean
+	 * @return <span class="en-US">Archive is split file status</span>
+	 * <span class="zh-CN">分卷压缩包标记</span>
 	 */
 	public boolean isSplitArchive() {
 		return this.splitArchive;
 	}
 
 	/**
-	 * Sets split archive.
+	 * <h3 class="en-US">Setter method for the archive is split file status</h3>
+	 * <h3 class="zh-CN">分卷压缩包标记的Setter方法</h3>
 	 *
-	 * @param splitArchive the splitArchive to set
+	 * @param splitArchive <span class="en-US">Archive is split file status</span>
+	 *                     <span class="zh-CN">分卷压缩包标记</span>
 	 */
 	public void setSplitArchive(final boolean splitArchive) {
 		this.splitArchive = splitArchive;
 	}
 
 	/**
-	 * Sets split length.
+	 * <h3 class="en-US">Setter method for the maximum length of split item</h3>
+	 * <h3 class="zh-CN">分卷大小的Setter方法</h3>
 	 *
-	 * @param splitLength the splitLength to set
+	 * @param splitLength <span class="en-US">Maximum length of split item</span>
+	 *                    <span class="zh-CN">分卷大小</span>
 	 */
 	public void setSplitLength(final long splitLength) {
 		this.splitLength = splitLength;
 	}
 
+	private static void checkFilePath(final String filePath) throws ZipException {
+		if (StringUtils.isEmpty(filePath)) {
+			throw new ZipException(0x0000001B001BL);
+		}
+		if (FileUtils.isExists(filePath)) {
+			throw new ZipException(0x0000001B001CL);
+		}
+	}
+
+	private void appendCheck(final ZipOptions zipOptions) throws ZipException {
+		if (zipOptions == null) {
+			throw new ZipException(0x0000001B0021L);
+		}
+
+		if (FileUtils.isExists(this.filePath) && this.splitArchive) {
+			throw new ZipException(0x0000001B0018L);
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for create the ZIP file</h3>
+	 * <h3 class="zh-CN">静态方法用于创建ZIP文件</h3>
+	 *
+	 * @param filePath        <span class="en-US">Current zip file path</span>
+	 *                        <span class="zh-CN">当前压缩文件路径</span>
+	 * @param fileNameCharset <span class="en-US">Using charset encoding</span>
+	 *                        <span class="zh-CN">使用的字符集</span>
+	 * @param splitArchive    <span class="en-US">Archive is split file status</span>
+	 *                        <span class="zh-CN">分卷压缩包标记</span>
+	 * @param splitLength     <span class="en-US">Maximum length of split item</span>
+	 *                        <span class="zh-CN">分卷大小</span>
+	 * @return <span class="en-US">ZIP file instance object</span>
+	 * <span class="zh-CN">ZIP文件实例对象</span>
+	 * @throws ZipException <span class="en-US">An error occurs when create the ZIP file</span>
+	 *                      <span class="zh-CN">创建ZIP文件时出错</span>
+	 */
 	private static ZipFile createZipFile(final String filePath, final String fileNameCharset,
 	                                     final boolean splitArchive, final long splitLength) throws ZipException {
 		ZipFile.checkFilePath(filePath);

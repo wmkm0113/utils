@@ -25,14 +25,14 @@ import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.io.StandardFile;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.zip.crypto.Decryptor;
+import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.ZipFile;
 
 /**
  * The type Inflater input stream.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 1:06:01 PM $
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 13:06:01 $
  */
 public class InflaterInputStream extends PartInputStream {
 
@@ -47,14 +47,14 @@ public class InflaterInputStream extends PartInputStream {
 	 *
 	 * @param zipFile            the zip file
 	 * @param currentIndex       the current index
-	 * @param input             the seek position
+	 * @param input              the seek position
 	 * @param length             the length
 	 * @param originalSize       the original size
 	 * @param decryptor          the decryptor
 	 * @param isAESEncryptedFile is aes encrypted file
 	 */
 	private InflaterInputStream(final ZipFile zipFile, final int currentIndex, final StandardFile input, final long length,
-	                           final long originalSize, final Decryptor decryptor, final boolean isAESEncryptedFile) {
+	                            final long originalSize, final Cryptor decryptor, final boolean isAESEncryptedFile) {
 		super(zipFile, currentIndex, input, length, decryptor, isAESEncryptedFile);
 		this.inflater = new Inflater(Boolean.TRUE);
 		this.buffer = new byte[Globals.DEFAULT_BUFFER_SIZE];
@@ -64,7 +64,7 @@ public class InflaterInputStream extends PartInputStream {
 
 	public static InflaterInputStream newInstance(final ZipFile zipFile, final int currentIndex,
 	                                              final long seekPosition, final long length, final long originalSize,
-	                                              final Decryptor decryptor, final boolean isAESEncryptedFile)
+	                                              final Cryptor decryptor, final boolean isAESEncryptedFile)
 			throws IOException {
 		final StandardFile input = zipFile.openSplitFile(currentIndex);
 		input.seek(seekPosition);
@@ -77,12 +77,12 @@ public class InflaterInputStream extends PartInputStream {
 	}
 
 	@Override
-	public int read(@Nonnull byte[] b) throws IOException {
+	public int read(@Nonnull final byte[] b) throws IOException {
 		return this.read(b, 0, b.length);
 	}
 
 	@Override
-	public int read(@Nonnull byte[] b, int off, int len) throws IOException {
+	public int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (off < 0 || len < 0 || off + len > b.length) {
 			throw new IndexOutOfBoundsException();
 		} else if (b.length == 0) {
@@ -115,7 +115,7 @@ public class InflaterInputStream extends PartInputStream {
 	}
 
 	@Override
-	public long skip(long length) throws IOException {
+	public long skip(final long length) throws IOException {
 		if (length < 0L) {
 			throw new IllegalArgumentException("Negative skip length");
 		}

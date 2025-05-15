@@ -12,10 +12,6 @@ import java.net.http.HttpResponse;
 import java.security.cert.CertificateEncodingException;
 import java.util.*;
 
-//import org.nervousync.commons.Globals;
-//import org.nervousync.utils.DateTimeUtils;
-//import java.util.concurrent.atomic.AtomicInteger;
-
 public final class RequestTest extends BaseTest {
 
 	@Test

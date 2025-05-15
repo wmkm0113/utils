@@ -20,7 +20,7 @@ package org.nervousync.zip.models.central;
  * The type Zip64 end central directory record.
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 4:28:52 PM $
+ * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:28:52 $
  */
 public final class Zip64EndCentralDirectoryRecord {
 
@@ -56,7 +56,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param signature the signature to set
 	 */
-	public void setSignature(long signature) {
+	public void setSignature(final long signature) {
 		this.signature = signature;
 	}
 
@@ -74,7 +74,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param recordSize the recordSize to set
 	 */
-	public void setRecordSize(long recordSize) {
+	public void setRecordSize(final long recordSize) {
 		this.recordSize = recordSize;
 	}
 
@@ -92,7 +92,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param madeVersion the madeVersion to set
 	 */
-	public void setMadeVersion(int madeVersion) {
+	public void setMadeVersion(final int madeVersion) {
 		this.madeVersion = madeVersion;
 	}
 
@@ -110,7 +110,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param extractNeeded the extractNeeded to set
 	 */
-	public void setExtractNeeded(int extractNeeded) {
+	public void setExtractNeeded(final int extractNeeded) {
 		this.extractNeeded = extractNeeded;
 	}
 
@@ -128,7 +128,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param index the index to set
 	 */
-	public void setIndex(int index) {
+	public void setIndex(final int index) {
 		this.index = index;
 	}
 
@@ -146,7 +146,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param startOfCentralDirectory the startOfCentralDirectory to set
 	 */
-	public void setStartOfCentralDirectory(int startOfCentralDirectory) {
+	public void setStartOfCentralDirectory(final int startOfCentralDirectory) {
 		this.startOfCentralDirectory = startOfCentralDirectory;
 	}
 
@@ -164,7 +164,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param totalEntriesInCentralDirectoryOnThisDisk the totalEntriesInCentralDirectoryOnThisDisk to set
 	 */
-	public void setTotalEntriesInCentralDirectoryOnThisDisk(long totalEntriesInCentralDirectoryOnThisDisk) {
+	public void setTotalEntriesInCentralDirectoryOnThisDisk(final long totalEntriesInCentralDirectoryOnThisDisk) {
 		this.totalEntriesInCentralDirectoryOnThisDisk = totalEntriesInCentralDirectoryOnThisDisk;
 	}
 
@@ -182,7 +182,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param totalEntriesInCentralDirectory the totalEntriesInCentralDirectory to set
 	 */
-	public void setTotalEntriesInCentralDirectory(long totalEntriesInCentralDirectory) {
+	public void setTotalEntriesInCentralDirectory(final long totalEntriesInCentralDirectory) {
 		this.totalEntriesInCentralDirectory = totalEntriesInCentralDirectory;
 	}
 
@@ -200,7 +200,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param sizeOfCentralDirectory the sizeOfCentralDirectory to set
 	 */
-	public void setSizeOfCentralDirectory(long sizeOfCentralDirectory) {
+	public void setSizeOfCentralDirectory(final long sizeOfCentralDirectory) {
 		this.sizeOfCentralDirectory = sizeOfCentralDirectory;
 	}
 
@@ -218,7 +218,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param offsetStartCenDirWRTStartDiskNo the offsetStartCenDirWRTStartDiskNo to set
 	 */
-	public void setOffsetStartCenDirWRTStartDiskNo(long offsetStartCenDirWRTStartDiskNo) {
+	public void setOffsetStartCenDirWRTStartDiskNo(final long offsetStartCenDirWRTStartDiskNo) {
 		this.offsetStartCenDirWRTStartDiskNo = offsetStartCenDirWRTStartDiskNo;
 	}
 
@@ -236,7 +236,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param extensibleDataSector the extensibleDataSector to set
 	 */
-	public void setExtensibleDataSector(byte[] extensibleDataSector) {
+	public void setExtensibleDataSector(final byte[] extensibleDataSector) {
 		this.extensibleDataSector = extensibleDataSector == null ? new byte[0] : extensibleDataSector.clone();
 	}
 }
