@@ -1061,6 +1061,14 @@
           "content": "Last time: {0}, reference time: {1}, Device ID: {2}, instanceId: {3}, sequenceIndex: {4}"
         },
         {
+          "key": "Config_ULID_Error",
+          "content": "Universally Unique Lexicographically Sortable Identifier config: reference time: {0}"
+        },
+        {
+          "key": "Generate_ULID_Debug",
+          "content": "Last time: {0}, reference time: {1}, sequenceIndex: {2}"
+        },
+        {
           "key": "Go_Back_Time_UUID_Debug",
           "content": "System time going backwards! (got value {0}, last {1})"
         },
@@ -1539,6 +1547,10 @@
         {
           "key": "snowflake.id.generator.name",
           "content": "Snowflake ID"
+        },
+        {
+          "key": "ulid.id.generator.name",
+          "content": "Universally Unique Lexicographically Sortable Identifier"
         },
         {
           "key": "version1.uuid.id.generator.name",
@@ -2119,6 +2131,14 @@
           "content": "上次生成ID的时间：{0}，起始时间戳：{1}，节点的机器ID：{2}，节点的实例ID：{3}，序列索引：{4}"
         },
         {
+          "key": "Config_ULID_Error",
+          "content": "通用唯一字典排序标识符配置信息：起始时间戳：{0}"
+        },
+        {
+          "key": "Generate_ULID_Debug",
+          "content": "上次生成ID的时间：{0}，起始时间戳：{1}，序列索引：{2}"
+        },
+        {
           "key": "Go_Back_Time_UUID_Debug",
           "content": "系统时间回滚！（当前时间：{0}，上次生成ID的时间：{1}）"
         },
@@ -2597,6 +2617,10 @@
         {
           "key": "snowflake.id.generator.name",
           "content": "雪花算法生成识别码"
+        },
+        {
+          "key": "ulid.id.generator.name",
+          "content": "通用唯一字典排序标识符"
         },
         {
           "key": "version1.uuid.id.generator.name",

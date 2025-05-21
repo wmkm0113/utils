@@ -475,6 +475,10 @@ public final class Globals {
 		return bound > INITIALIZE_INT_VALUE ? RANDOM.nextInt(bound) : RANDOM.nextInt();
 	}
 
+	public static void randomBytes(final byte[] bytes) {
+		RANDOM.nextBytes(bytes);
+	}
+
 	private Globals() {
 	}
 }

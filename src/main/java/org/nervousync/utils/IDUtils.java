@@ -21,6 +21,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.generator.IGenerator;
 import org.nervousync.generator.nano.NanoGenerator;
 import org.nervousync.generator.snowflake.SnowflakeGenerator;
+import org.nervousync.generator.ulid.ULIDGenerator;
 import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.generator.uuid.impl.UUIDv2Generator;
 import org.nervousync.generator.uuid.timer.TimeSynchronizer;
@@ -71,6 +72,11 @@ public final class IDUtils {
 	 * <span class="zh-CN">静态值用于雪花算法生成器的提供名称</span>
 	 */
 	public static final String SNOWFLAKE = "Snowflake";
+	/**
+	 * <span class="en-US">Static value for provider name of Universally Unique Lexicographically Sortable Identifier Generator</span>
+	 * <span class="zh-CN">静态值用于通用唯一字典排序标识符生成器的提供名称</span>
+	 */
+	public static final String ULID = "ULID";
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
 	 * <span class="zh-CN">多语言支持的日志对象</span>
@@ -151,6 +157,23 @@ public final class IDUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Static method for configuring Universally Unique Lexicographically Sortable Identifier generator</h3>
+	 * <h3 class="zh-CN">静态方法用于设置通用唯一字典排序标识符生成器</h3>
+	 *
+	 * @param referenceTime <span class="en-US">Reference time, default value: 1303315200000L</span>
+	 *                      <span class="zh-CN">起始时间戳，默认值：1303315200000L</span>
+	 */
+	public static void ulidConfig(final long referenceTime) {
+		if (INITIALIZE_MAP.containsKey(ULID)) {
+			synchronized (INITIALIZE_MAP) {
+				ULIDGenerator generator = (ULIDGenerator) INITIALIZE_MAP.get(ULID);
+				generator.config(referenceTime);
+				INITIALIZE_MAP.put(ULID, generator);
+			}
+		}
+	}
+
+	/**
 	 * <h3 class="en-US">Static method for configuring time synchronizer of UUIDv2 generator</h3>
 	 * <h3 class="zh-CN">静态方法用于设置UUIDv2生成器的时间同步器</h3>
 	 *
@@ -191,6 +214,19 @@ public final class IDUtils {
 		return Optional.ofNullable(INITIALIZE_MAP.get(SNOWFLAKE))
 				.map(generator -> ((SnowflakeGenerator) generator).generate())
 				.orElse(Globals.DEFAULT_VALUE_LONG);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate Universally Unique Lexicographically Sortable Identifier value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成通用唯一字典排序标识符值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static String ULID() {
+		return Optional.ofNullable(INITIALIZE_MAP.get(ULID))
+				.map(generator -> ((ULIDGenerator) generator).generate())
+				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**

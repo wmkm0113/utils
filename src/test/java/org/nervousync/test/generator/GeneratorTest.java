@@ -41,4 +41,14 @@ public final class GeneratorTest extends BaseTest {
         this.logger.info("UUID_Random", 5, IDUtils.UUIDv5("TestVersion5".getBytes()));
     }
 
+    @Test
+    @Order(30)
+    public void ulid() {
+        this.logger.info("ULID_Random", IDUtils.ULID());
+        Optional.ofNullable(DateTimeUtils.parseDate("20030421", "yyyyMMdd"))
+                .ifPresent(date -> IDUtils.ulidConfig(date.getTime()));
+        for (int i = 0 ; i < 10 ; i++) {
+            this.logger.info("ULID_Reconfigure_Random", IDUtils.ULID());
+        }
+    }
 }

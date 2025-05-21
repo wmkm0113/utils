@@ -28,6 +28,7 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.profile.pegdown.Extensions;
 import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.data.DataHolder;
+import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -221,6 +222,35 @@ public final class StringUtils {
 	 * StringUtils.base32Encode([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100], true) = "JBSWY3DPEBLW64TMMQ=="
 	 * </pre>
 	 *
+	 * @param bytes    <span class="en-US">byte arrays</span>
+	 *                 <span class="zh-CN">二进制字节数组</span>
+	 * @param alphabet <span class="en-US">Alphabet used</span>
+	 *                 <span class="zh-CN">使用的字母表</span>
+	 * @return <span class="en-US">Encoded base32 string</span>
+	 * <span class="zh-CN">编码后的Base32字符串</span>
+	 */
+	public static String base32Encode(final byte[] bytes, @Nonnull final String alphabet) {
+		return base32Encode(bytes, alphabet, Boolean.FALSE);
+	}
+
+	/**
+	 * <h3 class="en-US">Encode byte arrays using Base32</h3>
+	 * <span class="en-US">
+	 * Will append padding character at the end if parameter padding is <code>true</code>
+	 * and result string length % 5 != 0.
+	 * Will return zero length string for given byte arrays is <code>null</code> or arrays length is 0.
+	 * </span>
+	 * <h3 class="zh-CN">使用Base32编码给定的二进制字节数组</h3>
+	 * <span class="zh-CN">
+	 * 如果参数padding设置为<code>true</code>，并且结果字符串长度非5的整数倍，则自动追加填充字符到结果末尾。
+	 * 如果给定的二进制字节数组为<code>null</code>或长度为0，将返回长度为0的空字符串
+	 * </span>
+	 * <pre>
+	 * StringUtils.base32Encode(null, true) = ""
+	 * StringUtils.base32Encode([], true) = ""
+	 * StringUtils.base32Encode([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100], true) = "JBSWY3DPEBLW64TMMQ=="
+	 * </pre>
+	 *
 	 * @param bytes   <span class="en-US">byte arrays</span>
 	 *                <span class="zh-CN">二进制字节数组</span>
 	 * @param padding <span class="en-US">append padding character status</span>
@@ -228,7 +258,38 @@ public final class StringUtils {
 	 * @return <span class="en-US">Encoded base32 string</span>
 	 * <span class="zh-CN">编码后的Base32字符串</span>
 	 */
-	public static String base32Encode(final byte[] bytes, boolean padding) {
+	public static String base32Encode(final byte[] bytes, final boolean padding) {
+		return base32Encode(bytes, BASE32, padding);
+	}
+
+	/**
+	 * <h3 class="en-US">Encode byte arrays using Base32</h3>
+	 * <span class="en-US">
+	 * Will append padding character at the end if parameter padding is <code>true</code>
+	 * and result string length % 5 != 0.
+	 * Will return zero length string for given byte arrays is <code>null</code> or arrays length is 0.
+	 * </span>
+	 * <h3 class="zh-CN">使用Base32编码给定的二进制字节数组</h3>
+	 * <span class="zh-CN">
+	 * 如果参数padding设置为<code>true</code>，并且结果字符串长度非5的整数倍，则自动追加填充字符到结果末尾。
+	 * 如果给定的二进制字节数组为<code>null</code>或长度为0，将返回长度为0的空字符串
+	 * </span>
+	 * <pre>
+	 * StringUtils.base32Encode(null, true) = ""
+	 * StringUtils.base32Encode([], true) = ""
+	 * StringUtils.base32Encode([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100], true) = "JBSWY3DPEBLW64TMMQ=="
+	 * </pre>
+	 *
+	 * @param bytes    <span class="en-US">byte arrays</span>
+	 *                 <span class="zh-CN">二进制字节数组</span>
+	 * @param alphabet <span class="en-US">Alphabet used</span>
+	 *                 <span class="zh-CN">使用的字母表</span>
+	 * @param padding  <span class="en-US">append padding character status</span>
+	 *                 <span class="zh-CN">是否追加填充字符到结果末尾</span>
+	 * @return <span class="en-US">Encoded base32 string</span>
+	 * <span class="zh-CN">编码后的Base32字符串</span>
+	 */
+	public static String base32Encode(final byte[] bytes, @Nonnull final String alphabet, final boolean padding) {
 		if (bytes == null) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
@@ -258,7 +319,7 @@ public final class StringUtils {
 					i++;
 				}
 			}
-			stringBuilder.append(BASE32.charAt(digit));
+			stringBuilder.append(alphabet.charAt(digit));
 		}
 
 		if (padding) {
@@ -288,21 +349,44 @@ public final class StringUtils {
 	 * <span class="zh-CN">解码后的二进制字节数组</span>
 	 */
 	public static byte[] base32Decode(String string) {
+		return base32Decode(string, BASE32);
+	}
+
+	/**
+	 * <h3 class="en-US">Decode given Base32 string to byte arrays</h3>
+	 * <span class="en-US">
+	 * Will return a zero-length array for given base64 string is <code>null</code> or string length is 0.
+	 * </span>
+	 * <h3 class="zh-CN">将给定的Base32编码字符串解码为二进制字节数组</h3>
+	 * <span class="zh-CN">如果给定的字符串长度为0，则返回长度为0的二进制字节数组</span>
+	 * <pre>
+	 * StringUtils.base32Decode(null) = []
+	 * StringUtils.base32Decode("") = []
+	 * StringUtils.base32Decode("JBSWY3DPEBLW64TMMQ") = [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+	 * </pre>
+	 *
+	 * @param string <span class="en-US">Encoded base32 string</span>
+	 *               <span class="zh-CN">编码后的Base32字符串</span>
+	 * @return <span class="en-US">Decoded byte array</span>
+	 * <span class="zh-CN">解码后的二进制字节数组</span>
+	 */
+	public static byte[] base32Decode(final String string, @Nonnull final String alphabet) {
 		if (string == null || string.isEmpty()) {
 			return new byte[0];
 		}
 
-		while (string.charAt(string.length() - 1) == PADDING) {
-			string = string.substring(0, string.length() - 1);
+		String value = string;
+		while (value.charAt(value.length() - 1) == PADDING) {
+			value = value.substring(0, value.length() - 1);
 		}
 
-		byte[] bytes = new byte[string.length() * 5 / 8];
 		int index = 0;
+		byte[] bytes = new byte[string.length() * 5 / 8];
 		StringBuilder stringBuilder = new StringBuilder(8);
 		StringBuilder temp;
 		for (String c : string.split("")) {
-			if (BASE32.contains(c)) {
-				int current = BASE32.indexOf(c);
+			if (alphabet.contains(c)) {
+				int current = alphabet.indexOf(c);
 				temp = new StringBuilder(5);
 				for (int i = 0; i < 5; i++) {
 					temp.append(current & 1);
@@ -321,6 +405,7 @@ public final class StringUtils {
 				}
 			}
 		}
+
 		return bytes;
 	}
 

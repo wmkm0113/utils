@@ -31,6 +31,14 @@
           "content": "Generate reconfigured snowflake ID：{0}"
         },
         {
+          "key": "ULID_Random",
+          "content": "Generate Universally Unique Lexicographically Sortable Identifier: {0}"
+        },
+        {
+          "key": "ULID_Reconfigure_Random",
+          "content": "Generate reconfigured Universally Unique Lexicographically Sortable Identifier：{0}"
+        },
+        {
           "key": "UUID_Random",
           "content": "UUID version {0}, generated ID: {1}"
         },
@@ -443,6 +451,14 @@
         {
           "key": "Snowflake_Reconfigure_Random",
           "content": "雪花算法重新配置后生成随机ID：{0}"
+        },
+        {
+          "key": "ULID_Random",
+          "content": "通用唯一字典排序标识符生成随机ID：{0}"
+        },
+        {
+          "key": "ULID_Reconfigure_Random",
+          "content": "通用唯一字典排序标识符重新配置后生成随机ID：{0}"
         },
         {
           "key": "UUID_Random",
