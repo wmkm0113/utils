@@ -1,7 +1,7 @@
 # Java開發套件
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.nervousync/utils-jdk11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.nervousync/utils-jdk11/)
-[![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11.svg)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-jdk11?color=green)](https://mvnrepository.com/artifact/org.nervousync/utils-jdk11)
+[![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
 ![Language](https://img.shields.io/badge/language-Java-green)
 [![Twitter:wmkm0113](https://img.shields.io/twitter/follow/wmkm0113?label=Follow)](https://twitter.com/wmkm0113)
 

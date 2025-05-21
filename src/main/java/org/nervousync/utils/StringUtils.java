@@ -1400,7 +1400,7 @@ public final class StringUtils {
 	/**
 	 * <h3 class="en-US">Normalize the path by suppressing sequences like "path/.." and inner simple dots.</h3>
 	 * <span class="en-US">
-	 * The result is convenient for path comparison. For other uses, notice that Windows separators ("\") are replaced by simple slashes.
+	 * The result is convenient for path comparison. For other uses, notice that simple slashes replace Windows separators ("\").
 	 * </span>
 	 * <h3 class="zh-CN">转换给定字符串中的相对路径为标准路径</h3>
 	 * <span class="zh-CN">结果便于路径比较。对于其他用途，请注意 Windows 分隔符（“\”）被简单的斜杠替换。</span>

@@ -39,9 +39,9 @@ Nervousync Java Utils Package
 
 [03/06/2023]
 [Update] Rewrite BeanUtils.java
-[Update] Update Slf4j version to 2.0.5
+[Update] Update slf4j version to 2.0.5
 [Update] Update Jackson version to 2.14.2
-[Update] Update Yaml version to 2.0
+[Update] Update YAML version to 2.0
 [Update] Update snmp4j version to 3.7.4
 
 [11/18/2022]
@@ -54,9 +54,9 @@ Nervousync Java Utils Package
 [10/09/2022]
 [Update] Jakarta XML Binding version to 4.0.1
 [Update] Bcprov version to 1.72
-[Update] Slf4j version to 2.0.3
+[Update] slf4j version to 2.0.3
 [Update] Jackson version to 2.14.0-rc1
-[Update] Snmp4j version to 2.7.3
+[Update] snmp4j version to 2.7.3
 
 [09/28/2022]
 [Remove] Remove cglib
@@ -76,8 +76,8 @@ Nervousync Java Utils Package
 [Update] JCIFS version to 2.1.31
 
 [06/14/2022]
-[Add] Mail config XML Schema Define file
-[Add] Secure config XML Schema Define file
+[Add] Mail config XML Schema Define files
+[Add] Secure config XML Schema Define files
 [Add] MailConfigBuilder
 [Fix] Send mail failed when using secure config to protect password. Encrypt/Decrypt password by string
 [Update] Merge ServerConfig into MailConfig
@@ -91,7 +91,7 @@ Nervousync Java Utils Package
 [Update] Bcprov artifactId from bcprov-jdk15on to bcprov-jdk18on and version to 1.71
 [Update] Bcpkix artifactId from bcpkix-jdk15on to bcpkix-jdk18on and version to 1.71
 [Update] Jackson version to 2.13.3
-[Update] Snmp4j version to 3.7.0
+[Update] snmp4j version to 3.7.0
 [Fix] Merge loadSMBFile to loadFile, user can use loadFile method to open local file and smb file
 [Fix] MailUtils method recoverMails not work
 
@@ -153,7 +153,7 @@ Add method to check String include emoji code
 Update jackson to 2.9.7
 Update cglib to 3.2.10
 Remove aspectj
-Add Support SMB v2 and v3
+Add support for SMB v2 and v3
 Fix cglib set multi interceptors
 
 [09/21/2018]
@@ -175,7 +175,7 @@ Add IP Address convert support, IP/Long value convert
 Add location utils, support GPS/GCJ/BD location point convert
 
 [12/05/2017]
-Add FileZip class, support zip file operate utils
+Add FileZip class, support the zip file operate utils
 Add SNMP utils, support monitor system by SNMP service
 
 [04/24/2017]

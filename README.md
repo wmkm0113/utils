@@ -1,7 +1,7 @@
 # Java Development Toolkit
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.nervousync/utils-jdk11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.nervousync/utils-jdk11/)
-[![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11.svg)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-jdk11?color=green)](https://mvnrepository.com/artifact/org.nervousync/utils-jdk11)
+[![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
 ![Language](https://img.shields.io/badge/language-Java-green)
 [![Twitter:wmkm0113](https://img.shields.io/twitter/follow/wmkm0113?label=Follow)](https://twitter.com/wmkm0113)
 
@@ -139,7 +139,7 @@ Dependency required:
 * Embedded generator: UUID version 1 to version 5, Snowflake and NanoID.  
 **Customize generator:**   
 Generator class must implement interface org.nervousync.generator.IGenerator
-and create file named: org.nervousync.generator.IGenerator save to META-INF/services
+and create the file named: org.nervousync.generator.IGenerator save to META-INF/services
 
 ### Image utilities
 **Class name**: org.nervousync.utils.ImageUtils  
@@ -193,7 +193,7 @@ and create file named: org.nervousync.generator.IGenerator save to META-INF/serv
 * Parse http method string to HttpMethodOption
 * Resolve domain name to IP address
 * Retrieve and verify SSL certificate from server
-* Send request and parse response content to target JavaBean or string
+* Send request and parse response content to the target JavaBean or string
 * Convert data between query string and parameter map
 * Check user role code using <code>request.isUserInRole</code>
 * Support using proxy server to request target address
@@ -413,7 +413,7 @@ And pass in the parameters "groupId" and "bundle", the resource converter will a
 ## Extension the file operate
 ### Zip file operate
 **Package**: org.nervousync.zip  
-Developers can use ZipFile to create zip file, add file to zip or extract file from zip.
+Developers can use ZipFile to create the zip file, add files to the zip or extract files from zip.
 Supported split archive file, Chinese/Japanese/Korean comment and entry path, standard and AES encrypt/decrypt data.
 
 More usages: See org.nervousync.test.zip.ZipTest
