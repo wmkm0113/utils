@@ -19,11 +19,12 @@ package org.nervousync.generator.ulid;
 
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
-import org.nervousync.commons.ULID;
+import org.nervousync.commons.id.ULID;
 import org.nervousync.generator.IGenerator;
 import org.nervousync.utils.*;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <h2 class="en-US">Universally Unique Lexicographically Sortable Identifier generator</h2>
@@ -33,7 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version $Revision: 1.0.0 $ $Date: May 21, 2025 15:28:09 $
  */
 @Provider(name = IDUtils.ULID, titleKey = "ulid.id.generator.name")
-public final class ULIDGenerator implements IGenerator<String> {
+public final class ULIDGenerator implements IGenerator<ULID> {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
 	 * <span class="zh-CN">多语言支持的日志对象</span>
@@ -51,10 +52,20 @@ public final class ULIDGenerator implements IGenerator<String> {
 	 */
 	private long sequenceIndex = 0L;
 	/**
+	 * <span class="en-US">Monotonic flag</span>
+	 * <span class="zh-CN">单调标记</span>
+	 */
+	private boolean monotonic = Boolean.FALSE;
+	/**
 	 * <span class="en-US">Previous generate time</span>
 	 * <span class="zh-CN">上次生成ID的时间</span>
 	 */
 	private final AtomicLong lastTime = new AtomicLong(Globals.DEFAULT_VALUE_LONG);
+	/**
+	 * <span class="en-US">Previous generate random data bytes</span>
+	 * <span class="zh-CN">上次生成的随机数</span>
+	 */
+	private final AtomicReference<byte[]> lastRandom = new AtomicReference<>(new byte[0]);
 
 	/**
 	 * <h3 class="en-US">Configure current generator</h3>
@@ -62,21 +73,20 @@ public final class ULIDGenerator implements IGenerator<String> {
 	 *
 	 * @param referenceTime <span class="en-US">Reference time, default value: 1303315200000L</span>
 	 *                      <span class="zh-CN">起始时间戳，默认值：1303315200000L</span>
+	 * @param monotonic     <span class="en-US">Monotonic flag</span>
+	 *                      <span class="zh-CN">单调标记</span>
 	 */
-	public void config(final long referenceTime) {
+	public void config(final long referenceTime, final boolean monotonic) {
 		this.referenceTime = Math.max(referenceTime, 0L);
 		this.sequenceIndex = 0L;
+		this.monotonic = monotonic;
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Config_ULID_Error", this.referenceTime);
 		}
 	}
 
 	@Override
-	public String generate() {
-		return this.random().toString();
-	}
-
-	private ULID random() {
+	public ULID generate() {
 		long currentTime = DateTimeUtils.currentUTCTimeMillis();
 		if (currentTime < this.lastTime.get()) {
 			throw new RuntimeException(
@@ -84,17 +94,19 @@ public final class ULIDGenerator implements IGenerator<String> {
 							this.lastTime.get() - currentTime));
 		}
 
-		if (currentTime == this.lastTime.get()) {
-			this.sequenceIndex += 1;
-			if (this.sequenceIndex == 0) {
-				while (true) {
-					if ((currentTime = DateTimeUtils.currentUTCTimeMillis()) > this.lastTime.get()) {
-						break;
-					}
-				}
+		boolean random = Boolean.TRUE;
+		if (this.monotonic) {
+			if (currentTime == this.lastTime.get()) {
+				this.sequenceIndex += 1;
+				random = Boolean.FALSE;
+			} else {
+				this.sequenceIndex = 0L;
 			}
-		} else {
-			this.sequenceIndex = 0L;
+		}
+		if (random) {
+			byte[] dataBytes = new byte[10];
+			Globals.randomBytes(dataBytes);
+			this.lastRandom.set(dataBytes);
 		}
 		this.lastTime.set(currentTime);
 
@@ -102,14 +114,14 @@ public final class ULIDGenerator implements IGenerator<String> {
 			this.logger.debug("Generate_ULID_Debug", this.lastTime, this.referenceTime, this.sequenceIndex);
 		}
 
-		byte[] dataBytes = new byte[8];
-		Globals.randomBytes(dataBytes);
-		return new ULID(currentTime - this.referenceTime, RawUtils.readLong(dataBytes));
+		byte[] dataBytes = this.lastRandom.get();
+		return new ULID(((currentTime - this.referenceTime) << 16) | (RawUtils.readShort(dataBytes) & 0xFFFFL),
+				RawUtils.readLong(dataBytes, 2) + this.sequenceIndex);
 	}
 
 	@Override
-	public String generate(final byte[] dataBytes) {
-		return ULID.fromBytes(dataBytes).toString();
+	public ULID generate(final byte[] dataBytes) {
+		return ULID.fromBytes(dataBytes);
 	}
 
 	@Override

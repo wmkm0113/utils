@@ -31,6 +31,10 @@
           "content": "Generate reconfigured snowflake ID：{0}"
         },
         {
+          "key": "CUID_Random",
+          "content": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Generated value: {1}, version: {0}"
+        },
+        {
           "key": "ULID_Random",
           "content": "Generate Universally Unique Lexicographically Sortable Identifier: {0}"
         },
@@ -451,6 +455,10 @@
         {
           "key": "Snowflake_Reconfigure_Random",
           "content": "雪花算法重新配置后生成随机ID：{0}"
+        },
+        {
+          "key": "CUID_Random",
+          "content": "高性能、可预测且适用于分布式环境的唯一标识符生成随机ID：{1}，版本：{0}"
         },
         {
           "key": "ULID_Random",

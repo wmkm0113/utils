@@ -1,5 +1,7 @@
 org.nervousync.generator.nano.NanoGenerator
 org.nervousync.generator.snowflake.SnowflakeGenerator
+org.nervousync.generator.cuid.impl.CUIDv1Generator
+org.nervousync.generator.cuid.impl.CUIDv2Generator
 org.nervousync.generator.ulid.ULIDGenerator
 org.nervousync.generator.uuid.impl.UUIDv1Generator
 org.nervousync.generator.uuid.impl.UUIDv2Generator

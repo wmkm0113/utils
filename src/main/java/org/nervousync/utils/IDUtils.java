@@ -18,11 +18,13 @@ package org.nervousync.utils;
 
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.id.CUID;
+import org.nervousync.commons.id.ULID;
 import org.nervousync.generator.IGenerator;
+import org.nervousync.generator.cuid.impl.CUIDv2Generator;
 import org.nervousync.generator.nano.NanoGenerator;
 import org.nervousync.generator.snowflake.SnowflakeGenerator;
 import org.nervousync.generator.ulid.ULIDGenerator;
-import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.generator.uuid.impl.UUIDv2Generator;
 import org.nervousync.generator.uuid.timer.TimeSynchronizer;
 
@@ -37,6 +39,16 @@ import java.util.*;
  */
 public final class IDUtils {
 
+	/**
+	 * <span class="en-US">Static value for provider name of CUIDv1 Generator</span>
+	 * <span class="zh-CN">静态值用于CUIDv1生成器的提供名称</span>
+	 */
+	public static final String CUIDv1 = "CUIDv1";
+	/**
+	 * <span class="en-US">Static value for provider name of CUIDv2 Generator</span>
+	 * <span class="zh-CN">静态值用于CUIDv2生成器的提供名称</span>
+	 */
+	public static final String CUIDv2 = "CUIDv2";
 	/**
 	 * <span class="en-US">Static value for provider name of UUIDv1 Generator</span>
 	 * <span class="zh-CN">静态值用于UUIDv1生成器的提供名称</span>
@@ -162,12 +174,14 @@ public final class IDUtils {
 	 *
 	 * @param referenceTime <span class="en-US">Reference time, default value: 1303315200000L</span>
 	 *                      <span class="zh-CN">起始时间戳，默认值：1303315200000L</span>
+	 * @param monotonic     <span class="en-US">Monotonic flag</span>
+	 *                      <span class="zh-CN">单调标记</span>
 	 */
-	public static void ulidConfig(final long referenceTime) {
+	public static void ulidConfig(final long referenceTime, final boolean monotonic) {
 		if (INITIALIZE_MAP.containsKey(ULID)) {
 			synchronized (INITIALIZE_MAP) {
 				ULIDGenerator generator = (ULIDGenerator) INITIALIZE_MAP.get(ULID);
-				generator.config(referenceTime);
+				generator.config(referenceTime, monotonic);
 				INITIALIZE_MAP.put(ULID, generator);
 			}
 		}
@@ -211,9 +225,48 @@ public final class IDUtils {
 	 * <span class="zh-CN">生成的值</span>
 	 */
 	public static Long snowflake() {
-		return Optional.ofNullable(INITIALIZE_MAP.get(SNOWFLAKE))
-				.map(generator -> ((SnowflakeGenerator) generator).generate())
+		return Optional.ofNullable(generate(SNOWFLAKE, new byte[0]))
+				.map(value -> (Long) value)
 				.orElse(Globals.DEFAULT_VALUE_LONG);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate CUID version 1 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成CUID版本1的值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static CUID CUIDv1() {
+		return (CUID) generate(CUIDv1, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate CUID version 2 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成CUID版本2的值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static CUID CUIDv2() {
+		return (CUID) generate(CUIDv2, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate CUID version 2 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成CUID版本2的值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static CUID CUIDv2(final int length) {
+		byte[] dataBytes = new byte[4];
+		if (length <= Globals.INITIALIZE_INT_VALUE) {
+			RawUtils.writeInt(dataBytes, CUIDv2Generator.VALUE_LENGTH);
+		} else {
+			RawUtils.writeInt(dataBytes, length);
+		}
+		return (CUID) generate(CUIDv2, dataBytes);
 	}
 
 	/**
@@ -223,10 +276,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String ULID() {
-		return Optional.ofNullable(INITIALIZE_MAP.get(ULID))
-				.map(generator -> ((ULIDGenerator) generator).generate())
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static ULID ULID() {
+		return (ULID) generate(ULID, new byte[0]);
 	}
 
 	/**
@@ -236,10 +287,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String UUIDv1() {
-		return Optional.ofNullable(INITIALIZE_MAP.get(UUIDv1))
-				.map(generator -> ((UUIDGenerator) generator).generate())
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static UUID UUIDv1() {
+		return (UUID) generate(UUIDv1, new byte[0]);
 	}
 
 	/**
@@ -249,10 +298,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String UUIDv2() {
-		return Optional.ofNullable(INITIALIZE_MAP.get(UUIDv2))
-				.map(generator -> ((UUIDGenerator) generator).generate())
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static UUID UUIDv2() {
+		return (UUID) generate(UUIDv2, new byte[0]);
 	}
 
 	/**
@@ -264,10 +311,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String UUIDv3(final byte[] dataBytes) {
-		return Optional.ofNullable(INITIALIZE_MAP.get(UUIDv3))
-				.map(generator -> ((UUIDGenerator) generator).generate(dataBytes))
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static UUID UUIDv3(final byte[] dataBytes) {
+		return (UUID) generate(UUIDv3, dataBytes);
 	}
 
 	/**
@@ -277,10 +322,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String UUIDv4() {
-		return Optional.ofNullable(INITIALIZE_MAP.get(UUIDv4))
-				.map(generator -> ((UUIDGenerator) generator).generate())
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static UUID UUIDv4() {
+		return (UUID) generate(UUIDv4, new byte[0]);
 	}
 
 	/**
@@ -292,10 +335,8 @@ public final class IDUtils {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
-	public static String UUIDv5(final byte[] dataBytes) {
-		return Optional.ofNullable(INITIALIZE_MAP.get(UUIDv5))
-				.map(generator -> ((UUIDGenerator) generator).generate(dataBytes))
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public static UUID UUIDv5(final byte[] dataBytes) {
+		return (UUID) generate(UUIDv5, dataBytes);
 	}
 
 	/**
@@ -313,9 +354,15 @@ public final class IDUtils {
 		if (StringUtils.isEmpty(generatorName)) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
-		return Optional.ofNullable(INITIALIZE_MAP.get(generatorName))
-				.map(iGenerator -> (Object) iGenerator.generate(dataBytes))
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+		IGenerator<?> generator = INITIALIZE_MAP.get(generatorName);
+		if (generator == null) {
+			return null;
+		}
+		try {
+			return (dataBytes == null || dataBytes.length == 0) ? generator.generate() : generator.generate(dataBytes);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**

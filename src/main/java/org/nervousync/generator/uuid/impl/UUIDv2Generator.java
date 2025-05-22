@@ -74,8 +74,8 @@ public final class UUIDv2Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate() {
-		return new UUID(super.highBits(this.uuidTimer.getTimestamp()), this.lowBits(SystemUtils.localMac())).toString();
+	public UUID generate() {
+		return new UUID(super.highBits(this.uuidTimer.getTimestamp()), this.lowBits(SystemUtils.localMac()));
 	}
 
 	/**
@@ -88,7 +88,7 @@ public final class UUIDv2Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate(byte[] dataBytes) {
+	public UUID generate(byte[] dataBytes) {
 		return this.generate();
 	}
 

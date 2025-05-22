@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.commons;
+package org.nervousync.commons.id;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.utils.RawUtils;

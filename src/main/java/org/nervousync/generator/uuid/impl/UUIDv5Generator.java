@@ -17,7 +17,6 @@
 package org.nervousync.generator.uuid.impl;
 
 import org.nervousync.annotations.provider.Provider;
-import org.nervousync.commons.Globals;
 import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.utils.IDUtils;
 
@@ -42,7 +41,7 @@ public final class UUIDv5Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate() {
+	public UUID generate() throws NoSuchAlgorithmException {
 		return this.generate(new byte[0]);
 	}
 
@@ -56,16 +55,12 @@ public final class UUIDv5Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate(byte[] dataBytes) {
-		try {
-			byte[] randomBytes = MessageDigest.getInstance("SHA1").digest(dataBytes);
-			randomBytes[6] &= 0x0F;     /* clear version        */
-			randomBytes[6] |= 0x50;     /* set to version 5     */
-			randomBytes[8] &= 0x3F;     /* clear variant        */
-			randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
-			return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes)).toString();
-		} catch (NoSuchAlgorithmException e) {
-			return Globals.DEFAULT_VALUE_STRING;
-		}
+	public UUID generate(byte[] dataBytes) throws NoSuchAlgorithmException {
+		byte[] randomBytes = MessageDigest.getInstance("SHA1").digest(dataBytes);
+		randomBytes[6] &= 0x0F;     /* clear version        */
+		randomBytes[6] |= 0x50;     /* set to version 5     */
+		randomBytes[8] &= 0x3F;     /* clear variant        */
+		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
+		return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes));
 	}
 }

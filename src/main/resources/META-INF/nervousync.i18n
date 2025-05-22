@@ -1549,6 +1549,14 @@
           "content": "Snowflake ID"
         },
         {
+          "key": "version1.cuid.id.generator.name",
+          "content": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Version 1"
+        },
+        {
+          "key": "version2.cuid.id.generator.name",
+          "content": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Version 2"
+        },
+        {
           "key": "ulid.id.generator.name",
           "content": "Universally Unique Lexicographically Sortable Identifier"
         },
@@ -2617,6 +2625,14 @@
         {
           "key": "snowflake.id.generator.name",
           "content": "雪花算法生成识别码"
+        },
+        {
+          "key": "version1.cuid.id.generator.name",
+          "content": "高性能、可预测且适用于分布式环境的唯一标识符 版本1"
+        },
+        {
+          "key": "version2.cuid.id.generator.name",
+          "content": "高性能、可预测且适用于分布式环境的唯一标识符 版本2"
         },
         {
           "key": "ulid.id.generator.name",

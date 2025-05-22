@@ -17,10 +17,10 @@
 package org.nervousync.generator.uuid.impl;
 
 import org.nervousync.annotations.provider.Provider;
+import org.nervousync.commons.Globals;
 import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.utils.IDUtils;
 
-import java.security.SecureRandom;
 import java.util.UUID;
 
 /**
@@ -32,11 +32,6 @@ import java.util.UUID;
  */
 @Provider(name = IDUtils.UUIDv4, titleKey = "version4.uuid.id.generator.name")
 public final class UUIDv4Generator extends UUIDGenerator {
-	/**
-	 * <span class="en-US">Secure Random instance</span>
-	 * <span class="zh-CN">安全随机数对象</span>
-	 */
-	private final SecureRandom secureRandom = new SecureRandom();
 
 	/**
 	 * <h3 class="en-US">Generate ID value</h3>
@@ -46,14 +41,14 @@ public final class UUIDv4Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate() {
+	public UUID generate() {
 		byte[] randomBytes = new byte[16];
-		this.secureRandom.nextBytes(randomBytes);
+		Globals.randomBytes(randomBytes);
 		randomBytes[6] &= 0x0F;     /* clear version        */
 		randomBytes[6] |= 0x40;     /* set to version 4     */
 		randomBytes[8] &= 0x3F;     /* clear variant        */
 		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
-		return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes)).toString();
+		return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes));
 	}
 
 	/**
@@ -66,7 +61,7 @@ public final class UUIDv4Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate(byte[] dataBytes) {
+	public UUID generate(byte[] dataBytes) {
 		return this.generate();
 	}
 }

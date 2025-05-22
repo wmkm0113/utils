@@ -18,6 +18,8 @@ package org.nervousync.generator.uuid;
 
 import org.nervousync.generator.IGenerator;
 
+import java.util.UUID;
+
 /**
  * <h2 class="en-US">Abstract UUID generator</h2>
  * <h2 class="zh-CN">UUID生成器抽象类</h2>
@@ -25,7 +27,7 @@ import org.nervousync.generator.IGenerator;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 06, 2022 12:48:16 $
  */
-public abstract class UUIDGenerator implements IGenerator<String> {
+public abstract class UUIDGenerator implements IGenerator<UUID> {
 	/**
 	 * <h3 class="en-US">Calculate high bits of given data bytes</h3>
 	 * <h3 class="zh-CN">从给定的二进制数组计算高位值</h3>
