@@ -19,7 +19,6 @@ package org.nervousync.commons.id;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.generator.cuid.impl.CUIDv1Generator;
-import org.nervousync.generator.cuid.impl.CUIDv2Generator;
 import org.nervousync.utils.*;
 
 import java.io.Serializable;

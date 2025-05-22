@@ -20,7 +20,6 @@ package org.nervousync.generator.cuid;
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.id.CUID;
 import org.nervousync.generator.IGenerator;
-import org.nervousync.utils.RawUtils;
 import org.nervousync.utils.StringUtils;
 
 import java.lang.management.ManagementFactory;

@@ -58,14 +58,14 @@ public final class CUIDv2Generator extends CUIDGenerator {
 	private final AtomicInteger counter = new AtomicInteger(Integer.MAX_VALUE);
 
 	@Override
-	public CUID generate() throws Exception {
+	public CUID generate() {
 		byte[] dataBytes = new byte[4];
 		RawUtils.writeInt(dataBytes, VALUE_LENGTH);
 		return this.generate(dataBytes);
 	}
 
 	@Override
-	public CUID generate(final byte[] dataBytes) throws Exception {
+	public CUID generate(final byte[] dataBytes) {
 		int length = RawUtils.readInt(dataBytes);
 		if (length <= Globals.INITIALIZE_INT_VALUE) {
 			length = VALUE_LENGTH;

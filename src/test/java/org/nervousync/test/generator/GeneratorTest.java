@@ -41,8 +41,14 @@ public final class GeneratorTest extends BaseTest {
 	public void UUID() {
 		this.logger.info("UUID_Random", 1, IDUtils.UUIDv1());
 		this.logger.info("UUID_Random", 2, IDUtils.UUIDv2());
-		this.logger.info("UUID_Random", 3, IDUtils.UUIDv3("TestVersion3".getBytes()));
 		this.logger.info("UUID_Random", 4, IDUtils.UUIDv4());
+	}
+
+	@Test
+	@Order(25)
+	@Deprecated(since = "1.2.4")
+	public void deprecatedUUID() {
+		this.logger.info("UUID_Random", 3, IDUtils.UUIDv3("TestVersion3".getBytes()));
 		this.logger.info("UUID_Random", 5, IDUtils.UUIDv5("TestVersion5".getBytes()));
 	}
 
