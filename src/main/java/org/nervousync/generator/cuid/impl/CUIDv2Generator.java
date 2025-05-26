@@ -72,7 +72,7 @@ public final class CUIDv2Generator extends CUIDGenerator {
 		}
 		this.counter.compareAndSet(Integer.MAX_VALUE, safeAbs(Globals.random()));
 		final char firstChar = (char) ((safeAbs(Globals.random()) % 26) + 97);
-		final String timestamp = Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX);
+		final String timestamp = Long.toString(System.currentTimeMillis(), DEFAULT_RADIX);
 		final String data = timestamp + SALT(length)
 				+ processPadding(Integer.toString(this.counter.incrementAndGet(), DEFAULT_RADIX), 4)
 				+ MACHINE_FINGERPRINT;

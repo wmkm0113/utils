@@ -20,13 +20,16 @@ import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.id.CUID;
 import org.nervousync.commons.id.ULID;
+import org.nervousync.enumerations.generator.UUIDIdentifier;
+import org.nervousync.enumerations.generator.UUIDLocalDomain;
 import org.nervousync.generator.IGenerator;
 import org.nervousync.generator.cuid.impl.CUIDv2Generator;
 import org.nervousync.generator.nano.NanoGenerator;
 import org.nervousync.generator.snowflake.SnowflakeGenerator;
 import org.nervousync.generator.ulid.ULIDGenerator;
+import org.nervousync.generator.uuid.impl.UUIDv1Generator;
 import org.nervousync.generator.uuid.impl.UUIDv2Generator;
-import org.nervousync.generator.uuid.timer.TimeSynchronizer;
+import org.nervousync.generator.uuid.timer.UUIDTimer;
 
 import java.util.*;
 
@@ -76,6 +79,11 @@ public final class IDUtils {
 	 */
 	@Deprecated(since = "1.2.4")
 	public static final String UUIDv5 = "UUIDv5";
+	/**
+	 * <span class="en-US">Static value for provider name of UUIDv6 Generator</span>
+	 * <span class="zh-CN">静态值用于UUIDv6生成器的提供名称</span>
+	 */
+	public static final String UUIDv6 = "UUIDv6";
 	/**
 	 * <span class="en-US">Static value for provider name of NanoID Generator</span>
 	 * <span class="zh-CN">静态值用于NanoID生成器的提供名称</span>
@@ -193,14 +201,39 @@ public final class IDUtils {
 	 * <h3 class="en-US">Static method for configuring time synchronizer of UUIDv2 generator</h3>
 	 * <h3 class="zh-CN">静态方法用于设置UUIDv2生成器的时间同步器</h3>
 	 *
-	 * @param synchronizer <span class="en-US">Time synchronizer instance</span>
-	 *                     <span class="zh-CN">时间同步器实例对象</span>
+	 * @param uuidTimer      <span class="en-US">UUID timer instance</span>
+	 *                       <span class="zh-CN">UUID时间生成器实例对象</span>
+	 * @param uuidIdentifier <span class="en-US">Generation of UUID node identification code</span>
+	 *                       <span class="zh-CN">UUID节点识别代码的生成方式</span>
 	 */
-	public static void uuidConfig(final TimeSynchronizer synchronizer) {
+	public static void UUIDv1Config(final UUIDTimer uuidTimer, final UUIDIdentifier uuidIdentifier) {
+		if (INITIALIZE_MAP.containsKey(UUIDv1)) {
+			synchronized (INITIALIZE_MAP) {
+				UUIDv1Generator generator = (UUIDv1Generator) INITIALIZE_MAP.get(UUIDv1);
+				generator.config(uuidTimer, uuidIdentifier);
+				INITIALIZE_MAP.put(UUIDv1, generator);
+			}
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for configuring time synchronizer of UUIDv2 generator</h3>
+	 * <h3 class="zh-CN">静态方法用于设置UUIDv2生成器的时间同步器</h3>
+	 *
+	 * @param uuidTimer      <span class="en-US">UUID timer instance</span>
+	 *                       <span class="zh-CN">UUID时间生成器实例对象</span>
+	 * @param uuidIdentifier <span class="en-US">Generation of UUID node identification code</span>
+	 *                       <span class="zh-CN">UUID节点识别代码的生成方式</span>
+	 * @param localDomain    <span class="en-US">Local domain of UUID version 2</span>
+	 *                       <span class="zh-CN">UUID版本2的本地域</span>
+	 */
+	public static void UUIDv2Config(final UUIDTimer uuidTimer, final UUIDIdentifier uuidIdentifier,
+	                                final UUIDLocalDomain localDomain) {
 		if (INITIALIZE_MAP.containsKey(UUIDv2)) {
 			synchronized (INITIALIZE_MAP) {
 				UUIDv2Generator generator = (UUIDv2Generator) INITIALIZE_MAP.get(UUIDv2);
-				generator.config(synchronizer);
+				generator.config(uuidTimer, uuidIdentifier);
+				generator.config(localDomain);
 				INITIALIZE_MAP.put(UUIDv2, generator);
 			}
 		}
@@ -327,6 +360,17 @@ public final class IDUtils {
 	 */
 	public static UUID UUIDv4() {
 		return (UUID) generate(UUIDv4, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate UUIDv4 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv4值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static UUID UUIDv6() {
+		return (UUID) generate(UUIDv6, new byte[0]);
 	}
 
 	/**

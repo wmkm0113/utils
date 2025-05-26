@@ -17,8 +17,10 @@
 package org.nervousync.generator.uuid.impl;
 
 import org.nervousync.annotations.provider.Provider;
+import org.nervousync.commons.Globals;
 import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.utils.IDUtils;
+import org.nervousync.utils.RawUtils;
 import org.nervousync.utils.SecurityUtils;
 
 import java.util.UUID;
@@ -33,6 +35,7 @@ import java.util.UUID;
 @Deprecated(since = "1.2.4")
 @Provider(name = IDUtils.UUIDv3, titleKey = "version3.uuid.id.generator.name")
 public final class UUIDv3Generator extends UUIDGenerator {
+
 	/**
 	 * <h3 class="en-US">Generate ID value</h3>
 	 * <h3 class="zh-CN">生成ID值</h3>
@@ -42,7 +45,9 @@ public final class UUIDv3Generator extends UUIDGenerator {
 	 */
 	@Override
 	public UUID generate() {
-		return this.generate(new byte[0]);
+		byte[] dataBytes = new byte[16];
+		Globals.randomBytes(dataBytes);
+		return this.generate(dataBytes);
 	}
 
 	/**
@@ -61,6 +66,6 @@ public final class UUIDv3Generator extends UUIDGenerator {
 		randomBytes[6] |= 0x30;     /* set to version 3     */
 		randomBytes[8] &= 0x3F;     /* clear variant        */
 		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
-		return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes));
+		return new UUID(RawUtils.readLong(randomBytes), RawUtils.readLong(randomBytes, 8));
 	}
 }

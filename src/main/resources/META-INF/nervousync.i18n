@@ -1581,6 +1581,10 @@
           "content": "Universally Unique Identifier Version 5"
         },
         {
+          "key": "version6.uuid.id.generator.name",
+          "content": "Universally Unique Identifier Version 6"
+        },
+        {
           "key": "Office_Ext_Name_Invalid",
           "content": "Unknown file ext name: {0}"
         },
@@ -2657,6 +2661,10 @@
         {
           "key": "version5.uuid.id.generator.name",
           "content": "通用唯一识别码 版本5"
+        },
+        {
+          "key": "version6.uuid.id.generator.name",
+          "content": "通用唯一识别码 版本6"
         },
         {
           "key": "Office_Ext_Name_Invalid",

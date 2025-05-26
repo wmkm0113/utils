@@ -87,7 +87,7 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 
 	@Override
 	public ULID generate() {
-		long currentTime = DateTimeUtils.currentUTCTimeMillis();
+		long currentTime = System.currentTimeMillis();
 		if (currentTime < this.lastTime.get()) {
 			throw new RuntimeException(
 					String.format("System clock moved backwards. Refusing to generate id for %d milliseconds",

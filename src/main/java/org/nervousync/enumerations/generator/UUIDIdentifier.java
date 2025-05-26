@@ -14,26 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nervousync.generator.uuid;
 
-import org.nervousync.generator.IGenerator;
-
-import java.util.UUID;
+package org.nervousync.enumerations.generator;
 
 /**
- * <h2 class="en-US">Abstract UUID generator</h2>
- * <h2 class="zh-CN">UUID生成器抽象类</h2>
+ * <h2 class="en-US">Generation of UUID node identification code</h2>
+ * <h2 class="zh-CN">UUID节点识别代码的生成方式</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Jul 06, 2022 12:48:16 $
+ * @version $Revision: 1.0.0 $Date: May 26, 2025 10:51:08 $
  */
-public abstract class UUIDGenerator implements IGenerator<UUID> {
-
-	/**
-	 * <h3 class="en-US">Destroy current generator instance</h3>
-	 * <h3 class="zh-CN">销毁当前生成器实例对象</h3>
-	 */
-	@Override
-	public void destroy() {
-	}
+public enum UUIDIdentifier {
+	MAC, HASH, RANDOM
 }

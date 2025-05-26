@@ -197,7 +197,7 @@ public abstract class BeanObject implements Serializable, Cloneable {
 		if (fieldsMap.isEmpty()) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
-		return ConvertUtils.toHex(SecurityUtils.SHA256(fieldsMap));
+		return ConvertUtils.bytesToHex(SecurityUtils.SHA256(fieldsMap));
 	}
 
 	private TreeMap<String, Object> fieldsMap(final StringUtils.StringType stringType, final String... ignoreFields) {
@@ -239,7 +239,7 @@ public abstract class BeanObject implements Serializable, Cloneable {
 									if (fieldValue instanceof BeanObject) {
 										fieldsMap.put(field.getName(), ((BeanObject) fieldValue).fieldsMap(stringType));
 									} else {
-										fieldsMap.put(field.getName(), ConvertUtils.toHex(ConvertUtils.toByteArray(fieldValue)));
+										fieldsMap.put(field.getName(), ConvertUtils.bytesToHex(ConvertUtils.toByteArray(fieldValue)));
 									}
 								}));
 		return fieldsMap;

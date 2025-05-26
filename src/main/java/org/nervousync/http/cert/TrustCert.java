@@ -64,7 +64,7 @@ public final class TrustCert {
 	private TrustCert(byte[] certContent, String certPassword) {
 		this.certContent = certContent;
 		this.certPassword = certPassword;
-		this.sha256 = ConvertUtils.toHex(SecurityUtils.SHA256(certContent));
+		this.sha256 = ConvertUtils.bytesToHex(SecurityUtils.SHA256(certContent));
 	}
 
 	/**

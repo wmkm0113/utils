@@ -319,8 +319,8 @@ public class AESCrypto {
 		System.arraycopy(keyBytes, (this.keyLength + this.macLength),
 				this.derivedPasswordVerifier, Globals.INITIALIZE_INT_VALUE, Globals.PASSWORD_VERIFIER_LENGTH);
 
-		System.out.println(ConvertUtils.toHex(aesKey));
-		System.out.println(ConvertUtils.toHex(macKey));
+		System.out.println(ConvertUtils.bytesToHex(aesKey));
+		System.out.println(ConvertUtils.bytesToHex(macKey));
 		this.aesEngine = new AESEngine(aesKey);
 		this.aesCipher = org.bouncycastle.crypto.engines.AESEngine.newInstance();
 //		this.aesCipher.init(this.forEncryption, );

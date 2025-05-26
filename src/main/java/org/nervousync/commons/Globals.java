@@ -479,6 +479,10 @@ public final class Globals {
 		RANDOM.nextBytes(bytes);
 	}
 
+	public static long randomLong() {
+		return RANDOM.nextLong();
+	}
+
 	private Globals() {
 	}
 }

@@ -990,11 +990,15 @@ public final class DateTimeUtils {
 		 */
 		private final AtomicLong currentLocalTime = new AtomicLong(System.currentTimeMillis());
 		/**
+		 * <span class="en-US">Current local timezone offset value</span>
+		 * <span class="zh-CN">本地时区偏移值</span>
+		 */
+		private static final int RAW_OFFSET = TimeZone.getDefault().getRawOffset();
+		/**
 		 * <span class="en-US">Current UTC time milliseconds</span>
 		 * <span class="zh-CN">当前UTC时间的毫秒数</span>
 		 */
-		private final AtomicLong currentUTCTime =
-				new AtomicLong(System.currentTimeMillis() - TimeZone.getDefault().getRawOffset());
+		private final AtomicLong currentUTCTime = new AtomicLong(System.currentTimeMillis() - RAW_OFFSET);
 
 		/**
 		 * <h3 class="en-US">Constructor method for the UTC clock</h3>
@@ -1039,7 +1043,7 @@ public final class DateTimeUtils {
 		private void readTime() {
 			long currentTime = System.currentTimeMillis();
 			this.currentLocalTime.set(currentTime);
-			this.currentUTCTime.set(currentTime - TimeZone.getDefault().getRawOffset());
+			this.currentUTCTime.set(currentTime - RAW_OFFSET);
 		}
 	}
 }

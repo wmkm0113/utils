@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.nervousync.commons.id.CUID;
 import org.nervousync.commons.id.ULID;
+import org.nervousync.enumerations.generator.UUIDIdentifier;
+import org.nervousync.enumerations.generator.UUIDLocalDomain;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.DateTimeUtils;
 import org.nervousync.utils.IDUtils;
@@ -39,9 +41,24 @@ public final class GeneratorTest extends BaseTest {
 	@Test
 	@Order(20)
 	public void UUID() {
+		//  Version 1
+		for (int i = 0; i < 10; i++) {
+			this.logger.info("UUID_Random", 1, IDUtils.UUIDv1());
+		}
+		IDUtils.UUIDv1Config(null, UUIDIdentifier.RANDOM);
 		this.logger.info("UUID_Random", 1, IDUtils.UUIDv1());
+
+		//  Version 2
 		this.logger.info("UUID_Random", 2, IDUtils.UUIDv2());
+		IDUtils.UUIDv2Config(null, UUIDIdentifier.RANDOM, UUIDLocalDomain.GROUP);
+		this.logger.info("UUID_Random", 2, IDUtils.UUIDv2());
+
+		//  Version 4
 		this.logger.info("UUID_Random", 4, IDUtils.UUIDv4());
+		//  Version 6
+		for (int i = 0; i < 10; i++) {
+			this.logger.info("UUID_Random", 6, IDUtils.UUIDv6());
+		}
 	}
 
 	@Test

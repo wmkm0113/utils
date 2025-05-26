@@ -97,7 +97,7 @@ public final class SegmentationBlock extends BeanObject {
 	 *                    <span class="zh-CN">数据的字节数组</span>
 	 */
 	public SegmentationBlock(long position, byte[] dataContent) {
-		this.sha = ConvertUtils.toHex(SecurityUtils.SHA256(dataContent));
+		this.sha = ConvertUtils.bytesToHex(SecurityUtils.SHA256(dataContent));
 		this.position = position;
 		this.blockSize = dataContent.length;
 		this.dataInfo = StringUtils.base64Encode(dataContent);
@@ -170,7 +170,7 @@ public final class SegmentationBlock extends BeanObject {
 		byte[] dataContent = StringUtils.base64Decode(this.dataInfo);
 		try {
 			return dataContent.length == this.blockSize
-					&& Objects.equals(ConvertUtils.toHex(SecurityUtils.SHA256(dataContent)), this.sha);
+					&& Objects.equals(ConvertUtils.bytesToHex(SecurityUtils.SHA256(dataContent)), this.sha);
 		} catch (Exception e) {
 			return Boolean.FALSE;
 		}

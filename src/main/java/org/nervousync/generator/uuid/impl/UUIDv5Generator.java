@@ -19,6 +19,7 @@ package org.nervousync.generator.uuid.impl;
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.generator.uuid.UUIDGenerator;
 import org.nervousync.utils.IDUtils;
+import org.nervousync.utils.RawUtils;
 import org.nervousync.utils.SecurityUtils;
 
 import java.util.UUID;
@@ -61,6 +62,6 @@ public final class UUIDv5Generator extends UUIDGenerator {
 		randomBytes[6] |= 0x50;     /* set to version 5     */
 		randomBytes[8] &= 0x3F;     /* clear variant        */
 		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
-		return new UUID(super.highBits(randomBytes), super.lowBits(randomBytes));
+		return new UUID(RawUtils.readLong(randomBytes), RawUtils.readLong(randomBytes, 8));
 	}
 }

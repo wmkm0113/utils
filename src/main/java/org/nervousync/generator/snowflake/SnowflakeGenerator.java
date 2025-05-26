@@ -104,7 +104,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 */
 	@Override
 	public Long generate() {
-		long currentTime = DateTimeUtils.currentUTCTimeMillis();
+		long currentTime = System.currentTimeMillis();
 		if (currentTime < this.lastTime) {
 			throw new RuntimeException(
 					String.format("System clock moved backwards. Refusing to generate id for %d milliseconds",
@@ -115,7 +115,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 			this.sequenceIndex = (this.sequenceIndex + 1) & SEQUENCE_MASK;
 			if (this.sequenceIndex == 0) {
 				while (true) {
-					if ((currentTime = DateTimeUtils.currentUTCTimeMillis()) > this.lastTime) {
+					if ((currentTime = System.currentTimeMillis()) > this.lastTime) {
 						break;
 					}
 				}

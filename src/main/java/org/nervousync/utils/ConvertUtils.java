@@ -72,7 +72,7 @@ public final class ConvertUtils {
 	 * @return <span class="en-US">Converted hex string</span>
 	 * <span class="zh-CN">转换后的十六进制字符串</span>
 	 */
-	public static String toHex(final byte[] dataBytes) {
+	public static String bytesToHex(final byte[] dataBytes) {
 		if (dataBytes == null) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
@@ -85,6 +85,20 @@ public final class ConvertUtils {
 			stringBuilder.append(tmp);
 		}
 		return stringBuilder.toString();
+	}
+
+	public static byte[] hexToBytes(final String hex) {
+		if (StringUtils.isEmpty(hex) || hex.length() % 2 != 0) {
+			return new byte[0];
+		}
+		byte[] dataBytes = new byte[hex.length() / 2];
+		int position = 0, index = 0;
+		while (position < hex.length()) {
+			String tmp = hex.substring(position, position + 2);
+			dataBytes[index++] = (byte) Integer.parseInt(tmp, 16);
+			position += 2;
+		}
+		return dataBytes;
 	}
 
 	/**

@@ -3405,7 +3405,7 @@ public final class FileUtils {
 			}
 
 			return new SegmentationInfo(extName, fileSize, blockSize,
-					ConvertUtils.toHex(SecurityUtils.SHA256(fileObject)), segmentationBlockList);
+					ConvertUtils.bytesToHex(SecurityUtils.SHA256(fileObject)), segmentationBlockList);
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Not_Found_File_Error", filePath);
 			if (LOGGER.isDebugEnabled()) {

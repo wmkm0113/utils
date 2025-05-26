@@ -23,7 +23,7 @@ public class RawTest extends BaseTest {
 
     @AfterEach
     public void print() {
-        this.logger.debug("Raw_Data_Bytes", ConvertUtils.toHex(this.dataBytes));
+        this.logger.debug("Raw_Data_Bytes", ConvertUtils.bytesToHex(this.dataBytes));
     }
 
     @Test

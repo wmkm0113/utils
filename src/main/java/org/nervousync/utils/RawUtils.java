@@ -1065,8 +1065,7 @@ public final class RawUtils {
 	private static Object readNumber(final byte[] dataBytes, final int position, final ByteOrder byteOrder,
 	                                 final int dataLength) throws DataInvalidException {
 		if (dataBytes.length < (position + dataLength)) {
-			throw new DataInvalidException(0x000000130001L, "Out_Of_Index_Raw_Error",
-					dataBytes.length, position, 8);
+			throw new DataInvalidException(0x000000130001L, "Out_Of_Index_Raw_Error", dataBytes.length, position, 8);
 		}
 		final ByteBuffer byteBuffer = initBuffer(dataBytes, position, dataLength, byteOrder);
 		switch (dataLength) {

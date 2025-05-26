@@ -16,6 +16,8 @@
  */
 package org.nervousync.utils;
 
+import com.sun.security.auth.module.NTSystem;
+import com.sun.security.auth.module.UnixSystem;
 import org.nervousync.beans.network.NetworkInfo;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.beans.network.NetworkInfoException;
@@ -355,6 +357,30 @@ public final class SystemUtils {
 		return JAVA_HOME + JAVA_CERT_PATH;
 	}
 
+	public static long UID() {
+		if (isWindows()) {
+			NTSystem ntSystem = new NTSystem();
+			byte[] dataBytes = SecurityUtils.SHA256(ntSystem.getUserSID());
+			int position = Math.max(0, dataBytes.length - 8);
+			return RawUtils.readLong(dataBytes, position);
+		} else {
+			UnixSystem unixSystem = new UnixSystem();
+			return unixSystem.getUid();
+		}
+	}
+
+	public static long GID() {
+		if (isWindows()) {
+			NTSystem ntSystem = new NTSystem();
+			byte[] dataBytes = SecurityUtils.SHA256(Arrays.toString(ntSystem.getGroupIDs()));
+			int position = Math.max(0, dataBytes.length - 8);
+			return RawUtils.readLong(dataBytes, position);
+		} else {
+			UnixSystem unixSystem = new UnixSystem();
+			return unixSystem.getGid();
+		}
+	}
+
 	/**
 	 * <h3 class="en-US">Retrieve current network interface MAC address</h3>
 	 * <h3 class="zh-CN">读取当前系统网卡的物理地址</h3>
@@ -413,7 +439,7 @@ public final class SystemUtils {
 			}
 
 			Collections.sort(macAddressList);
-			return ConvertUtils.toHex(SecurityUtils.SHA256(macAddressList));
+			return ConvertUtils.bytesToHex(SecurityUtils.SHA256(macAddressList));
 		} catch (Exception e) {
 			LOGGER.error("Generate_Identified_ID_System_Error");
 			if (LOGGER.isDebugEnabled()) {

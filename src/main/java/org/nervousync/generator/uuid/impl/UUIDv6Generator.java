@@ -14,26 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nervousync.generator.uuid;
 
-import org.nervousync.generator.IGenerator;
+package org.nervousync.generator.uuid.impl;
 
-import java.util.UUID;
+import org.nervousync.annotations.provider.Provider;
+import org.nervousync.generator.uuid.TimeBasedClockSequenceGenerator;
+import org.nervousync.utils.IDUtils;
 
 /**
- * <h2 class="en-US">Abstract UUID generator</h2>
- * <h2 class="zh-CN">UUID生成器抽象类</h2>
+ * <h2 class="en-US">UUID version 6 generator</h2>
+ * <h2 class="zh-CN">UUID版本6生成器</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
- * @version $Revision: 1.0.0 $ $Date: Jul 06, 2022 12:48:16 $
+ * @version $Revision: 1.0.0 $ $Date: May 26, 2025 12:28:16 $
  */
-public abstract class UUIDGenerator implements IGenerator<UUID> {
+@Provider(name = IDUtils.UUIDv6, titleKey = "version6.uuid.id.generator.name")
+public final class UUIDv6Generator extends TimeBasedClockSequenceGenerator {
 
-	/**
-	 * <h3 class="en-US">Destroy current generator instance</h3>
-	 * <h3 class="zh-CN">销毁当前生成器实例对象</h3>
-	 */
 	@Override
-	public void destroy() {
+	protected long highBits(final long timestamp) {
+		return ((timestamp & 0x0ffffffffffff000L) << 4)
+				| (timestamp & 0xFFFL)
+				| 0x6000L;  //  Apply version 6
 	}
 }
