@@ -441,9 +441,10 @@ For customized special features, please send an email directly to [wmkm0113\@gma
 ## Donations
 To support this project, you can make a donation to:
 
-* Bitcoin address: bc1q0n05a5r7vyph40lv0kshxscxwptr3z4pwpq5nd
-* Ethereum address: 0xeA448C14f65657Fce8020955807345ae5Fb0722B
-* Solana address: CiBFDVETZLFGUYTN6izbofCZ7oVAdghoMDpFgaUyetPf
+* Bitcoin address: bc1ql7elx2j625x7f9tvax90v6zgwp55wy7uawtdtz
+* Ethereum address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
+* Solana address: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
+* BNB address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
 
 ## Sponsorship and Thanks To
 <span id="JetBrains">

@@ -428,9 +428,10 @@ org.nervousync.annotations.launcher.Launcher 注解的 value 属性值为启动�
 ## 捐款
 为了支持此项目，您可以向以下地址捐款：
 
-* 比特币地址：bc1q0n05a5r7vyph40lv0kshxscxwptr3z4pwpq5nd
-* 以太坊地址：0xeA448C14f65657Fce8020955807345ae5Fb0722B
-* Solana 地址：CiBFDVETZLFGUYTN6izbofCZ7oVAdghoMDpFgaUyetPf
+* 比特币地址: bc1ql7elx2j625x7f9tvax90v6zgwp55wy7uawtdtz
+* 以太坊地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
+* Solana 地址: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
+* BNB 地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
 
 ## 赞助与鸣谢
 <span id="JetBrains">
