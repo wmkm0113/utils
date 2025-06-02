@@ -31,7 +31,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:48:39 $
  */
-@OutputConfig(type = StringUtils.StringType.JSON)
+@OutputConfig(defaultType = StringUtils.StringType.JSON)
 public final class BundleLanguage extends BeanObject {
 
 	/**

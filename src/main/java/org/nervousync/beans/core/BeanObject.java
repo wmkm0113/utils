@@ -28,10 +28,8 @@ import org.nervousync.utils.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * <h2 class="en-US">Abstract class of JavaBean</h2>
@@ -109,27 +107,27 @@ public abstract class BeanObject implements Serializable, Cloneable {
 	public final String toString() {
 		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
 				.map(outputConfig ->
-						this.toString(outputConfig.type(), outputConfig.formatted(), outputConfig.encoding()))
-				.orElse(this.toString(StringUtils.StringType.SIMPLE, Boolean.FALSE, Globals.DEFAULT_ENCODING));
+						this.toString(outputConfig.defaultType(), outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(this.toString(StringUtils.StringType.SERIALIZABLE, Boolean.FALSE, Globals.DEFAULT_ENCODING));
 	}
 
+	/**
+	 * <h3 class="en-US">Converts to a string of the given type</h3>
+	 * <h3 class="zh-CN">转换为给定类型的字符串</h3>
+	 *
+	 * @param stringType <span class="en-US">Target string type</span>
+	 *                   <span class="zh-CN">目标字符串类型</span>
+	 * @return <span class="en-US">The converted string, or an empty string if the given type is not supported</span>
+	 * <span class="zh-CN">转换后的字符串，如果给定类型不支持，则返回空字符串</span>
+	 */
 	public final String toString(@Nonnull final StringUtils.StringType stringType) {
-		Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
-				.map(Signature::value)
-				.filter(StringUtils::notBlank)
-				.ifPresent(fieldName ->
-						ReflectionUtils.setField(fieldName, this, this.signature(stringType, fieldName)));
-		switch (stringType) {
-			case XML:
-				return StringUtils.objectToString(this, StringUtils.StringType.XML, Boolean.TRUE,
-						Boolean.FALSE, Globals.DEFAULT_ENCODING);
-			case JSON:
-			case YAML:
-			case SERIALIZABLE:
-				return StringUtils.objectToString(this, stringType, Boolean.TRUE);
-			default:
-				return super.toString();
-		}
+		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
+				.filter(outputConfig ->
+						outputConfig.defaultType().equals(stringType)
+								|| Arrays.asList(outputConfig.types()).contains(stringType))
+				.map(outputConfig ->
+						this.toString(stringType, outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(super.toString());
 	}
 
 	/**
@@ -153,10 +151,25 @@ public abstract class BeanObject implements Serializable, Cloneable {
 		}
 	}
 
+	/**
+	 * <h3 class="en-US">Verify that the digital signature is legitimate</h3>
+	 * <h3 class="zh-CN">验证数字签名是否合法</h3>
+	 *
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
+	 */
 	public final boolean validate() {
 		OutputConfig config = this.getClass().getAnnotation(OutputConfig.class);
 		if (config == null) {
 			return Boolean.FALSE;
+		}
+
+		List<StringUtils.StringType> dataTypes = new ArrayList<>();
+		dataTypes.add(config.defaultType());
+		for (StringUtils.StringType type : config.types()) {
+			if (!dataTypes.contains(type)) {
+				dataTypes.add(type);
+			}
 		}
 
 		return Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
@@ -164,12 +177,27 @@ public abstract class BeanObject implements Serializable, Cloneable {
 				.filter(StringUtils::notBlank)
 				.map(fieldName ->
 						Optional.ofNullable((String) ReflectionUtils.getFieldValue(fieldName, this))
+								.filter(StringUtils::notBlank)
 								.map(signature ->
-										ObjectUtils.nullSafeEquals(signature, this.signature(config.type(), fieldName)))
+										dataTypes.stream().anyMatch(type ->
+												ObjectUtils.nullSafeEquals(signature, this.signature(type, fieldName))))
 								.orElse(Boolean.FALSE))
 				.orElse(Boolean.TRUE);
 	}
 
+	/**
+	 * <h3 class="en-US">Converts to a string of the given type</h3>
+	 * <h3 class="zh-CN">转换为给定类型的字符串</h3>
+	 *
+	 * @param stringType   <span class="en-US">Target string type</span>
+	 *                     <span class="zh-CN">目标字符串类型</span>
+	 * @param formatOutput <span class="en-US">format output string</span>
+	 *                     <span class="zh-CN">格式化输出字符串</span>
+	 * @param encoding     <span class="en-US">String charset encoding</span>
+	 *                     <span class="zh-CN">字符串的字符集编码</span>
+	 * @return <span class="en-US">The converted string, or an empty string if the given type is not supported</span>
+	 * <span class="zh-CN">转换后的字符串，如果给定类型不支持，则返回空字符串</span>
+	 */
 	private String toString(final StringUtils.StringType stringType, final boolean formatOutput, final String encoding) {
 		Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
 				.map(Signature::value)
@@ -188,6 +216,17 @@ public abstract class BeanObject implements Serializable, Cloneable {
 		}
 	}
 
+	/**
+	 * <h3 class="en-US">Generate the digital signature</h3>
+	 * <h3 class="zh-CN">生成数字签名</h3>
+	 *
+	 * @param stringType <span class="en-US">Target string type</span>
+	 *                   <span class="zh-CN">目标字符串类型</span>
+	 * @param fieldName  <span class="en-US">The name of the attribute that stores the digital signature</span>
+	 *                   <span class="zh-CN">保存数字签名的属性名</span>
+	 * @return <span class="en-US">Generated digital signature</span>
+	 * <span class="zh-CN">生成的数字签名</span>
+	 */
 	private String signature(final StringUtils.StringType stringType, final String fieldName) {
 		String[] ignoreFields = Optional.ofNullable(this.getClass().getAnnotation(JsonIgnoreProperties.class))
 				.map(JsonIgnoreProperties::value)

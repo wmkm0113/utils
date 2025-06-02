@@ -17,17 +17,14 @@
 
 package org.nervousync.beans.transfer.enumerations;
 
-import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import org.nervousync.enumerations.mail.MailProtocol;
 
-public final class MailProtocolAdapter extends XmlAdapter<String, MailProtocol> {
-	@Override
-	public MailProtocol unmarshal(final String v) {
-		return MailProtocol.valueOf(v);
-	}
-
-	@Override
-	public String marshal(final MailProtocol v) {
-		return v.toString();
-	}
+/**
+ * <h2 class="en-US">Mail protocol enum data convert adapter</h2>
+ * <h2 class="zh-CN">电子邮件协议枚举数据转换适配器</h2>
+ *
+ * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
+ * @version $Revision: 1.1.0 $Date: Jun 15, 2020 17:28:52 $
+ */
+public final class MailProtocolAdapter extends EnumAdapter<MailProtocol> {
 }

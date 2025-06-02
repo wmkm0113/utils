@@ -330,8 +330,8 @@ public final class BeanUtils {
 				this.propertyMappings.stream()
 						.filter(propertyMapping -> propertyMapping.match(target))
 						.forEach(propertyMapping ->
-								ReflectionUtils.setField(propertyMapping.getFieldName(), target,
-										propertyMapping.marshal(fieldValue)));
+							ReflectionUtils.setField(propertyMapping.getFieldName(),
+									target, propertyMapping.marshal(fieldValue)));
 			}
 		}
 
@@ -429,7 +429,7 @@ public final class BeanUtils {
 			return propertyMapping.getFieldName().compareTo(this.fieldName);
 		}
 
-		String marshal(final Object object) {
+		Object marshal(final Object object) {
 			return this.transferConfig.marshal(object);
 		}
 

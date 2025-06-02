@@ -39,9 +39,6 @@ public final class CDataAdapter extends AbstractAdapter {
 	 */
 	public static final String CDATA_END = "]]>";
 
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(Object)
-	 */
 	@Override
 	public Object unmarshal(final String v) {
 		if (StringUtils.isEmpty(v)) {
@@ -57,9 +54,6 @@ public final class CDataAdapter extends AbstractAdapter {
 		return dataValue;
 	}
 
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(Object)
-	 */
 	@Override
 	public String marshal(final Object v) {
 		if (v instanceof String && StringUtils.notBlank((String) v)) {

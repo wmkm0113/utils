@@ -43,6 +43,11 @@ public final class NetworkInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = -8060054814830700945L;
 	/**
+	 * <span class="en-US">Network interface MAC address separator character</span>
+	 * <span class="zh-CN">网络适配器物理地址分隔字符</span>
+	 */
+	private static final char MAC_SEPARATOR = '-';
+	/**
 	 * <span class="en-US">Current network interface is virtual interface</span>
 	 * <span class="zh-CN">当前网络接口是虚拟接口</span>
 	 */
@@ -84,10 +89,10 @@ public final class NetworkInfo implements Serializable {
 				if (macAddress != null && macAddress.length > 0) {
 					StringBuilder stringBuilder = new StringBuilder();
 					for (byte mac : macAddress) {
-						stringBuilder.append(":");
+						stringBuilder.append(MAC_SEPARATOR);
 						String address = Integer.toHexString(mac & 0xFF);
 						if (address.length() == 1) {
-							address = "0" + address;
+							stringBuilder.append("0");
 						}
 						stringBuilder.append(address.toUpperCase());
 					}

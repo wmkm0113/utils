@@ -17,42 +17,60 @@
 package org.nervousync.beans.transfer.basic;
 
 import org.nervousync.beans.transfer.AbstractAdapter;
+import org.nervousync.commons.Globals;
 import org.nervousync.utils.DateTimeUtils;
+import org.nervousync.utils.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 
 /**
- * <h2 class="en-US">DateTime DataConverter</h2>
+ * <h2 class="en-US">DateTime convert adapter</h2>
  * <h2 class="zh-CN">日期时间数据转换器</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $Date: 2018-10-15 14:31
  */
 public final class DateTimeAdapter extends AbstractAdapter {
-	private final String pattern;
 
+	/**
+	 * <span class="en-US">Date time format pattern</span>
+	 * <span class="zh-CN">日期时间格式字符串</span>
+	 */
+	private final String pattern;
+	private final DateTimeFormatter formatter;
+
+	/**
+	 * <h3 class="en-US">Constructor method for dateTime convert adapter, using the default datetime pattern (Defined in ISO8601)</h3>
+	 * <h3 class="zh-CN">日期时间数据转换器的构造方法，使用默认的格式字符串（ISO8601标准定义的格式）</h3>
+	 */
 	public DateTimeAdapter() {
 		this(DateTimeUtils.DEFAULT_DATETIME_PATTERN_ISO8601);
 	}
 
+	/**
+	 * <h3 class="en-US">Constructor method for dateTime convert adapter</h3>
+	 * <h3 class="zh-CN">日期时间数据转换器的构造方法</h3>
+	 *
+	 * @param pattern <span class="en-US">Date time format pattern</span>
+	 *                <span class="zh-CN">日期时间格式字符串</span>
+	 */
 	public DateTimeAdapter(final String pattern) {
-		this.pattern = pattern;
+		this.pattern = StringUtils.isEmpty(pattern) ? DateTimeUtils.DEFAULT_DATETIME_PATTERN_ISO8601 : pattern;
+		this.formatter = DateTimeFormatter.ofPattern(this.pattern);
 	}
 
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(Object)
-	 */
 	@Override
 	public Object unmarshal(final String v) {
-		return DateTimeUtils.parseSiteMapDate(v);
+		return DateTimeUtils.parseDate(v, this.pattern);
 	}
 
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(Object)
-	 */
 	@Override
 	public String marshal(final Object v) {
-		return DateTimeUtils.formatDate((Date) v, DateTimeFormatter.ofPattern(this.pattern));
+		return Optional.ofNullable(v)
+				.filter(date -> date instanceof Date)
+				.map(date -> DateTimeUtils.formatDate((Date) v, this.formatter))
+				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 }

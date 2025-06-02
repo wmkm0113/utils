@@ -26,7 +26,7 @@ import org.nervousync.utils.StringUtils;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2023 16:27:08 $
  */
-public class TargetPath {
+public final class TargetPath {
 	/**
 	 * <span class="en-US">Separator between JAR URL and the path within the JAR</span>
 	 * <span class="zh-CN">JAR URL 和 JAR 内路径之间的分隔符</span>

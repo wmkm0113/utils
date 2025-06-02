@@ -2230,6 +2230,8 @@ public final class StringUtils {
 	 *                     <span class="zh-CN">目标字符串类型</span>
 	 * @param formatOutput <span class="en-US">format output string</span>
 	 *                     <span class="zh-CN">格式化输出字符串</span>
+	 * @param encoding     <span class="en-US">String charset encoding</span>
+	 *                     <span class="zh-CN">字符串的字符集编码</span>
 	 * @return <span class="en-US">the converted string</span>
 	 * <span class="zh-CN">转换后的字符串</span>
 	 */
@@ -2381,16 +2383,11 @@ public final class StringUtils {
 		if (ClassUtils.isAssignable(Map.class, beanClass)) {
 			return beanClass.cast(StringUtils.dataToMap(string, StringType.JSON));
 		}
-		switch (string.charAt(0)) {
-			case '<':
-				return stringToObject(string, StringType.XML, encoding, beanClass, schemaPaths);
-			case '{':
-				return stringToObject(string, StringType.JSON, encoding, beanClass, schemaPaths);
-			default:
-				return stringToObject(string,
-						StringUtils.matches(string, RegexGlobals.BASE64) ? StringType.SERIALIZABLE : StringType.YAML,
-						encoding, beanClass, schemaPaths);
-		}
+
+		return Optional.ofNullable(beanClass.getAnnotation(OutputConfig.class))
+				.map(outputConfig ->
+						stringToObject(string, outputConfig.defaultType(), outputConfig.encoding(), beanClass, schemaPaths))
+				.orElse(stringToObject(string, StringType.SERIALIZABLE, encoding, beanClass, schemaPaths));
 	}
 
 	/**
@@ -2548,7 +2545,7 @@ public final class StringUtils {
 		if (outputConfig == null) {
 			return streamToObject(inputStream, StringType.SERIALIZABLE, beanClass, schemaPaths);
 		}
-		return streamToObject(inputStream, outputConfig.type(), beanClass, schemaPaths);
+		return streamToObject(inputStream, outputConfig.defaultType(), beanClass, schemaPaths);
 	}
 
 	/**
@@ -3038,7 +3035,7 @@ public final class StringUtils {
 		if (StringType.SIMPLE.equals(stringType)) {
 			return ClassUtils.parseSimpleData(string, beanClass);
 		}
-		String stringEncoding = (encoding == null) ? Globals.DEFAULT_ENCODING : encoding;
+		String stringEncoding = isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding;
 		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(stringEncoding))) {
 			return streamToObject(inputStream, stringType, beanClass, schemaPaths);
 		} catch (IOException e) {

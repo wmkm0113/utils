@@ -16,8 +16,6 @@
  */
 package org.nervousync.beans.transfer.beans;
 
-import org.nervousync.beans.core.BeanObject;
-import org.nervousync.commons.Globals;
 import org.nervousync.utils.StringUtils;
 
 /**
@@ -29,29 +27,16 @@ import org.nervousync.utils.StringUtils;
  */
 public final class YamlBeanAdapter extends AbstractBeanAdapter {
 
+	/**
+	 * <h3 class="en-US">Constructor method for JavaBean YAML convert adapter</h3>
+	 * <h3 class="zh-CN">JavaBean数据YAML转换适配器的构造方法</h3>
+	 *
+	 * @param className <span class="en-US">Target class name string</span>
+	 *                  <span class="zh-CN">目标类名字符串</span>
+	 * @throws IllegalArgumentException <span class="en-US">If target class is not the child class of org.nervousync.beans.core.BeanObject</span>
+	 *                                  <span class="zh-CN">如果目标类不是org.nervousync.beans.core.BeanObject的子类</span>
+	 */
 	public YamlBeanAdapter(String className) throws IllegalArgumentException {
-		super(className);
-	}
-
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(Object)
-	 */
-	@Override
-	public String marshal(final Object object) {
-		if (object instanceof BeanObject) {
-			return ((BeanObject) object).toString(StringUtils.StringType.YAML);
-		}
-		return Globals.DEFAULT_VALUE_STRING;
-	}
-
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(Object)
-	 */
-	@Override
-	public Object unmarshal(final String string) {
-		if (StringUtils.isEmpty(string)) {
-			return null;
-		}
-		return StringUtils.stringToObject(string, StringUtils.StringType.YAML, this.beanClass);
+		super(className, StringUtils.StringType.YAML);
 	}
 }

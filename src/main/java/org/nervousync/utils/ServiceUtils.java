@@ -438,84 +438,93 @@ public final class ServiceUtils {
 							.map(annotation -> ((MatrixParam) annotation).value())
 							.ifPresent(paramName -> {
 								if (paramObj.getClass().isArray()) {
-									Arrays.asList((Object[]) paramObj).forEach(itemValue -> {
-										String paramValue = transferConfig.marshal(itemValue);
-										matrixParameters.put(paramName,
-												appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
-														paramValue));
-									});
+									Arrays.asList((Object[]) paramObj).forEach(itemValue ->
+											Optional.ofNullable(transferConfig.marshal(itemValue))
+													.map(Object::toString)
+													.ifPresent(paramValue ->
+															matrixParameters.put(paramName,
+																	appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
+																			paramValue))));
 								} else if (List.class.isAssignableFrom(paramObj.getClass())) {
-									((List<?>) paramObj).forEach(itemValue -> {
-										String paramValue = transferConfig.marshal(itemValue);
-										matrixParameters.put(paramName,
-												appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
-														paramValue));
-									});
+									((List<?>) paramObj).forEach(itemValue ->
+											Optional.ofNullable(transferConfig.marshal(itemValue))
+													.map(Object::toString)
+													.ifPresent(paramValue ->
+															matrixParameters.put(paramName,
+																	appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
+																			paramValue))));
 								} else {
-									String paramValue = transferConfig.marshal(paramObj);
-									matrixParameters.put(paramName,
-											appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
-													paramValue));
+									Optional.ofNullable(transferConfig.marshal(paramObj))
+											.map(Object::toString)
+											.ifPresent(paramValue ->
+													matrixParameters.put(paramName,
+															appendValue(matrixParameters.getOrDefault(paramName, new String[0]),
+																	paramValue)));
 								}
 							});
 				} else {
-					String paramValue = transferConfig.marshal(paramObj);
-					if (Arrays.stream(annotations[i])
-							.anyMatch(annotation -> annotation.annotationType().equals(QueryParam.class))) {
-						String paramName =
-								Arrays.stream(annotations[i]).filter(annotation ->
-												annotation.annotationType().equals(QueryParam.class))
-										.findFirst()
-										.map(annotation -> ((QueryParam) annotation).value())
-										.orElse(Globals.DEFAULT_VALUE_STRING);
-						if (StringUtils.notBlank(paramName)) {
-							queryParameters.put(paramName, paramValue);
-						}
-					}
-
-					if (Arrays.stream(annotations[i])
-							.anyMatch(annotation -> annotation.annotationType().equals(FormParam.class))) {
-						String paramName =
-								Arrays.stream(annotations[i]).filter(annotation ->
-												annotation.annotationType().equals(FormParam.class))
-										.findFirst()
-										.map(annotation -> ((FormParam) annotation).value())
-										.orElse(Globals.DEFAULT_VALUE_STRING);
-						if (StringUtils.notBlank(paramName)) {
-							queryParameters.put(paramName, paramValue);
-						}
-					}
-
-					if (Arrays.stream(annotations[i])
-							.anyMatch(annotation -> annotation.annotationType().equals(PathParam.class))) {
-						String paramName =
-								Arrays.stream(annotations[i]).filter(annotation ->
-												annotation.annotationType().equals(PathParam.class))
-										.findFirst()
-										.map(annotation -> ((PathParam) annotation).value())
-										.orElse(Globals.DEFAULT_VALUE_STRING);
-						if (StringUtils.notBlank(paramName)) {
-							if (StringUtils.isEmpty(paramValue)) {
-								throw new ServiceException(0x0000000F0001L);
-							}
-							String pathKey = "{" + paramName + "}";
-							if (servicePath.indexOf(pathKey) > 0) {
-								servicePath = StringUtils.replace(servicePath, pathKey,
-										URLEncoder.encode(paramValue, Globals.DEFAULT_ENCODING));
+					String paramValue =
+							Optional.ofNullable(transferConfig.marshal(paramObj))
+									.map(Object::toString)
+									.orElse(Globals.DEFAULT_VALUE_STRING);
+					if (StringUtils.notBlank(paramValue)) {
+						if (Arrays.stream(annotations[i])
+								.anyMatch(annotation -> annotation.annotationType().equals(QueryParam.class))) {
+							String paramName =
+									Arrays.stream(annotations[i]).filter(annotation ->
+													annotation.annotationType().equals(QueryParam.class))
+											.findFirst()
+											.map(annotation -> ((QueryParam) annotation).value())
+											.orElse(Globals.DEFAULT_VALUE_STRING);
+							if (StringUtils.notBlank(paramName)) {
+								queryParameters.put(paramName, paramValue);
 							}
 						}
-					}
 
-					if (Arrays.stream(annotations[i])
-							.anyMatch(annotation -> annotation.annotationType().equals(HeaderParam.class))) {
-						String paramName =
-								Arrays.stream(annotations[i]).filter(annotation ->
-												annotation.annotationType().equals(HeaderParam.class))
-										.findFirst()
-										.map(annotation -> ((HeaderParam) annotation).value())
-										.orElse(Globals.DEFAULT_VALUE_STRING);
-						if (StringUtils.notBlank(paramName)) {
-							this.headerMap.put(paramName, paramValue);
+						if (Arrays.stream(annotations[i])
+								.anyMatch(annotation -> annotation.annotationType().equals(FormParam.class))) {
+							String paramName =
+									Arrays.stream(annotations[i]).filter(annotation ->
+													annotation.annotationType().equals(FormParam.class))
+											.findFirst()
+											.map(annotation -> ((FormParam) annotation).value())
+											.orElse(Globals.DEFAULT_VALUE_STRING);
+							if (StringUtils.notBlank(paramName)) {
+								queryParameters.put(paramName, paramValue);
+							}
+						}
+
+						if (Arrays.stream(annotations[i])
+								.anyMatch(annotation -> annotation.annotationType().equals(PathParam.class))) {
+							String paramName =
+									Arrays.stream(annotations[i]).filter(annotation ->
+													annotation.annotationType().equals(PathParam.class))
+											.findFirst()
+											.map(annotation -> ((PathParam) annotation).value())
+											.orElse(Globals.DEFAULT_VALUE_STRING);
+							if (StringUtils.notBlank(paramName)) {
+								if (StringUtils.isEmpty(paramValue)) {
+									throw new ServiceException(0x0000000F0001L);
+								}
+								String pathKey = "{" + paramName + "}";
+								if (servicePath.indexOf(pathKey) > 0) {
+									servicePath = StringUtils.replace(servicePath, pathKey,
+											URLEncoder.encode(paramValue, Globals.DEFAULT_ENCODING));
+								}
+							}
+						}
+
+						if (Arrays.stream(annotations[i])
+								.anyMatch(annotation -> annotation.annotationType().equals(HeaderParam.class))) {
+							String paramName =
+									Arrays.stream(annotations[i]).filter(annotation ->
+													annotation.annotationType().equals(HeaderParam.class))
+											.findFirst()
+											.map(annotation -> ((HeaderParam) annotation).value())
+											.orElse(Globals.DEFAULT_VALUE_STRING);
+							if (StringUtils.notBlank(paramName)) {
+								this.headerMap.put(paramName, paramValue);
+							}
 						}
 					}
 				}
@@ -773,7 +782,13 @@ public final class ServiceUtils {
 					this.headers.putAll(beanParameter.getHeaders());
 					this.paths.putAll(beanParameter.getPaths());
 				} else {
-					String stringValue = transferConfig.marshal(fieldValue);
+					String stringValue =
+							Optional.ofNullable(transferConfig.marshal(fieldValue))
+									.map(Object::toString)
+									.orElse(Globals.DEFAULT_VALUE_STRING);
+					if (StringUtils.isEmpty(stringValue)) {
+						return;
+					}
 					if (field.isAnnotationPresent(QueryParam.class)) {
 						Optional.ofNullable(field.getAnnotation(QueryParam.class))
 								.map(QueryParam::value)

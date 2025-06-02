@@ -180,11 +180,11 @@ public final class ConfigureManager {
 	 * <span class="zh-CN">检查结果</span>
 	 */
 	public boolean checkExists(final Class<? extends BeanObject> targetClass, final String suffix) {
-		if (targetClass == null || !targetClass.isAnnotationPresent(OutputConfig.class)) {
-			return Boolean.FALSE;
-		}
-		return this.existsFiles.containsKey(
-				this.parseName(targetClass, targetClass.getAnnotation(OutputConfig.class).type(), suffix));
+		return Optional.ofNullable(targetClass)
+				.map(clazz -> clazz.getAnnotation(OutputConfig.class))
+				.map(outputConfig -> this.parseName(targetClass, outputConfig.defaultType(), suffix))
+				.map(this.existsFiles::containsKey)
+				.orElse(Boolean.FALSE);
 	}
 
 	/**
@@ -222,14 +222,14 @@ public final class ConfigureManager {
 
 		OutputConfig config = targetClass.getAnnotation(OutputConfig.class);
 		String schemaPath = Globals.DEFAULT_VALUE_STRING;
-		if (StringUtils.StringType.XML.equals(config.type())) {
+		if (StringUtils.StringType.XML.equals(config.defaultType())) {
 			schemaPath = Optional.ofNullable(targetClass.getAnnotation(XmlRootElement.class))
 					.filter(xmlRoot ->
 							!ObjectUtils.nullSafeEquals(Globals.DEFAULT_XML_ANNOTATION_VALUE, xmlRoot.namespace()))
 					.map(XmlRootElement::namespace)
 					.orElse(Globals.DEFAULT_VALUE_STRING);
 		}
-		return this.readConfigure(targetClass, suffix, config.type(), config.encoding(), schemaPath);
+		return this.readConfigure(targetClass, suffix, config.defaultType(), config.encoding(), schemaPath);
 	}
 
 	/**
@@ -263,8 +263,8 @@ public final class ConfigureManager {
 		this.encryptFields(beanObject);
 		StringUtils.StringType stringType =
 				Optional.ofNullable(beanObject.getClass().getAnnotation(OutputConfig.class))
-						.map(OutputConfig::type)
-						.orElse(StringUtils.StringType.SIMPLE);
+						.map(OutputConfig::defaultType)
+						.orElse(StringUtils.StringType.SERIALIZABLE);
 		String fileName = this.parseName(beanObject.getClass(), stringType, suffix);
 		String filePath = this.existsFiles.getOrDefault(fileName, Globals.DEFAULT_VALUE_STRING);
 		if (StringUtils.isEmpty(filePath)) {
@@ -321,7 +321,7 @@ public final class ConfigureManager {
 		if (targetClass == null || !targetClass.isAnnotationPresent(OutputConfig.class)) {
 			return;
 		}
-		String fileName = this.parseName(targetClass, targetClass.getAnnotation(OutputConfig.class).type(), suffix);
+		String fileName = this.parseName(targetClass, targetClass.getAnnotation(OutputConfig.class).defaultType(), suffix);
 		if (StringUtils.notBlank(fileName)) {
 			Iterator<Map.Entry<String, String>> iterator = this.existsFiles.entrySet().iterator();
 			while (iterator.hasNext()) {

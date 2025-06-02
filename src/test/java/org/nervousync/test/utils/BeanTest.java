@@ -33,7 +33,7 @@ public final class BeanTest extends BaseTest {
     public void testConverter() {
         printTypes(BigDecimalAdapter.class);
         printTypes(BigIntegerAdapter.class);
-        printTypes(XmlBeanAdapter.class);
+        printTypes(BeanObjectAdapter.class);
     }
 
     @Test
@@ -215,7 +215,7 @@ public final class BeanTest extends BaseTest {
         return beanFive;
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class GenericBean extends BeanObject {
 
         private static final long serialVersionUID = -8250897818064674830L;
@@ -293,7 +293,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class WrapperBean extends BeanObject {
 
         private static final long serialVersionUID = 8469520795055346340L;
@@ -380,7 +380,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class InnerBean extends BeanObject {
         private static final long serialVersionUID = 2456743666460180276L;
         private String innerName;
@@ -403,7 +403,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON, formatted = true)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanOne extends BeanObject {
 
         private static final long serialVersionUID = 2148709510427702608L;
@@ -496,7 +496,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON, formatted = true)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanTwo extends BeanObject {
         private static final long serialVersionUID = -3903310914229238786L;
         @BeanProperty(targetBean = BeanOne.class, transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
@@ -531,7 +531,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON, formatted = true)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanThree extends BeanObject {
 
         private static final long serialVersionUID = 2676597737207266268L;
@@ -568,7 +568,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON, formatted = true)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanFour extends BeanObject {
 
         private static final long serialVersionUID = 2131533619703353105L;
@@ -612,7 +612,7 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(type = StringUtils.StringType.JSON, formatted = true)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanFive extends BeanObject {
 
         private static final long serialVersionUID = -2793808469846338003L;
@@ -648,7 +648,7 @@ public final class BeanTest extends BaseTest {
 
     @XmlRootElement(name = "data_bean")
     @XmlAccessorType(XmlAccessType.NONE)
-    @OutputConfig(type = StringUtils.StringType.JSON)
+    @OutputConfig(defaultType = StringUtils.StringType.JSON, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML, StringUtils.StringType.XML})
     public static final class DataBean extends BeanObject {
 
         private static final long serialVersionUID = -9087272100087754448L;

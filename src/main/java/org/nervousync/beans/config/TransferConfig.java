@@ -75,9 +75,9 @@ public final class TransferConfig {
 	 * @return <span class="en-US">Converted string</span>
 	 * <span class="zh-CN">转换完成的字符串</span>
 	 */
-	public String marshal(final Object object) {
+	public Object marshal(final Object object) {
 		if (object == null || this.adapter == null) {
-			return null;
+			return object;
 		}
 
 		try {

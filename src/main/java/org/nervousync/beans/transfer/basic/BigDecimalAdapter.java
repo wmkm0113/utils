@@ -30,9 +30,7 @@ import java.util.Optional;
  * @version $Revision: 1.1.0 $ $Date: Jun 21, 2023 11:27:18 $
  */
 public final class BigDecimalAdapter extends AbstractAdapter {
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(Object)
-	 */
+
 	@Override
 	public String marshal(final Object object) {
 		return Optional.ofNullable(object)
@@ -40,9 +38,6 @@ public final class BigDecimalAdapter extends AbstractAdapter {
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
-	/**
-	 * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(Object)
-	 */
 	@Override
 	public Object unmarshal(final String object) {
 		return Optional.ofNullable(object).map(BigDecimal::new).orElse(null);

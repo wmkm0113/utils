@@ -20,6 +20,8 @@ package org.nervousync.security.config;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import org.nervousync.annotations.beans.OutputConfig;
+import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Secure factory configure information define</h2>
@@ -32,6 +34,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "secure_factory", namespace = "https://nervousync.org/schemas/secure")
 @XmlAccessorType(XmlAccessType.NONE)
+@OutputConfig(defaultType = StringUtils.StringType.XML, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class FactoryConfig extends AbstractConfig {
 	/**
 	 * <span class="en-US">Serial version UID</span>

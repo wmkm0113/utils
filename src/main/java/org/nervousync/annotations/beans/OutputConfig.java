@@ -21,16 +21,26 @@ import java.lang.annotation.*;
 public @interface OutputConfig {
 
 	/**
-	 * <h3 class="en-US">Output string type</h3>
+	 * <h3 class="en-US">Default output string type</h3>
 	 * <span class="en-US">Default is SIMPLE, base64 encoded byte arrays. Other types: JSON/XML/YAML</span>
-	 * <h3 class="zh-CN">输出字符串类型</h3>
+	 * <h3 class="zh-CN">默认输出字符串类型</h3>
 	 * <span class="zh-CN">默认值为SIMPLE，使用Base64编码的字节数组。可选类型包括：JSON/XML/YAML</span>
 	 *
 	 * @return <span class="en-US">Enumeration value type of StringUtils.StringType</span>
 	 * <span class="zh-CN">StringUtils.StringType枚举类型</span>
 	 * @see org.nervousync.utils.StringUtils.StringType
 	 */
-	StringUtils.StringType type() default StringUtils.StringType.SERIALIZABLE;
+	StringUtils.StringType defaultType() default StringUtils.StringType.SERIALIZABLE;
+
+	/**
+	 * <h3 class="en-US">Array of the output string type</h3>
+	 * <h3 class="zh-CN">允许的输出字符串类型数组</h3>
+	 *
+	 * @return <span class="en-US">Array enumeration value type of StringUtils.StringType</span>
+	 * <span class="zh-CN">StringUtils.StringType枚举类型数组</span>
+	 * @see org.nervousync.utils.StringUtils.StringType
+	 */
+	StringUtils.StringType[] types() default {};
 
 	/**
 	 * <h3 class="en-US">Format output string status</h3>

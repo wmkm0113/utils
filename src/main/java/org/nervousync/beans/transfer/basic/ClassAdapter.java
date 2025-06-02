@@ -21,6 +21,8 @@ import org.nervousync.commons.Globals;
 import org.nervousync.utils.ClassUtils;
 import org.nervousync.utils.StringUtils;
 
+import java.util.Optional;
+
 /**
  * <h2 class="en-US">Class DataConverter</h2>
  * <h2 class="zh-CN">Class数据转换器</h2>
@@ -29,6 +31,7 @@ import org.nervousync.utils.StringUtils;
  * @version $Revision: 1.0.0 $ $Date: Jul 29, 2023 17:19:28 $
  */
 public final class ClassAdapter extends AbstractAdapter {
+
 	@Override
 	public Object unmarshal(final String className) {
 		return StringUtils.isEmpty(className) ? null : ClassUtils.forName(className);
@@ -36,9 +39,9 @@ public final class ClassAdapter extends AbstractAdapter {
 
 	@Override
 	public String marshal(final Object clazz) {
-		if (clazz instanceof Class<?>) {
-			return ((Class<?>) clazz).getName();
-		}
-		return Globals.DEFAULT_VALUE_STRING;
+		return Optional.ofNullable(clazz)
+				.filter(c -> c instanceof Class)
+				.map(c -> ((Class<?>) c).getName())
+				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 }

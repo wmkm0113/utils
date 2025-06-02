@@ -111,7 +111,7 @@ public final class SecureFactory {
 			factoryConfig = new FactoryConfig();
 			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA1024);
 			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA1024)));
-			FileUtils.saveFile(factoryPath, factoryConfig.toString(StringUtils.StringType.XML));
+			FileUtils.saveFile(factoryPath, factoryConfig.toString());
 		}
 		FACTORY_NODE = new SecureNode(factoryConfig);
 		initialize(Boolean.FALSE);
