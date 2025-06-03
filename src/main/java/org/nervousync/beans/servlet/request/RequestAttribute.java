@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @version $Revision: 1.1.0 $ $Date: Aug 06, 2018 08:56:50 $
  */
 public final class RequestAttribute {
+
 	/**
 	 * <span class="en-US">Session ID of current request</span>
 	 * <span class="zh-CN">当前请求的会话ID</span>

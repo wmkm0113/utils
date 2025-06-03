@@ -62,15 +62,18 @@ public final class DateTimeAdapter extends AbstractAdapter {
 	}
 
 	@Override
-	public Object unmarshal(final String v) {
-		return DateTimeUtils.parseDate(v, this.pattern);
+	public Object unmarshal(final Object v) {
+		if (v instanceof String) {
+			return DateTimeUtils.parseDate((String) v, this.pattern);
+		}
+		return null;
 	}
 
 	@Override
-	public String marshal(final Object v) {
+	public Object marshal(final Object v) {
 		return Optional.ofNullable(v)
 				.filter(date -> date instanceof Date)
-				.map(date -> DateTimeUtils.formatDate((Date) v, this.formatter))
+				.map(date -> DateTimeUtils.formatDate((Date) date, this.formatter))
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 }

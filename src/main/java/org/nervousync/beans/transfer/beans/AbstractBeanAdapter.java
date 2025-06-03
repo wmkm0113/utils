@@ -40,6 +40,10 @@ public abstract class AbstractBeanAdapter extends AbstractAdapter {
 	 * <span class="zh-CN">目标类</span>
 	 */
 	private final Class<?> beanClass;
+	/**
+	 * <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
+	 * <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
+	 */
 	private final StringUtils.StringType stringType;
 
 
@@ -84,10 +88,12 @@ public abstract class AbstractBeanAdapter extends AbstractAdapter {
 	}
 
 	@Override
-	public final Object unmarshal(final String string) {
+	public final Object unmarshal(final Object string) {
 		return Optional.ofNullable(string)
+				.filter(obj -> obj instanceof String)
+				.map(obj -> (String) obj)
 				.filter(StringUtils::notBlank)
-				.map(s -> StringUtils.stringToObject(string, this.stringType, this.beanClass))
+				.map(str -> StringUtils.stringToObject(str, this.stringType, this.beanClass))
 				.orElse(null);
 	}
 }

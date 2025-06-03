@@ -33,15 +33,18 @@ import java.util.Optional;
 public final class ClassAdapter extends AbstractAdapter {
 
 	@Override
-	public Object unmarshal(final String className) {
-		return StringUtils.isEmpty(className) ? null : ClassUtils.forName(className);
+	public Object unmarshal(final Object className) {
+		if (className instanceof String) {
+			return StringUtils.isEmpty((String) className) ? null : ClassUtils.forName((String) className);
+		}
+		return null;
 	}
 
 	@Override
-	public String marshal(final Object clazz) {
+	public Object marshal(final Object clazz) {
 		return Optional.ofNullable(clazz)
-				.filter(c -> c instanceof Class)
-				.map(c -> ((Class<?>) c).getName())
+				.filter(cls -> cls instanceof Class)
+				.map(cls -> ClassUtils.originalClassName((Class<?>) cls))
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 }

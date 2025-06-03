@@ -86,7 +86,7 @@ public final class TransferConfig {
 			if (this.logger.isDebugEnabled()) {
 				this.logger.debug("Stack_Message_Error", e);
 			}
-			return Globals.DEFAULT_VALUE_STRING;
+			return null;
 		}
 	}
 
@@ -104,7 +104,7 @@ public final class TransferConfig {
 			return object;
 		}
 		try {
-			return this.adapter.unmarshal((String) object);
+			return this.adapter.unmarshal(object);
 		} catch (Exception e) {
 			if (this.logger.isDebugEnabled()) {
 				this.logger.debug("Stack_Message_Error", e);

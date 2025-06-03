@@ -31,14 +31,17 @@ import java.util.Optional;
 public final class BooleanAdapter extends AbstractAdapter {
 
 	@Override
-	public String marshal(Object object) {
+	public Object marshal(final Object object) {
 		return Optional.ofNullable(object)
 				.map(Object::toString)
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	@Override
-	public Object unmarshal(final String object) {
-		return Optional.ofNullable(object).map(Boolean::valueOf).orElse(null);
+	public Object unmarshal(final Object object) {
+		return Optional.ofNullable(object)
+				.filter(obj -> obj instanceof String)
+				.map(string -> Boolean.valueOf((String) string))
+				.orElse(null);
 	}
 }

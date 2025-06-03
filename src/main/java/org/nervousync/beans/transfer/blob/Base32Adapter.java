@@ -19,8 +19,6 @@ package org.nervousync.beans.transfer.blob;
 import org.nervousync.beans.transfer.AbstractAdapter;
 import org.nervousync.utils.StringUtils;
 
-import java.util.Optional;
-
 /**
  * <h2 class="en-US">Encode Base32 DataConverter</h2>
  * <h2 class="zh-CN">Base32编码数据转换器</h2>
@@ -31,14 +29,18 @@ import java.util.Optional;
 public final class Base32Adapter extends AbstractAdapter {
 
 	@Override
-	public String marshal(final Object object) {
-		return StringUtils.base32Encode(super.toByteArray(object));
+	public Object marshal(final Object object) {
+		if (object instanceof byte[]) {
+			return StringUtils.base32Encode((byte[]) object);
+		}
+		return object;
 	}
 
 	@Override
-	public Object unmarshal(final String string) {
-		return Optional.ofNullable(string)
-				.map(StringUtils::base32Decode)
-				.orElse(new byte[0]);
+	public Object unmarshal(final Object object) {
+		if (object instanceof String) {
+			return StringUtils.base32Decode((String) object);
+		}
+		return object;
 	}
 }

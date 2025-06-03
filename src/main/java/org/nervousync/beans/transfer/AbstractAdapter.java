@@ -17,9 +17,6 @@
 package org.nervousync.beans.transfer;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
-import org.nervousync.utils.CollectionUtils;
-
-import java.util.List;
 
 /**
  * <h2 class="en-US">Abstract adapter for implements IConverter</h2>
@@ -30,17 +27,5 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 21, 2023 10:25:22 $
  */
-public abstract class AbstractAdapter extends XmlAdapter<String, Object> {
-
-	protected final byte[] toByteArray(final Object object) {
-		List<?> convertList = CollectionUtils.toList(object);
-		byte[] dataBytes = new byte[convertList.size()];
-		for (int i = 0; i < convertList.size(); i++) {
-			Object obj = convertList.get(i);
-			if (obj instanceof Byte) {
-				dataBytes[i] = (Byte) obj;
-			}
-		}
-		return dataBytes;
-	}
+public abstract class AbstractAdapter extends XmlAdapter<Object, Object> {
 }

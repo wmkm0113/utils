@@ -17,6 +17,7 @@
 
 package org.nervousync.beans.path;
 
+import org.nervousync.utils.FileUtils;
 import org.nervousync.utils.StringUtils;
 
 /**
@@ -27,11 +28,7 @@ import org.nervousync.utils.StringUtils;
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2023 16:27:08 $
  */
 public final class TargetPath {
-	/**
-	 * <span class="en-US">Separator between JAR URL and the path within the JAR</span>
-	 * <span class="zh-CN">JAR URL 和 JAR 内路径之间的分隔符</span>
-	 */
-	public static final String JAR_URL_SEPARATOR = "!/";
+
 	/**
 	 * <span class="en-US">Archive file path</span>
 	 * <span class="zh-CN">压缩文件路径</span>
@@ -67,10 +64,10 @@ public final class TargetPath {
 	 * <span class="zh-CN">解析后的 TargetPath 实例对象，如果位置字符串不是合法的资源路径则返回 <code>null</code></span>
 	 */
 	public static TargetPath parse(final String resourceLocation) {
-		if (StringUtils.containsIgnoreCase(resourceLocation, JAR_URL_SEPARATOR)) {
-			int index = resourceLocation.indexOf(JAR_URL_SEPARATOR);
+		if (StringUtils.containsIgnoreCase(resourceLocation, FileUtils.JAR_URL_SEPARATOR)) {
+			int index = resourceLocation.indexOf(FileUtils.JAR_URL_SEPARATOR);
 			return new TargetPath(resourceLocation.substring(0, index),
-					resourceLocation.substring(index + JAR_URL_SEPARATOR.length()));
+					resourceLocation.substring(index + FileUtils.JAR_URL_SEPARATOR.length()));
 		}
 		return null;
 	}

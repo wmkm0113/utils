@@ -31,14 +31,17 @@ import java.util.Optional;
 public final class ShortAdapter extends AbstractAdapter {
 
 	@Override
-	public String marshal(final Object object) {
+	public Object marshal(final Object object) {
 		return Optional.ofNullable(object)
 				.map(Object::toString)
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	@Override
-	public Object unmarshal(final String object) {
-		return Optional.ofNullable(object).map(Short::valueOf).orElse(null);
+	public Object unmarshal(final Object object) {
+		return Optional.ofNullable(object)
+				.filter(obj -> obj instanceof String)
+				.map(string -> Short.valueOf((String) string))
+				.orElse(null);
 	}
 }

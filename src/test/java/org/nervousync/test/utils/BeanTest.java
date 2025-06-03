@@ -410,9 +410,9 @@ public final class BeanTest extends BaseTest {
         @BeanProperty(targetBean = BeanTwo.class, targetField = "bigDecimal")
         @BeanProperty(targetBean = BeanFour.class, targetField = "decimalString", transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
         private BigInteger bigDecimal;
-        @BeanProperties(@BeanProperty(targetBean = BeanTwo.class, targetField = "beanString"))
+        @BeanProperty(targetBean = BeanTwo.class, targetField = "beanString")
         private String beanOneString;
-        @BeanProperties(@BeanProperty(targetBean = BeanTwo.class, targetField = "beanInner"))
+        @BeanProperty(targetBean = BeanTwo.class, targetField = "beanInner")
         private InnerBean innerBean;
         @BeanProperty(targetBean = BeanThree.class, targetField = "base64Data", transfer = @DataTransfer(adapter = Base64Adapter.class))
         private byte[] beanOneBytes;

@@ -17,6 +17,7 @@
 package org.nervousync.beans.transfer.cdata;
 
 import org.nervousync.beans.transfer.AbstractAdapter;
+import org.nervousync.commons.Globals;
 import org.nervousync.utils.StringUtils;
 
 /**
@@ -40,24 +41,31 @@ public final class CDataAdapter extends AbstractAdapter {
 	public static final String CDATA_END = "]]>";
 
 	@Override
-	public Object unmarshal(final String v) {
-		if (StringUtils.isEmpty(v)) {
-			return "";
+	public Object unmarshal(final Object object) {
+		if (object instanceof String) {
+			String v = (String) object;
+			if (StringUtils.isEmpty(v)) {
+				return Globals.DEFAULT_VALUE_STRING;
+			}
+			String dataValue = v;
+			if (dataValue.startsWith(CDATA_BEGIN)) {
+				dataValue = dataValue.substring(CDATA_BEGIN.length());
+			}
+			if (dataValue.endsWith(CDATA_END)) {
+				dataValue = dataValue.substring(0, dataValue.length() - CDATA_END.length());
+			}
+			return dataValue;
 		}
-		String dataValue = v;
-		if (dataValue.startsWith(CDATA_BEGIN)) {
-			dataValue = dataValue.substring(CDATA_BEGIN.length());
-		}
-		if (dataValue.endsWith(CDATA_END)) {
-			dataValue = dataValue.substring(0, dataValue.length() - CDATA_END.length());
-		}
-		return dataValue;
+		return object;
 	}
 
 	@Override
-	public String marshal(final Object v) {
-		if (v instanceof String && StringUtils.notBlank((String) v)) {
-			return CDATA_BEGIN + v + CDATA_END;
+	public Object marshal(final Object object) {
+		if (object instanceof String) {
+			String v = (String) object;
+			if (StringUtils.notBlank(v)) {
+				return CDATA_BEGIN + v + CDATA_END;
+			}
 		}
 		return CDATA_BEGIN + CDATA_END;
 	}

@@ -17,7 +17,7 @@
 
 package org.nervousync.beans.transfer.enumerations;
 
-import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import org.nervousync.beans.transfer.AbstractAdapter;
 import org.nervousync.utils.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import java.lang.reflect.ParameterizedType;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $Date: Jun 15, 2020 14:27:28 $
  */
-public abstract class EnumAdapter<T> extends XmlAdapter<String, T> {
+public abstract class EnumAdapter<T> extends AbstractAdapter {
 
 	/**
 	 * <span class="en-US">Enumeration class valueOf method instance object</span>
@@ -48,16 +48,15 @@ public abstract class EnumAdapter<T> extends XmlAdapter<String, T> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public final T unmarshal(final String v) {
+	public final Object unmarshal(final Object v) {
 		if (this.method == null) {
 			throw new IllegalArgumentException("Method not found");
 		}
-		return (T) ReflectionUtils.invokeMethod(this.method, null, new Object[]{v});
+		return ReflectionUtils.invokeMethod(this.method, null, new Object[]{v});
 	}
 
 	@Override
-	public final String marshal(final T v) {
+	public final Object marshal(final Object v) {
 		return v.toString();
 	}
 }
