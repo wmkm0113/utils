@@ -36,7 +36,8 @@ import org.nervousync.utils.StringUtils;
 @Signature("signature")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(defaultType = StringUtils.StringType.XML, formatted = true)
+@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML,
+		types = {StringUtils.StringType.XML, StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class MailConfig extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>

@@ -34,7 +34,8 @@ import org.nervousync.utils.StringUtils;
  */
 @XmlRootElement(name = "secure_factory", namespace = "https://nervousync.org/schemas/secure")
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(defaultType = StringUtils.StringType.XML, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML})
+@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML,
+		types = {StringUtils.StringType.XML, StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class FactoryConfig extends AbstractConfig {
 	/**
 	 * <span class="en-US">Serial version UID</span>

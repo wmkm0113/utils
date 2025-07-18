@@ -17,7 +17,9 @@
 package org.nervousync.beans.xml.files;
 
 import jakarta.xml.bind.annotation.*;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.core.BeanObject;
+import org.nervousync.utils.StringUtils;
 
 import java.util.List;
 
@@ -31,6 +33,8 @@ import java.util.List;
 @XmlType(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")
 @XmlRootElement(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")
 @XmlAccessorType(XmlAccessType.NONE)
+@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML,
+		types = {StringUtils.StringType.XML, StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class SegmentationInfo extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>
