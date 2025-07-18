@@ -81,7 +81,7 @@ public final class NetworkInfo implements Serializable {
 	 */
 	public NetworkInfo(final NetworkInterface networkInterface) throws NetworkInfoException {
 		if (networkInterface == null) {
-			throw new NetworkInfoException(0x0000001A0001L, "Null_Network_Interface_Error");
+			throw new NetworkInfoException(0x0000001A0001L);
 		}
 		try {
 			if (networkInterface.isUp() && !networkInterface.isVirtual()) {
@@ -100,7 +100,7 @@ public final class NetworkInfo implements Serializable {
 				}
 			}
 		} catch (SocketException e) {
-			throw new NetworkInfoException(0x0000001A0002L, "Retrieve_Network_Interface_Error", e);
+			throw new NetworkInfoException(0x0000001A0002L, e);
 		}
 		this.virtual = networkInterface.isVirtual();
 		this.displayName = networkInterface.getDisplayName();

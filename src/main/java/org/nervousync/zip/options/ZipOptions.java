@@ -154,7 +154,7 @@ public final class ZipOptions implements Cloneable {
 	 */
 	public static ZipOptions standardEncryptOptions(final String password) throws ZipException {
 		if (StringUtils.isEmpty(password)) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 		return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_STANDARD, Globals.AES_STRENGTH_128);
 	}
@@ -189,7 +189,7 @@ public final class ZipOptions implements Cloneable {
 	 */
 	public static ZipOptions aesEncryptOptions(final String password, final int aesKeyLength) throws ZipException {
 		if (StringUtils.isEmpty(password)) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 
 		switch (aesKeyLength) {
@@ -200,7 +200,7 @@ public final class ZipOptions implements Cloneable {
 			case 256:
 				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_256);
 			default:
-				throw new ZipException(0x0000001B0005L, "Invalid_Key_Strength_AES_Zip_Error");
+				throw new ZipException(0x0000001B0005L);
 		}
 	}
 

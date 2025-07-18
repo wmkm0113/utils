@@ -75,7 +75,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	@Override
 	protected MessageDigest initDigest(String algorithm) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error");
+			throw new CryptoException(0x00000015000DL);
 		}
 		switch (algorithm.toUpperCase()) {
 			case "SHA3-224":
@@ -91,7 +91,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 			case "SHAKE256":
 				return new SHA3.DigestShake256_512();
 			default:
-				throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+				throw new CryptoException(0x00000015000DL, algorithm);
 		}
 	}
 
@@ -109,7 +109,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	@Override
 	protected Mac initHmac(String algorithm, byte[] keyBytes) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm) || !algorithm.toUpperCase().endsWith("HMAC")) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+			throw new CryptoException(0x00000015000DL, algorithm);
 		}
 		HMac hmac;
 		switch (algorithm.toUpperCase()) {
@@ -126,7 +126,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 				hmac = new HMac(new SHA3Digest(512));
 				break;
 			default:
-				throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+				throw new CryptoException(0x00000015000DL, algorithm);
 		}
 		hmac.init(new KeyParameter(keyBytes));
 		return hmac;

@@ -91,7 +91,7 @@ public final class LocationUtils {
 	 */
 	public static GeoPoint anyToGPS(final GeoPoint currentPoint) throws LocationConvertException {
 		if (currentPoint == null) {
-			throw new LocationConvertException(0x0000000C0001L, "Null_Point_Location_Error");
+			throw new LocationConvertException(0x0000000C0001L);
 		}
 		switch (currentPoint.getLocationType()) {
 			case GPS:
@@ -102,8 +102,7 @@ public final class LocationUtils {
 				GeoPoint gcjPoint = BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
 				return GCJ02ToGPS(gcjPoint.getLongitude(), gcjPoint.getLatitude());
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
-						currentPoint.getLocationType().toString());
+				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
 		}
 	}
 
@@ -120,7 +119,7 @@ public final class LocationUtils {
 	 */
 	public static GeoPoint anyToGCJ02(final GeoPoint currentPoint) throws LocationConvertException {
 		if (currentPoint == null) {
-			throw new LocationConvertException(0x0000000C0001L, "Null_Point_Location_Error");
+			throw new LocationConvertException(0x0000000C0001L);
 		}
 		switch (currentPoint.getLocationType()) {
 			case GPS:
@@ -130,8 +129,7 @@ public final class LocationUtils {
 			case BD_09:
 				return BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
-						currentPoint.getLocationType().toString());
+				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
 		}
 	}
 
@@ -148,7 +146,7 @@ public final class LocationUtils {
 	 */
 	public static GeoPoint anyToBD09(final GeoPoint currentPoint) throws LocationConvertException {
 		if (currentPoint == null) {
-			throw new LocationConvertException(0x0000000C0001L, "Null_Point_Location_Error");
+			throw new LocationConvertException(0x0000000C0001L);
 		}
 		switch (currentPoint.getLocationType()) {
 			case GPS:
@@ -159,8 +157,7 @@ public final class LocationUtils {
 			case BD_09:
 				return currentPoint;
 			default:
-				throw new LocationConvertException(0x0000000C0002L, "Not_Support_Type_Location_Error",
-						currentPoint.getLocationType().toString());
+				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
 		}
 	}
 

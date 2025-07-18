@@ -66,7 +66,7 @@ public final class TripleDESCryptoAdapterImpl extends SymmetricCryptoAdapter {
 			return super.generateCipher(keyFactory.generateSecret(keySpec),
 					this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 8);
 		} catch (Exception e) {
-			throw new CryptoException(0x00000015000BL, "Init_Cipher_Crypto_Error", e);
+			throw new CryptoException(0x00000015000BL, e);
 		}
 	}
 }

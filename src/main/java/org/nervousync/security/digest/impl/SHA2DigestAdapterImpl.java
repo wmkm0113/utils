@@ -65,7 +65,7 @@ public final class SHA2DigestAdapterImpl extends BaseDigestAdapter {
 	@Override
 	protected MessageDigest initDigest(final String algorithm) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error");
+			throw new CryptoException(0x00000015000DL);
 		}
 		switch (algorithm.toUpperCase()) {
 			case "SHA-224":
@@ -81,7 +81,7 @@ public final class SHA2DigestAdapterImpl extends BaseDigestAdapter {
 			case "SHA-512/256":
 				return new SHA512.DigestT256();
 			default:
-				throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+				throw new CryptoException(0x00000015000DL, algorithm);
 		}
 	}
 
@@ -99,7 +99,7 @@ public final class SHA2DigestAdapterImpl extends BaseDigestAdapter {
 	@Override
 	protected Mac initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm) || !algorithm.toUpperCase().endsWith("HMAC")) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+			throw new CryptoException(0x00000015000DL, algorithm);
 		}
 		HMac hmac;
 		switch (algorithm.toUpperCase()) {
@@ -122,7 +122,7 @@ public final class SHA2DigestAdapterImpl extends BaseDigestAdapter {
 				hmac = new HMac(new SHA512tDigest(256));
 				break;
 			default:
-				throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+				throw new CryptoException(0x00000015000DL, algorithm);
 		}
 		hmac.init(new KeyParameter(keyBytes));
 		return hmac;

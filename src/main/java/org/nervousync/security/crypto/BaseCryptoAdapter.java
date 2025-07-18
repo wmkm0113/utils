@@ -117,14 +117,14 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 					cipherInstance.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
 					break;
 				default:
-					throw new CryptoException(0x000000150009L, "Mode_Invalid_Crypto_Error");
+					throw new CryptoException(0x000000150009L);
 			}
 			return cipherInstance;
 		} catch (Exception e) {
 			if (e instanceof CryptoException) {
 				throw (CryptoException) e;
 			}
-			throw new CryptoException(0x00000015000BL, "Init_Cipher_Crypto_Error", e);
+			throw new CryptoException(0x00000015000BL, e);
 		}
 	}
 

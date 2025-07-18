@@ -322,7 +322,7 @@ public final class SNMPUtils {
 				throws ProcessorConfigException {
 			if (identifiedKey == null || targetHost == null || pduArray == null
 					|| pduArray.length == 0 || snmpDataOperator == null) {
-				throw new ProcessorConfigException(0x000000FF0001L, "Parameter_Invalid_Error");
+				throw new ProcessorConfigException(0x000000FF0001L);
 			}
 			this.identifiedKey = identifiedKey;
 			this.protocol = targetHost.getProtocol();

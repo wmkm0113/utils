@@ -62,7 +62,7 @@ public abstract class BaseDigestAdapter extends SecureAdapter {
 	 */
 	protected BaseDigestAdapter(final String algorithm, final byte[] keyBytes) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error");
+			throw new CryptoException(0x00000015000DL);
 		}
 		this.macMode = algorithm.toUpperCase().contains("HMAC");
 		this.messageDigest = this.macMode ? null : this.initDigest(algorithm);
@@ -113,7 +113,7 @@ public abstract class BaseDigestAdapter extends SecureAdapter {
 	@Override
 	public final void append(final byte[] dataBytes, final int position, final int length) throws CryptoException {
 		if (dataBytes.length < (position + length)) {
-			throw new CryptoException(0x000000150001L, "Length_Not_Enough_Crypto_Error");
+			throw new CryptoException(0x000000150001L);
 		}
 		if (this.macMode) {
 			this.hmac.update(dataBytes, position, length);
@@ -140,7 +140,7 @@ public abstract class BaseDigestAdapter extends SecureAdapter {
 	@Override
 	public final byte[] finish(final byte[] dataBytes, final int position, final int length) throws CryptoException {
 		if (dataBytes.length < (position + length)) {
-			throw new CryptoException(0x000000150001L, "Length_Not_Enough_Crypto_Error");
+			throw new CryptoException(0x000000150001L);
 		}
 		this.append(dataBytes, position, length);
 		byte[] result;

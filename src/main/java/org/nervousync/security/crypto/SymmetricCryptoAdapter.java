@@ -74,7 +74,7 @@ public abstract class SymmetricCryptoAdapter extends BaseCryptoAdapter {
 	@Override
 	public final void append(final byte[] dataBytes, final int position, final int length) throws CryptoException {
 		if (dataBytes.length < (position + length)) {
-			throw new CryptoException(0x000000150001L, "Length_Not_Enough_Crypto_Error");
+			throw new CryptoException(0x000000150001L);
 		}
 		switch (this.cryptoMode) {
 			case ENCRYPT:
@@ -82,7 +82,7 @@ public abstract class SymmetricCryptoAdapter extends BaseCryptoAdapter {
 				this.byteArrayOutputStream.write(dataBytes, position, length);
 				break;
 			default:
-				throw new CryptoException(0x000000150003L, "Mode_Invalid_Crypto_Error");
+				throw new CryptoException(0x000000150003L);
 		}
 	}
 
@@ -111,15 +111,15 @@ public abstract class SymmetricCryptoAdapter extends BaseCryptoAdapter {
 					return this.cipher.doFinal(this.byteArrayOutputStream.toByteArray(), Globals.INITIALIZE_INT_VALUE,
 							this.byteArrayOutputStream.size());
 				} catch (IllegalBlockSizeException | BadPaddingException e) {
-					throw new CryptoException(0x000000150004L, "Process_Data_Crypto_Error", e);
+					throw new CryptoException(0x000000150004L, e);
 				} finally {
 					this.reset();
 				}
 			case SIGNATURE:
 			case VERIFY:
-				throw new CryptoException(0x00000015000CL, "Not_Support_Mode_Crypto_Error");
+				throw new CryptoException(0x00000015000CL);
 			default:
-				throw new CryptoException(0x000000150003L, "Mode_Invalid_Crypto_Error");
+				throw new CryptoException(0x000000150003L);
 		}
 	}
 
@@ -136,7 +136,7 @@ public abstract class SymmetricCryptoAdapter extends BaseCryptoAdapter {
 	 */
 	@Override
 	public final boolean verify(final byte[] signature) throws CryptoException {
-		throw new CryptoException(0x00000015000CL, "Not_Support_Mode_Crypto_Error");
+		throw new CryptoException(0x00000015000CL);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public abstract class SymmetricCryptoAdapter extends BaseCryptoAdapter {
 				this.byteArrayOutputStream = new ByteArrayOutputStream();
 				break;
 			default:
-				throw new CryptoException(0x000000150003L, "Mode_Invalid_Crypto_Error");
+				throw new CryptoException(0x000000150003L);
 		}
 	}
 }

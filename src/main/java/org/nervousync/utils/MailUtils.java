@@ -897,7 +897,7 @@ public final class MailUtils {
 				try {
 					file = FileUtils.getFile(attachment);
 				} catch (FileNotFoundException e) {
-					throw new MailException(0x0000000E0005L, "Attachment_File_Not_Found_Error", e);
+					throw new MailException(0x0000000E0005L, e);
 				}
 
 				DataSource dataSource = new FileDataSource(file);
@@ -927,7 +927,7 @@ public final class MailUtils {
 					mimeBodyPart.setFileName(fileName);
 					mimeBodyPart.setHeader("Content-ID", fileName);
 				} catch (Exception e) {
-					throw new MailException(0x0000000E0006L, "Attachment_File_Error", e);
+					throw new MailException(0x0000000E0006L, e);
 				}
 
 				mimeMultipart.addBodyPart(mimeBodyPart, mimeMultipart.getCount());
@@ -969,7 +969,7 @@ public final class MailUtils {
 				message.setContent(signedMimeMultipart, signedMimeMultipart.getContentType());
 			} catch (CertificateEncodingException | CertificateParsingException | OperatorCreationException |
 			         SMIMEException e) {
-				throw new MailException(0x0000000E0007L, "Signature_Mail_Error", e);
+				throw new MailException(0x0000000E0007L, e);
 			}
 		} else {
 			message.setContent(mimeMultipart, mimeMultipart.getContentType());
@@ -978,7 +978,7 @@ public final class MailUtils {
 		message.setFrom(new InternetAddress(mailObject.getSendAddress()));
 
 		if (mailObject.getReceiveAddress() == null || mailObject.getReceiveAddress().isEmpty()) {
-			throw new MailException(0x0000000E0008L, "Unknown_Receive_Address_Mail_Error");
+			throw new MailException(0x0000000E0008L);
 		}
 		StringBuilder receiveAddress = new StringBuilder();
 		mailObject.getReceiveAddress().forEach(address -> receiveAddress.append(",").append(address));

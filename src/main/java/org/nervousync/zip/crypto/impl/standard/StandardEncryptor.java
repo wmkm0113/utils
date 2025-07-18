@@ -40,7 +40,7 @@ public final class StandardEncryptor implements Cryptor {
 	 */
 	public StandardEncryptor(final char[] password, final int crc) throws ZipException {
 		if (password == null || password.length == 0) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 
 		this.standardCryptoEngine = new StandardCryptoEngine();
@@ -51,7 +51,7 @@ public final class StandardEncryptor implements Cryptor {
 	@Override
 	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (len < 0) {
-			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
+			throw new ZipException(0x000000FF0001L);
 		}
 
 		try {
@@ -59,7 +59,7 @@ public final class StandardEncryptor implements Cryptor {
 				buff[i] = encryptByte(buff[i]);
 			}
 		} catch (Exception e) {
-			throw new ZipException(0x0000001B000CL, "Encrypt_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000CL, e);
 		}
 	}
 
@@ -74,7 +74,7 @@ public final class StandardEncryptor implements Cryptor {
 
 	private void init(final char[] password, final int crc) throws ZipException {
 		if (password == null || password.length == 0) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 
 		this.standardCryptoEngine.initKeys(password);

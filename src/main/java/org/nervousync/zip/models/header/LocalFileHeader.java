@@ -145,7 +145,7 @@ public final class LocalFileHeader extends FileHeader {
 				//	Not supported verify password of standard encrypting
 				return Boolean.TRUE;
 			} else {
-				throw new ZipException(0x0000001B0001L, "Not_Supported_Encryption_Mode_Zip_Error");
+				throw new ZipException(0x0000001B0001L);
 			}
 		} catch (IOException | ZipException e) {
 			return Boolean.FALSE;

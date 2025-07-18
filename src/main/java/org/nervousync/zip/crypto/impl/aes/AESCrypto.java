@@ -151,7 +151,7 @@ public class AESCrypto {
 				this.saltLength = 16;
 				break;
 			default:
-				throw new ZipException(0x0000001B0005L, "Invalid_Key_Strength_AES_Zip_Error");
+				throw new ZipException(0x0000001B0005L);
 		}
 	}
 
@@ -163,13 +163,13 @@ public class AESCrypto {
 	 */
 	void init(final char[] password) throws ZipException {
 		if (password == null || password.length == 0) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 		this.generateSalt();
 		try {
 			this.initCrypto(password);
 		} catch (CryptoException e) {
-			throw new ZipException(0x0000001B000AL, "Init_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000AL, e);
 		}
 	}
 
@@ -182,13 +182,13 @@ public class AESCrypto {
 	 */
 	void init(final byte[] salt, final char[] password) throws ZipException {
 		if (password == null || password.length == 0) {
-			throw new ZipException(0x0000001B0006L, "Invalid_Password_Zip_Error");
+			throw new ZipException(0x0000001B0006L);
 		}
 		this.saltBytes = salt == null ? new byte[0] : salt.clone();
 		try {
 			this.initCrypto(password);
 		} catch (CryptoException e) {
-			throw new ZipException(0x0000001B000AL, "Init_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000AL, e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class AESCrypto {
 	 */
 	boolean verifyPassword(final byte[] password) throws ZipException {
 		if (this.derivedPasswordVerifier == null) {
-			throw new ZipException(0x0000001B0007L, "Invalid_Derived_Password_Verifier_Zip_Error");
+			throw new ZipException(0x0000001B0007L);
 		}
 
 		return Arrays.equals(password, this.derivedPasswordVerifier);
@@ -303,11 +303,11 @@ public class AESCrypto {
 			keyBytes = this.deriveKey(this.saltBytes, password,
 					this.keyLength + this.macLength + Globals.PASSWORD_VERIFIER_LENGTH);
 		} catch (DataInvalidException e) {
-			throw new ZipException(0x0000001B000AL, "Init_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000AL, e);
 		}
 
 		if (keyBytes.length != (this.keyLength + this.macLength + Globals.PASSWORD_VERIFIER_LENGTH)) {
-			throw new ZipException(0x0000001B0008L, "Invalid_Derived_Key_Zip_Error");
+			throw new ZipException(0x0000001B0008L);
 		}
 
 		byte[] aesKey = new byte[this.keyLength];
@@ -335,7 +335,7 @@ public class AESCrypto {
 	private void generateSalt() throws ZipException {
 		int rounds = this.saltLength / 4;
 		if (rounds < 2 || rounds > 4) {
-			throw new ZipException(0x0000001B0009, "Invalid_Salt_Length_Zip_Error");
+			throw new ZipException(0x0000001B0009);
 		}
 
 		this.saltBytes = new byte[this.saltLength];

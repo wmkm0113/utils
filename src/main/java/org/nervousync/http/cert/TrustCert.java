@@ -97,7 +97,7 @@ public final class TrustCert {
 			keyManagerFactory.init(clientStore, this.certPassword.toCharArray());
 			return keyManagerFactory.getKeyManagers();
 		} catch (Exception e) {
-			throw new CertInfoException(0x000000010001L, "Parse_Certificate_Error", e);
+			throw new CertInfoException(0x000000010001L, e);
 		}
 	}
 

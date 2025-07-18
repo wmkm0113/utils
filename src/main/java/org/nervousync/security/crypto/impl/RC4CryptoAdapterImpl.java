@@ -68,7 +68,7 @@ public final class RC4CryptoAdapterImpl extends SymmetricCryptoAdapter {
 			keyGenerator.init(this.cipherKey.getKeySize(), secureRandom);
 			return super.generateCipher(keyGenerator.generateKey(), Globals.INITIALIZE_INT_VALUE);
 		} catch (Exception e) {
-			throw new CryptoException(0x00000015000BL, "Init_Cipher_Crypto_Error", e);
+			throw new CryptoException(0x00000015000BL, e);
 		}
 	}
 }

@@ -55,15 +55,15 @@ public final class AESEngine {
 	 */
 	public void processBlock(final byte[] in, final byte[] out) throws ZipException {
 		if (this.workingKeys == null) {
-			throw new ZipException(0x0000001B0002L, "Not_Initialized_AES_Engine_Zip_Error");
+			throw new ZipException(0x0000001B0002L);
 		}
 
 		if (in.length < 16) {
-			throw new ZipException(0x0000001B0003L, "Input_Buffer_Too_Short_Zip_Error");
+			throw new ZipException(0x0000001B0003L);
 		}
 
 		if (out.length < 16) {
-			throw new ZipException(0x0000001B0011L, "Output_Buffer_Too_Short_Zip_Error");
+			throw new ZipException(0x0000001B0011L);
 		}
 
 		this.stateIn(in);
@@ -202,7 +202,7 @@ public final class AESEngine {
 	private void generateWorkingKeys(final byte[] keys) throws ZipException {
 		int kc = keys.length / 4;
 		if (((kc != 4) && (kc != 6) && (kc != 8)) || ((kc * 4) != keys.length)) {
-			throw new ZipException(0x0000001B0004L, "Invalid_Key_Length_AES_Zip_Error");
+			throw new ZipException(0x0000001B0004L);
 		}
 
 		this.rounds = kc + 6;

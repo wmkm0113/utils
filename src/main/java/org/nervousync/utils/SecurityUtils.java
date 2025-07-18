@@ -338,7 +338,7 @@ public final class SecurityUtils {
 		if (REGISTERED_CRC_CONFIG.containsKey(algorithm)) {
 			return new CRCDigestAdapterImpl(REGISTERED_CRC_CONFIG.get(algorithm));
 		}
-		throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+		throw new CryptoException(0x00000015000DL, algorithm);
 	}
 
 	/**
@@ -377,7 +377,7 @@ public final class SecurityUtils {
 					}
 					return "0x" + stringBuilder;
 				})
-				.orElseThrow(() -> new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm));
+				.orElseThrow(() -> new CryptoException(0x00000015000DL, algorithm));
 	}
 	/*
 	 * Digest Methods
@@ -2681,7 +2681,7 @@ public final class SecurityUtils {
 	private static byte[] symmetricKey(final String algorithm, final int keySize, final String randomAlgorithm)
 			throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
-			throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+			throw new CryptoException(0x00000015000DL, algorithm);
 		}
 
 		try {
@@ -2702,12 +2702,12 @@ public final class SecurityUtils {
 				case "BLOWFISH":
 					break;
 				default:
-					throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+					throw new CryptoException(0x00000015000DL, algorithm);
 			}
 			SecretKey secretKey = keyGenerator.generateKey();
 			return secretKey.getEncoded();
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-			throw new CryptoException(0x000000150009L, "Init_Key_Crypto_Error", e);
+			throw new CryptoException(0x000000150009L, e);
 		}
 	}
 

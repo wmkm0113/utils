@@ -71,7 +71,7 @@ public final class SHA1DigestAdapterImpl extends BaseDigestAdapter {
 		if ("SHA-1".equalsIgnoreCase(algorithm)) {
 			return new SHA1.Digest();
 		}
-		throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error");
+		throw new CryptoException(0x00000015000DL);
 	}
 
 	/**
@@ -92,6 +92,6 @@ public final class SHA1DigestAdapterImpl extends BaseDigestAdapter {
 			hmac.init(new KeyParameter(keyBytes));
 			return hmac;
 		}
-		throw new CryptoException(0x00000015000DL, "Unknown_Algorithm_Digits_Error", algorithm);
+		throw new CryptoException(0x00000015000DL, algorithm);
 	}
 }

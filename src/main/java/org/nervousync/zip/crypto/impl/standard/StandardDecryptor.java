@@ -53,11 +53,11 @@ public class StandardDecryptor implements Cryptor {
 	public static StandardDecryptor newInstance(final LocalFileHeader localFileHeader, final byte[] decryptorHeader)
 			throws ZipException {
 		if (localFileHeader == null) {
-			throw new ZipException(0x0000001B000FL, "Null_General_File_Header_Zip_Error");
+			throw new ZipException(0x0000001B000FL);
 		}
 
 		if (localFileHeader.getPassword() == null || localFileHeader.getPassword().length == 0) {
-			throw new ZipException(0x0000001B000DL, "Wrong_Password_Zip_Error");
+			throw new ZipException(0x0000001B000DL);
 		}
 
 		return new StandardDecryptor(localFileHeader, decryptorHeader);
@@ -66,7 +66,7 @@ public class StandardDecryptor implements Cryptor {
 	@Override
 	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (start < 0 || len < 0) {
-			throw new ZipException(0x000000FF0001L, "Parameter_Invalid_Error");
+			throw new ZipException(0x000000FF0001L);
 		}
 		try {
 			for (int i = start; i < start + len; i++) {
@@ -76,7 +76,7 @@ public class StandardDecryptor implements Cryptor {
 				buff[i] = (byte) value;
 			}
 		} catch (Exception e) {
-			throw new ZipException(0x0000001B000BL, "Decrypt_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000BL, e);
 		}
 	}
 }

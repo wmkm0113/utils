@@ -43,25 +43,25 @@ public final class AESDecryptor extends AESCrypto implements Cryptor {
 	public AESDecryptor(final LocalFileHeader localFileHeader,
 	                    final byte[] salt, final byte[] passwordBytes) throws ZipException {
 		if (localFileHeader == null) {
-			throw new ZipException(0x0000001B000EL, "Null_Local_File_Header_Zip_Error");
+			throw new ZipException(0x0000001B000EL);
 		}
 
 		if (localFileHeader.getAesExtraDataRecord() == null) {
-			throw new ZipException(0x0000001B0010L, "Invalid_AES_Extra_Data_Zip_Error");
+			throw new ZipException(0x0000001B0010L);
 		}
 
 		super.preInit(localFileHeader.getAesExtraDataRecord().getAesStrength());
 		this.init(salt, localFileHeader.getPassword());
 
 		if (!this.verifyPassword(passwordBytes)) {
-			throw new ZipException(0x0000001B000DL, "Wrong_Password_Zip_Error");
+			throw new ZipException(0x0000001B000DL);
 		}
 	}
 
 	@Override
 	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (this.aesEngine == null) {
-			throw new ZipException(0x0000001B0002L, "Not_Initialized_AES_Engine_Zip_Error");
+			throw new ZipException(0x0000001B0002L);
 		}
 		try {
 			for (int i = start; i < (start + len); i += Globals.AES_BLOCK_SIZE) {
@@ -71,7 +71,7 @@ public final class AESDecryptor extends AESCrypto implements Cryptor {
 				super.processData(buff, i);
 			}
 		} catch (Exception e) {
-			throw new ZipException(0x0000001B000BL, "Decrypt_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000BL, e);
 		}
 	}
 

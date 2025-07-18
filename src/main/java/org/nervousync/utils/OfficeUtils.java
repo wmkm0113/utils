@@ -243,7 +243,7 @@ public final class OfficeUtils {
 					case EXCEL_FILE_EXT_NAME_2007:
 						return new XSSFWorkbook(inputStream);
 					default:
-						throw new DataInvalidException(0x000000AE0001L, "Office_Ext_Name_Invalid", fileExtName);
+						throw new DataInvalidException(0x000000AE0001L, fileExtName);
 				}
 			} catch (IOException e) {
 				if (LOGGER.isDebugEnabled()) {
@@ -251,7 +251,7 @@ public final class OfficeUtils {
 				}
 			}
 		}
-		throw new DataInvalidException(0x000000AE0002L, "Office_Excel_File_Not_Exists", filePath);
+		throw new DataInvalidException(0x000000AE0002L, filePath);
 	}
 
 	/**
@@ -273,7 +273,7 @@ public final class OfficeUtils {
 			case EXCEL_FILE_EXT_NAME_2007:
 				return new SXSSFWorkbook(DEFAULT_ROW_ACCESS_WINDOW_SIZE);
 			default:
-				throw new DataInvalidException(0x000000AE0001L, "Office_Ext_Name_Invalid", fileExtName);
+				throw new DataInvalidException(0x000000AE0001L, fileExtName);
 		}
 	}
 
@@ -301,7 +301,7 @@ public final class OfficeUtils {
 			case EXCEL_FILE_EXT_NAME_2007:
 				return new EventModelReaderImpl(filePath);
 			default:
-				throw new DataInvalidException(0x000000AE0001L, "Office_Ext_Name_Invalid", fileExtName);
+				throw new DataInvalidException(0x000000AE0001L, fileExtName);
 		}
 	}
 }

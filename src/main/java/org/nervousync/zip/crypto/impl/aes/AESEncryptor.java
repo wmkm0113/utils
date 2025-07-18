@@ -47,7 +47,7 @@ public final class AESEncryptor extends AESCrypto implements Cryptor {
 	@Override
 	public void process(final byte[] buff, final int start, final int len) throws ZipException {
 		if (this.finished) {
-			throw new ZipException(0x0000001B0012L, "Finished_Encryptor_AES_Zip_Error");
+			throw new ZipException(0x0000001B0012L);
 		}
 
 		if (len % 16 != 0) {
@@ -64,7 +64,7 @@ public final class AESEncryptor extends AESCrypto implements Cryptor {
 				this.macBasedPRF.append(buff, i, this.loopCount);
 			}
 		} catch (CryptoException | DataInvalidException e) {
-			throw new ZipException(0x0000001B000CL, "Encrypt_Crypto_Zip_Error", e);
+			throw new ZipException(0x0000001B000CL, e);
 		}
 	}
 

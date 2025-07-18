@@ -176,9 +176,9 @@ public final class GeneX509TrustManager implements X509TrustManager {
 				}
 			}
 		} catch (Exception e) {
-			throw new CertInfoException(0x000000160001L, "Init_Trust_Manager_Certificate_Error", e);
+			throw new CertInfoException(0x000000160001L, e);
 		}
 
-		throw new CertInfoException(0x000000160002L, "NotFound_X509TrustManager_Certificate_Error");
+		throw new CertInfoException(0x000000160002L);
 	}
 }

@@ -119,7 +119,7 @@ public final class CRCDigestAdapterImpl extends SecureAdapter {
 	@Override
 	public void append(final byte[] dataBytes, final int position, final int length) throws CryptoException {
 		if (dataBytes.length < (position + length)) {
-			throw new CryptoException(0x000000150001L, "Length_Not_Enough_Crypto_Error");
+			throw new CryptoException(0x000000150001L);
 		}
 		for (int i = position; i < length; i++) {
 			long crc = (dataBytes[i] < 0) ? ((int) dataBytes[i]) + 256 : dataBytes[i];

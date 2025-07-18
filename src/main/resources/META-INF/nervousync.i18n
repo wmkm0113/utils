@@ -529,6 +529,10 @@
       "name": "English",
       "messages": [
         {
+          "key": "System_Information",
+          "content": "Current operate system name: {0}, version: {1}, current user name: {2}, user home directory path: {3}, current user work directory path: {4}, JDK version: {5}, JDK major version: {6}, Java home directory: {7}, Java tmp directory path: {8}"
+        },
+        {
           "key": "Null_Network_Interface_Error",
           "content": "The network interface instance object is null"
         },
@@ -1610,6 +1614,10 @@
       "code": "zh-CN",
       "name": "简体中文",
       "messages": [
+        {
+          "key": "System_Information",
+          "content": "当前操作系统名称：{0}，版本号：{1}，当前用户：{2}，用户主目录地址：{3}，当前用户工作目录地址：{4}，JDK版本：{5}，JDK主版本号：{6}，Java目录地址：{7}，Java临时文件目录地址：{8}"
+        },
         {
           "key": "Null_Network_Interface_Error",
           "content": "网络接口实例对象为空"

@@ -130,7 +130,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
     public MailConfigBuilder<T> authentication(final String userName, final String password)
             throws BuilderException {
         if (!StringUtils.matches(userName, RegexGlobals.EMAIL_ADDRESS)) {
-            throw new BuilderException(0x0000000E0001L, "Username_Invalid_Mail_Error");
+            throw new BuilderException(0x0000000E0001L);
         }
         if (StringUtils.notBlank(userName) && !ObjectUtils.nullSafeEquals(this.mailConfig.getUserName(), userName)) {
             this.mailConfig.setUserName(userName);
@@ -238,7 +238,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
      */
     public MailConfigBuilder<T> storagePath(final String storagePath) throws BuilderException {
         if (StringUtils.isEmpty(storagePath) || !FileUtils.makeDir(storagePath)) {
-            throw new BuilderException(0x0000000E0002L, "Storage_Path_NotFound_Mail_Error");
+            throw new BuilderException(0x0000000E0002L);
         }
         if (ObjectUtils.nullSafeEquals(this.mailConfig.getStoragePath(), storagePath)) {
             return this;
@@ -472,10 +472,10 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
         @Override
         public MailConfig.ServerConfig build() throws BuilderException {
             if (StringUtils.isEmpty(this.serverConfig.getHostName())) {
-                throw new BuilderException(0x0000000E0003L, "Host_Address_Unknown_Mail_Error");
+                throw new BuilderException(0x0000000E0003L);
             }
             if (MailProtocol.UNKNOWN.equals(this.serverConfig.getProtocolOption())) {
-                throw new BuilderException(0x0000000E0004L, "Protocol_Unknown_Mail_Error");
+                throw new BuilderException(0x0000000E0004L);
             }
             if (this.modified) {
                 this.serverConfig.setLastModified(DateTimeUtils.currentUTCTimeMillis());

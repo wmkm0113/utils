@@ -359,7 +359,7 @@ public final class ServiceUtils {
 
 		private String servicePath(final Method method) throws NetworkInfoException {
 			if (!method.isAnnotationPresent(Path.class)) {
-				throw new NetworkInfoException(0x0000001A0004L, "Unknown_Path_Restful_Service_Method");
+				throw new NetworkInfoException(0x0000001A0004L);
 			}
 
 			String methodName = Optional.ofNullable(method.getAnnotation(Path.class))
@@ -382,7 +382,7 @@ public final class ServiceUtils {
 		public Object invoke(final Object o, final Method method, final Object[] objects) throws Throwable {
 			HttpMethodOption methodOption = RequestUtils.httpMethodOption(method);
 			if (HttpMethodOption.UNKNOWN.equals(methodOption)) {
-				throw new NetworkInfoException(0x0000001A0003L, "Unknown_Http_Method");
+				throw new NetworkInfoException(0x0000001A0003L);
 			}
 			String servicePath = this.servicePath(method);
 
