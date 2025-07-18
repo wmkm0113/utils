@@ -17,14 +17,14 @@
 package org.nervousync.beans.xml.files;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.beans.transfer.cdata.CDataAdapter;
-import org.nervousync.beans.transfer.basic.DateTimeAdapter;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.utils.ConvertUtils;
 import org.nervousync.utils.SecurityUtils;
 import org.nervousync.utils.StringUtils;
 
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.nervousync.xml.adapters.CDataAdapter;
+import org.nervousync.xml.adapters.DateTimeAdapter;
 
 import java.util.Date;
 import java.util.Objects;

@@ -51,7 +51,6 @@ Java开发工具包是为了提供接口稳定、集成简单、可重用的工�
   + [随机操作文件](#随机操作文件)
 * [贡献与反馈](#贡献与反馈)
 * [捐款](#捐款)
-* [赞助与鸣谢](#赞助与鸣谢)
 
 ## JDK版本：
 **编译：** OpenJDK 11   
@@ -432,9 +431,3 @@ org.nervousync.annotations.launcher.Launcher 注解的 value 属性值为启动�
 * 以太坊地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
 * Solana 地址: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
 * BNB 地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
-
-## 赞助与鸣谢
-<span id="JetBrains">
-    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" height="40px" alt="JetBrains Logo (Main) logo.">
-    <span>非常感谢 <a href="https://www.jetbrains.com/">JetBrains</a> 通过许可证赞助我们的开源项目。</span>
-</span>

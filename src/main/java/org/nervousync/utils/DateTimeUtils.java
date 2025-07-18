@@ -1000,18 +1000,20 @@ public final class DateTimeUtils {
 		 */
 		private final AtomicLong currentUTCTime = new AtomicLong(System.currentTimeMillis() - RAW_OFFSET);
 
+		private final ScheduledThreadPoolExecutor threadPoolExecutor;
+
 		/**
-		 * <h3 class="en-US">Constructor method for the UTC clock</h3>
+		 * <h3 class="en-US">Constructor method for UTC clock</h3>
 		 * <h3 class="zh-CN">UTC时钟的构造方法</h3>
 		 */
 		public UTCClock() {
-			ScheduledThreadPoolExecutor threadPoolExecutor =
-					new ScheduledThreadPoolExecutor(1, r -> {
-						Thread thread = new Thread(r);
-						thread.setDaemon(Boolean.TRUE);
-						return thread;
-					});
-			threadPoolExecutor.scheduleAtFixedRate(this::readTime, 0L, 1L, TimeUnit.MILLISECONDS);
+			this.threadPoolExecutor = new ScheduledThreadPoolExecutor(1, r -> {
+				Thread thread = new Thread(r);
+				thread.setDaemon(Boolean.TRUE);
+				return thread;
+			});
+			this.threadPoolExecutor.scheduleAtFixedRate(this::readTime, 0L, 1L, TimeUnit.MILLISECONDS);
+			SystemUtils.registerShutdownHook(this::destroy);
 		}
 
 		/**
@@ -1044,6 +1046,10 @@ public final class DateTimeUtils {
 			long currentTime = System.currentTimeMillis();
 			this.currentLocalTime.set(currentTime);
 			this.currentUTCTime.set(currentTime - RAW_OFFSET);
+		}
+
+		void destroy() {
+			this.threadPoolExecutor.shutdown();
 		}
 	}
 }

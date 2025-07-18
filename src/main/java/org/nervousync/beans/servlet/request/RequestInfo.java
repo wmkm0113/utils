@@ -343,7 +343,7 @@ public final class RequestInfo {
 	 * <h2 class="en-US">Request builder</h2>
 	 * <h2 class="zh-CN">网络请求构建器</h2>
 	 */
-	public static final class RequestBuilder implements ParentBuilder {
+	public static final class RequestBuilder extends ParentBuilder {
 		/**
 		 * <span class="en-US">Enumeration value of HttpMethodOption</span>
 		 * <span class="zh-CN">HttpMethodOption的枚举值</span>
@@ -454,8 +454,8 @@ public final class RequestInfo {
 		 * @return <span class="en-US">RequestProxyBuilder instance</span>
 		 * <span class="zh-CN">RequestProxyBuilder实例对象</span>
 		 */
-		public ProxyConfigBuilder proxyConfig() {
-			return new ProxyConfigBuilder(this, this.proxyConfig);
+		public ProxyConfigBuilder<RequestBuilder> proxyConfig() {
+			return new ProxyConfigBuilder<>(this, this.proxyConfig);
 		}
 
 		/**

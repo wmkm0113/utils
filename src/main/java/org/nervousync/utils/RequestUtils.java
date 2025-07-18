@@ -1029,7 +1029,6 @@ public final class RequestUtils {
 		}
 		if (requestInfo.getTrustCertInfos() != null && !requestInfo.getTrustCertInfos().isEmpty()) {
 			try {
-				System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
 				SSLContext sslContext = SSLContext.getInstance("TLS");
 				GeneX509TrustManager x509TrustManager =
 						GeneX509TrustManager.newInstance(requestInfo.getPassPhrase(), requestInfo.getTrustCertInfos());

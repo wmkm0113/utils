@@ -18,6 +18,7 @@ package org.nervousync.utils;
 
 import com.sun.security.auth.module.NTSystem;
 import com.sun.security.auth.module.UnixSystem;
+import jakarta.annotation.Nonnull;
 import org.nervousync.beans.network.NetworkInfo;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.beans.network.NetworkInfoException;
@@ -126,6 +127,10 @@ public final class SystemUtils {
 					? Integer.parseInt(JDK_VERSION.substring(0, JDK_VERSION.indexOf(".")))
 					: Integer.parseInt(JDK_VERSION);
 		}
+		LOGGER.info("System_Information",
+				OPERATE_SYSTEM_NAME, OPERATE_SYSTEM_VERSION,
+				USER_NAME, USER_HOME, USER_DIR,
+				JDK_VERSION, MAJOR_VERSION, JAVA_HOME, JAVA_TMP_DIR);
 	}
 
 	/**
@@ -417,6 +422,17 @@ public final class SystemUtils {
 			// ignored
 		}
 		return macAddress;
+	}
+
+	/**
+	 * <h3 class="en-US">Register a program to run when the system is shutdown</h3>
+	 * <h3 class="zh-CN">注册系统退出时需要运行的程序</h3>
+	 *
+	 * @param runnable <span class="en-US">Executed program</span>
+	 *                 <span class="zh-CN">执行的程序</span>
+	 */
+	public static void registerShutdownHook(@Nonnull final Runnable runnable) {
+		Runtime.getRuntime().addShutdownHook((runnable instanceof Thread) ? (Thread) runnable : new Thread(runnable));
 	}
 
 	/**

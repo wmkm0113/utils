@@ -66,7 +66,6 @@ public final class IDUtils {
 	 * <span class="en-US">Static value for provider name of UUIDv3 Generator</span>
 	 * <span class="zh-CN">静态值用于UUIDv3生成器的提供名称</span>
 	 */
-	@Deprecated(since = "1.2.4")
 	public static final String UUIDv3 = "UUIDv3";
 	/**
 	 * <span class="en-US">Static value for provider name of UUIDv4 Generator</span>
@@ -77,7 +76,6 @@ public final class IDUtils {
 	 * <span class="en-US">Static value for provider name of UUIDv5 Generator</span>
 	 * <span class="zh-CN">静态值用于UUIDv5生成器的提供名称</span>
 	 */
-	@Deprecated(since = "1.2.4")
 	public static final String UUIDv5 = "UUIDv5";
 	/**
 	 * <span class="en-US">Static value for provider name of UUIDv6 Generator</span>
@@ -128,7 +126,7 @@ public final class IDUtils {
 						String.join(", ", providerNames.toArray(new String[0])));
 			}
 		}
-		Runtime.getRuntime().addShutdownHook(new Thread(IDUtils::destroy));
+		SystemUtils.registerShutdownHook(IDUtils::destroy);
 	}
 
 	/**

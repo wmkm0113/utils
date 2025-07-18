@@ -233,6 +233,41 @@ public final class ObjectUtils {
 	// Convenience methods for content-based equality/hash-code handling
 	//---------------------------------------------------------------------
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public static int nullSafeCompare(final Object o1, final Object o2) {
+		if ((o1 == null && o2 == null) || nullSafeEquals(o1, o2)) {
+			return 0;
+		}
+		if (o1 == null) {
+			return 1;
+		}
+		if (o2 == null) {
+			return -1;
+		}
+
+		if (!nullSafeEquals(o1.getClass(), o2.getClass())) {
+			return 0;
+		}
+
+		if (o1.getClass().isArray() && o2.getClass().isArray()) {
+			Object[] array1 = (Object[]) o1;
+			Object[] array2 = (Object[]) o2;
+			if (array1.length != array2.length) {
+				return Integer.compare(array1.length, array2.length);
+			}
+			for (int i = 0; i < array1.length; i++) {
+				int result = nullSafeCompare(array1[i], array2[i]);
+				if (result != 0) {
+					return result;
+				}
+			}
+			return 0;
+		} else if (o1 instanceof Comparable && o2 instanceof Comparable) {
+			return ((Comparable) o1).compareTo(o2);
+		}
+		return 0;
+	}
+
 	/**
 	 * <h3 class="en-US">Determine if the given objects are equal.</h3>
 	 * <span class="en-US">

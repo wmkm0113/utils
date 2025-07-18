@@ -19,7 +19,6 @@ package org.nervousync.generator.snowflake;
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.generator.IGenerator;
-import org.nervousync.utils.DateTimeUtils;
 import org.nervousync.utils.IDUtils;
 import org.nervousync.utils.LoggerUtils;
 

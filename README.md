@@ -51,7 +51,6 @@ Or one-time password support, X.509 certificate operation, task manager, etc., t
   + [Random access file operates](#random-access-file-operates)
 * [Contributions and feedback](#contributions-and-feedback)
 * [Donations](#donations)
-* [Sponsorship and Thanks To](#sponsorship-and-thanks-to)
 
 ## JDK Version：
 **Compile:** OpenJDK 11   
@@ -445,9 +444,3 @@ To support this project, you can make a donation to:
 * Ethereum address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
 * Solana address: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
 * BNB address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
-
-## Sponsorship and Thanks To
-<span id="JetBrains">
-    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" height="40px" alt="JetBrains Logo (Main) logo.">
-    <span>Many thanks to <a href="https://www.jetbrains.com/">JetBrains</a> for sponsoring our Open Source projects with a license.</span>
-</span>

@@ -17,12 +17,10 @@
 package org.nervousync.mail.config;
 
 import jakarta.xml.bind.annotation.*;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.beans.Signature;
 import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.core.BeanObject;
-import org.nervousync.beans.transfer.enumerations.MailProtocolAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.proxy.ProxyConfig;
@@ -389,7 +387,6 @@ public final class MailConfig extends BeanObject {
 		 * <span class="en-US">Mail server protocol</span>
 		 * <span class="zh-CN">邮件服务器协议</span>
 		 */
-		@XmlJavaTypeAdapter(MailProtocolAdapter.class)
 		@XmlElement(name = "protocol")
 		private MailProtocol protocolOption;
 		/**

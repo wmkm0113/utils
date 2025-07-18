@@ -54,7 +54,7 @@ public final class RequestTest extends BaseTest {
 	@Test
 	@Order(40)
 	public void sendRequest() {
-		RequestInfo requestInfo = RequestInfo.builder(HttpMethodOption.GET).requestUrl("http://www.baidu.com").build();
+		RequestInfo requestInfo = RequestInfo.builder(HttpMethodOption.GET).requestUrl("http://www.baidu.com").acceptType("gzip").build();
 		Optional.ofNullable(RequestUtils.sendRequest(requestInfo, String.class))
 				.ifPresent(responseData ->
 						this.logger.info("Request_Content_Info", responseData.length(), responseData));

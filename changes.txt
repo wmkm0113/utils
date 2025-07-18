@@ -1,4 +1,18 @@
 Nervousync Java Utils Package
+[18/07/2025]
+[Add] Add static method registerShutdownHook to SystemUtils
+[Add] Add XmlAdapter implement class CDataAdapter/ClassAdapter/DateTimeAdapter
+[Remove] Remove unused enum define ConnectionCode and ServiceType
+[Update] Update AbstractBuilder support the parent builder
+[Update] Update UTCClock resolve the scheduled thread pool executor not destroy when exit
+[Update] Move all transfer adapter implement class to test package
+[Update] Update Junit version to 5.13.3
+[Update] Update bcprov version to 1.81
+[Update] Update Jcifs version to 2.1.40
+[Update] Update log4j version to 2.25.1
+[Update] Update jackson version to 2.19.1
+[Update] Update snmp4j version to 3.9.6
+
 [07/05/2025]
 [Update] Using global SecureRandom instance replace the local parameter
 [Update] Using static method CRCConfig.newInstance replace the constructor method

@@ -434,7 +434,7 @@ public final class CodeOptions {
 		}
 
 		@Override
-		public CodeOptions confirm() throws BuilderException {
+		public CodeOptions build() throws BuilderException {
 			if (this.codeWidth <= Globals.INITIALIZE_INT_VALUE || this.codeHeight <= Globals.INITIALIZE_INT_VALUE) {
 				throw new BuilderException(0x0000001D0001L);
 			}

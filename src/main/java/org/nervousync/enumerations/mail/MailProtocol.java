@@ -16,6 +16,8 @@
  */
 package org.nervousync.enumerations.mail;
 
+import jakarta.xml.bind.annotation.XmlEnum;
+
 /**
  * <h2 class="en-US">Mail server protocol Enumerations</h2>
  * <h2 class="zh-CN">邮件服务器协议枚举</h2>
@@ -23,6 +25,7 @@ package org.nervousync.enumerations.mail;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Sep 21, 2018 17:21:28 $
  */
+@XmlEnum
 public enum MailProtocol {
 	/**
      * <span class="en-US">SMTP Protocol</span>

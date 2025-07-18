@@ -81,7 +81,7 @@ public final class ClassUtils {
 	 * </span>
 	 * <span class="zh-CN">以原始包装类型作为键并以相应的原始类型作为值进行映射，例如：Integer.class -> int.class</span>
 	 */
-	private static final Map<Object, Object> PRIMITIVE_WRAPPER_TYPE_MAP = new HashMap<>(8);
+	private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_TYPE_MAP = new HashMap<>(8);
 	/**
 	 * <span class="en-US">
 	 * Map with primitive type name as a key and corresponding primitive type as value,
@@ -618,13 +618,15 @@ public final class ClassUtils {
 	 * @return <span class="en-US">the primitive class or <code>null</code> if not found</span>
 	 * <span class="zh-CN">原始类，如果未找到则返回<code>null</code></span>
 	 */
-	public static Class<?> primitiveWrapper(final Class<?> clazz) {
+	public static Class<?> primitiveWrapper(@Nonnull final Class<?> clazz) {
 		if (clazz.isPrimitive()) {
-			for (Map.Entry<Object, Object> entry : PRIMITIVE_WRAPPER_TYPE_MAP.entrySet()) {
-				if (entry.getValue().equals(clazz)) {
-					return (Class<?>) entry.getKey();
-				}
-			}
+			return PRIMITIVE_WRAPPER_TYPE_MAP
+					.entrySet()
+					.stream()
+					.filter(entry -> ObjectUtils.nullSafeEquals(entry.getValue(), clazz))
+					.findFirst()
+					.map(Map.Entry::getKey)
+					.orElse(null);
 		}
 		return null;
 	}

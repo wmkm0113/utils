@@ -17,7 +17,7 @@
 
 package org.nervousync.annotations.beans;
 
-import org.nervousync.beans.transfer.AbstractAdapter;
+import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.commons.Globals;
 
 import java.lang.annotation.*;
@@ -38,7 +38,7 @@ public @interface DataTransfer {
 	 * @return <span class="en-US">Data converter class</span>
 	 * <span class="zh-CN">数据转换类</span>
 	 */
-	Class<? extends AbstractAdapter> adapter() default AbstractAdapter.class;
+	Class<? extends TransferAdapter> adapter() default TransferAdapter.class;
 
 	/**
 	 * @return <span class="en-US">Data conversion class constructor parameters, the default empty string is the parameterless constructor</span>

@@ -1,4 +1,18 @@
 Nervousync Java 工具包
+[18/07/2025]
+[新增] 在 SystemUtils 中增加 registerShutdownHook 靜態方法
+[新增] 新增XML資料轉換器實作類別 CDataAdapter/ClassAdapter/DateTimeAdapter
+[刪除] 刪除未使用的枚舉類別 ConnectionCode 和 ServiceType
+[更新] 更新 AbstractBuilder 現在支援父構建器
+[更新] 更新 UTCClock 解決執行緒呼叫器未銷毀的問題
+[更新] 將所有資料轉換器實作類別轉移到測試目錄
+[更新] 更新 Junit 版本為 5.13.3
+[更新] 更新 bcprov 版本為 1.81
+[更新] 更新 Jcifs 版本為 2.1.40
+[更新] 更新 log4j 版本為 2.25.1
+[更新] 更新 jackson 版本為 2.19.1
+[更新] 更新 snmp4j 版本為 3.9.6
+
 [07/05/2025]
 [更新] 使用全域的SecureRandom物件取代局部變量
 [更新] 使用靜態方法CRCConfig.newInstance取代原有的建構方法

@@ -18,8 +18,7 @@
 package org.nervousync.beans.config;
 
 import org.nervousync.annotations.beans.DataTransfer;
-import org.nervousync.beans.transfer.AbstractAdapter;
-import org.nervousync.commons.Globals;
+import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.utils.ClassUtils;
 import org.nervousync.utils.LoggerUtils;
 import org.nervousync.utils.ObjectUtils;
@@ -44,7 +43,7 @@ public final class TransferConfig {
 	 * <span class="en-US">Converter implementation class must implement the DataConverter interface</span>
 	 * <span class="zh-CN">转换器实现类，必须实现DataConverter接口</span>
 	 */
-	private final AbstractAdapter adapter;
+	private final TransferAdapter adapter;
 
 	/**
 	 * <h2 class="en-US">Default constructor</h2>
@@ -54,8 +53,8 @@ public final class TransferConfig {
 	 *                 <span class="zh-CN">数据传输配置的注解</span>
 	 */
 	public TransferConfig(final DataTransfer transfer) {
-		if (transfer != null && ClassUtils.isAssignable(AbstractAdapter.class, transfer.adapter())
-				&& !ObjectUtils.nullSafeEquals(AbstractAdapter.class, transfer.adapter())) {
+		if (transfer != null && ClassUtils.isAssignable(TransferAdapter.class, transfer.adapter())
+				&& !ObjectUtils.nullSafeEquals(TransferAdapter.class, transfer.adapter())) {
 			if (StringUtils.isEmpty(transfer.initParam())) {
 				this.adapter = ObjectUtils.newInstance(transfer.adapter());
 			} else {

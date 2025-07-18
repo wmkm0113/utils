@@ -35,10 +35,10 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.nervousync.annotations.beans.OutputConfig;
-import org.nervousync.beans.transfer.cdata.CDataAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.RegexGlobals;
 import org.nervousync.tree.huffman.HuffmanTree;
+import org.nervousync.xml.adapters.CDataAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
@@ -2384,10 +2384,11 @@ public final class StringUtils {
 			return beanClass.cast(StringUtils.dataToMap(string, StringType.JSON));
 		}
 
-		return Optional.ofNullable(beanClass.getAnnotation(OutputConfig.class))
-				.map(outputConfig ->
-						stringToObject(string, outputConfig.defaultType(), outputConfig.encoding(), beanClass, schemaPaths))
-				.orElse(stringToObject(string, StringType.SERIALIZABLE, encoding, beanClass, schemaPaths));
+		OutputConfig outputConfig = beanClass.getAnnotation(OutputConfig.class);
+		if (outputConfig == null) {
+			return stringToObject(string, StringType.SERIALIZABLE, encoding, beanClass, schemaPaths);
+		}
+		return stringToObject(string, outputConfig.defaultType(), outputConfig.encoding(), beanClass, schemaPaths);
 	}
 
 	/**

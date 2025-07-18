@@ -26,6 +26,7 @@ import org.nervousync.configs.ConfigureManager;
 import org.nervousync.enumerations.launcher.StartupType;
 import org.nervousync.utils.DateTimeUtils;
 import org.nervousync.utils.ObjectUtils;
+import org.nervousync.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,12 +86,6 @@ public final class StartupManager {
 		this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		this.scheduledExecutorService.scheduleWithFixedDelay(this::scanConfig, Globals.DEFAULT_SCHEDULE_DELAY,
 				SCHEDULE_PERIOD, TimeUnit.MILLISECONDS);
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			if (StartupManager.INSTANCE != null) {
-				StartupManager.INSTANCE.destroy();
-				StartupManager.INSTANCE = null;
-			}
-		}));
 		this.startupConfig.getRegisteredLaunchers()
 				.stream()
 				.filter(launcherConfig -> StartupType.AUTO.equals(launcherConfig.getStartupType()))
@@ -108,6 +103,7 @@ public final class StartupManager {
 							.map(configureManager ->
 									new StartupManager(configureManager.readConfigure(StartupConfig.class)))
 							.orElse(null);
+			SystemUtils.registerShutdownHook(StartupManager::shutdown);
 		}
 	}
 
@@ -126,7 +122,18 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Get the registered launcher configure information list</h3>
+	 * <h3 class="en-US">Destroy instance of startup manager</h3>
+	 * <h3 class="zh-CN">销毁当前启动器的实例对象</h3>
+	 */
+	private static void shutdown() {
+		if (StartupManager.INSTANCE != null) {
+			StartupManager.INSTANCE.destroy();
+			StartupManager.INSTANCE = null;
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Get the registered launcher configured information list</h3>
 	 * <h3 class="zh-CN">获取已注册的启动器配置信息列表</h3>
 	 *
 	 * @return <span class="en-US">Launcher configure information list</span>

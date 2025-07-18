@@ -16,7 +16,6 @@
  */
 package org.nervousync.utils;
 
-import org.nervousync.annotations.beans.BeanProperties;
 import org.nervousync.annotations.beans.BeanProperty;
 import org.nervousync.beans.config.TransferConfig;
 

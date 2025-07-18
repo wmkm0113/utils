@@ -27,12 +27,12 @@ import org.nervousync.exceptions.builder.BuilderException;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2018 16:09:54 $
  */
-public abstract class AbstractBuilder<T> implements Builder<T> {
+public abstract class AbstractBuilder<P extends ParentBuilder, T> extends ParentBuilder implements Builder<T> {
 	/**
 	 * <span class="en-US">Generics Type Class</span>
 	 * <span class="zh-CN">泛型类</span>
 	 */
-	protected final ParentBuilder parentBuilder;
+	protected final P parentBuilder;
 
 	/**
 	 * <h3 class="en-US">Protected constructor for AbstractBuilder</h3>
@@ -41,7 +41,7 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
 	 * @param parentBuilder <span class="en-US">Parent builder instance object</span>
 	 *                      <span class="zh-CN">父构建器实例对象</span>
 	 */
-	protected AbstractBuilder(final ParentBuilder parentBuilder) {
+	protected AbstractBuilder(final P parentBuilder) {
 		this.parentBuilder = parentBuilder;
 	}
 
@@ -54,8 +54,12 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
 	 * @throws BuilderException <span class="en-US">If an occurring when confirm current configure</span>
 	 *                          <span class="zh-CN">当确认当前配置时时捕获异常</span>
 	 */
-	public final <P> P confirmParent(final Class<P> clazz) throws BuilderException {
-		this.parentBuilder.confirm(this.confirm());
-		return clazz.cast(this.parentBuilder);
+	public P confirm() throws BuilderException {
+		this.parentBuilder.confirm(this.build());
+		return this.parentBuilder;
+	}
+
+	@Override
+	public void confirm(final Object object) throws BuilderException {
 	}
 }

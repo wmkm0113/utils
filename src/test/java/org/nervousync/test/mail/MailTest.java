@@ -67,23 +67,23 @@ public final class MailTest extends BaseTest {
 				.useSSL(Boolean.parseBoolean(PROPERTIES.getProperty("config.send.ssl")))
 				.connectionTimeout(10)
 				.processTimeout(10)
-				.confirmParent(MailConfigBuilder.class)
+				.confirm()
 				.proxyConfig()
 				.proxyType(Proxy.Type.SOCKS)
 				.serverConfig("127.0.0.1", 1080)
 				.authenticator(PROPERTIES.getProperty("config.userName"), PROPERTIES.getProperty("config.passWord"))
-				.confirmParent(MailConfigBuilder.class)
+				.confirm()
 				.receiveConfig()
 				.mailProtocol(MailProtocol.valueOf(PROPERTIES.getProperty("config.receive.protocol")))
 				.configHost(PROPERTIES.getProperty("config.receive.address"),
 						Integer.parseInt(PROPERTIES.getProperty("config.receive.port")))
 				.authLogin(Boolean.parseBoolean(PROPERTIES.getProperty("config.receive.auth")))
 				.useSSL(Boolean.parseBoolean(PROPERTIES.getProperty("config.receive.ssl")))
-				.confirmParent(MailConfigBuilder.class)
+				.confirm()
 				.authentication(PROPERTIES.getProperty("config.userName"), PROPERTIES.getProperty("config.passWord"))
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
 				.signer(x509Certificate, keyPair.getPrivate())
-				.confirm();
+				.build();
 		String xmlContent = mailConfig.toString();
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
 		MailConfig parseConfig = StringUtils.stringToObject(xmlContent, MailConfig.class, "https://nervousync.org/schemas/mail");

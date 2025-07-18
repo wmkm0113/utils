@@ -51,7 +51,6 @@ Java開發套件是為了提供介面穩定、集成簡單、可重用的工具�
   + [隨機操作檔](#隨機操作檔)
 * [貢獻與回饋](#貢獻與回饋)
 * [捐款](#捐款)
-* [贊助與鳴謝](#贊助與鳴謝)
 
 ## JDK版本：
 **編譯：** OpenJDK 11   
@@ -432,9 +431,3 @@ org.nervousync.annotations.launcher.Launcher 注解的 value 屬性值為啟動�
 * 以太坊地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
 * Solana 地址: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
 * BNB 地址: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
-
-## 贊助與鳴謝
-<span id="JetBrains">
-    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" height="40px" alt="JetBrains Logo (Main) logo.">
-    <span>非常感謝 <a href="https://www.jetbrains.com/">JetBrains</a> 通過許可證贊助我們的開源項目。</span>
-</span>

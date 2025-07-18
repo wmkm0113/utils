@@ -43,8 +43,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <junit.jupiter.version>5.12.2</junit.jupiter.version>
-        <junit.platform.version>1.12.2</junit.platform.version>
+        <junit.jupiter.version>5.13.3</junit.jupiter.version>
+        <junit.platform.version>1.13.3</junit.platform.version>
         <jakarta.activation.version>2.1.3</jakarta.activation.version>
         <jakarta.mail.version>2.1.3</jakarta.mail.version>
         <angus.version>2.0.3</angus.version>
@@ -53,24 +53,19 @@
         <jakarta.xml.binding.version>4.0.2</jakarta.xml.binding.version>
         <jaxb.version>4.0.5</jaxb.version>
         <jakarta.xml.soap.version>3.0.2</jakarta.xml.soap.version>
-        <bcprov.version>1.80</bcprov.version>
-        <log4j.version>2.24.3</log4j.version>
+        <bcprov.version>1.81</bcprov.version>
+        <log4j.version>2.25.1</log4j.version>
         <slf4j.version>2.0.17</slf4j.version>
-        <jackson.version>2.19.0</jackson.version>
+        <jackson.version>2.19.1</jackson.version>
         <yaml.version>2.4</yaml.version>
         <jersey.version>3.1.10</jersey.version>
         <hk2.version>3.1.1</hk2.version>
-        <snmp4j.version>3.9.3</snmp4j.version>
-        <jcifs.version>2.1.39</jcifs.version>
+        <snmp4j.version>3.9.6</snmp4j.version>
+        <jcifs.version>2.1.40</jcifs.version>
         <poi.version>5.4.1</poi.version>
         <zxing.version>3.5.3</zxing.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>io.github.thibaultmeyer</groupId>
-            <artifactId>cuid</artifactId>
-            <version>2.0.3</version>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -536,6 +531,11 @@
             <version>2.19.0</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
             <version>1.0.0</version>
@@ -554,6 +554,10 @@
                 <exclusion>
                     <groupId>commons-io</groupId>
                     <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -676,7 +680,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.7.0</version>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>OSS</publishingServerId>

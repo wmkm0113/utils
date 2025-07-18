@@ -17,6 +17,8 @@
 package org.nervousync.security.config;
 
 import jakarta.xml.bind.annotation.*;
+import org.nervousync.annotations.beans.OutputConfig;
+import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Secure configure information define</h2>
@@ -30,6 +32,7 @@ import jakarta.xml.bind.annotation.*;
 @XmlType(name = "secure_config", namespace = "https://nervousync.org/schemas/secure")
 @XmlRootElement(name = "secure_config", namespace = "https://nervousync.org/schemas/secure")
 @XmlAccessorType(XmlAccessType.NONE)
+@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class SecureConfig extends AbstractConfig {
 	/**
 	 * <span class="en-US">Serial version UID</span>

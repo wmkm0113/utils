@@ -39,6 +39,5 @@ public interface Builder<T> {
 	 * @throws BuilderException <span class="en-US">If an occurring when confirm current configure</span>
 	 *                          <span class="zh-CN">当确认当前配置时时捕获异常</span>
 	 */
-	T confirm() throws BuilderException;
-
+	T build() throws BuilderException;
 }

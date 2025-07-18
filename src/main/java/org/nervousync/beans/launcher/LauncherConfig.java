@@ -22,9 +22,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.nervousync.beans.core.BeanObject;
-import org.nervousync.beans.transfer.basic.ClassAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.launcher.StartupType;
+import org.nervousync.xml.adapters.ClassAdapter;
 
 /**
  * <h2 class="en-US">Startup Launcher configure information</h2>

@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.nervousync.annotations.beans.*;
 import org.nervousync.beans.core.BeanObject;
-import org.nervousync.beans.transfer.basic.BigDecimalAdapter;
-import org.nervousync.beans.transfer.basic.BigIntegerAdapter;
-import org.nervousync.beans.transfer.basic.BooleanAdapter;
-import org.nervousync.beans.transfer.beans.BeanObjectAdapter;
-import org.nervousync.beans.transfer.beans.JsonBeanAdapter;
-import org.nervousync.beans.transfer.beans.XmlBeanAdapter;
-import org.nervousync.beans.transfer.beans.YamlBeanAdapter;
-import org.nervousync.beans.transfer.blob.Base32Adapter;
-import org.nervousync.beans.transfer.blob.Base64Adapter;
+import org.nervousync.beans.transfers.basic.BigDecimalAdapter;
+import org.nervousync.beans.transfers.basic.BigIntegerAdapter;
+import org.nervousync.beans.transfers.basic.BooleanAdapter;
+import org.nervousync.beans.transfers.beans.BeanObjectAdapter;
+import org.nervousync.beans.transfers.beans.JsonBeanAdapter;
+import org.nervousync.beans.transfers.beans.XmlBeanAdapter;
+import org.nervousync.beans.transfers.beans.YamlBeanAdapter;
+import org.nervousync.beans.transfers.blob.Base32Adapter;
+import org.nervousync.beans.transfers.blob.Base64Adapter;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.BeanUtils;
 import org.nervousync.utils.ClassUtils;
@@ -26,6 +26,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public final class BeanTest extends BaseTest {
 
     @Test

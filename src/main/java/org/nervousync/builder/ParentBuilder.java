@@ -26,7 +26,7 @@ import org.nervousync.exceptions.builder.BuilderException;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2018 16:28:42 $
  */
-public interface ParentBuilder {
+public abstract class ParentBuilder {
 
 	/**
 	 * <h3 class="en-US">Confirm current configure and return Generics Type instance</h3>
@@ -37,6 +37,5 @@ public interface ParentBuilder {
 	 * @throws BuilderException <span class="en-US">If an occurring when confirm current configure</span>
 	 *                          <span class="zh-CN">当确认当前配置时时捕获异常</span>
 	 */
-	void confirm(final Object object) throws BuilderException;
-
+	public abstract void confirm(final Object object) throws BuilderException;
 }

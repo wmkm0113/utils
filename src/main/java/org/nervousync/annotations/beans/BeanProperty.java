@@ -17,7 +17,7 @@
 package org.nervousync.annotations.beans;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
-import org.nervousync.beans.transfer.AbstractAdapter;
+import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.commons.Globals;
 
 import java.lang.annotation.*;
@@ -85,7 +85,7 @@ public @interface BeanProperty {
 	 *
 	 * @return    <span class="en-US">Data converter class</span>
 	 * <span class="zh-CN">数据转换类</span>
-	 * @see AbstractAdapter
+	 * @see TransferAdapter
 	 */
 	DataTransfer transfer() default @DataTransfer;
 }
