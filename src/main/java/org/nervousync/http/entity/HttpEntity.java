@@ -60,7 +60,7 @@ public final class HttpEntity {
 	 * <span class="en-US">EntityInfo instance list</span>
 	 * <span class="zh-CN">EntityInfo实例对象列表</span>
 	 *
-	 * @see HttpEntity.EntityInfo
+	 * @see EntityInfo
 	 */
 	private final List<EntityInfo> entityList;
 	/**
@@ -130,7 +130,7 @@ public final class HttpEntity {
 	 * <span class="zh-CN">生成的媒体类型信息</span>
 	 * @throws UnsupportedEncodingException <span class="en-US">If charset encoding is not supported</span>
 	 *                                      <span class="zh-CN">如果字符编码集不被支持</span>
-	 * @see org.nervousync.enumerations.web.HttpMethodOption
+	 * @see HttpMethodOption
 	 */
 	public String generateContentType(final String charset, final HttpMethodOption methodOption)
 			throws UnsupportedEncodingException {

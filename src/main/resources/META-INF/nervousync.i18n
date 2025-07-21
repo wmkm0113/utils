@@ -511,10 +511,6 @@
       "key": "Not_Support_Encoding_Error"
     },
     {
-      "code": "0x000000FF0003",
-      "key": "Component_Types_Invalid_Error"
-    },
-    {
       "code": "0x000000AE0001",
       "key": "Office_Ext_Name_Invalid"
     },
@@ -562,7 +558,7 @@
         },
         {
           "key": "Username_Invalid_Mail_Error",
-          "content": "Invalid username"
+          "content": "Invalid username {0}"
         },
         {
           "key": "Storage_Path_NotFound_Mail_Error",
@@ -1033,24 +1029,12 @@
           "content": "Unsupported charset encoding"
         },
         {
-          "key": "Component_Types_Invalid_Error",
-          "content": "Generic type error for data converter"
-        },
-        {
           "key": "Code_Error",
           "content": "Error code: {0}"
         },
         {
           "key": "Stack_Message_Error",
           "content": "Error stack message:"
-        },
-        {
-          "key": "Response_Data_Error",
-          "content": "Error reading response message"
-        },
-        {
-          "key": "Convert_Object_Error",
-          "content": "Error converting to target object"
         },
         {
           "key": "Alphabet_Nano_Error",
@@ -1133,10 +1117,6 @@
           "content": "Error reading schema file"
         },
         {
-          "key": "Match_Signature_Debug",
-          "content": "Match digital signature processing, calculate signature: {0}, match signature: {1}"
-        },
-        {
           "key": "Match_Signature_Failed",
           "content": "Match digital signature failed! Configure file name: {0}"
         },
@@ -1181,10 +1161,6 @@
           "content": "An error occurs when decrypting data"
         },
         {
-          "key": "Security_Factory_Not_Initialized_Error",
-          "content": "Security factory is not initialized"
-        },
-        {
           "key": "Init_Crypto_Error",
           "content": "An error occurs when initializing encryptor"
         },
@@ -1199,10 +1175,6 @@
         {
           "key": "JavaBean_Property_Mapping_Existed_Warn",
           "content": "JavaBean property mapping existed! Bean class: {0}, field: {1}"
-        },
-        {
-          "key": "Convert_Data_Error",
-          "content": "An error occurs when convert data"
         },
         {
           "key": "Key_Size_Invalid_Error",
@@ -1287,10 +1259,6 @@
         {
           "key": "Entry_List_Error",
           "content": "An error occurs when load entry list from archive file"
-        },
-        {
-          "key": "Archive_Close_File_Error",
-          "content": "An error occurs when closing archive file"
         },
         {
           "key": "Invalid_Block_Segment_Error",
@@ -1648,7 +1616,7 @@
         },
         {
           "key": "Username_Invalid_Mail_Error",
-          "content": "用户名验证未通过"
+          "content": "用户名 {0} 验证未通过"
         },
         {
           "key": "Storage_Path_NotFound_Mail_Error",
@@ -2119,24 +2087,12 @@
           "content": "不支持的字符集编码"
         },
         {
-          "key": "Component_Types_Invalid_Error",
-          "content": "数据转换器的泛型类型错误"
-        },
-        {
           "key": "Code_Error",
           "content": "错误代码：{0}"
         },
         {
           "key": "Stack_Message_Error",
           "content": "错误堆栈信息："
-        },
-        {
-          "key": "Response_Data_Error",
-          "content": "读取响应信息出错"
-        },
-        {
-          "key": "Convert_Object_Error",
-          "content": "转换为目标对象出错"
         },
         {
           "key": "Alphabet_Nano_Error",
@@ -2219,10 +2175,6 @@
           "content": "读取资源描述文件出错"
         },
         {
-          "key": "Match_Signature_Debug",
-          "content": "检查数字签名，计算签名：{0}，预期签名：{1}"
-        },
-        {
           "key": "Match_Signature_Failed",
           "content": "检查数字签名失败！配置文件名：{0}"
         },
@@ -2267,10 +2219,6 @@
           "content": "解密数据时出错"
         },
         {
-          "key": "Security_Factory_Not_Initialized_Error",
-          "content": "安全工厂未初始化"
-        },
-        {
           "key": "Init_Crypto_Error",
           "content": "初始化加密器出错"
         },
@@ -2285,10 +2233,6 @@
         {
           "key": "JavaBean_Property_Mapping_Existed_Warn",
           "content": "JavaBean属性映射信息已存在！Bean类名：{0}，属性名：{1}"
-        },
-        {
-          "key": "Convert_Data_Error",
-          "content": "转换数据出错"
         },
         {
           "key": "Key_Size_Invalid_Error",
@@ -2373,10 +2317,6 @@
         {
           "key": "Entry_List_Error",
           "content": "读取压缩包内资源列表出错"
-        },
-        {
-          "key": "Archive_Close_File_Error",
-          "content": "关闭压缩文件出错"
         },
         {
           "key": "Invalid_Block_Segment_Error",

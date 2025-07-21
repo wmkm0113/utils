@@ -16,7 +16,9 @@
  */
 package org.nervousync.utils;
 
+import org.intellij.lang.annotations.MagicConstant;
 import org.nervousync.commons.Globals;
+import org.nervousync.exceptions.utils.DataInvalidException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -400,6 +402,40 @@ public final class DateTimeUtils {
 		return Calendar.getInstance().get(Calendar.MINUTE);
 	}
 
+	@MagicConstant(intValues = {Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH, Calendar.APRIL,
+			Calendar.MAY, Calendar.JUNE, Calendar.JULY, Calendar.AUGUST,
+			Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER})
+	private static int calendarMonth(final int month) throws DataInvalidException {
+		switch (month) {
+			case 1:
+				return Calendar.JANUARY;
+			case 2:
+				return Calendar.FEBRUARY;
+			case 3:
+				return Calendar.MARCH;
+			case 4:
+				return Calendar.APRIL;
+			case 5:
+				return Calendar.MAY;
+			case 6:
+				return Calendar.JUNE;
+			case 7:
+				return Calendar.JULY;
+			case 8:
+				return Calendar.AUGUST;
+			case 9:
+				return Calendar.SEPTEMBER;
+			case 10:
+				return Calendar.OCTOBER;
+			case 11:
+				return Calendar.NOVEMBER;
+			case 12:
+				return Calendar.DECEMBER;
+			default:
+				throw new DataInvalidException(0x000000FF0001L);
+		}
+	}
+
 	/**
 	 * <h3 class="en-US">Calculate day count of given year and month</h3>
 	 * <h3 class="zh-CN">计算给定的年份和月份有多少天</h3>
@@ -412,48 +448,13 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">天数</span>
 	 */
 	public static int getDaysOfMonth(final int year, final int month) {
-		Calendar calendar = Calendar.getInstance();
-		switch (month) {
-			case 1:
-				calendar.set(year, Calendar.JANUARY, 1);
-				break;
-			case 2:
-				calendar.set(year, Calendar.FEBRUARY, 1);
-				break;
-			case 3:
-				calendar.set(year, Calendar.MARCH, 1);
-				break;
-			case 4:
-				calendar.set(year, Calendar.APRIL, 1);
-				break;
-			case 5:
-				calendar.set(year, Calendar.MAY, 1);
-				break;
-			case 6:
-				calendar.set(year, Calendar.JUNE, 1);
-				break;
-			case 7:
-				calendar.set(year, Calendar.JULY, 1);
-				break;
-			case 8:
-				calendar.set(year, Calendar.AUGUST, 1);
-				break;
-			case 9:
-				calendar.set(year, Calendar.SEPTEMBER, 1);
-				break;
-			case 10:
-				calendar.set(year, Calendar.OCTOBER, 1);
-				break;
-			case 11:
-				calendar.set(year, Calendar.NOVEMBER, 1);
-				break;
-			case 12:
-				calendar.set(year, Calendar.DECEMBER, 1);
-				break;
-			default:
-				return Globals.DEFAULT_VALUE_INT;
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(year, calendarMonth(month), 1);
+			return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		} catch (DataInvalidException e) {
+			return Globals.DEFAULT_VALUE_INT;
 		}
-		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 
 	/**
@@ -491,55 +492,18 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">Java格式的日期</span>
 	 */
 	public static long dosToJavaTime(final long dosTime) {
-		int month;
-		switch ((int) ((dosTime >> 21) & 0x0F)) {
-			case 1:
-				month = Calendar.JANUARY;
-				break;
-			case 2:
-				month = Calendar.FEBRUARY;
-				break;
-			case 3:
-				month = Calendar.MARCH;
-				break;
-			case 4:
-				month = Calendar.APRIL;
-				break;
-			case 5:
-				month = Calendar.MAY;
-				break;
-			case 6:
-				month = Calendar.JUNE;
-				break;
-			case 7:
-				month = Calendar.JULY;
-				break;
-			case 8:
-				month = Calendar.AUGUST;
-				break;
-			case 9:
-				month = Calendar.SEPTEMBER;
-				break;
-			case 10:
-				month = Calendar.OCTOBER;
-				break;
-			case 11:
-				month = Calendar.NOVEMBER;
-				break;
-			case 12:
-				month = Calendar.DECEMBER;
-				break;
-			default:
-				return Globals.DEFAULT_VALUE_LONG;
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set((int) (((dosTime >> 25) & 0x7F) + 1980), calendarMonth((int) ((dosTime >> 21) & 0x0F)),
+					(int) ((dosTime >> 16) & 0x1F),
+					(int) ((dosTime >> 11) & 0x1F),
+					(int) ((dosTime >> 5) & 0x3F),
+					(int) ((dosTime << 1) & 0x3E));
+			calendar.clear(Calendar.MILLISECOND);
+			return calendar.getTimeInMillis();
+		} catch (DataInvalidException e) {
+			return Globals.DEFAULT_VALUE_LONG;
 		}
-		Calendar calendar = Calendar.getInstance();
-		calendar.set((int) (((dosTime >> 25) & 0x7F) + 1980), month,
-				(int) ((dosTime >> 16) & 0x1F),
-				(int) ((dosTime >> 11) & 0x1F),
-				(int) ((dosTime >> 5) & 0x3F),
-				(int) ((dosTime << 1) & 0x3E));
-		calendar.clear(Calendar.MILLISECOND);
-		return calendar.getTimeInMillis();
 	}
 
 	/**

@@ -428,44 +428,51 @@ public final class StringUtils {
 	 * <span class="zh-CN">编码后的Base64字符串</span>
 	 */
 	public static String base64Encode(final byte[] bytes) {
+		return Optional.of(paddingBytes(bytes))
+				.filter(dataBytes -> dataBytes.length > 0)
+				.map(dataBytes -> {
+					StringBuilder stringBuilder = new StringBuilder();
+					int index = 0;
+					while ((index * 3) < dataBytes.length) {
+						stringBuilder.append(BASE64.charAt((dataBytes[index * 3] >> 2) & 0x3F));
+						stringBuilder.append(BASE64.charAt(((dataBytes[index * 3] << 4)
+								| ((dataBytes[index * 3 + 1] & MASK_BYTE_UNSIGNED) >> 4)) & 0x3F));
+						if (index * 3 + 1 < bytes.length) {
+							stringBuilder.append(BASE64.charAt(((dataBytes[index * 3 + 1] << 2)
+									| ((dataBytes[index * 3 + 2] & MASK_BYTE_UNSIGNED) >> 6)) & 0x3F));
+						}
+						if (index * 3 + 2 < bytes.length) {
+							stringBuilder.append(BASE64.charAt(dataBytes[index * 3 + 2] & 0x3F));
+						}
+						index++;
+					}
+
+					while (stringBuilder.length() % 4 > 0) {
+						stringBuilder.append((char) PADDING);
+					}
+					return stringBuilder.toString();
+				})
+				.orElse(Globals.DEFAULT_VALUE_STRING);
+	}
+
+	private static byte[] paddingBytes(final byte[] bytes) {
 		if (bytes == null || bytes.length == 0) {
-			return Globals.DEFAULT_VALUE_STRING;
+			return new byte[0];
 		}
-		int length = bytes.length;
-		byte[] tempBytes;
-		if (length % 3 == 0) {
-			tempBytes = bytes;
+		if (bytes.length % 3 == 0) {
+			return bytes;
 		} else {
+			int length = bytes.length;
 			while (length % 3 != 0) {
 				length++;
 			}
-			tempBytes = new byte[length];
-			System.arraycopy(bytes, 0, tempBytes, 0, bytes.length);
+			byte[] tempBytes = new byte[length];
+			System.arraycopy(bytes, Globals.INITIALIZE_INT_VALUE, tempBytes, Globals.INITIALIZE_INT_VALUE, bytes.length);
 			for (int i = bytes.length; i < length; i++) {
 				tempBytes[i] = 0;
 			}
+			return tempBytes;
 		}
-
-		StringBuilder stringBuilder = new StringBuilder();
-		int index = 0;
-		while ((index * 3) < length) {
-			stringBuilder.append(BASE64.charAt((tempBytes[index * 3] >> 2) & 0x3F));
-			stringBuilder.append(BASE64.charAt(((tempBytes[index * 3] << 4)
-					| ((tempBytes[index * 3 + 1] & MASK_BYTE_UNSIGNED) >> 4)) & 0x3F));
-			if (index * 3 + 1 < bytes.length) {
-				stringBuilder.append(BASE64.charAt(((tempBytes[index * 3 + 1] << 2)
-						| ((tempBytes[index * 3 + 2] & MASK_BYTE_UNSIGNED) >> 6)) & 0x3F));
-			}
-			if (index * 3 + 2 < bytes.length) {
-				stringBuilder.append(BASE64.charAt(tempBytes[index * 3 + 2] & 0x3F));
-			}
-			index++;
-		}
-
-		while (stringBuilder.length() % 4 > 0) {
-			stringBuilder.append((char) PADDING);
-		}
-		return stringBuilder.toString();
 	}
 
 	/**
@@ -1508,7 +1515,14 @@ public final class StringUtils {
 			prefix = pathToUse.substring(0, prefixIndex + 1);
 			pathToUse = pathToUse.substring(prefixIndex + 1);
 		}
-		String[] pathArray = delimitedListToStringArray(pathToUse, Globals.DEFAULT_PAGE_SEPARATOR);
+		return prefix + Optional.of(delimitedListToStringArray(pathToUse, Globals.DEFAULT_PAGE_SEPARATOR))
+				.map(StringUtils::arrayToList)
+				.map(pathElements ->
+						collectionToDelimitedString(pathElements, Globals.DEFAULT_PAGE_SEPARATOR))
+				.orElse(Globals.DEFAULT_VALUE_STRING);
+	}
+
+	private static Collection<String> arrayToList(@Nonnull final String[] pathArray) {
 		List<String> pathElements = new LinkedList<>();
 		int tops = 0;
 		for (int i = pathArray.length - 1; i >= 0; i--) {
@@ -1531,7 +1545,7 @@ public final class StringUtils {
 		for (int i = 0; i < tops; i++) {
 			pathElements.add(0, TOP_PATH);
 		}
-		return prefix + collectionToDelimitedString(pathElements, Globals.DEFAULT_PAGE_SEPARATOR);
+		return pathElements;
 	}
 
 	/**

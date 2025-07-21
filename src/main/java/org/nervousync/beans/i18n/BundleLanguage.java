@@ -67,7 +67,7 @@ public final class BundleLanguage extends BeanObject {
 	 * <span class="zh-CN">语言代码</span>
 	 */
 	public String getLanguageCode() {
-		return languageCode;
+		return this.languageCode;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public final class BundleLanguage extends BeanObject {
 	 * <span class="zh-CN">语言名称</span>
 	 */
 	public String getLanguageName() {
-		return languageName;
+		return this.languageName;
 	}
 
 	/**

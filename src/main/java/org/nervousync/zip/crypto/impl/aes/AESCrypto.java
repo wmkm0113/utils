@@ -19,7 +19,6 @@ package org.nervousync.zip.crypto.impl.aes;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-import org.bouncycastle.crypto.BlockCipher;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.utils.DataInvalidException;
@@ -83,7 +82,6 @@ public class AESCrypto {
 	 * AES engine
 	 */
 	AESEngine aesEngine = null;
-	BlockCipher aesCipher = null;
 	/**
 	 * MacBasedPRF instance
 	 */
@@ -322,8 +320,6 @@ public class AESCrypto {
 		System.out.println(ConvertUtils.bytesToHex(aesKey));
 		System.out.println(ConvertUtils.bytesToHex(macKey));
 		this.aesEngine = new AESEngine(aesKey);
-		this.aesCipher = org.bouncycastle.crypto.engines.AESEngine.newInstance();
-//		this.aesCipher.init(this.forEncryption, );
 		this.macBasedPRF = SecurityUtils.HmacSHA1(macKey);
 	}
 

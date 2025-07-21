@@ -83,7 +83,7 @@ public final class BundleResource extends BeanObject {
 	 * <span class="zh-CN">组织识别代码</span>
 	 */
 	public String getGroupId() {
-		return groupId;
+		return this.groupId;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public final class BundleResource extends BeanObject {
 	 * <span class="zh-CN">项目识别代码</span>
 	 */
 	public String getBundle() {
-		return bundle;
+		return this.bundle;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public final class BundleResource extends BeanObject {
 	 * <span class="zh-CN">错误代码与信息识别代码的定义列表</span>
 	 */
 	public List<BundleError> getBundleErrors() {
-		return bundleErrors;
+		return this.bundleErrors;
 	}
 
 	/**

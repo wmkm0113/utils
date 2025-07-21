@@ -1240,11 +1240,9 @@ public final class ZipFile implements Cloneable {
 	}
 
 	private boolean isDirectory(final String entryPath) throws ZipException {
-		GeneralFileHeader generalFileHeader = this.retrieveGeneralFileHeader(entryPath);
-		if (generalFileHeader != null) {
-			return generalFileHeader.isDirectory();
-		}
-		return Boolean.FALSE;
+		return Optional.ofNullable(this.retrieveGeneralFileHeader(entryPath))
+				.map(GeneralFileHeader::isDirectory)
+				.orElse(Boolean.FALSE);
 	}
 
 	private List<String> listFolderGeneralFileHeaders(final String folderPath) throws ZipException {
@@ -2018,7 +2016,7 @@ public final class ZipFile implements Cloneable {
 			String currentSplitFile = this.currentSplitFileName(index);
 
 			if (!FileUtils.isExists(currentSplitFile)) {
-				throw new FileNotFoundException("Split file not found!");
+				throw new ZipException(0x0000001B0058L);
 			}
 
 			return new StandardFile(currentSplitFile);

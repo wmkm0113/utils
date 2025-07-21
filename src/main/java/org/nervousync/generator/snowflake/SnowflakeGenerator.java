@@ -19,6 +19,7 @@ package org.nervousync.generator.snowflake;
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.generator.IGenerator;
+import org.nervousync.utils.DateTimeUtils;
 import org.nervousync.utils.IDUtils;
 import org.nervousync.utils.LoggerUtils;
 
@@ -103,7 +104,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 */
 	@Override
 	public Long generate() {
-		long currentTime = System.currentTimeMillis();
+		long currentTime = DateTimeUtils.currentUTCTimeMillis();
 		if (currentTime < this.lastTime) {
 			throw new RuntimeException(
 					String.format("System clock moved backwards. Refusing to generate id for %d milliseconds",
@@ -114,7 +115,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 			this.sequenceIndex = (this.sequenceIndex + 1) & SEQUENCE_MASK;
 			if (this.sequenceIndex == 0) {
 				while (true) {
-					if ((currentTime = System.currentTimeMillis()) > this.lastTime) {
+					if ((currentTime = DateTimeUtils.currentUTCTimeMillis()) > this.lastTime) {
 						break;
 					}
 				}

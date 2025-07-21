@@ -60,7 +60,7 @@ public final class BundleError extends BeanObject {
 	 * <span class="zh-CN">错误代码</span>
 	 */
 	public String getErrorCode() {
-		return errorCode;
+		return this.errorCode;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public final class BundleError extends BeanObject {
 	 * <span class="zh-CN">信息识别键值</span>
 	 */
 	public String getMessageKey() {
-		return messageKey;
+		return this.messageKey;
 	}
 
 	/**

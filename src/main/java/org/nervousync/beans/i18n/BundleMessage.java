@@ -59,7 +59,7 @@ public final class BundleMessage extends BeanObject {
 	 * <span class="zh-CN">信息识别键值</span>
 	 */
 	public String getMessageKey() {
-		return messageKey;
+		return this.messageKey;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public final class BundleMessage extends BeanObject {
 	 * <span class="zh-CN">信息内容</span>
 	 */
 	public String getMessageContent() {
-		return messageContent;
+		return this.messageContent;
 	}
 
 	/**

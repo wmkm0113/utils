@@ -21,7 +21,7 @@
         </license>
     </licenses>
     <scm>
-        <tag>v1.2.3</tag>
+        <tag>v1.2.4</tag>
         <url>https://github.com/wmkm0113/utils-jdk11</url>
         <connection>scm:git:https://github.com/wmkm0113/utils-jdk11.git</connection>
         <developerConnection>scm:git:https://github.com/wmkm0113/utils-jdk11.git</developerConnection>

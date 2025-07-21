@@ -356,7 +356,7 @@ public abstract class AsymmetricCryptoAdapter extends BaseCryptoAdapter {
 			}
 			return signInstance;
 		} catch (NoSuchAlgorithmException | InvalidKeyException | ClassCastException e) {
-			throw new CryptoException(0x000000150009L, e);
+			throw new CryptoException(0x00000015000AL, e);
 		}
 	}
 }

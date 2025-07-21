@@ -21,6 +21,7 @@ import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.id.CUID;
 import org.nervousync.generator.cuid.CUIDGenerator;
+import org.nervousync.utils.DateTimeUtils;
 import org.nervousync.utils.IDUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,7 +65,7 @@ public final class CUIDv1Generator extends CUIDGenerator {
 	@Override
 	public CUID generate(final byte[] dataBytes) {
 		this.counter.compareAndSet(DISCRETE_VALUE, Globals.INITIALIZE_INT_VALUE);
-		String value = CUIDv1Generator.START_CHAR + Long.toString(System.currentTimeMillis(), DEFAULT_RADIX)
+		String value = CUIDv1Generator.START_CHAR + Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX)
 				+ processPadding(Integer.toString(this.counter.incrementAndGet(), DEFAULT_RADIX), 4)
 				+ MACHINE_FINGERPRINT
 				+ processPadding(Integer.toString(Globals.random(), DEFAULT_RADIX), 4)

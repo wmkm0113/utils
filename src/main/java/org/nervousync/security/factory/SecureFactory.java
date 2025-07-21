@@ -134,19 +134,6 @@ public final class SecureFactory {
 		}
 	}
 
-	private static SecureSettings readConfigure() {
-		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
-		return Optional.of(FileUtils.readFile(configPath))
-				.filter(StringUtils::notBlank)
-				.map(string -> StringUtils.stringToObject(string, SecureSettings.class))
-				.orElse(null);
-	}
-
-	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
-		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
-		return FileUtils.saveFile(configPath, secureSettings.toString());
-	}
-
 	/**
 	 * <h3 class="en-US">Configure root secure node using given secure config</h3>
 	 * <h3 class="zh-CN">使用给定的安全配置信息设置安全工厂的根安全节点</h3>
@@ -284,6 +271,19 @@ public final class SecureFactory {
 				.orElse(dataContent);
 	}
 
+	private static SecureSettings readConfigure() {
+		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
+		return Optional.of(FileUtils.readFile(configPath))
+				.filter(StringUtils::notBlank)
+				.map(string -> StringUtils.stringToObject(string, SecureSettings.class))
+				.orElse(null);
+	}
+
+	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
+		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
+		return FileUtils.saveFile(configPath, secureSettings.toString());
+	}
+
 	/**
 	 * <h3 class="en-US">Register secure config by given secure name and configure information instance</h3>
 	 * <h3 class="zh-CN">将给定的安全名称和安全配置信息实例注册到安全工厂</h3>
@@ -292,8 +292,11 @@ public final class SecureFactory {
 	 *                     <span class="zh-CN">安全配置信息</span>
 	 */
 	private void register(@Nonnull final SecureConfig secureConfig) {
-		if (this.registeredNodes.containsKey(secureConfig.getSecureName()) && LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Security_Override_Config", secureConfig.getSecureName());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Security_Current_Config", secureConfig.toString());
+		}
+		if (this.registeredNodes.containsKey(secureConfig.getSecureName())) {
+			LOGGER.warn("Security_Override_Config", secureConfig.getSecureName());
 		}
 		this.registeredNodes.put(secureConfig.getSecureName(), new SecureNode(secureConfig));
 	}
@@ -595,6 +598,10 @@ public final class SecureFactory {
 							secureAdapter = encrypt ? SecurityUtils.AESEncryptor(this.keyBytes)
 									: SecurityUtils.AESDecryptor(this.keyBytes);
 							break;
+						case RC6:
+							secureAdapter = encrypt ? SecurityUtils.RC6Encryptor(this.keyBytes)
+									: SecurityUtils.RC6Decryptor(this.keyBytes);
+							break;
 						case DES:
 							secureAdapter = encrypt ? SecurityUtils.DESEncryptor(this.keyBytes)
 									: SecurityUtils.DESDecryptor(this.keyBytes);
@@ -640,6 +647,6 @@ public final class SecureFactory {
 	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2012 12:37:28 $
 	 */
 	public enum SecureAlgorithm {
-		RSA1024, RSA2048, SM2, AES128, AES192, AES256, DES, TRIPLE_DES, SM4
+		RSA1024, RSA2048, SM2, AES128, AES192, AES256, DES, TRIPLE_DES, SM4, RC6
 	}
 }

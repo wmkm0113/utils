@@ -47,11 +47,6 @@ public final class Globals {
 	 */
 	public static final int READ_FILE_BUFFER_SIZE = 32768;
 	/**
-	 * <span class="en-US">Default traversal step value</span>
-	 * <span class="zh-CN">默认遍历步进值</span>
-	 */
-	public static final int DEFAULT_STEP_VALUE = 1;
-	/**
 	 * <span class="en-US">Default value of timeout</span>
 	 * <span class="zh-CN">默认超时时间</span>
 	 */
@@ -272,11 +267,6 @@ public final class Globals {
 	 * <span class="zh-CN">多部份主体的标头</span>
 	 */
 	public static final String FORM_DATA_CONTENT_DISPOSITION = "form-data";
-	/**
-	 * <span class="en-US">Default value of temporary secure name</span>
-	 * <span class="zh-CN">默认的临时安全名称</span>
-	 */
-	public static final String DEFAULT_TEMPORARY_SECURE_NAME = "Secure_Tmp";
 	/**
 	 * <span class="en-US">Default value of log file path</span>
 	 * <span class="zh-CN">默认的日志文件路径</span>

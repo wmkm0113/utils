@@ -50,7 +50,7 @@ import java.util.*;
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(formatted = true)
+@OutputConfig(defaultType = StringUtils.StringType.XML, formatted = true)
 public abstract class BeanObject implements Serializable, Cloneable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
