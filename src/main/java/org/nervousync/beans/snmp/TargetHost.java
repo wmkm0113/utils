@@ -296,7 +296,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">IP协议</span>
 	 */
 	public IPProtocol getProtocol() {
-		return protocol;
+		return this.protocol;
 	}
 
 	/**
@@ -307,7 +307,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">目标主机IP地址</span>
 	 */
 	public String getIpAddress() {
-		return ipAddress;
+		return this.ipAddress;
 	}
 
 	/**
@@ -318,7 +318,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">目标主机的查询密码</span>
 	 */
 	public String getCommunity() {
-		return community;
+		return this.community;
 	}
 
 	/**
@@ -329,7 +329,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">SNMP验证类型</span>
 	 */
 	public SNMPAuthType getAuth() {
-		return auth;
+		return this.auth;
 	}
 
 	/**
@@ -340,7 +340,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">SNMP验证协议</span>
 	 */
 	public SNMPAuthProtocol getAuthProtocol() {
-		return authProtocol;
+		return this.authProtocol;
 	}
 
 	/**
@@ -351,7 +351,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">SNMP验证密码</span>
 	 */
 	public String getAuthPassword() {
-		return authPassword;
+		return this.authPassword;
 	}
 
 	/**
@@ -362,7 +362,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">私有密码的加密方式，当验证类型为AUTH_PRIV时有效</span>
 	 */
 	public SNMPPrivProtocol getPrivProtocol() {
-		return privProtocol;
+		return this.privProtocol;
 	}
 
 	/**
@@ -373,7 +373,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">SNMP私有密码。密码长度必须大于等于8个字符</span>
 	 */
 	public String getPrivPassword() {
-		return privPassword;
+		return this.privPassword;
 	}
 
 	/**
@@ -384,7 +384,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">目标主机SNMP版本号。默认：2c</span>
 	 */
 	public SNMPVersion getVersion() {
-		return version;
+		return this.version;
 	}
 
 	/**
@@ -406,7 +406,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">目标主机端口号</span>
 	 */
 	public int getPort() {
-		return port;
+		return this.port;
 	}
 
 	/**
@@ -417,7 +417,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">请求失败重试次数</span>
 	 */
 	public int getRetries() {
-		return retries;
+		return this.retries;
 	}
 
 	/**
@@ -428,7 +428,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="zh-CN">请求超时时间</span>
 	 */
 	public long getTimeOut() {
-		return timeOut;
+		return this.timeOut;
 	}
 
 	/**

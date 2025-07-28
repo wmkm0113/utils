@@ -84,7 +84,7 @@ public final class StartupConfig extends BeanObject {
 	 * @param lastModify <span class="en-US">Last modify time milliseconds</span>
 	 *                   <span class="zh-CN">最后修改时间毫秒数</span>
 	 */
-	public void setLastModify(long lastModify) {
+	public void setLastModify(final long lastModify) {
 		this.lastModify = lastModify;
 	}
 
@@ -106,7 +106,7 @@ public final class StartupConfig extends BeanObject {
 	 * @param registeredLaunchers <span class="en-US">Registered startup launcher configure information list</span>
 	 *                            <span class="zh-CN">已注册的启动器配置信息列表</span>
 	 */
-	public void setRegisteredLaunchers(List<LauncherConfig> registeredLaunchers) {
+	public void setRegisteredLaunchers(final List<LauncherConfig> registeredLaunchers) {
 		this.registeredLaunchers = registeredLaunchers;
 	}
 }

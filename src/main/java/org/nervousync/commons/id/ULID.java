@@ -179,7 +179,7 @@ public final class ULID implements Serializable, Comparable<ULID> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if ((null == obj) || (obj.getClass() != ULID.class))
 			return false;
 		ULID id = (ULID) obj;

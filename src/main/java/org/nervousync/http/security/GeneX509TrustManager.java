@@ -77,7 +77,7 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 * @throws CertInfoException <span class="en-US">If not found X509TrustManager instance</span>
 	 *                           <span class="zh-CN">当没有找到X509TrustManager实例对象时</span>
 	 */
-	private GeneX509TrustManager(String passPhrase, List<TrustCert> trustCertList) throws CertInfoException {
+	private GeneX509TrustManager(final String passPhrase, final List<TrustCert> trustCertList) throws CertInfoException {
 		this.passPhrase = StringUtils.notBlank(passPhrase) ? passPhrase : DEFAULT_PASSPHRASE;
 		this.trustCertList = trustCertList;
 		this.initManager();
@@ -131,7 +131,7 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 *                              <span class="zh-CN">当检查证书时出现异常</span>
 	 */
 	@Override
-	public void checkServerTrusted(X509Certificate[] x509certificates, String authType) throws CertificateException {
+	public void checkServerTrusted(final X509Certificate[] x509certificates, final String authType) throws CertificateException {
 		this.trustManager.checkServerTrusted(x509certificates, authType);
 	}
 

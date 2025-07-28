@@ -41,7 +41,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 * @return the signature
 	 */
 	public long getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 * @return the indexOfZip64EndOfCentralDirectoryRecord
 	 */
 	public int getIndexOfZip64EndOfCentralDirectoryRecord() {
-		return indexOfZip64EndOfCentralDirectoryRecord;
+		return this.indexOfZip64EndOfCentralDirectoryRecord;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 * @return the offsetZip64EndOfCentralDirectoryRecord
 	 */
 	public long getOffsetZip64EndOfCentralDirectoryRecord() {
-		return offsetZip64EndOfCentralDirectoryRecord;
+		return this.offsetZip64EndOfCentralDirectoryRecord;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 * @return the totalNumberOfDiscs
 	 */
 	public int getTotalNumberOfDiscs() {
-		return totalNumberOfDiscs;
+		return this.totalNumberOfDiscs;
 	}
 
 	/**

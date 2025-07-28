@@ -97,8 +97,8 @@ public final class SegmentationInfo extends BeanObject {
 	 * @param blockList <span class="en-US">Block data list</span>
 	 *                  <span class="zh-CN">数据块列表</span>
 	 */
-	public SegmentationInfo(String extName, long totalSize, int blockSize, String sha,
-	                        List<SegmentationBlock> blockList) {
+	public SegmentationInfo(final String extName, final long totalSize, final int blockSize, final String sha,
+	                        final List<SegmentationBlock> blockList) {
 		this.extName = extName;
 		this.totalSize = totalSize;
 		this.blockSize = blockSize;
@@ -114,7 +114,7 @@ public final class SegmentationInfo extends BeanObject {
 	 * <span class="zh-CN">数据大小</span>
 	 */
 	public long getTotalSize() {
-		return totalSize;
+		return this.totalSize;
 	}
 
 	/**
@@ -125,7 +125,7 @@ public final class SegmentationInfo extends BeanObject {
 	 * <span class="zh-CN">数据块大小</span>
 	 */
 	public int getBlockSize() {
-		return blockSize;
+		return this.blockSize;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public final class SegmentationInfo extends BeanObject {
 	 * <span class="zh-CN">文件扩展名</span>
 	 */
 	public String getExtName() {
-		return extName;
+		return this.extName;
 	}
 
 	/**
@@ -147,7 +147,7 @@ public final class SegmentationInfo extends BeanObject {
 	 * <span class="zh-CN">数据块验证值，使用SHA256</span>
 	 */
 	public String getSha() {
-		return sha;
+		return this.sha;
 	}
 
 	/**
@@ -158,6 +158,6 @@ public final class SegmentationInfo extends BeanObject {
 	 * <span class="zh-CN">数据块列表</span>
 	 */
 	public List<SegmentationBlock> getBlockList() {
-		return blockList;
+		return this.blockList;
 	}
 }

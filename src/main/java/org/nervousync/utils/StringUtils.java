@@ -102,6 +102,7 @@ import java.util.regex.Pattern;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 15:53:41 $
  */
+@SuppressWarnings("unused")
 public final class StringUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -1490,7 +1491,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Normalize the path by suppressing sequences like "path/.." and inner simple dots.</h3>
+	 * <h3 class="en-US">Normalize the path by suppressing sequences like "path/.." And inner simple dots.</h3>
 	 * <span class="en-US">
 	 * The result is convenient for path comparison. For other uses, notice that simple slashes replace Windows separators ("\").
 	 * </span>

@@ -42,7 +42,7 @@ public interface IGenerator<T> {
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
-	T generate(byte[] dataBytes);
+	T generate(final byte[] dataBytes);
 
 	/**
 	 * <h3 class="en-US">Destroy current generator instance</h3>

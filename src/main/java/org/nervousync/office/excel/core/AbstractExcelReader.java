@@ -95,7 +95,7 @@ public abstract class AbstractExcelReader implements ExcelReader {
 	 * <span class="zh-CN">读取的数据表名和数据列表的映射表</span>
 	 */
 	@Override
-	public final Map<String, List<List<String>>> read(int beginRow, int endRow) {
+	public final Map<String, List<List<String>>> read(final int beginRow, final int endRow) {
 		final Map<String, List<List<String>>> dataMap = new HashMap<>();
 		this.sheetNames.forEach(sheetName ->
 				Optional.of(read(sheetName, beginRow, endRow))

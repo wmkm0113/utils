@@ -967,7 +967,7 @@ public final class DateTimeUtils {
 		private final ScheduledThreadPoolExecutor threadPoolExecutor;
 
 		/**
-		 * <h3 class="en-US">Constructor method for UTC clock</h3>
+		 * <h3 class="en-US">Constructor method for the UTC clock</h3>
 		 * <h3 class="zh-CN">UTC时钟的构造方法</h3>
 		 */
 		public UTCClock() {

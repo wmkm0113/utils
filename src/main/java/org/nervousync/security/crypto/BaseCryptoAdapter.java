@@ -222,7 +222,7 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 		 * <span class="zh-CN">密钥长度</span>
 		 */
 		public int getKeySize() {
-			return keySize;
+			return this.keySize;
 		}
 
 		/**
@@ -233,7 +233,7 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 		 * <span class="zh-CN">密钥字节数组</span>
 		 */
 		public byte[] getKeyBytes() {
-			return keyBytes;
+			return this.keyBytes;
 		}
 
 		/**
@@ -244,7 +244,7 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 		 * <span class="zh-CN">随机数算法</span>
 		 */
 		public String getRandomAlgorithm() {
-			return randomAlgorithm;
+			return this.randomAlgorithm;
 		}
 
 		/**
@@ -255,7 +255,7 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 		 * <span class="zh-CN">非对称算法密钥实例对象</span>
 		 */
 		public Key getKey() {
-			return key;
+			return this.key;
 		}
 	}
 }

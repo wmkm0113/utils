@@ -94,7 +94,7 @@ public final class SNMPData implements Serializable {
 	 * @param identifiedKey <span class="en-US">String value of identified key</span>
 	 *                      <span class="zh-CN">识别代码字符串</span>
 	 */
-	public void setIdentifiedKey(String identifiedKey) {
+	public void setIdentifiedKey(final String identifiedKey) {
 		this.identifiedKey = identifiedKey;
 	}
 
@@ -106,7 +106,7 @@ public final class SNMPData implements Serializable {
 	 *                        <span class="zh-CN">VariableBinding实例对象</span>
 	 * @see org.snmp4j.smi.VariableBinding
 	 */
-	public void addData(VariableBinding variableBinding) {
+	public void addData(final VariableBinding variableBinding) {
 		if (!this.dataMap.containsKey(variableBinding.getOid().toString())) {
 			this.dataMap.put(variableBinding.getOid().toString(), variableBinding.getVariable().toString());
 		}

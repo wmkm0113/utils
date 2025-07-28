@@ -62,7 +62,7 @@ public final class UUIDv4Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public UUID generate(byte[] dataBytes) {
+	public UUID generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 }

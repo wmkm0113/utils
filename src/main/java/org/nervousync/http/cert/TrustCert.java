@@ -61,7 +61,7 @@ public final class TrustCert {
 	 * @param certPassword <span class="en-US">Certificate password for read</span>
 	 *                     <span class="zh-CN">读取证书的密码</span>
 	 */
-	private TrustCert(byte[] certContent, String certPassword) {
+	private TrustCert(final byte[] certContent, final String certPassword) {
 		this.certContent = certContent;
 		this.certPassword = certPassword;
 		this.sha256 = ConvertUtils.bytesToHex(SecurityUtils.SHA256(certContent));
@@ -78,7 +78,7 @@ public final class TrustCert {
 	 * @return <span class="en-US">Generated TrustCert instance</span>
 	 * <span class="zh-CN">生成的TrustCert实例对象</span>
 	 */
-	public static TrustCert newInstance(byte[] certContent, String certPassword) {
+	public static TrustCert newInstance(final byte[] certContent, final String certPassword) {
 		return new TrustCert(certContent, certPassword);
 	}
 
@@ -109,7 +109,7 @@ public final class TrustCert {
 	 * <span class="zh-CN">证书库二进制字节数组</span>
 	 */
 	public byte[] getCertContent() {
-		return certContent;
+		return this.certContent;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class TrustCert {
 	 * @param certContent <span class="en-US">Certificate library data bytes</span>
 	 *                    <span class="zh-CN">证书库二进制字节数组</span>
 	 */
-	public void setCertContent(byte[] certContent) {
+	public void setCertContent(final byte[] certContent) {
 		this.certContent = certContent;
 	}
 
@@ -131,7 +131,7 @@ public final class TrustCert {
 	 * <span class="zh-CN">读取证书的密码</span>
 	 */
 	public String getCertPassword() {
-		return certPassword;
+		return this.certPassword;
 	}
 
 	/**
@@ -141,7 +141,7 @@ public final class TrustCert {
 	 * @param certPassword <span class="en-US">Certificate password for read</span>
 	 *                     <span class="zh-CN">读取证书的密码</span>
 	 */
-	public void setCertPassword(String certPassword) {
+	public void setCertPassword(final String certPassword) {
 		this.certPassword = certPassword;
 	}
 
@@ -153,7 +153,7 @@ public final class TrustCert {
 	 * <span class="zh-CN">证书库二进制字节数组的SHA256值</span>
 	 */
 	public String getSha256() {
-		return sha256;
+		return this.sha256;
 	}
 
 	/**
@@ -162,12 +162,12 @@ public final class TrustCert {
 	 * @see Object#equals(Object)
 	 */
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TrustCert trustCert = (TrustCert) o;
-		return Arrays.equals(certContent, trustCert.certContent)
-				&& Objects.equals(certPassword, trustCert.certPassword);
+		return Arrays.equals(this.certContent, trustCert.certContent)
+				&& Objects.equals(this.certPassword, trustCert.certPassword);
 	}
 
 	/**
@@ -177,8 +177,8 @@ public final class TrustCert {
 	 */
 	@Override
 	public int hashCode() {
-		int result = Objects.hash(certPassword);
-		result = Globals.MULTIPLIER * result + Arrays.hashCode(certContent);
+		int result = Objects.hash(this.certPassword);
+		result = Globals.MULTIPLIER * result + Arrays.hashCode(this.certContent);
 		return result;
 	}
 }

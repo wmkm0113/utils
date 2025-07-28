@@ -190,7 +190,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求类型的Getter方法</h3>
 	 */
 	public HttpMethodOption getMethodOption() {
-		return methodOption;
+		return this.methodOption;
 	}
 
 	/**
@@ -198,7 +198,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">上传文件信息映射的Getter方法</h3>
 	 */
 	public Map<String, File> getUploadParams() {
-		return uploadParams;
+		return this.uploadParams;
 	}
 
 	/**
@@ -206,7 +206,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求发送的Cookie信息列表的Getter方法</h3>
 	 */
 	public List<CookieEntity> getCookieList() {
-		return cookieList;
+		return this.cookieList;
 	}
 
 	/**
@@ -214,7 +214,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">代理服务器设置的Getter方法</h3>
 	 */
 	public ProxyConfig getProxyInfo() {
-		return proxyConfig;
+		return this.proxyConfig;
 	}
 
 	/**
@@ -222,7 +222,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">信任证书列表的Getter方法</h3>
 	 */
 	public List<TrustCert> getTrustCertInfos() {
-		return trustTrustCerts;
+		return this.trustTrustCerts;
 	}
 
 	/**
@@ -230,7 +230,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">系统信任证书库读取密钥的Getter方法</h3>
 	 */
 	public String getPassPhrase() {
-		return passPhrase;
+		return this.passPhrase;
 	}
 
 	/**
@@ -238,7 +238,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">用户代理字符串的Getter方法</h3>
 	 */
 	public String getUserAgent() {
-		return userAgent;
+		return this.userAgent;
 	}
 
 	/**
@@ -246,7 +246,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求地址的Getter方法</h3>
 	 */
 	public String getRequestUrl() {
-		return requestUrl;
+		return this.requestUrl;
 	}
 
 	/**
@@ -254,7 +254,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">数据编码集的Getter方法</h3>
 	 */
 	public String getCharset() {
-		return charset;
+		return this.charset;
 	}
 
 	/**
@@ -262,7 +262,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求头"Content-Type"字符串的Getter方法</h3>
 	 */
 	public String getContentType() {
-		return contentType;
+		return this.contentType;
 	}
 
 	/**
@@ -286,7 +286,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">POST发送二进制数据的Getter方法</h3>
 	 */
 	public byte[] getPostData() {
-		return postData;
+		return this.postData;
 	}
 
 	/**
@@ -294,7 +294,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求头信息列表的Getter方法</h3>
 	 */
 	public List<SimpleHeader> getHeaders() {
-		return headers;
+		return this.headers;
 	}
 
 	/**
@@ -302,7 +302,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">请求参数信息映射的Getter方法</h3>
 	 */
 	public Map<String, String[]> getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	/**
@@ -310,7 +310,7 @@ public final class RequestInfo {
 	 * <h3 class="zh-CN">上传文件信息映射的Getter方法</h3>
 	 */
 	public Map<String, File> getUploadParam() {
-		return uploadParams;
+		return this.uploadParams;
 	}
 
 	/**
@@ -571,8 +571,8 @@ public final class RequestInfo {
 		 * <h3 class="en-US">Configure HTTP headers: Accept</h3>
 		 * <h3 class="zh-CN">设置HTTP头的"Accept"值</h3>
 		 *
-		 * @param acceptType     <span class="en-US">Accept type string</span>
-		 *                       <span class="zh-CN">接受的MIME类型字符串</span>
+		 * @param acceptType <span class="en-US">Accept type string</span>
+		 *                   <span class="zh-CN">接受的MIME类型字符串</span>
 		 * @return <span class="en-US">Current RequestBuilder instance</span>
 		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
 		 */

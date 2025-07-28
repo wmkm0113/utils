@@ -51,7 +51,7 @@ public final class AESExtraDataRecord {
 	 * @return the signature
 	 */
 	public long getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public final class AESExtraDataRecord {
 	 * @return the dataSize
 	 */
 	public int getDataSize() {
-		return dataSize;
+		return this.dataSize;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public final class AESExtraDataRecord {
 	 * @return the versionNumber
 	 */
 	public int getVersionNumber() {
-		return versionNumber;
+		return this.versionNumber;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public final class AESExtraDataRecord {
 	 * @return the vendorID
 	 */
 	public String getVendorID() {
-		return vendorID;
+		return this.vendorID;
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class AESExtraDataRecord {
 	 * @return the aesStrength
 	 */
 	public int getAesStrength() {
-		return aesStrength;
+		return this.aesStrength;
 	}
 
 	/**
@@ -141,7 +141,7 @@ public final class AESExtraDataRecord {
 	 * @return the compressionMethod
 	 */
 	public int getCompressionMethod() {
-		return compressionMethod;
+		return this.compressionMethod;
 	}
 
 	/**

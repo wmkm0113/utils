@@ -109,7 +109,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">统一识别代码</span>
 	 */
 	public String getUid() {
-		return uid;
+		return this.uid;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class MailObject implements Serializable {
 	 * @param uid <span class="en-US">Unified identified ID</span>
 	 *            <span class="zh-CN">统一识别代码</span>
 	 */
-	public void setUid(String uid) {
+	public void setUid(final String uid) {
 		this.uid = uid;
 	}
 
@@ -131,7 +131,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件标题信息</span>
 	 */
 	public String getSubject() {
-		return subject;
+		return this.subject;
 	}
 
 	/**
@@ -141,7 +141,7 @@ public final class MailObject implements Serializable {
 	 * @param subject <span class="en-US">Mail subject information</span>
 	 *                <span class="zh-CN">邮件标题信息</span>
 	 */
-	public void setSubject(String subject) {
+	public void setSubject(final String subject) {
 		this.subject = subject;
 	}
 
@@ -153,7 +153,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件正文信息</span>
 	 */
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public final class MailObject implements Serializable {
 	 * @param content <span class="en-US">Mail content information</span>
 	 *                <span class="zh-CN">邮件正文信息</span>
 	 */
-	public void setContent(String content) {
+	public void setContent(final String content) {
 		this.content = content;
 	}
 
@@ -175,7 +175,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件字符集编码</span>
 	 */
 	public String getCharset() {
-		return charset;
+		return this.charset;
 	}
 
 	/**
@@ -185,7 +185,7 @@ public final class MailObject implements Serializable {
 	 * @param charset <span class="en-US">Mail charset encoding</span>
 	 *                <span class="zh-CN">邮件字符集编码</span>
 	 */
-	public void setCharset(String charset) {
+	public void setCharset(final String charset) {
 		this.charset = charset;
 	}
 
@@ -197,7 +197,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件正文数据类型</span>
 	 */
 	public String getContentType() {
-		return contentType;
+		return this.contentType;
 	}
 
 	/**
@@ -207,7 +207,7 @@ public final class MailObject implements Serializable {
 	 * @param contentType <span class="en-US">Mail content type information</span>
 	 *                    <span class="zh-CN">邮件正文数据类型</span>
 	 */
-	public void setContentType(String contentType) {
+	public void setContentType(final String contentType) {
 		this.contentType = contentType;
 	}
 
@@ -219,7 +219,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件发送地址</span>
 	 */
 	public String getSendAddress() {
-		return sendAddress;
+		return this.sendAddress;
 	}
 
 	/**
@@ -229,7 +229,7 @@ public final class MailObject implements Serializable {
 	 * @param sendAddress <span class="en-US">Mail send address</span>
 	 *                    <span class="zh-CN">邮件发送地址</span>
 	 */
-	public void setSendAddress(String sendAddress) {
+	public void setSendAddress(final String sendAddress) {
 		this.sendAddress = sendAddress;
 	}
 
@@ -241,7 +241,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件回复地址</span>
 	 */
 	public List<String> getReplyAddress() {
-		return replyAddress;
+		return this.replyAddress;
 	}
 
 	/**
@@ -251,7 +251,7 @@ public final class MailObject implements Serializable {
 	 * @param replyAddress <span class="en-US">Mail reply address</span>
 	 *                     <span class="zh-CN">邮件回复地址</span>
 	 */
-	public void setReplyAddress(List<String> replyAddress) {
+	public void setReplyAddress(final List<String> replyAddress) {
 		this.replyAddress = replyAddress;
 	}
 
@@ -263,7 +263,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件发送时间</span>
 	 */
 	public Date getSendDate() {
-		return sendDate == null ? null : (Date) sendDate.clone();
+		return this.sendDate == null ? null : (Date) this.sendDate.clone();
 	}
 
 	/**
@@ -273,7 +273,7 @@ public final class MailObject implements Serializable {
 	 * @param sendDate <span class="en-US">Mail send datetime</span>
 	 *                 <span class="zh-CN">邮件发送时间</span>
 	 */
-	public void setSendDate(Date sendDate) {
+	public void setSendDate(final Date sendDate) {
 		this.sendDate = sendDate == null ? null : (Date) sendDate.clone();
 	}
 
@@ -285,7 +285,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件收件地址列表</span>
 	 */
 	public List<String> getReceiveAddress() {
-		return receiveAddress;
+		return this.receiveAddress;
 	}
 
 	/**
@@ -295,7 +295,7 @@ public final class MailObject implements Serializable {
 	 * @param receiveAddress <span class="en-US">Mail receive address list</span>
 	 *                       <span class="zh-CN">邮件收件地址列表</span>
 	 */
-	public void setReceiveAddress(List<String> receiveAddress) {
+	public void setReceiveAddress(final List<String> receiveAddress) {
 		this.receiveAddress = receiveAddress;
 	}
 
@@ -307,7 +307,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件抄送地址列表</span>
 	 */
 	public List<String> getCcAddress() {
-		return ccAddress;
+		return this.ccAddress;
 	}
 
 	/**
@@ -317,7 +317,7 @@ public final class MailObject implements Serializable {
 	 * @param ccAddress <span class="en-US">Mail carbon copy address list</span>
 	 *                  <span class="zh-CN">邮件抄送地址列表</span>
 	 */
-	public void setCcAddress(List<String> ccAddress) {
+	public void setCcAddress(final List<String> ccAddress) {
 		this.ccAddress = ccAddress;
 	}
 
@@ -329,7 +329,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件暗抄送地址列表</span>
 	 */
 	public List<String> getBccAddress() {
-		return bccAddress;
+		return this.bccAddress;
 	}
 
 	/**
@@ -339,7 +339,7 @@ public final class MailObject implements Serializable {
 	 * @param bccAddress <span class="en-US">Mail blind carbon copy address list</span>
 	 *                   <span class="zh-CN">邮件暗抄送地址列表</span>
 	 */
-	public void setBccAddress(List<String> bccAddress) {
+	public void setBccAddress(final List<String> bccAddress) {
 		this.bccAddress = bccAddress;
 	}
 
@@ -351,7 +351,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件附件文件列表</span>
 	 */
 	public List<String> getAttachFiles() {
-		return attachFiles;
+		return this.attachFiles;
 	}
 
 	/**
@@ -361,7 +361,7 @@ public final class MailObject implements Serializable {
 	 * @param attachFiles <span class="en-US">Mail attachment file list</span>
 	 *                    <span class="zh-CN">邮件附件文件列表</span>
 	 */
-	public void setAttachFiles(List<String> attachFiles) {
+	public void setAttachFiles(final List<String> attachFiles) {
 		this.attachFiles = attachFiles;
 	}
 
@@ -373,7 +373,7 @@ public final class MailObject implements Serializable {
 	 * <span class="zh-CN">邮件包含文件列表</span>
 	 */
 	public List<String> getIncludeFiles() {
-		return includeFiles;
+		return this.includeFiles;
 	}
 
 	/**
@@ -383,7 +383,7 @@ public final class MailObject implements Serializable {
 	 * @param includeFiles <span class="en-US">Mail include file list</span>
 	 *                     <span class="zh-CN">邮件包含文件列表</span>
 	 */
-	public void setIncludeFiles(List<String> includeFiles) {
+	public void setIncludeFiles(final List<String> includeFiles) {
 		this.includeFiles = includeFiles;
 	}
 }

@@ -110,7 +110,7 @@ public final class CutOptions {
 	 * <span class="zh-CN">起始X坐标值</span>
 	 */
 	public int getPositionX() {
-		return positionX;
+		return this.positionX;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class CutOptions {
 	 * <span class="zh-CN">起始Y坐标值</span>
 	 */
 	public int getPositionY() {
-		return positionY;
+		return this.positionY;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class CutOptions {
 	 * <span class="zh-CN">剪切宽度值</span>
 	 */
 	public int getCutWidth() {
-		return cutWidth;
+		return this.cutWidth;
 	}
 
 	/**
@@ -143,6 +143,6 @@ public final class CutOptions {
 	 * <span class="zh-CN">剪切高度值</span>
 	 */
 	public int getCutHeight() {
-		return cutHeight;
+		return this.cutHeight;
 	}
 }

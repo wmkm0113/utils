@@ -114,7 +114,7 @@ public abstract class TimeBasedUUIDGenerator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public final UUID generate(byte[] dataBytes) {
+	public final UUID generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 

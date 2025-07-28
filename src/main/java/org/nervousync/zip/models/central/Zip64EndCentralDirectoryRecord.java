@@ -48,7 +48,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the signature
 	 */
 	public long getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the recordSize
 	 */
 	public long getRecordSize() {
-		return recordSize;
+		return this.recordSize;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the madeVersion
 	 */
 	public int getMadeVersion() {
-		return madeVersion;
+		return this.madeVersion;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the extractNeeded
 	 */
 	public int getExtractNeeded() {
-		return extractNeeded;
+		return this.extractNeeded;
 	}
 
 	/**
@@ -120,7 +120,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the index
 	 */
 	public int getIndex() {
-		return index;
+		return this.index;
 	}
 
 	/**
@@ -138,7 +138,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the startOfCentralDirectory
 	 */
 	public int getStartOfCentralDirectory() {
-		return startOfCentralDirectory;
+		return this.startOfCentralDirectory;
 	}
 
 	/**
@@ -156,7 +156,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the totalEntriesInCentralDirectoryOnThisDisk
 	 */
 	public long getTotalEntriesInCentralDirectoryOnThisDisk() {
-		return totalEntriesInCentralDirectoryOnThisDisk;
+		return this.totalEntriesInCentralDirectoryOnThisDisk;
 	}
 
 	/**
@@ -174,7 +174,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the totalEntriesInCentralDirectory
 	 */
 	public long getTotalEntriesInCentralDirectory() {
-		return totalEntriesInCentralDirectory;
+		return this.totalEntriesInCentralDirectory;
 	}
 
 	/**
@@ -192,7 +192,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the sizeOfCentralDirectory
 	 */
 	public long getSizeOfCentralDirectory() {
-		return sizeOfCentralDirectory;
+		return this.sizeOfCentralDirectory;
 	}
 
 	/**
@@ -210,7 +210,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the offsetStartCenDirWRTStartDiskNo
 	 */
 	public long getOffsetStartCenDirWRTStartDiskNo() {
-		return offsetStartCenDirWRTStartDiskNo;
+		return this.offsetStartCenDirWRTStartDiskNo;
 	}
 
 	/**
@@ -228,7 +228,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 * @return the extensibleDataSector
 	 */
 	public byte[] getExtensibleDataSector() {
-		return extensibleDataSector == null ? new byte[0] : extensibleDataSector.clone();
+		return this.extensibleDataSector == null ? new byte[0] : this.extensibleDataSector.clone();
 	}
 
 	/**

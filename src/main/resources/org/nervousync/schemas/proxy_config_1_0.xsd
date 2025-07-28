@@ -3,11 +3,6 @@
             targetNamespace="https://nervousync.org/schemas/proxy" elementFormDefault="qualified" version="1.0">
     <xsd:complexType name="proxy_config">
         <xsd:all>
-            <xsd:element name="signature" type="xsd:string" minOccurs="0">
-                <xsd:annotation>
-                    <xsd:documentation>Digital signature</xsd:documentation>
-                </xsd:annotation>
-            </xsd:element>
             <xsd:element name="type">
                 <xsd:annotation>
                     <xsd:documentation>Proxy server type</xsd:documentation>

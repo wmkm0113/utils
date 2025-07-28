@@ -50,7 +50,7 @@ public final class LocalFileHeader extends FileHeader {
 	 * @return the extraField
 	 */
 	public byte[] getExtraField() {
-		return extraField == null ? new byte[Globals.INITIALIZE_INT_VALUE] : extraField.clone();
+		return this.extraField == null ? new byte[Globals.INITIALIZE_INT_VALUE] : this.extraField.clone();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public final class LocalFileHeader extends FileHeader {
 	 * @return the offsetStartOfData
 	 */
 	public long getOffsetStartOfData() {
-		return offsetStartOfData;
+		return this.offsetStartOfData;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public final class LocalFileHeader extends FileHeader {
 	 * @return the writeCompressSizeInZip64ExtraRecord
 	 */
 	public boolean isWriteCompressSizeInZip64ExtraRecord() {
-		return writeCompressSizeInZip64ExtraRecord;
+		return this.writeCompressSizeInZip64ExtraRecord;
 	}
 
 	/**

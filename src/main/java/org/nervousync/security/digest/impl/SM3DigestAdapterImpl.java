@@ -54,7 +54,7 @@ public final class SM3DigestAdapterImpl extends BaseDigestAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize adaptor</span>
 	 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 	 */
-	public SM3DigestAdapterImpl(byte[] keyBytes) throws CryptoException {
+	public SM3DigestAdapterImpl(final byte[] keyBytes) throws CryptoException {
 		super("SM3/HMAC", keyBytes);
 	}
 
@@ -68,7 +68,7 @@ public final class SM3DigestAdapterImpl extends BaseDigestAdapter {
 	 * <span class="zh-CN">初始化的消息摘要算法适配器</span>
 	 */
 	@Override
-	protected MessageDigest initDigest(String algorithm) {
+	protected MessageDigest initDigest(final String algorithm) {
 		return new SM3.Digest();
 	}
 
@@ -84,7 +84,7 @@ public final class SM3DigestAdapterImpl extends BaseDigestAdapter {
 	 * <span class="zh-CN">初始化的消息认证码算法适配器</span>
 	 */
 	@Override
-	protected Mac initHmac(String algorithm, byte[] keyBytes) {
+	protected Mac initHmac(final String algorithm, final byte[] keyBytes) {
 		HMac hmac = new HMac(new SM3Digest());
 		hmac.init(new KeyParameter(keyBytes));
 		return hmac;

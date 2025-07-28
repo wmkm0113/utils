@@ -173,7 +173,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * <span class="zh-CN">当前文件地址</span>
 	 */
 	public String getFilePath() {
-		return filePath;
+		return this.filePath;
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @param pos target position
 	 * @throws IOException Seek position failed
 	 */
-	public void seek(long pos) throws IOException {
+	public void seek(final long pos) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).seek(pos);
 		} else {
@@ -237,7 +237,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#write(int)
 	 */
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).write(b);
 		} else {
@@ -250,7 +250,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#write(byte[])
 	 */
 	@Override
-	public void write(@Nonnull byte[] b) throws IOException {
+	public void write(@Nonnull final byte[] b) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).write(b);
 		} else {
@@ -263,7 +263,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#write(byte[], int, int)
 	 */
 	@Override
-	public void write(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).write(b, off, len);
 		} else {
@@ -276,7 +276,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeBoolean(boolean)
 	 */
 	@Override
-	public void writeBoolean(boolean v) throws IOException {
+	public void writeBoolean(final boolean v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeBoolean(v);
 		} else {
@@ -289,7 +289,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeByte(int)
 	 */
 	@Override
-	public void writeByte(int v) throws IOException {
+	public void writeByte(final int v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeByte(v);
 		} else {
@@ -302,7 +302,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeShort(int)
 	 */
 	@Override
-	public void writeShort(int v) throws IOException {
+	public void writeShort(final int v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeShort(v);
 		} else {
@@ -315,7 +315,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeChar(int)
 	 */
 	@Override
-	public void writeChar(int v) throws IOException {
+	public void writeChar(final int v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeChar(v);
 		} else {
@@ -328,7 +328,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeInt(int)
 	 */
 	@Override
-	public void writeInt(int v) throws IOException {
+	public void writeInt(final int v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeInt(v);
 		} else {
@@ -341,7 +341,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeLong(long)
 	 */
 	@Override
-	public void writeLong(long v) throws IOException {
+	public void writeLong(final long v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeLong(v);
 		} else {
@@ -354,7 +354,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeFloat(float)
 	 */
 	@Override
-	public void writeFloat(float v) throws IOException {
+	public void writeFloat(final float v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeFloat(v);
 		} else {
@@ -367,7 +367,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeDouble(double)
 	 */
 	@Override
-	public void writeDouble(double v) throws IOException {
+	public void writeDouble(final double v) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeDouble(v);
 		} else {
@@ -380,7 +380,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeBytes(java.lang.String)
 	 */
 	@Override
-	public void writeBytes(@Nonnull String s) throws IOException {
+	public void writeBytes(@Nonnull final String s) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeBytes(s);
 		} else {
@@ -393,7 +393,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeChars(java.lang.String)
 	 */
 	@Override
-	public void writeChars(@Nonnull String s) throws IOException {
+	public void writeChars(@Nonnull final String s) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeChars(s);
 		} else {
@@ -406,7 +406,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataOutput#writeUTF(java.lang.String)
 	 */
 	@Override
-	public void writeUTF(@Nonnull String s) throws IOException {
+	public void writeUTF(@Nonnull final String s) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).writeUTF(s);
 		} else {
@@ -421,7 +421,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @return read length
 	 * @throws IOException If the first byte cannot be read for any reason other than the ends of the current file, or if the random access file has been closed, or if some other I/O error occurs.
 	 */
-	public int read(byte[] b) throws IOException {
+	public int read(final byte[] b) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			return ((SmbRandomAccessFile) this.originObject).read(b, Globals.INITIALIZE_INT_VALUE, b.length);
 		} else {
@@ -438,7 +438,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @return read length
 	 * @throws IOException If the first byte cannot be read for any reason other than the ends of the current file, or if the random access file has been closed, or if some other I/O error occurs.
 	 */
-	public int read(byte[] b, int off, int len) throws IOException {
+	public int read(final byte[] b, final int off, final int len) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			return ((SmbRandomAccessFile) this.originObject).read(b, off, len);
 		} else {
@@ -451,7 +451,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataInput#readFully(byte[])
 	 */
 	@Override
-	public void readFully(@Nonnull byte[] b) throws IOException {
+	public void readFully(@Nonnull final byte[] b) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).readFully(b);
 		} else {
@@ -464,7 +464,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataInput#readFully(byte[], int, int)
 	 */
 	@Override
-	public void readFully(@Nonnull byte[] b, int off, int len) throws IOException {
+	public void readFully(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			((SmbRandomAccessFile) this.originObject).readFully(b, off, len);
 		} else {
@@ -477,7 +477,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	 * @see java.io.DataInput#skipBytes(int)
 	 */
 	@Override
-	public int skipBytes(int n) throws IOException {
+	public int skipBytes(final int n) throws IOException {
 		if (this.originObject instanceof SmbRandomAccessFile) {
 			return ((SmbRandomAccessFile) this.originObject).skipBytes(n);
 		} else {

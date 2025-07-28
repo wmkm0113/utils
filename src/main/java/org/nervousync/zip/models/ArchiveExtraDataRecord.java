@@ -30,7 +30,7 @@ public final class ArchiveExtraDataRecord {
 	 * @return the signature
 	 */
 	public int getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ArchiveExtraDataRecord {
 	 * @return the extraFieldLength
 	 */
 	public int getExtraFieldLength() {
-		return extraFieldLength;
+		return this.extraFieldLength;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class ArchiveExtraDataRecord {
 	 * @return the extraFieldData
 	 */
 	public String getExtraFieldData() {
-		return extraFieldData;
+		return this.extraFieldData;
 	}
 
 	/**

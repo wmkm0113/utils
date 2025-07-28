@@ -16,6 +16,8 @@
  */
 package org.nervousync.security.crypto.config;
 
+import jakarta.annotation.Nonnull;
+
 import java.io.Serializable;
 
 /**
@@ -59,7 +61,7 @@ public final class CipherConfig implements Serializable {
 	 * @param padding   <span class="en-US">Padding Mode</span>
 	 *                  <span class="zh-CN">数据填充模式</span>
 	 */
-	public CipherConfig(String algorithm, String mode, String padding) {
+	public CipherConfig(final String algorithm, final String mode, final String padding) {
 		this.algorithm = algorithm;
 		this.mode = mode;
 		this.padding = padding;
@@ -73,7 +75,7 @@ public final class CipherConfig implements Serializable {
 	 * <span class="zh-CN">密码算法</span>
 	 */
 	public String getAlgorithm() {
-		return algorithm;
+		return this.algorithm;
 	}
 
 	/**
@@ -84,7 +86,7 @@ public final class CipherConfig implements Serializable {
 	 * <span class="zh-CN">分组密码模式</span>
 	 */
 	public String getMode() {
-		return mode;
+		return this.mode;
 	}
 
 	/**
@@ -95,7 +97,7 @@ public final class CipherConfig implements Serializable {
 	 * <span class="zh-CN">数据填充模式</span>
 	 */
 	public String getPadding() {
-		return padding;
+		return this.padding;
 	}
 
 	/**
@@ -106,7 +108,7 @@ public final class CipherConfig implements Serializable {
 	 * <span class="zh-CN">转换后的字符串</span>
 	 */
 	@Override
-	public String toString() {
+	public @Nonnull String toString() {
 		return String.join("/", this.algorithm, this.mode, this.padding);
 	}
 }

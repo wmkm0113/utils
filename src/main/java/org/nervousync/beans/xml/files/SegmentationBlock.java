@@ -99,7 +99,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * @param dataContent <span class="en-US">Binary array of data content</span>
 	 *                    <span class="zh-CN">数据的字节数组</span>
 	 */
-	public SegmentationBlock(long position, byte[] dataContent) {
+	public SegmentationBlock(final long position, final byte[] dataContent) {
 		this.sha = ConvertUtils.bytesToHex(SecurityUtils.SHA256(dataContent));
 		this.position = position;
 		this.blockSize = dataContent.length;
@@ -115,7 +115,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * <span class="zh-CN">数据块起始地址</span>
 	 */
 	public long getPosition() {
-		return position;
+		return this.position;
 	}
 
 	/**
@@ -126,7 +126,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * <span class="zh-CN">数据块大小</span>
 	 */
 	public long getBlockSize() {
-		return blockSize;
+		return this.blockSize;
 	}
 
 	/**
@@ -137,7 +137,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * <span class="zh-CN">数据块验证值，使用SHA256</span>
 	 */
 	public String getSha() {
-		return sha;
+		return this.sha;
 	}
 
 	/**
@@ -148,7 +148,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * <span class="zh-CN">数据块信息，使用Base64编码</span>
 	 */
 	public String getDataInfo() {
-		return dataInfo;
+		return this.dataInfo;
 	}
 
 	/**
@@ -159,7 +159,7 @@ public final class SegmentationBlock extends BeanObject {
 	 * <span class="zh-CN">数据块生成时间</span>
 	 */
 	public Date getCurrentTime() {
-		return currentTime == null ? null : (Date) currentTime.clone();
+		return this.currentTime == null ? null : (Date) this.currentTime.clone();
 	}
 
 	/**

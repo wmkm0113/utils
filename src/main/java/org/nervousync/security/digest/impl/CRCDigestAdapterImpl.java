@@ -220,7 +220,7 @@ public final class CRCDigestAdapterImpl extends SecureAdapter {
 	 * @return <span class="en-US">Reverse bit result</span>
 	 * <span class="zh-CN">反转比特位的结果值</span>
 	 */
-	private static long reverseBit(long value, int bit) {
+	private static long reverseBit(long value, final int bit) {
 		if (value < 0) {
 			value += (long) Math.pow(2, bit);
 		}

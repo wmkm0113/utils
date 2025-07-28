@@ -40,7 +40,7 @@ public final class DigitalSignature {
 	 * @return the signature
 	 */
 	public int getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class DigitalSignature {
 	 * @return the dataSize
 	 */
 	public int getDataSize() {
-		return dataSize;
+		return this.dataSize;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public final class DigitalSignature {
 	 * @return the signatureData
 	 */
 	public String getSignatureData() {
-		return signatureData;
+		return this.signatureData;
 	}
 
 	/**

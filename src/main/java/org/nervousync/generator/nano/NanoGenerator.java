@@ -123,7 +123,7 @@ public final class NanoGenerator implements IGenerator<String> {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate(byte[] dataBytes) {
+	public String generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 

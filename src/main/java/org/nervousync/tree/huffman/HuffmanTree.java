@@ -61,7 +61,7 @@ public final class HuffmanTree {
 	 * @param codeMapping <span class="en-US">Code mapping table</span>
 	 *                    <span class="zh-CN">编码映射表</span>
 	 */
-	private HuffmanTree(Hashtable<String, Object> codeMapping) {
+	private HuffmanTree(final Hashtable<String, Object> codeMapping) {
 		this.codeMapping = codeMapping;
 	}
 
@@ -124,7 +124,7 @@ public final class HuffmanTree {
 	 * @return <span class="en-US">Generated huffman result string or zero length string if content string is empty</span>
 	 * <span class="zh-CN">生成的霍夫曼树编码字符串，当内容字符串为空字符串时返回长度为0的空字符串</span>
 	 */
-	public static String encodeString(final Hashtable<String, Object> codeMapping, String content) {
+	public static String encodeString(final Hashtable<String, Object> codeMapping, final String content) {
 		HuffmanTree huffmanTree = new HuffmanTree(codeMapping);
 		return Optional.ofNullable(huffmanTree.encodeString(content))
 				.map(Result::getHuffmanValue)
@@ -275,7 +275,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">关键词</span>
 		 */
 		public String getKeyword() {
-			return keyword;
+			return this.keyword;
 		}
 
 		/**
@@ -297,7 +297,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">权重</span>
 		 */
 		public int getFrequency() {
-			return frequency;
+			return this.frequency;
 		}
 
 		/**
@@ -319,7 +319,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">左节点</span>
 		 */
 		public Node getLeftNode() {
-			return leftNode;
+			return this.leftNode;
 		}
 
 		/**
@@ -341,7 +341,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">右节点</span>
 		 */
 		public Node getRightNode() {
-			return rightNode;
+			return this.rightNode;
 		}
 
 		/**
@@ -363,7 +363,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">下一节点，用于链表</span>
 		 */
 		public Node getNextNode() {
-			return nextNode;
+			return this.nextNode;
 		}
 
 		/**
@@ -443,7 +443,7 @@ public final class HuffmanTree {
 		 * <span class="zh-CN">编码字符串</span>
 		 */
 		public String getHuffmanValue() {
-			return huffmanValue;
+			return this.huffmanValue;
 		}
 	}
 }

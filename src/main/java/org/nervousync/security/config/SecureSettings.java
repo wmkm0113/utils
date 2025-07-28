@@ -65,7 +65,7 @@ public final class SecureSettings extends BeanObject {
 	 * <span class="zh-CN">系统默认安全配置信息</span>
 	 */
 	public SecureConfig getSystemSecure() {
-		return systemSecure;
+		return this.systemSecure;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public final class SecureSettings extends BeanObject {
 	 * @param systemSecure <span class="en-US">System default security configuration information</span>
 	 *                     <span class="zh-CN">系统默认安全配置信息</span>
 	 */
-	public void setSystemSecure(SecureConfig systemSecure) {
+	public void setSystemSecure(final SecureConfig systemSecure) {
 		this.systemSecure = systemSecure;
 	}
 
@@ -87,7 +87,7 @@ public final class SecureSettings extends BeanObject {
 	 * <span class="zh-CN">自定义安全配置信息列表</span>
 	 */
 	public List<SecureConfig> getCustomSecures() {
-		return customSecures;
+		return this.customSecures;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public final class SecureSettings extends BeanObject {
 	 * @param customSecures <span class="en-US">Customized security configuration information list</span>
 	 *                      <span class="zh-CN">自定义安全配置信息列表</span>
 	 */
-	public void setCustomSecures(List<SecureConfig> customSecures) {
+	public void setCustomSecures(final List<SecureConfig> customSecures) {
 		this.customSecures = customSecures;
 	}
 }

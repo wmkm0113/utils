@@ -135,7 +135,7 @@ public final class GeoPoint implements Serializable {
 	 * <span class="zh-CN">坐标类型值</span>
 	 */
 	public LocationType getLocationType() {
-		return locationType;
+		return this.locationType;
 	}
 
 	/**
@@ -146,7 +146,7 @@ public final class GeoPoint implements Serializable {
 	 * <span class="zh-CN">坐标经度值</span>
 	 */
 	public double getLongitude() {
-		return longitude;
+		return this.longitude;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public final class GeoPoint implements Serializable {
 	 * <span class="zh-CN">坐标纬度值</span>
 	 */
 	public double getLatitude() {
-		return latitude;
+		return this.latitude;
 	}
 
 	/**

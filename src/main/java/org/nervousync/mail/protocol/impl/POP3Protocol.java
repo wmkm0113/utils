@@ -72,7 +72,7 @@ public final class POP3Protocol extends BaseProtocol implements ReceiveOperator 
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public String readUID(Folder folder, Message message) throws MessagingException {
+	public String readUID(final Folder folder, final Message message) throws MessagingException {
 		if (folder instanceof POP3Folder) {
 			return ((POP3Folder) folder).getUID(message);
 		}
@@ -93,7 +93,7 @@ public final class POP3Protocol extends BaseProtocol implements ReceiveOperator 
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public Message readMessage(Folder folder, String uid) throws MessagingException {
+	public Message readMessage(final Folder folder, final String uid) throws MessagingException {
 		if (folder instanceof POP3Folder) {
 			for (Message msg : folder.getMessages()) {
 				if (((POP3Folder) folder).getUID(msg).equals(uid)) {
@@ -118,7 +118,7 @@ public final class POP3Protocol extends BaseProtocol implements ReceiveOperator 
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public List<Message> readMessages(Folder folder, String... uidArrays) throws MessagingException {
+	public List<Message> readMessages(final Folder folder, final String... uidArrays) throws MessagingException {
 		List<Message> messageList = new ArrayList<>();
 		if (folder instanceof POP3Folder) {
 			List<String> uidList = Arrays.asList(uidArrays);

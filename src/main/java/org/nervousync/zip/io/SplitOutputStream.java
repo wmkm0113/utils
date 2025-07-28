@@ -105,7 +105,7 @@ public class SplitOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(final @Nonnull byte[] b) throws IOException {
+	public void write(@Nonnull final byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}
 
@@ -116,7 +116,7 @@ public class SplitOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(final @Nonnull byte[] b, final int off, final int len) throws IOException {
+	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (len < 0) {
 			return;
 		}
@@ -208,8 +208,8 @@ public class SplitOutputStream extends OutputStream {
 		return this.dataOutput.getFilePointer();
 	}
 
+	@Override
 	public void flush() {
-
 	}
 
 	/**

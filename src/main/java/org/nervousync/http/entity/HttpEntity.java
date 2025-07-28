@@ -135,33 +135,27 @@ public final class HttpEntity {
 	public String generateContentType(final String charset, final HttpMethodOption methodOption)
 			throws UnsupportedEncodingException {
 		String charsetEncoding = StringUtils.notBlank(charset) ? charset : "ISO-8859-1";
-		String contentType;
 		switch (methodOption) {
 			case POST:
 			case PUT:
 				this.checkType();
 				if (this.multipart) {
 					if (this.mixed) {
-						contentType = Globals.DEFAULT_CONTENT_TYPE_MIXED + ";boundary=" + this.boundary;
+						return Globals.DEFAULT_CONTENT_TYPE_MIXED + ";boundary=" + this.boundary;
 					} else {
-						contentType = Globals.FORM_DATA_CONTENT_TYPE_MULTIPART + ";boundary=" + this.boundary;
+						return Globals.FORM_DATA_CONTENT_TYPE_MULTIPART + ";boundary=" + this.boundary;
 					}
-				} else {
-					contentType = Globals.DEFAULT_CONTENT_TYPE_ENCODED + ";charset=" + charsetEncoding;
 				}
-				break;
+				return Globals.DEFAULT_CONTENT_TYPE_ENCODED + ";charset=" + charsetEncoding;
 			case GET:
 			case TRACE:
 			case HEAD:
 			case DELETE:
 			case OPTIONS:
-				contentType = Globals.DEFAULT_CONTENT_TYPE_TEXT + ";charset=" + charsetEncoding;
-				break;
+				return Globals.DEFAULT_CONTENT_TYPE_TEXT + ";charset=" + charsetEncoding;
 			default:
 				throw new UnsupportedEncodingException("Unknown Request Method");
 		}
-
-		return contentType;
 	}
 
 	/**
@@ -298,7 +292,7 @@ public final class HttpEntity {
 		 * @param value  <span class="en-US">Entity value</span>
 		 *               <span class="zh-CN">参数值</span>
 		 */
-		private EntityInfo(boolean binary, String name, String value) {
+		private EntityInfo(final boolean binary, final String name, final String value) {
 			this.binary = binary;
 			this.entityName = name;
 			this.entityValue = value;
@@ -315,7 +309,7 @@ public final class HttpEntity {
 		 * @return    <span class="en-US">Generated EntityInfo instance</span>
 		 * <span class="zh-CN">生成的EntityInfo实例对象</span>
 		 */
-		public static EntityInfo generateTextEntity(String name, String value) {
+		public static EntityInfo generateTextEntity(final String name, final String value) {
 			return new EntityInfo(Boolean.FALSE, name, value);
 		}
 
@@ -330,7 +324,7 @@ public final class HttpEntity {
 		 * @return    <span class="en-US">Generated EntityInfo instance</span>
 		 * <span class="zh-CN">生成的EntityInfo实例对象</span>
 		 */
-		public static EntityInfo generateBinaryEntity(String name, String value)
+		public static EntityInfo generateBinaryEntity(final String name, final String value)
 				throws FileNotFoundException {
 			if (FileUtils.isExists(value)) {
 				return new EntityInfo(Boolean.TRUE, name, value);
@@ -346,7 +340,7 @@ public final class HttpEntity {
 		 * <span class="zh-CN">二进制状态</span>
 		 */
 		public boolean isBinary() {
-			return binary;
+			return this.binary;
 		}
 
 		/**
@@ -357,7 +351,7 @@ public final class HttpEntity {
 		 * <span class="zh-CN">参数名</span>
 		 */
 		public String getEntityName() {
-			return entityName;
+			return this.entityName;
 		}
 
 		/**
@@ -368,7 +362,7 @@ public final class HttpEntity {
 		 * <span class="zh-CN">参数值</span>
 		 */
 		public String getEntityValue() {
-			return entityValue;
+			return this.entityValue;
 		}
 	}
 }

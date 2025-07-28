@@ -73,7 +73,7 @@ public final class IMAPProtocol extends BaseProtocol implements SendOperator, Re
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public String readUID(Folder folder, Message message) throws MessagingException {
+	public String readUID(final Folder folder, final Message message) throws MessagingException {
 		if (folder instanceof IMAPFolder) {
 			return Long.toString(((IMAPFolder) folder).getUID(message));
 		}
@@ -94,7 +94,7 @@ public final class IMAPProtocol extends BaseProtocol implements SendOperator, Re
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public Message readMessage(Folder folder, String uid) throws MessagingException {
+	public Message readMessage(final Folder folder, final String uid) throws MessagingException {
 		if (folder instanceof IMAPFolder) {
 			return ((IMAPFolder) folder).getMessageByUID(Long.parseLong(uid));
 		}
@@ -115,7 +115,7 @@ public final class IMAPProtocol extends BaseProtocol implements SendOperator, Re
 	 *                            <span class="zh-CN">当读取唯一识别ID字符串时出现异常</span>
 	 */
 	@Override
-	public List<Message> readMessages(Folder folder, String... uidArrays) throws MessagingException {
+	public List<Message> readMessages(final Folder folder, final String... uidArrays) throws MessagingException {
 		List<Message> messageList = new ArrayList<>();
 		if (folder instanceof IMAPFolder) {
 			long[] uidList = new long[uidArrays.length];

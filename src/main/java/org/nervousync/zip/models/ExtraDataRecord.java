@@ -40,7 +40,7 @@ public final class ExtraDataRecord {
 	 * @return the header
 	 */
 	public long getHeader() {
-		return header;
+		return this.header;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class ExtraDataRecord {
 	 * @return the dataSize
 	 */
 	public int getDataSize() {
-		return dataSize;
+		return this.dataSize;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public final class ExtraDataRecord {
 	 * @return the dataContent
 	 */
 	public byte[] getDataContent() {
-		return dataContent == null ? new byte[0] : dataContent.clone();
+		return this.dataContent == null ? new byte[0] : this.dataContent.clone();
 	}
 
 	/**

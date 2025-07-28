@@ -144,7 +144,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public Long generate(byte[] dataBytes) {
+	public Long generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 

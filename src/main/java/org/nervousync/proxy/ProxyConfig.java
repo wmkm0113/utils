@@ -107,7 +107,7 @@ public final class ProxyConfig extends BeanObject {
 	 * <span class="zh-CN">代理服务器类型枚举值</span>
 	 */
 	public Type getProxyType() {
-		return proxyType;
+		return this.proxyType;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public final class ProxyConfig extends BeanObject {
 	 * @param proxyType <span class="en-US">Enumeration value of proxy type</span>
 	 *                  <span class="zh-CN">代理服务器类型枚举值</span>
 	 */
-	public void setProxyType(Type proxyType) {
+	public void setProxyType(final Type proxyType) {
 		this.proxyType = proxyType;
 	}
 
@@ -129,7 +129,7 @@ public final class ProxyConfig extends BeanObject {
 	 * <span class="zh-CN">代理服务器地址</span>
 	 */
 	public String getProxyAddress() {
-		return proxyAddress;
+		return this.proxyAddress;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public final class ProxyConfig extends BeanObject {
 	 * @param proxyAddress <span class="en-US">Proxy server address</span>
 	 *                     <span class="zh-CN">代理服务器地址</span>
 	 */
-	public void setProxyAddress(String proxyAddress) {
+	public void setProxyAddress(final String proxyAddress) {
 		this.proxyAddress = proxyAddress;
 	}
 
@@ -151,7 +151,7 @@ public final class ProxyConfig extends BeanObject {
 	 * <span class="zh-CN">代理服务器端口号</span>
 	 */
 	public int getProxyPort() {
-		return proxyPort;
+		return this.proxyPort;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public final class ProxyConfig extends BeanObject {
 	 * @param proxyPort <span class="en-US">Proxy server port</span>
 	 *                  <span class="zh-CN">代理服务器端口号</span>
 	 */
-	public void setProxyPort(int proxyPort) {
+	public void setProxyPort(final int proxyPort) {
 		this.proxyPort = proxyPort;
 	}
 
@@ -173,7 +173,7 @@ public final class ProxyConfig extends BeanObject {
 	 * <span class="zh-CN">身份认证用户名</span>
 	 */
 	public String getUserName() {
-		return userName;
+		return this.userName;
 	}
 
 	/**
@@ -183,7 +183,7 @@ public final class ProxyConfig extends BeanObject {
 	 * @param userName <span class="en-US">Authenticate username</span>
 	 *                 <span class="zh-CN">身份认证用户名</span>
 	 */
-	public void setUserName(String userName) {
+	public void setUserName(final String userName) {
 		this.userName = userName;
 	}
 
@@ -195,7 +195,7 @@ public final class ProxyConfig extends BeanObject {
 	 * <span class="zh-CN">身份认证密码</span>
 	 */
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	/**
@@ -205,7 +205,7 @@ public final class ProxyConfig extends BeanObject {
 	 * @param password <span class="en-US">Authenticate password</span>
 	 *                 <span class="zh-CN">身份认证密码</span>
 	 */
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 

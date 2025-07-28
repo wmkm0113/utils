@@ -70,7 +70,7 @@ public final class BundleError extends BeanObject {
 	 * @param errorCode <span class="en-US">Error code</span>
 	 *                  <span class="zh-CN">错误代码</span>
 	 */
-	public void setErrorCode(String errorCode) {
+	public void setErrorCode(final String errorCode) {
 		this.errorCode = errorCode;
 	}
 
@@ -92,7 +92,7 @@ public final class BundleError extends BeanObject {
 	 * @param messageKey <span class="en-US">Message identify key</span>
 	 *                   <span class="zh-CN">信息识别键值</span>
 	 */
-	public void setMessageKey(String messageKey) {
+	public void setMessageKey(final String messageKey) {
 		this.messageKey = messageKey;
 	}
 }

@@ -46,7 +46,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the signature
 	 */
 	public long getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the indexOfThisDisk
 	 */
 	public int getIndexOfThisDisk() {
-		return indexOfThisDisk;
+		return this.indexOfThisDisk;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the indexOfThisDiskStartOfCentralDirectory
 	 */
 	public int getIndexOfThisDiskStartOfCentralDirectory() {
-		return indexOfThisDiskStartOfCentralDirectory;
+		return this.indexOfThisDiskStartOfCentralDirectory;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the totalOfEntriesInCentralDirectoryOnThisDisk
 	 */
 	public int getTotalOfEntriesInCentralDirectoryOnThisDisk() {
-		return totalOfEntriesInCentralDirectoryOnThisDisk;
+		return this.totalOfEntriesInCentralDirectoryOnThisDisk;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the totalOfEntriesInCentralDirectory
 	 */
 	public int getTotalOfEntriesInCentralDirectory() {
-		return totalOfEntriesInCentralDirectory;
+		return this.totalOfEntriesInCentralDirectory;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the sizeOfCentralDirectory
 	 */
 	public int getSizeOfCentralDirectory() {
-		return sizeOfCentralDirectory;
+		return this.sizeOfCentralDirectory;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the offsetOfStartOfCentralDirectory
 	 */
 	public long getOffsetOfStartOfCentralDirectory() {
-		return offsetOfStartOfCentralDirectory;
+		return this.offsetOfStartOfCentralDirectory;
 	}
 
 	/**
@@ -172,7 +172,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the commentLength
 	 */
 	public int getCommentLength() {
-		return commentLength;
+		return this.commentLength;
 	}
 
 	/**
@@ -190,7 +190,7 @@ public final class EndCentralDirectoryRecord {
 	 * @return the commentBytes
 	 */
 	public byte[] getCommentBytes() {
-		return commentBytes == null ? new byte[0] : commentBytes.clone();
+		return this.commentBytes == null ? new byte[0] : this.commentBytes.clone();
 	}
 
 	/**

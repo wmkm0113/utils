@@ -114,13 +114,4 @@ public final class CUID implements Serializable, Comparable<CUID> {
 	public int compareTo(@Nonnull final CUID val) {
 		return this.value.compareTo(val.value);
 	}
-
-//	public static void main(String[] args) throws Exception {
-////		io.github.thibaultmeyer.cuid.CUID cuid = io.github.thibaultmeyer.cuid.CUID.randomCUID1();
-////		System.out.println(cuid);
-//		System.out.println(CUID.randomCUIDv1());
-//		System.out.println("cmayto0rc00010djvfi20g7kq");
-//		System.out.println(randomCUIDv2());
-//		System.out.println("mn5ni5jqh2rgzvzgsjfyya3z");
-//	}
 }

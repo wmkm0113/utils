@@ -76,9 +76,7 @@ public final class StartupManager {
 
 	/**
 	 * <h3 class="en-US">Private constructor method for StartupManager</h3>
-	 * <span class="en-US">StartupManager will automatically add a hook to schedule execute destroy method when the system will shutdown.</span>
 	 * <h3 class="zh-CN">启动管理器的私有构造方法</h3>
-	 * <span class="zh-CN">启动管理器会自动添加一个钩子程序用于在系统退出时调用destroy方法。</span>
 	 */
 	private StartupManager(final StartupConfig startupConfig) {
 		this.startupConfig = (startupConfig == null) ? new StartupConfig() : startupConfig;
@@ -122,17 +120,6 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Destroy instance of startup manager</h3>
-	 * <h3 class="zh-CN">销毁当前启动器的实例对象</h3>
-	 */
-	private static void shutdown() {
-		if (StartupManager.INSTANCE != null) {
-			StartupManager.INSTANCE.destroy();
-			StartupManager.INSTANCE = null;
-		}
-	}
-
-	/**
 	 * <h3 class="en-US">Get the registered launcher configured information list</h3>
 	 * <h3 class="zh-CN">获取已注册的启动器配置信息列表</h3>
 	 *
@@ -141,6 +128,17 @@ public final class StartupManager {
 	 */
 	public List<LauncherConfig> registeredLaunchers() {
 		return this.startupConfig.getRegisteredLaunchers();
+	}
+
+	/**
+	 * <h3 class="en-US">Destroy instance of startup manager</h3>
+	 * <h3 class="zh-CN">销毁当前启动器的实例对象</h3>
+	 */
+	private static void shutdown() {
+		if (StartupManager.INSTANCE != null) {
+			StartupManager.INSTANCE.destroy();
+			StartupManager.INSTANCE = null;
+		}
 	}
 
 	public void config(final String className, final StartupType startupType) {

@@ -210,7 +210,6 @@ public class CipherOutputStream extends OutputStream {
 		if (b.length == 0) {
 			return;
 		}
-
 		this.write(b, 0, b.length);
 	}
 
@@ -219,7 +218,6 @@ public class CipherOutputStream extends OutputStream {
 		if (len == 0) {
 			return;
 		}
-
 		int offset = off, length = len;
 		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
 			if (this.pendingBufferLength != 0) {
@@ -243,7 +241,6 @@ public class CipherOutputStream extends OutputStream {
 				length -= this.pendingBufferLength;
 			}
 		}
-
 		if (length != 0) {
 			this.encryptAndWrite(b, offset, length);
 		}
@@ -316,6 +313,7 @@ public class CipherOutputStream extends OutputStream {
 		this.zipFile.finalizeZipFile(this.outputStream);
 	}
 
+	@Override
 	public void close() throws IOException {
 		if (this.outputStream != null) {
 			this.outputStream.close();

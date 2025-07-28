@@ -160,7 +160,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印类型值</span>
 	 */
 	public MarkType getMarkType() {
-		return markType;
+		return this.markType;
 	}
 
 	/**
@@ -171,7 +171,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印坐标实例对象</span>
 	 */
 	public MarkLocation getMarkLocation() {
-		return markLocation;
+		return this.markLocation;
 	}
 
 	/**
@@ -182,7 +182,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印图片地址</span>
 	 */
 	public String getMarkPath() {
-		return markPath;
+		return this.markPath;
 	}
 
 	/**
@@ -193,7 +193,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印透明度值</span>
 	 */
 	public float getTransparency() {
-		return transparency;
+		return this.transparency;
 	}
 
 	/**
@@ -204,7 +204,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印文字值</span>
 	 */
 	public String getMarkText() {
-		return markText;
+		return this.markText;
 	}
 
 	/**
@@ -215,7 +215,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印文字颜色值</span>
 	 */
 	public Color getColor() {
-		return color;
+		return this.color;
 	}
 
 	/**
@@ -226,7 +226,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印文字字体名称</span>
 	 */
 	public String getFontName() {
-		return fontName;
+		return this.fontName;
 	}
 
 	/**
@@ -237,7 +237,7 @@ public final class MarkOptions {
 	 * <span class="zh-CN">水印文字字号</span>
 	 */
 	public int getFontSize() {
-		return fontSize;
+		return this.fontSize;
 	}
 
 	/**
@@ -251,7 +251,7 @@ public final class MarkOptions {
 	 * @return <span class="en-US">Initialized MarkPosition instance</span>
 	 * <span class="en-US">初始化的MarkPosition实例对象</span>
 	 */
-	public MarkPosition retrievePosition(int width, int height) {
+	public MarkPosition retrievePosition(final int width, final int height) {
 		int positionX = Globals.DEFAULT_VALUE_INT;
 		int positionY = Globals.DEFAULT_VALUE_INT;
 		switch (this.markType) {
@@ -377,7 +377,7 @@ public final class MarkOptions {
 		 * @param positionY <span class="en-US">Mark position value Y</span>
 		 *                  <span class="zh-CN">水印起始Y坐标</span>
 		 */
-		public MarkPosition(int positionX, int positionY) {
+		public MarkPosition(final int positionX, final int positionY) {
 			this.positionX = positionX;
 			this.positionY = positionY;
 		}
@@ -390,18 +390,18 @@ public final class MarkOptions {
 		 * <span class="zh-CN">起始X坐标值</span>
 		 */
 		public int getPositionX() {
-			return positionX;
+			return this.positionX;
 		}
 
 		/**
 		 * <h3 class="en-US">Getter method for position Y</h3>
 		 * <h3 class="zh-CN">起始Y坐标的Getter方法</h3>
 		 *
-		 * @return <span class="en-US">Value of the begin position Y</span>
+		 * @return <span class="en-US">Value of the beginning position Y</span>
 		 * <span class="zh-CN">起始Y坐标值</span>
 		 */
 		public int getPositionY() {
-			return positionY;
+			return this.positionY;
 		}
 	}
 

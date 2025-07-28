@@ -84,7 +84,7 @@ public final class TargetPath {
 	 * <span class="zh-CN">生成的 TargetPath 实例对象，如果压缩文件路径或资源路径为 <code>null</code> 则返回 <code>null</code></span>
 	 */
 	public static TargetPath newInstance(final String filePath, final String entryPath) {
-		if (filePath == null || filePath.isEmpty() || entryPath == null || entryPath.isEmpty()) {
+		if (StringUtils.isEmpty(filePath) || StringUtils.isEmpty(entryPath)) {
 			return null;
 		}
 		return new TargetPath(filePath, entryPath);
@@ -98,7 +98,7 @@ public final class TargetPath {
 	 * <span class="zh-CN">Jar文件路径</span>
 	 */
 	public String getFilePath() {
-		return filePath;
+		return this.filePath;
 	}
 
 	/**
@@ -109,6 +109,6 @@ public final class TargetPath {
 	 * <span class="zh-CN">Jar资源路径</span>
 	 */
 	public String getEntryPath() {
-		return entryPath;
+		return this.entryPath;
 	}
 }

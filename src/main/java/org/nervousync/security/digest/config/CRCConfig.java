@@ -121,7 +121,7 @@ public final class CRCConfig {
 	 * <span class="zh-CN">CRC比特位</span>
 	 */
 	public int getBit() {
-		return bit;
+		return this.bit;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC多项式编码</span>
 	 */
 	public long getPolynomial() {
-		return polynomial;
+		return this.polynomial;
 	}
 
 	/**
@@ -143,7 +143,7 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC初始值</span>
 	 */
 	public long getInit() {
-		return init;
+		return this.init;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC输出值异或运算</span>
 	 */
 	public long getXorOut() {
-		return xorOut;
+		return this.xorOut;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC输出数据长度</span>
 	 */
 	public int getOutLength() {
-		return outLength;
+		return this.outLength;
 	}
 
 	/**
@@ -176,7 +176,7 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC反转输入字节数组</span>
 	 */
 	public boolean isRefIn() {
-		return refIn;
+		return this.refIn;
 	}
 
 	/**
@@ -187,6 +187,6 @@ public final class CRCConfig {
 	 * <span class="en-US">CRC反转输出字节数组</span>
 	 */
 	public boolean isRefOut() {
-		return refOut;
+		return this.refOut;
 	}
 }

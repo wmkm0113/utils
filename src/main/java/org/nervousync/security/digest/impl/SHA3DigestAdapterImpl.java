@@ -44,7 +44,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize adaptor</span>
 	 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 	 */
-	public SHA3DigestAdapterImpl(String algorithm) throws CryptoException {
+	public SHA3DigestAdapterImpl(final String algorithm) throws CryptoException {
 		super(algorithm, new byte[0]);
 	}
 
@@ -59,7 +59,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize adaptor</span>
 	 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 	 */
-	public SHA3DigestAdapterImpl(String algorithm, byte[] keyBytes) throws CryptoException {
+	public SHA3DigestAdapterImpl(final String algorithm, final byte[] keyBytes) throws CryptoException {
 		super(algorithm, keyBytes);
 	}
 
@@ -73,7 +73,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	 * <span class="zh-CN">初始化的消息摘要算法适配器</span>
 	 */
 	@Override
-	protected MessageDigest initDigest(String algorithm) throws CryptoException {
+	protected MessageDigest initDigest(final String algorithm) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm)) {
 			throw new CryptoException(0x00000015000DL);
 		}
@@ -107,7 +107,7 @@ public final class SHA3DigestAdapterImpl extends BaseDigestAdapter {
 	 * <span class="zh-CN">初始化的消息认证码算法适配器</span>
 	 */
 	@Override
-	protected Mac initHmac(String algorithm, byte[] keyBytes) throws CryptoException {
+	protected Mac initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException {
 		if (StringUtils.isEmpty(algorithm) || !algorithm.toUpperCase().endsWith("HMAC")) {
 			throw new CryptoException(0x00000015000DL, algorithm);
 		}

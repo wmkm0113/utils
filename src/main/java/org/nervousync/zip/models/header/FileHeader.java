@@ -64,7 +64,7 @@ public class FileHeader {
 	 * @return the signature
 	 */
 	public int getSignature() {
-		return signature;
+		return this.signature;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class FileHeader {
 	 * @return the extractNeeded
 	 */
 	public int getExtractNeeded() {
-		return extractNeeded;
+		return this.extractNeeded;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class FileHeader {
 	 * @return the generalPurposeFlag
 	 */
 	public byte[] getGeneralPurposeFlag() {
-		return generalPurposeFlag == null ? new byte[0] : generalPurposeFlag.clone();
+		return this.generalPurposeFlag == null ? new byte[0] : this.generalPurposeFlag.clone();
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class FileHeader {
 	 * @return the compressionMethod
 	 */
 	public int getCompressionMethod() {
-		return compressionMethod;
+		return this.compressionMethod;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class FileHeader {
 	 * @return the lastModFileTime
 	 */
 	public int getLastModFileTime() {
-		return lastModFileTime;
+		return this.lastModFileTime;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class FileHeader {
 	 * @return the crc32
 	 */
 	public long getCrc32() {
-		return crc32 & 0xFFFFFFFFL;
+		return this.crc32 & 0xFFFFFFFFL;
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class FileHeader {
 	 * @return the crcBuffer
 	 */
 	public byte[] getCrcBuffer() {
-		return crcBuffer == null ? new byte[0] : crcBuffer.clone();
+		return this.crcBuffer == null ? new byte[0] : this.crcBuffer.clone();
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class FileHeader {
 	 * @return the compressedSize
 	 */
 	public long getCompressedSize() {
-		return compressedSize;
+		return this.compressedSize;
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class FileHeader {
 	 * @return the originalSize
 	 */
 	public long getOriginalSize() {
-		return originalSize;
+		return this.originalSize;
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class FileHeader {
 	 * @return the fileNameLength
 	 */
 	public int getFileNameLength() {
-		return fileNameLength;
+		return this.fileNameLength;
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class FileHeader {
 	 * @return the extraFieldLength
 	 */
 	public int getExtraFieldLength() {
-		return extraFieldLength;
+		return this.extraFieldLength;
 	}
 
 	/**
@@ -265,7 +265,7 @@ public class FileHeader {
 	 * @return the entryPath
 	 */
 	public String getEntryPath() {
-		return entryPath;
+		return this.entryPath;
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class FileHeader {
 	 * @return the isEncrypted
 	 */
 	public boolean isEncrypted() {
-		return isEncrypted;
+		return this.isEncrypted;
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class FileHeader {
 	 * @return the password
 	 */
 	public char[] getPassword() {
-		return password == null ? new char[0] : password.clone();
+		return this.password == null ? new char[0] : this.password.clone();
 	}
 
 	/**
@@ -319,7 +319,7 @@ public class FileHeader {
 	 * @return the dataDescriptorExists
 	 */
 	public boolean isDataDescriptorExists() {
-		return dataDescriptorExists;
+		return this.dataDescriptorExists;
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class FileHeader {
 	 * @return the zip64ExtendInfo
 	 */
 	public Zip64ExtendInfo getZip64ExtendInfo() {
-		return zip64ExtendInfo;
+		return this.zip64ExtendInfo;
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class FileHeader {
 	 * @return the aesExtraDataRecord
 	 */
 	public AESExtraDataRecord getAesExtraDataRecord() {
-		return aesExtraDataRecord;
+		return this.aesExtraDataRecord;
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class FileHeader {
 	 * @return the extraDataRecords
 	 */
 	public List<ExtraDataRecord> getExtraDataRecords() {
-		return extraDataRecords;
+		return this.extraDataRecords;
 	}
 
 	/**
@@ -391,7 +391,7 @@ public class FileHeader {
 	 * @return the fileNameUTF8Encoded
 	 */
 	public boolean isFileNameUTF8Encoded() {
-		return fileNameUTF8Encoded;
+		return this.fileNameUTF8Encoded;
 	}
 
 	/**
@@ -409,7 +409,7 @@ public class FileHeader {
 	 * @return the encryptionMethod
 	 */
 	public int getEncryptionMethod() {
-		return encryptionMethod;
+		return this.encryptionMethod;
 	}
 
 	/**

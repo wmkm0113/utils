@@ -78,7 +78,7 @@ public final class LauncherConfig extends BeanObject {
 	 * <span class="zh-CN">启动器实现类名</span>
 	 */
 	public Class<?> getLauncherClass() {
-		return launcherClass;
+		return this.launcherClass;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public final class LauncherConfig extends BeanObject {
 	 * @param launcherClass <span class="en-US">Implement class name of startup launcher</span>
 	 *                      <span class="zh-CN">启动器实现类名</span>
 	 */
-	public void setLauncherClass(Class<?> launcherClass) {
+	public void setLauncherClass(final Class<?> launcherClass) {
 		this.launcherClass = launcherClass;
 	}
 
@@ -100,7 +100,7 @@ public final class LauncherConfig extends BeanObject {
 	 * <span class="zh-CN">启动排序代码</span>
 	 */
 	public int getSortCode() {
-		return sortCode;
+		return this.sortCode;
 	}
 
 	/**
@@ -110,7 +110,7 @@ public final class LauncherConfig extends BeanObject {
 	 * @param sortCode <span class="en-US">Startup sort code</span>
 	 *                 <span class="zh-CN">启动排序代码</span>
 	 */
-	public void setSortCode(int sortCode) {
+	public void setSortCode(final int sortCode) {
 		this.sortCode = sortCode;
 	}
 
@@ -122,7 +122,7 @@ public final class LauncherConfig extends BeanObject {
 	 * <span class="zh-CN">启动类型枚举值</span>
 	 */
 	public StartupType getStartupType() {
-		return startupType;
+		return this.startupType;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class LauncherConfig extends BeanObject {
 	 * @param startupType <span class="en-US">Enumeration value of startup type</span>
 	 *                    <span class="zh-CN">启动类型枚举值</span>
 	 */
-	public void setStartupType(StartupType startupType) {
+	public void setStartupType(final StartupType startupType) {
 		this.startupType = startupType;
 	}
 }

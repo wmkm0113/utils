@@ -44,7 +44,7 @@ public final class DefaultAuthenticator extends Authenticator {
 	 * @param password <span class="en-US">Authenticate password</span>
 	 *                 <span class="zh-CN">验证密码</span>
 	 */
-	public DefaultAuthenticator(String username, String password) {
+	public DefaultAuthenticator(final String username, final String password) {
 		this.passwordAuthentication =
 				new PasswordAuthentication(StringUtils.notBlank(username) ? username : Globals.DEFAULT_VALUE_STRING,
 						StringUtils.notBlank(password) ? password : Globals.DEFAULT_VALUE_STRING);

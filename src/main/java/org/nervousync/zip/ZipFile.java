@@ -2962,7 +2962,7 @@ public final class ZipFile implements Cloneable {
 
 				fileHeader.setSignature(signature);
 
-				// Made version
+				// Made versions
 				System.arraycopy(readBuffer, pos + 4, shortBuffer, 0, 2);
 				fileHeader.setMadeVersion(RawUtils.readShort(shortBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 
@@ -3138,7 +3138,7 @@ public final class ZipFile implements Cloneable {
 			System.arraycopy(readBuffer, 4, longBuffer, 0, 8);
 			this.zip64EndCentralDirectoryRecord.setRecordSize(RawUtils.readLong(longBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 
-			// Made version
+			// Made versions
 			System.arraycopy(readBuffer, 12, shortBuffer, 0, 2);
 			this.zip64EndCentralDirectoryRecord.setMadeVersion(RawUtils.readShort(shortBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 

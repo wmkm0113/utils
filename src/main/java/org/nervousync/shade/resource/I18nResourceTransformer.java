@@ -169,11 +169,11 @@ public final class I18nResourceTransformer implements ReproducibleResourceTransf
 		IOUtils.writeContent(this.bundleResource.toString(), FileUtils.CRLF, jarOutputStream, Globals.DEFAULT_ENCODING);
 	}
 
-	public void setGroupId(String groupId) {
+	public void setGroupId(final String groupId) {
 		this.bundleResource.setGroupId(groupId);
 	}
 
-	public void setBundle(String bundle) {
+	public void setBundle(final String bundle) {
 		this.bundleResource.setBundle(bundle);
 	}
 }

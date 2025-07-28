@@ -69,7 +69,7 @@ public final class BundleMessage extends BeanObject {
 	 * @param messageKey <span class="en-US">Message identify key</span>
 	 *                   <span class="zh-CN">信息识别键值</span>
 	 */
-	public void setMessageKey(String messageKey) {
+	public void setMessageKey(final String messageKey) {
 		this.messageKey = messageKey;
 	}
 
@@ -91,7 +91,7 @@ public final class BundleMessage extends BeanObject {
 	 * @param messageContent <span class="en-US">Message content</span>
 	 *                       <span class="zh-CN">信息内容</span>
 	 */
-	public void setMessageContent(String messageContent) {
+	public void setMessageContent(final String messageContent) {
 		this.messageContent = messageContent;
 	}
 }

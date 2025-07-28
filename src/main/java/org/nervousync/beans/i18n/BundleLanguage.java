@@ -77,7 +77,7 @@ public final class BundleLanguage extends BeanObject {
 	 * @param languageCode <span class="en-US">Language code</span>
 	 *                     <span class="zh-CN">语言代码</span>
 	 */
-	public void setLanguageCode(String languageCode) {
+	public void setLanguageCode(final String languageCode) {
 		this.languageCode = languageCode;
 	}
 
@@ -99,7 +99,7 @@ public final class BundleLanguage extends BeanObject {
 	 * @param languageName <span class="en-US">Language name</span>
 	 *                     <span class="zh-CN">语言名称</span>
 	 */
-	public void setLanguageName(String languageName) {
+	public void setLanguageName(final String languageName) {
 		this.languageName = languageName;
 	}
 
@@ -121,7 +121,7 @@ public final class BundleLanguage extends BeanObject {
 	 * @param bundleMessages <span class="en-US">Internationalization Information Data List</span>
 	 *                       <span class="zh-CN">国际化信息数据列表</span>
 	 */
-	public void setBundleMessages(List<BundleMessage> bundleMessages) {
+	public void setBundleMessages(final List<BundleMessage> bundleMessages) {
 		this.bundleMessages = bundleMessages;
 	}
 }

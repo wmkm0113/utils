@@ -120,7 +120,7 @@ public final class NetworkInfo implements Serializable {
 	 * <span class="zh-CN">虚拟接口状态</span>
 	 */
 	public boolean isVirtual() {
-		return virtual;
+		return this.virtual;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public final class NetworkInfo implements Serializable {
 	 * <span class="zh-CN">当前网络接口的显示名称</span>
 	 */
 	public String getDisplayName() {
-		return displayName;
+		return this.displayName;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public final class NetworkInfo implements Serializable {
 	 * <span class="zh-CN">当前网络接口的物理地址</span>
 	 */
 	public String getMacAddress() {
-		return macAddress;
+		return this.macAddress;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public final class NetworkInfo implements Serializable {
 	 * <span class="zh-CN">当前网络接口绑定的IP地址列表</span>
 	 */
 	public List<IPAddressInfo> getIpAddressList() {
-		return ipAddressList;
+		return this.ipAddressList;
 	}
 
 	/**
@@ -253,7 +253,7 @@ public final class NetworkInfo implements Serializable {
 		 * <span class="zh-CN">IP地址字符串，支持IPv4和IPv6</span>
 		 */
 		public String getIpAddress() {
-			return ipAddress;
+			return this.ipAddress;
 		}
 
 		/**
@@ -264,7 +264,7 @@ public final class NetworkInfo implements Serializable {
 		 * <span class="zh-CN">私网地址标识</span>
 		 */
 		public boolean isLocal() {
-			return local;
+			return this.local;
 		}
 
 		/**
@@ -275,7 +275,7 @@ public final class NetworkInfo implements Serializable {
 		 * <span class="zh-CN">回环地址标识</span>
 		 */
 		public boolean isLoop() {
-			return loop;
+			return this.loop;
 		}
 
 		/**
@@ -286,7 +286,7 @@ public final class NetworkInfo implements Serializable {
 		 * <span class="zh-CN">链路地址标识</span>
 		 */
 		public boolean isLinkLocal() {
-			return linkLocal;
+			return this.linkLocal;
 		}
 	}
 }

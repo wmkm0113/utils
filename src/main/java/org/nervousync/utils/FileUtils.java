@@ -264,7 +264,7 @@ public final class FileUtils {
 	 * <span class="zh-CN">不检查URL是否真实存在；只是返回给定位置对应的 URL。</span>
 	 *
 	 * @param resourceLocation <span class="en-US">the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a plain file path</span>
-	 *                         <span class="zh-CN">要解析的资源位置：“classpath:”伪 URL、 “file:”URL 或纯文件路</span>
+	 *                         <span class="zh-CN">要解析的资源位置：“classpath:”伪 URL、 “file:” URL 或纯文件路</span>
 	 * @return <span class="en-US">a corresponding URL object</span>
 	 * <span class="zh-CN">对应的URL对象</span>
 	 * @throws FileNotFoundException <span class="en-US">if the resource cannot be resolved to a URL</span>
@@ -568,7 +568,7 @@ public final class FileUtils {
 	 * <span class="zh-CN">即文件系统中的文件。不检查fil是否确实存在；只是返回给定位置对应的文件。</span>
 	 *
 	 * @param resourceLocation <span class="en-US">the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a plain file path</span>
-	 *                         <span class="zh-CN">要解析的资源位置：“classpath:”伪 URL、 “file:”URL 或纯文件路</span>
+	 *                         <span class="zh-CN">要解析的资源位置：“classpath:”伪 URL、 “file:” URL 或纯文件路</span>
 	 * @return <span class="en-US">a corresponding <code>java.io.File</code> object</span>
 	 * <span class="zh-CN">对应的<code>java.io.File</code>对象</span>
 	 * @throws FileNotFoundException <span class="en-US">if the resource cannot be resolved to a file in the file system</span>

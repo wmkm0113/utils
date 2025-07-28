@@ -62,7 +62,7 @@ public final class SecureConfig extends AbstractConfig {
 	 * <span class="zh-CN">安全配置名称</span>
 	 */
 	public String getSecureName() {
-		return secureName;
+		return this.secureName;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public final class SecureConfig extends AbstractConfig {
 	 * @param secureName <span class="en-US">Secure config name</span>
 	 *                   <span class="zh-CN">安全配置名称</span>
 	 */
-	public void setSecureName(String secureName) {
+	public void setSecureName(final String secureName) {
 		this.secureName = secureName;
 	}
 }

@@ -61,7 +61,7 @@ public final class IPRange implements Serializable {
 	 * @see org.nervousync.enumerations.ip.IPType
 	 */
 	public IPType getIpType() {
-		return ipType;
+		return this.ipType;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public final class IPRange implements Serializable {
 	 *               <span class="zh-CN">地址类型枚举值</span>
 	 * @see org.nervousync.enumerations.ip.IPType
 	 */
-	public void setIpType(IPType ipType) {
+	public void setIpType(final IPType ipType) {
 		this.ipType = ipType;
 	}
 
@@ -84,7 +84,7 @@ public final class IPRange implements Serializable {
 	 * <span class="zh-CN">IP范围起始地址</span>
 	 */
 	public String getBeginAddress() {
-		return beginAddress;
+		return this.beginAddress;
 	}
 
 	/**
@@ -94,7 +94,7 @@ public final class IPRange implements Serializable {
 	 * @param beginAddress <span class="en-US">Value of IP range begin address</span>
 	 *                     <span class="zh-CN">IP范围起始地址</span>
 	 */
-	public void setBeginAddress(String beginAddress) {
+	public void setBeginAddress(final String beginAddress) {
 		this.beginAddress = beginAddress;
 	}
 
@@ -106,7 +106,7 @@ public final class IPRange implements Serializable {
 	 * <span class="zh-CN">IP范围终止地址</span>
 	 */
 	public String getEndAddress() {
-		return endAddress;
+		return this.endAddress;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public final class IPRange implements Serializable {
 	 * @param endAddress <span class="en-US">Value of IP range end address</span>
 	 *                   <span class="zh-CN">IP范围终止地址</span>
 	 */
-	public void setEndAddress(String endAddress) {
+	public void setEndAddress(final String endAddress) {
 		this.endAddress = endAddress;
 	}
 }

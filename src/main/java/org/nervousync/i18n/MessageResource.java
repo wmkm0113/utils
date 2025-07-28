@@ -218,7 +218,7 @@ public final class MessageResource {
 			if (this.cachedFormaterMap.containsKey(identifyKey)) {
 				messageFormat = this.cachedFormaterMap.get(identifyKey);
 			} else {
-				messageFormat = new MessageFormat(this.resourcesMap.get(identifyKey));
+				messageFormat = new MessageFormat(StringUtils.replace(this.resourcesMap.get(identifyKey), "'", "''"));
 				this.cachedFormaterMap.put(identifyKey, messageFormat);
 			}
 		}

@@ -48,7 +48,7 @@ public final class TripleDESCryptoAdapterImpl extends SymmetricCryptoAdapter {
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize cipher</span>
 	 *                         <span class="zh-CN">当初始化加密解密实例对象时出现异常</span>
 	 */
-	public TripleDESCryptoAdapterImpl(CipherConfig cipherConfig, CryptoMode cryptoMode, byte[] keyBytes)
+	public TripleDESCryptoAdapterImpl(final CipherConfig cipherConfig, final CryptoMode cryptoMode, final byte[] keyBytes)
 			throws CryptoException {
 		super(cipherConfig, cryptoMode, new CipherKey(keyBytes));
 	}

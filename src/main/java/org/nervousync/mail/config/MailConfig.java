@@ -103,7 +103,6 @@ public final class MailConfig extends BeanObject {
 	 */
 	@XmlElement(name = "last_modified")
 	private long lastModified = Globals.DEFAULT_VALUE_LONG;
-
 	/**
 	 * <span class="en-US">Digital Signature</span>
 	 * <span class="zh-CN">数字签名</span>
@@ -128,7 +127,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">邮件账户用户名</span>
 	 */
 	public String getUserName() {
-		return userName;
+		return this.userName;
 	}
 
 	/**
@@ -138,7 +137,7 @@ public final class MailConfig extends BeanObject {
 	 * @param userName <span class="en-US">Mail account username</span>
 	 *                 <span class="zh-CN">邮件账户用户名</span>
 	 */
-	public void setUserName(String userName) {
+	public void setUserName(final String userName) {
 		this.userName = userName;
 	}
 
@@ -150,7 +149,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">邮件账户密码</span>
 	 */
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	/**
@@ -160,7 +159,7 @@ public final class MailConfig extends BeanObject {
 	 * @param password <span class="en-US">Mail account password</span>
 	 *                 <span class="zh-CN">邮件账户密码</span>
 	 */
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -172,7 +171,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">代理服务器配置信息</span>
 	 */
 	public ProxyConfig getProxyConfig() {
-		return proxyConfig;
+		return this.proxyConfig;
 	}
 
 	/**
@@ -182,7 +181,7 @@ public final class MailConfig extends BeanObject {
 	 * @param proxyConfig <span class="en-US">Proxy configure information</span>
 	 *                    <span class="zh-CN">代理服务器配置信息</span>
 	 */
-	public void setProxyConfig(ProxyConfig proxyConfig) {
+	public void setProxyConfig(final ProxyConfig proxyConfig) {
 		this.proxyConfig = proxyConfig;
 	}
 
@@ -194,7 +193,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">邮件发送服务器配置信息</span>
 	 */
 	public ServerConfig getSendConfig() {
-		return sendConfig;
+		return this.sendConfig;
 	}
 
 	/**
@@ -204,7 +203,7 @@ public final class MailConfig extends BeanObject {
 	 * @param sendConfig <span class="en-US">Mail send server config</span>
 	 *                   <span class="zh-CN">邮件发送服务器配置信息</span>
 	 */
-	public void setSendConfig(ServerConfig sendConfig) {
+	public void setSendConfig(final ServerConfig sendConfig) {
 		this.sendConfig = sendConfig;
 	}
 
@@ -216,7 +215,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">邮件接收服务器配置信息</span>
 	 */
 	public ServerConfig getReceiveConfig() {
-		return receiveConfig;
+		return this.receiveConfig;
 	}
 
 	/**
@@ -226,7 +225,7 @@ public final class MailConfig extends BeanObject {
 	 * @param receiveConfig <span class="en-US">Mail receive server config</span>
 	 *                      <span class="zh-CN">邮件接收服务器配置信息</span>
 	 */
-	public void setReceiveConfig(ServerConfig receiveConfig) {
+	public void setReceiveConfig(final ServerConfig receiveConfig) {
 		this.receiveConfig = receiveConfig;
 	}
 
@@ -238,7 +237,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">附件文件的保存地址</span>
 	 */
 	public String getStoragePath() {
-		return storagePath;
+		return this.storagePath;
 	}
 
 	/**
@@ -248,7 +247,7 @@ public final class MailConfig extends BeanObject {
 	 * @param storagePath <span class="en-US">Attaches the file storage path</span>
 	 *                    <span class="zh-CN">附件文件的保存地址</span>
 	 */
-	public void setStoragePath(String storagePath) {
+	public void setStoragePath(final String storagePath) {
 		this.storagePath = storagePath;
 	}
 
@@ -260,7 +259,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">Base64编码的x509证书二进制数组</span>
 	 */
 	public String getCertificate() {
-		return certificate;
+		return this.certificate;
 	}
 
 	/**
@@ -270,7 +269,7 @@ public final class MailConfig extends BeanObject {
 	 * @param certificate <span class="en-US">Base64 encoded binary data bytes of x509 certificate</span>
 	 *                    <span class="zh-CN">Base64编码的x509证书二进制数组</span>
 	 */
-	public void setCertificate(String certificate) {
+	public void setCertificate(final String certificate) {
 		this.certificate = certificate;
 	}
 
@@ -282,7 +281,7 @@ public final class MailConfig extends BeanObject {
 	 * <span class="zh-CN">Base64编码的私有密钥二进制数组</span>
 	 */
 	public String getPrivateKey() {
-		return privateKey;
+		return this.privateKey;
 	}
 
 	/**
@@ -292,7 +291,7 @@ public final class MailConfig extends BeanObject {
 	 * @param privateKey <span class="en-US">Base64 encoded binary data bytes of private key</span>
 	 *                   <span class="zh-CN">Base64编码的私有密钥二进制数组</span>
 	 */
-	public void setPrivateKey(String privateKey) {
+	public void setPrivateKey(final String privateKey) {
 		this.privateKey = privateKey;
 	}
 
@@ -449,7 +448,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">邮件服务器域名</span>
 		 */
 		public String getHostName() {
-			return hostName;
+			return this.hostName;
 		}
 
 		/**
@@ -459,7 +458,7 @@ public final class MailConfig extends BeanObject {
 		 * @param hostName <span class="en-US">Mail server domain name</span>
 		 *                 <span class="zh-CN">邮件服务器域名</span>
 		 */
-		public void setHostName(String hostName) {
+		public void setHostName(final String hostName) {
 			this.hostName = hostName;
 		}
 
@@ -471,7 +470,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">邮件服务器端口号</span>
 		 */
 		public int getHostPort() {
-			return hostPort;
+			return this.hostPort;
 		}
 
 		/**
@@ -481,7 +480,7 @@ public final class MailConfig extends BeanObject {
 		 * @param hostPort <span class="en-US">Mail server port</span>
 		 *                 <span class="zh-CN">邮件服务器端口号</span>
 		 */
-		public void setHostPort(int hostPort) {
+		public void setHostPort(final int hostPort) {
 			this.hostPort = hostPort;
 		}
 
@@ -493,7 +492,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">使用安全连接到邮件服务器</span>
 		 */
 		public boolean isSsl() {
-			return ssl;
+			return this.ssl;
 		}
 
 		/**
@@ -503,7 +502,7 @@ public final class MailConfig extends BeanObject {
 		 * @param ssl <span class="en-US">Using secure connection to host server</span>
 		 *            <span class="zh-CN">使用安全连接到邮件服务器</span>
 		 */
-		public void setSsl(boolean ssl) {
+		public void setSsl(final boolean ssl) {
 			this.ssl = ssl;
 		}
 
@@ -515,7 +514,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">邮件服务器需要身份验证</span>
 		 */
 		public boolean isAuthLogin() {
-			return authLogin;
+			return this.authLogin;
 		}
 
 		/**
@@ -525,7 +524,7 @@ public final class MailConfig extends BeanObject {
 		 * @param authLogin <span class="en-US">Host server authenticates login</span>
 		 *                  <span class="zh-CN">邮件服务器需要身份验证</span>
 		 */
-		public void setAuthLogin(boolean authLogin) {
+		public void setAuthLogin(final boolean authLogin) {
 			this.authLogin = authLogin;
 		}
 
@@ -537,7 +536,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">邮件服务器协议</span>
 		 */
 		public MailProtocol getProtocolOption() {
-			return protocolOption;
+			return this.protocolOption;
 		}
 
 		/**
@@ -547,7 +546,7 @@ public final class MailConfig extends BeanObject {
 		 * @param protocolOption <span class="en-US">Mail server protocol</span>
 		 *                       <span class="zh-CN">邮件服务器协议</span>
 		 */
-		public void setProtocolOption(MailProtocol protocolOption) {
+		public void setProtocolOption(final MailProtocol protocolOption) {
 			this.protocolOption = protocolOption;
 		}
 
@@ -559,7 +558,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">连接超时时间（单位：秒）</span>
 		 */
 		public int getConnectionTimeout() {
-			return connectionTimeout;
+			return this.connectionTimeout;
 		}
 
 		/**
@@ -569,7 +568,7 @@ public final class MailConfig extends BeanObject {
 		 * @param connectionTimeout <span class="en-US">Connection timeout(Unit: seconds)</span>
 		 *                          <span class="zh-CN">连接超时时间（单位：秒）</span>
 		 */
-		public void setConnectionTimeout(int connectionTimeout) {
+		public void setConnectionTimeout(final int connectionTimeout) {
 			this.connectionTimeout = connectionTimeout;
 		}
 
@@ -581,7 +580,7 @@ public final class MailConfig extends BeanObject {
 		 * <span class="zh-CN">操作超时时间（单位：秒）</span>
 		 */
 		public int getProcessTimeout() {
-			return processTimeout;
+			return this.processTimeout;
 		}
 
 		/**
@@ -591,7 +590,7 @@ public final class MailConfig extends BeanObject {
 		 * @param processTimeout <span class="en-US">Process timeout(Unit: seconds)</span>
 		 *                       <span class="zh-CN">操作超时时间（单位：秒）</span>
 		 */
-		public void setProcessTimeout(int processTimeout) {
+		public void setProcessTimeout(final int processTimeout) {
 			this.processTimeout = processTimeout;
 		}
 

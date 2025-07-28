@@ -46,7 +46,7 @@ public final class CentralDirectory {
 	 * @return the fileHeaders
 	 */
 	public List<GeneralFileHeader> getFileHeaders() {
-		return fileHeaders;
+		return this.fileHeaders;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public final class CentralDirectory {
 	 * @return the digitalSignature
 	 */
 	public DigitalSignature getDigitalSignature() {
-		return digitalSignature;
+		return this.digitalSignature;
 	}
 
 	/**

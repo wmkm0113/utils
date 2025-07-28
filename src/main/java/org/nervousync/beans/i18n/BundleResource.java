@@ -93,7 +93,7 @@ public final class BundleResource extends BeanObject {
 	 * @param groupId <span class="en-US">Organization identification code</span>
 	 *                <span class="zh-CN">组织识别代码</span>
 	 */
-	public void setGroupId(String groupId) {
+	public void setGroupId(final String groupId) {
 		this.groupId = groupId;
 	}
 
@@ -115,7 +115,7 @@ public final class BundleResource extends BeanObject {
 	 * @param bundle <span class="en-US">Project identification code</span>
 	 *               <span class="zh-CN">项目识别代码</span>
 	 */
-	public void setBundle(String bundle) {
+	public void setBundle(final String bundle) {
 		this.bundle = bundle;
 	}
 
@@ -137,7 +137,7 @@ public final class BundleResource extends BeanObject {
 	 * @param bundleErrors <span class="en-US">Definition list of error codes and message identification codes</span>
 	 *                     <span class="zh-CN">错误代码与信息识别代码的定义列表</span>
 	 */
-	public void setBundleErrors(List<BundleError> bundleErrors) {
+	public void setBundleErrors(final List<BundleError> bundleErrors) {
 		this.bundleErrors = bundleErrors;
 	}
 
@@ -159,7 +159,7 @@ public final class BundleResource extends BeanObject {
 	 * @param bundleLanguages <span class="en-US">Definitions of message language list, identification codes and message content</span>
 	 *                        <span class="zh-CN">信息语言、识别代码与信息内容的定义列表</span>
 	 */
-	public void setBundleLanguages(List<BundleLanguage> bundleLanguages) {
+	public void setBundleLanguages(final List<BundleLanguage> bundleLanguages) {
 		this.bundleLanguages = bundleLanguages;
 	}
 }

@@ -59,7 +59,7 @@ public abstract class AbstractConfig extends BeanObject {
 	 * <span class="zh-CN">安全算法</span>
 	 */
 	public SecureFactory.SecureAlgorithm getSecureAlgorithm() {
-		return secureAlgorithm;
+		return this.secureAlgorithm;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class AbstractConfig extends BeanObject {
 	 * @param secureAlgorithm <span class="en-US">Secure algorithm</span>
 	 *                        <span class="zh-CN">安全算法</span>
 	 */
-	public void setSecureAlgorithm(SecureFactory.SecureAlgorithm secureAlgorithm) {
+	public void setSecureAlgorithm(final SecureFactory.SecureAlgorithm secureAlgorithm) {
 		this.secureAlgorithm = secureAlgorithm;
 	}
 
@@ -81,7 +81,7 @@ public abstract class AbstractConfig extends BeanObject {
 	 * <span class="zh-CN">安全密钥</span>
 	 */
 	public String getSecureKey() {
-		return secureKey;
+		return this.secureKey;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public abstract class AbstractConfig extends BeanObject {
 	 * @param secureKey <span class="en-US">Secure key</span>
 	 *                  <span class="zh-CN">安全密钥</span>
 	 */
-	public void setSecureKey(String secureKey) {
+	public void setSecureKey(final String secureKey) {
 		this.secureKey = secureKey;
 	}
 }

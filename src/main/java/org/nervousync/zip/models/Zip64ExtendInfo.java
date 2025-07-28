@@ -45,7 +45,7 @@ public final class Zip64ExtendInfo {
 	 * @return the header
 	 */
 	public int getHeader() {
-		return header;
+		return this.header;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public final class Zip64ExtendInfo {
 	 * @return the size
 	 */
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public final class Zip64ExtendInfo {
 	 * @return the compressedSize
 	 */
 	public long getCompressedSize() {
-		return compressedSize;
+		return this.compressedSize;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public final class Zip64ExtendInfo {
 	 * @return the originalSize
 	 */
 	public long getOriginalSize() {
-		return originalSize;
+		return this.originalSize;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public final class Zip64ExtendInfo {
 	 * @return the offsetLocalHeader
 	 */
 	public long getOffsetLocalHeader() {
-		return offsetLocalHeader;
+		return this.offsetLocalHeader;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public final class Zip64ExtendInfo {
 	 * @return the diskNumberStart
 	 */
 	public int getDiskNumberStart() {
-		return diskNumberStart;
+		return this.diskNumberStart;
 	}
 
 	/**

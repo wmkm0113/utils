@@ -578,7 +578,7 @@ public final class SecureFactory {
 		 * @return <span class="en-US">Initialized adapter instance</span>
 		 * <span class="zh-CN">初始化的适配器实例对象</span>
 		 */
-		private SecureAdapter initCryptor(boolean encrypt) {
+		private SecureAdapter initCryptor(final boolean encrypt) {
 			SecureAdapter secureAdapter = null;
 			if (this.initialized) {
 				try {

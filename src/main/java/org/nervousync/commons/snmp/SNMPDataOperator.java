@@ -34,5 +34,5 @@ public interface SNMPDataOperator {
 	 * @param snmpData <span class="en-US">SNMPData instance</span>
 	 *                 <span class="zh-CN">SNMPData实例对象</span>
 	 */
-	void operateData(SNMPData snmpData);
+	void operateData(final SNMPData snmpData);
 }

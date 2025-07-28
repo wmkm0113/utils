@@ -66,6 +66,7 @@ public final class IDUtils {
 	 * <span class="en-US">Static value for provider name of UUIDv3 Generator</span>
 	 * <span class="zh-CN">静态值用于UUIDv3生成器的提供名称</span>
 	 */
+	@Deprecated(since = "1.2.4")
 	public static final String UUIDv3 = "UUIDv3";
 	/**
 	 * <span class="en-US">Static value for provider name of UUIDv4 Generator</span>
@@ -76,6 +77,7 @@ public final class IDUtils {
 	 * <span class="en-US">Static value for provider name of UUIDv5 Generator</span>
 	 * <span class="zh-CN">静态值用于UUIDv5生成器的提供名称</span>
 	 */
+	@Deprecated(since = "1.2.4")
 	public static final String UUIDv5 = "UUIDv5";
 	/**
 	 * <span class="en-US">Static value for provider name of UUIDv6 Generator</span>
@@ -361,17 +363,6 @@ public final class IDUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Static method for generate UUIDv4 value</h3>
-	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv4值</h3>
-	 *
-	 * @return <span class="en-US">Generated value</span>
-	 * <span class="zh-CN">生成的值</span>
-	 */
-	public static UUID UUIDv6() {
-		return (UUID) generate(UUIDv6, new byte[0]);
-	}
-
-	/**
 	 * <h3 class="en-US">Static method for generate UUIDv5 value</h3>
 	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv5值</h3>
 	 *
@@ -383,6 +374,17 @@ public final class IDUtils {
 	@Deprecated(since = "1.2.4")
 	public static UUID UUIDv5(final byte[] dataBytes) {
 		return (UUID) generate(UUIDv5, dataBytes);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate UUIDv4 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv4值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static UUID UUIDv6() {
+		return (UUID) generate(UUIDv6, new byte[0]);
 	}
 
 	/**

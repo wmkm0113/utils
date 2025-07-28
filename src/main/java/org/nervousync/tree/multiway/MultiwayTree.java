@@ -92,7 +92,7 @@ public final class MultiwayTree<T> {
 	 * @param nodeValue <span class="en-US">Node value</span>
 	 *                  <span class="zh-CN">节点值</span>
 	 */
-	public void setNodeValue(T nodeValue) {
+	public void setNodeValue(final T nodeValue) {
 		this.nodeValue = nodeValue;
 	}
 
@@ -114,7 +114,7 @@ public final class MultiwayTree<T> {
 	 * @param parentNode <span class="en-US">Parent node</span>
 	 *                   <span class="zh-CN">父节点</span>
 	 */
-	public void setParentNode(MultiwayTree<T> parentNode) {
+	public void setParentNode(final MultiwayTree<T> parentNode) {
 		this.parentNode = parentNode;
 	}
 

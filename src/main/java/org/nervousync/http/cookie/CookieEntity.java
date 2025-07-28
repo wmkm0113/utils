@@ -79,7 +79,7 @@ public final class CookieEntity {
 	 * @param cookieValue <span class="en-US">Cookie value from response header</span>
 	 *                    <span class="zh-CN">来自响应头的Cookie值</span>
 	 */
-	public CookieEntity(String cookieValue) {
+	public CookieEntity(final String cookieValue) {
 		if (cookieValue != null && !cookieValue.isEmpty()) {
 			String[] cookieItems = StringUtils.delimitedListToStringArray(cookieValue, ";");
 			for (String cookieItem : cookieItems) {
@@ -118,7 +118,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie名</span>
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -129,7 +129,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie值</span>
 	 */
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**
@@ -140,7 +140,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie目录</span>
 	 */
 	public String getPath() {
-		return path;
+		return this.path;
 	}
 
 	/**
@@ -151,7 +151,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie域名</span>
 	 */
 	public String getDomain() {
-		return domain;
+		return this.domain;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie过期时间</span>
 	 */
 	public long getExpires() {
-		return expires;
+		return this.expires;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie最大生命周期</span>
 	 */
 	public long getMaxAge() {
-		return maxAge;
+		return this.maxAge;
 	}
 
 	/**
@@ -184,7 +184,7 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie是否用于加密传输</span>
 	 */
 	public boolean isSecure() {
-		return secure;
+		return this.secure;
 	}
 
 	/**
@@ -195,6 +195,6 @@ public final class CookieEntity {
 	 * <span class="zh-CN">Cookie版本号</span>
 	 */
 	public int getVersion() {
-		return version;
+		return this.version;
 	}
 }

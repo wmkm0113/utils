@@ -45,7 +45,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the madeVersion
 	 */
 	public int getMadeVersion() {
-		return madeVersion;
+		return this.madeVersion;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the fileCommentLength
 	 */
 	public int getFileCommentLength() {
-		return fileCommentLength;
+		return this.fileCommentLength;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the diskNumberStart
 	 */
 	public int getDiskNumberStart() {
-		return diskNumberStart;
+		return this.diskNumberStart;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the internalFileAttr
 	 */
 	public byte[] getInternalFileAttr() {
-		return internalFileAttr == null ? new byte[0] : internalFileAttr.clone();
+		return this.internalFileAttr == null ? new byte[0] : this.internalFileAttr.clone();
 	}
 
 	/**
@@ -117,7 +117,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the externalFileAttr
 	 */
 	public byte[] getExternalFileAttr() {
-		return externalFileAttr;
+		return this.externalFileAttr;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the offsetLocalHeader
 	 */
 	public long getOffsetLocalHeader() {
-		return offsetLocalHeader;
+		return this.offsetLocalHeader;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the fileComment
 	 */
 	public String getFileComment() {
-		return fileComment;
+		return this.fileComment;
 	}
 
 	/**
@@ -171,7 +171,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 * @return the isDirectory
 	 */
 	public boolean isDirectory() {
-		return isDirectory;
+		return this.isDirectory;
 	}
 
 	/**

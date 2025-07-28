@@ -44,7 +44,7 @@ public final class SimpleHeader {
 	 * @param headerValue <span class="en-US">Header value</span>
 	 *                    <span class="zh-CN">Header值</span>
 	 */
-	public SimpleHeader(String headerName, String headerValue) {
+	public SimpleHeader(final String headerName, final String headerValue) {
 		this.headerName = headerName;
 		this.headerValue = headerValue;
 	}
@@ -57,7 +57,7 @@ public final class SimpleHeader {
 	 * <span class="zh-CN">Header名</span>
 	 */
 	public String getHeaderName() {
-		return headerName;
+		return this.headerName;
 	}
 
 	/**
@@ -68,6 +68,6 @@ public final class SimpleHeader {
 	 * <span class="zh-CN">Header值</span>
 	 */
 	public String getHeaderValue() {
-		return headerValue;
+		return this.headerValue;
 	}
 }
