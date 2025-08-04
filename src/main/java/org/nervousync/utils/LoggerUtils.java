@@ -1,5 +1,6 @@
 package org.nervousync.utils;
 
+import jakarta.annotation.Nonnull;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -255,12 +256,7 @@ public final class LoggerUtils {
 		public void trace(final String messageKey, final Throwable throwable, final Object... collections) {
 			this.logger.trace(this.multiAgent.findMessage(messageKey, collections));
 			if (throwable != null) {
-				String message = Globals.DEFAULT_VALUE_STRING;
-				if (throwable instanceof AbstractException) {
-					message = this.multiAgent.findMessage("Code_Error",
-							"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode()));
-				}
-				this.logger.trace(message, throwable);
+				this.logger.trace(this.errorMessage(throwable), throwable);
 			}
 		}
 
@@ -323,12 +319,7 @@ public final class LoggerUtils {
 		public void debug(final String messageKey, final Throwable throwable, final Object... collections) {
 			this.logger.debug(this.multiAgent.findMessage(messageKey, collections));
 			if (throwable != null) {
-				String message = Globals.DEFAULT_VALUE_STRING;
-				if (throwable instanceof AbstractException) {
-					message = this.multiAgent.findMessage("Code_Error",
-							"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode()));
-				}
-				this.logger.debug(message, throwable);
+				this.logger.debug(this.errorMessage(throwable), throwable);
 			}
 		}
 
@@ -391,12 +382,7 @@ public final class LoggerUtils {
 		public void info(final String messageKey, final Throwable throwable, final Object... collections) {
 			this.logger.info(this.multiAgent.findMessage(messageKey, collections));
 			if (throwable != null) {
-				String message = Globals.DEFAULT_VALUE_STRING;
-				if (throwable instanceof AbstractException) {
-					message = this.multiAgent.findMessage("Code_Error",
-							"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode()));
-				}
-				this.logger.info(message, throwable);
+				this.logger.info(this.errorMessage(throwable), throwable);
 			}
 		}
 
@@ -459,12 +445,7 @@ public final class LoggerUtils {
 		public void warn(final String messageKey, final Throwable throwable, final Object... collections) {
 			this.logger.warn(this.multiAgent.findMessage(messageKey, collections));
 			if (throwable != null) {
-				String message = Globals.DEFAULT_VALUE_STRING;
-				if (throwable instanceof AbstractException) {
-					message = this.multiAgent.findMessage("Code_Error",
-							"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode()));
-				}
-				this.logger.warn(message, throwable);
+				this.logger.warn(this.errorMessage(throwable), throwable);
 			}
 		}
 
@@ -527,13 +508,29 @@ public final class LoggerUtils {
 		public void error(final String messageKey, final Throwable throwable, final Object... collections) {
 			this.logger.error(this.multiAgent.findMessage(messageKey, collections));
 			if (throwable != null) {
-				String message = Globals.DEFAULT_VALUE_STRING;
-				if (throwable instanceof AbstractException) {
-					message = this.multiAgent.findMessage("Code_Error",
-							"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode()));
-				}
-				this.logger.error(message, throwable);
+				this.logger.error(this.errorMessage(throwable), throwable);
 			}
+		}
+
+		/**
+		 * <h3 class="en-US">Read the exception error code and get the corresponding multilingual information</h3>
+		 * <h3 class="zh-CN">读取异常的错误代码并获取对应的多语言信息</h3>
+		 *
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
+		 * @return <span class="en-US">Error message</span>
+		 * <span class="zh-CN">错误信息</span>
+		 */
+		private String errorMessage(@Nonnull final Throwable throwable) {
+			StringBuilder stringBuilder = new StringBuilder();
+			if (throwable instanceof AbstractException) {
+				Optional.ofNullable(this.multiAgent.findMessage("Code_Error",
+								"0x" + Long.toHexString(((AbstractException) throwable).getErrorCode())))
+						.filter(StringUtils::notBlank)
+						.ifPresent(errorMsg -> stringBuilder.append(errorMsg).append(FileUtils.CRLF));
+			}
+			stringBuilder.append(this.multiAgent.findMessage("Stack_Message_Error"));
+			return stringBuilder.toString();
 		}
 	}
 

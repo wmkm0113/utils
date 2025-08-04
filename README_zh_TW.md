@@ -1,6 +1,7 @@
 # Java開發套件
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-jdk11?color=green)](https://mvnrepository.com/artifact/org.nervousync/utils-jdk11)
+[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-jdk11?color=green&label=Release)](https://mvnrepository.com/artifact/org.nervousync/utils-jdk11)
+![Maven Snapshot](https://img.shields.io/maven-metadata/v?label=Snaohot&metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fnervousync%2Futils-jdk11%2Fmaven-metadata.xml)
 [![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
 ![Language](https://img.shields.io/badge/language-Java-green)
 [![Twitter:wmkm0113](https://img.shields.io/twitter/follow/wmkm0113?label=Follow)](https://twitter.com/wmkm0113)
