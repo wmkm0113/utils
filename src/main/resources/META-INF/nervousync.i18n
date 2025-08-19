@@ -1575,6 +1575,30 @@
         {
           "key": "Data_Is_Null_Ignore",
           "content": "Binary data is null, ignore and return null"
+        },
+        {
+          "key": "Startup_Manager_Update",
+          "content": "Startup manager update startup type! Launcher class name: {0}, startup type: {1}"
+        },
+        {
+          "key": "Startup_Manager_Remove",
+          "content": "Startup manager remove registered launcher! Launcher class name: {0}"
+        },
+        {
+          "key": "Startup_Manager_Start",
+          "content": "Startup manager execute start! Launcher class name: {0}"
+        },
+        {
+          "key": "Startup_Manager_Stop",
+          "content": "Startup manager execute stop! Launcher class name: {0}"
+        },
+        {
+          "key": "Startup_Manager_Restart",
+          "content": "Startup manager execute restart! Launcher class name: {0}"
+        },
+        {
+          "key": "Startup_Manager_Save_Config_Error",
+          "content": "Startup manager save startup configure information error!"
         }
       ]
     },
@@ -2633,6 +2657,30 @@
         {
           "key": "Data_Is_Null_Ignore",
           "content": "二进制数据为null，忽略操作返回null"
+        },
+        {
+          "key": "Startup_Manager_Update",
+          "content": "启动管理器更新启动类型！启动器类名：{0}，启动类型：{1}"
+        },
+        {
+          "key": "Startup_Manager_Remove",
+          "content": "启动管理器删除注册的启动器！启动器类名：{0}"
+        },
+        {
+          "key": "Startup_Manager_Start",
+          "content": "启动管理器执行启动操作！启动器类名：{0}"
+        },
+        {
+          "key": "Startup_Manager_Stop",
+          "content": "启动管理器执行停止操作！启动器类名：{0}"
+        },
+        {
+          "key": "Startup_Manager_Restart",
+          "content": "启动管理器执行重启操作！启动器类名：{0}"
+        },
+        {
+          "key": "Startup_Manager_Save_Config_Error",
+          "content": "启动管理器保存启动配置信息出错！"
         }
       ]
     }

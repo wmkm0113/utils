@@ -21,6 +21,7 @@ import java.security.Security;
 import java.util.*;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.mail.config.MailConfig;
@@ -108,72 +109,99 @@ public abstract class BaseProtocol implements Serializable {
 		properties.setProperty(this.hostParam, serverConfig.getHostName());
 		int port = serverConfig.getHostPort();
 		if (port != Globals.DEFAULT_VALUE_INT) {
-			properties.setProperty(portParam, Integer.toString(port));
+			properties.setProperty(this.portParam, Integer.toString(port));
 		}
 
 		if (serverConfig.getConnectionTimeout() > 0) {
-			properties.setProperty(connectionTimeoutParam,
+			properties.setProperty(this.connectionTimeoutParam,
 					Integer.toString(serverConfig.getConnectionTimeout() * 1000));
 		}
 		if (serverConfig.getProcessTimeout() > 0) {
-			properties.setProperty(timeoutParam, Integer.toString(serverConfig.getConnectionTimeout() * 1000));
+			properties.setProperty(this.timeoutParam, Integer.toString(serverConfig.getConnectionTimeout() * 1000));
 		}
 
-		if (serverConfig.isSsl()) {
+		if (SecureProtocol.SSL.equals(serverConfig.getSecureProtocol())) {
 			Security.addProvider(Security.getProvider("SunJSSE"));
 		}
 
 		switch (serverConfig.getProtocolOption()) {
 			case IMAP:
-				properties.setProperty(MAIL_STORE_PROTOCOL, "imap");
-
+				boolean gmail = serverConfig.getHostName().toLowerCase().endsWith("gmail.com");
+				properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimap" : "imap");
 				if (serverConfig.isAuthLogin()) {
-					properties.setProperty("mail.imap.auth.plain.disable", Boolean.TRUE.toString());
-					properties.setProperty("mail.imap.auth.login.disable", Boolean.TRUE.toString());
+					if (gmail) {
+						properties.setProperty("mail.gimap.auth.plain.disable", Boolean.TRUE.toString());
+						properties.setProperty("mail.gimap.auth.login.disable", Boolean.TRUE.toString());
+					} else {
+						properties.setProperty("mail.imap.auth.plain.disable", Boolean.TRUE.toString());
+						properties.setProperty("mail.imap.auth.login.disable", Boolean.TRUE.toString());
+					}
 				}
 
-				if (serverConfig.isSsl()) {
-					properties.setProperty(MAIL_STORE_PROTOCOL, "imaps");
-					properties.setProperty("mail.imap.socketFactory.class", SSL_FACTORY_CLASS);
-					if (port != Globals.DEFAULT_VALUE_INT) {
-						properties.setProperty("mail.imap.socketFactory.port", Integer.toString(port));
-					}
-					properties.setProperty("mail.imap.starttls.enable", Boolean.TRUE.toString());
+				switch (serverConfig.getSecureProtocol()) {
+					case SSL:
+						properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimaps" : "imaps");
+						if (gmail) {
+							properties.setProperty("mail.gimap.socketFactory.class", SSL_FACTORY_CLASS);
+							if (port != Globals.DEFAULT_VALUE_INT) {
+								properties.setProperty("mail.gimap.socketFactory.port", Integer.toString(port));
+							}
+						} else {
+							properties.setProperty("mail.imap.socketFactory.class", SSL_FACTORY_CLASS);
+							if (port != Globals.DEFAULT_VALUE_INT) {
+								properties.setProperty("mail.imap.socketFactory.port", Integer.toString(port));
+							}
+						}
+						break;
+					case TLS:
+						if (gmail) {
+							properties.setProperty("mail.gimap.starttls.enable", Boolean.TRUE.toString());
+						} else {
+							properties.setProperty("mail.imap.starttls.enable", Boolean.TRUE.toString());
+						}
+						break;
 				}
 				break;
 			case SMTP:
 				properties.setProperty(MAIL_STORE_PROTOCOL, "smtp");
 				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtp");
-
 				if (serverConfig.isAuthLogin()) {
 					properties.setProperty("mail.smtp.auth", Boolean.TRUE.toString());
 				}
-
-				if (serverConfig.isSsl()) {
-					properties.setProperty(MAIL_STORE_PROTOCOL, "smtps");
-					properties.setProperty("mail.smtp.ssl.enable", Boolean.TRUE.toString());
-					properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY_CLASS);
-					properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
-					if (port != Globals.DEFAULT_VALUE_INT) {
-						properties.setProperty("mail.smtp.socketFactory.port", Integer.toString(port));
-					}
-					properties.setProperty("mail.smtp.starttls.enable", Boolean.TRUE.toString());
+				switch (serverConfig.getSecureProtocol()) {
+					case SSL:
+						properties.setProperty(MAIL_STORE_PROTOCOL, "smtps");
+						properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtps");
+						properties.setProperty("mail.smtp.ssl.enable", Boolean.TRUE.toString());
+						properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY_CLASS);
+						properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
+						if (port != Globals.DEFAULT_VALUE_INT) {
+							properties.setProperty("mail.smtp.socketFactory.port", Integer.toString(port));
+						}
+						break;
+					case TLS:
+						properties.setProperty("mail.smtp.starttls.enable", Boolean.TRUE.toString());
+						break;
 				}
 				break;
 			case POP3:
 				properties.setProperty(MAIL_STORE_PROTOCOL, "pop3");
 				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3");
 
-				if (serverConfig.isSsl()) {
-					properties.setProperty(MAIL_STORE_PROTOCOL, "pop3s");
-					properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3s");
-					properties.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY_CLASS);
-					if (port != 0) {
-						properties.setProperty("mail.pop3.socketFactory.port", Integer.toString(port));
-					}
-					properties.setProperty("mail.pop3.disabletop", Boolean.TRUE.toString());
-					properties.setProperty("mail.pop3.ssl.enable", Boolean.TRUE.toString());
-					properties.setProperty("mail.pop3.useStartTLS", Boolean.TRUE.toString());
+				switch (serverConfig.getSecureProtocol()) {
+					case SSL:
+						properties.setProperty(MAIL_STORE_PROTOCOL, "pop3s");
+						properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3s");
+						properties.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY_CLASS);
+						if (port != 0) {
+							properties.setProperty("mail.pop3.socketFactory.port", Integer.toString(port));
+						}
+						properties.setProperty("mail.pop3.disabletop", Boolean.TRUE.toString());
+						properties.setProperty("mail.pop3.ssl.enable", Boolean.TRUE.toString());
+						break;
+					case TLS:
+						properties.setProperty("mail.pop3.starttls.enable", Boolean.TRUE.toString());
+						break;
 				}
 				break;
 			default:

@@ -23,6 +23,7 @@ import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.mail.MailProtocol;
+import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.utils.StringUtils;
 
@@ -36,8 +37,7 @@ import org.nervousync.utils.StringUtils;
 @Signature("signature")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML,
-		types = {StringUtils.StringType.XML, StringUtils.StringType.JSON, StringUtils.StringType.YAML})
+@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class MailConfig extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -372,11 +372,11 @@ public final class MailConfig extends BeanObject {
 		@XmlElement(name = "host_port")
 		private int hostPort;
 		/**
-		 * <span class="en-US">Using secure connection to host server</span>
-		 * <span class="zh-CN">使用安全连接到邮件服务器</span>
+		 * <span class="en-US">Enumeration value of used secure protocol</span>
+		 * <span class="zh-CN">使用的安全协议枚举值</span>
 		 */
-		@XmlElement(name = "ssl")
-		private boolean ssl;
+		@XmlElement(name = "secure_protocol")
+		private SecureProtocol secureProtocol = SecureProtocol.NONE;
 		/**
 		 * <span class="en-US">Host server authenticates login</span>
 		 * <span class="zh-CN">邮件服务器需要身份验证</span>
@@ -485,25 +485,25 @@ public final class MailConfig extends BeanObject {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for using secure connection to host server</h3>
-		 * <h3 class="zh-CN">使用安全连接到邮件服务器的Getter方法</h3>
+		 * <h3 class="en-US">Getter method for the enumeration value of used secure protocol</h3>
+		 * <h3 class="zh-CN">使用的安全协议枚举值的Getter方法</h3>
 		 *
-		 * @return <span class="en-US">Using secure connection to host server</span>
-		 * <span class="zh-CN">使用安全连接到邮件服务器</span>
+		 * @return <span class="en-US">Enumeration value of used secure protocol</span>
+		 * <span class="zh-CN">使用的安全协议枚举值</span>
 		 */
-		public boolean isSsl() {
-			return this.ssl;
+		public SecureProtocol getSecureProtocol() {
+			return this.secureProtocol;
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for using secure connection to host server</h3>
-		 * <h3 class="zh-CN">使用安全连接到邮件服务器的Setter方法</h3>
+		 * <h3 class="en-US">Setter method for the enumeration value of used secure protocol</h3>
+		 * <h3 class="zh-CN">使用的安全协议枚举值的Setter方法</h3>
 		 *
-		 * @param ssl <span class="en-US">Using secure connection to host server</span>
-		 *            <span class="zh-CN">使用安全连接到邮件服务器</span>
+		 * @param secureProtocol <span class="en-US">Enumeration value of used secure protocol</span>
+		 *                       <span class="zh-CN">使用的安全协议枚举值</span>
 		 */
-		public void setSsl(final boolean ssl) {
-			this.ssl = ssl;
+		public void setSecureProtocol(final SecureProtocol secureProtocol) {
+			this.secureProtocol = secureProtocol;
 		}
 
 		/**

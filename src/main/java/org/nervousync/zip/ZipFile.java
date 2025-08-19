@@ -1718,9 +1718,11 @@ public final class ZipFile implements Cloneable {
 			long totalRead = 0L;
 			long limitRead = end - start;
 
-			do {
+			while (true) {
 				readLength = input.read(readBuffer);
-
+				if (readLength == Globals.DEFAULT_VALUE_INT) {
+					break;
+				}
 				outputStream.write(readBuffer, 0, readLength);
 
 				totalRead += readLength;
@@ -1731,7 +1733,7 @@ public final class ZipFile implements Cloneable {
 				if (totalRead + readBuffer.length > limitRead) {
 					readBuffer = new byte[(int) (limitRead - totalRead)];
 				}
-			} while (readLength != Globals.DEFAULT_VALUE_INT);
+			}
 		} catch (Exception e) {
 			throw new ZipException(0x0000001B004DL, e);
 		}

@@ -79,6 +79,10 @@
           "content": "Parse and verified e-mail configure information: {0}"
         },
         {
+          "key": "Mail_Folder",
+          "content": "Mail folder name: {0}"
+        },
+        {
           "key": "Mail_Count",
           "content": "Mail count: {0}"
         },
@@ -503,6 +507,10 @@
         {
           "key": "Mail_Parse_Config_Info",
           "content": "解析验证后的电子邮件配置信息：{0}"
+        },
+        {
+          "key": "Mail_Folder",
+          "content": "电子邮件目录：{0}"
         },
         {
           "key": "Mail_Count",

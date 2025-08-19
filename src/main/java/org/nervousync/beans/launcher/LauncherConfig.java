@@ -20,11 +20,9 @@ package org.nervousync.beans.launcher;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.launcher.StartupType;
-import org.nervousync.xml.adapters.ClassAdapter;
 
 /**
  * <h2 class="en-US">Startup Launcher configure information</h2>
@@ -48,8 +46,7 @@ public final class LauncherConfig extends BeanObject {
 	 * <span class="zh-CN">启动器实现类名</span>
 	 */
 	@XmlElement(name = "launcher_class")
-	@XmlJavaTypeAdapter(ClassAdapter.class)
-	private Class<?> launcherClass;
+	private String launcherClass;
 	/**
 	 * <span class="en-US">Startup sort code</span>
 	 * <span class="zh-CN">启动排序代码</span>
@@ -77,7 +74,7 @@ public final class LauncherConfig extends BeanObject {
 	 * @return <span class="en-US">Implement class name of startup launcher</span>
 	 * <span class="zh-CN">启动器实现类名</span>
 	 */
-	public Class<?> getLauncherClass() {
+	public String getLauncherClass() {
 		return this.launcherClass;
 	}
 
@@ -88,7 +85,7 @@ public final class LauncherConfig extends BeanObject {
 	 * @param launcherClass <span class="en-US">Implement class name of startup launcher</span>
 	 *                      <span class="zh-CN">启动器实现类名</span>
 	 */
-	public void setLauncherClass(final Class<?> launcherClass) {
+	public void setLauncherClass(final String launcherClass) {
 		this.launcherClass = launcherClass;
 	}
 

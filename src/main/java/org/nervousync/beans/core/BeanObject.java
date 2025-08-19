@@ -29,6 +29,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * <h2 class="en-US">Abstract class of JavaBean</h2>
@@ -158,30 +159,33 @@ public abstract class BeanObject implements Serializable, Cloneable {
 	 * <span class="zh-CN">验证结果</span>
 	 */
 	public final boolean validate() {
-		OutputConfig config = this.getClass().getAnnotation(OutputConfig.class);
-		if (config == null) {
+		List<StringUtils.StringType> dataTypes = this.dataTypes();
+		if (dataTypes.isEmpty()) {
 			return Boolean.FALSE;
 		}
-
-		List<StringUtils.StringType> dataTypes = new ArrayList<>();
-		dataTypes.add(config.defaultType());
-		for (StringUtils.StringType type : config.types()) {
-			if (!dataTypes.contains(type)) {
-				dataTypes.add(type);
-			}
+		final Signature signAnno = this.getClass().getAnnotation(Signature.class);
+		if (signAnno == null || StringUtils.isEmpty(signAnno.value())) {
+			//  No signature field defined
+			return Boolean.TRUE;
 		}
+		final String signature = (String) ReflectionUtils.getFieldValue(signAnno.value(), this);
+		if (StringUtils.isEmpty(signature)) {
+			return Boolean.FALSE;
+		}
+		return dataTypes.stream().anyMatch(type -> this.verify(signature, type, signAnno.value()));
+	}
 
-		return Optional.ofNullable(this.getClass().getAnnotation(Signature.class))
-				.map(Signature::value)
-				.filter(StringUtils::notBlank)
-				.map(fieldName ->
-						Optional.ofNullable((String) ReflectionUtils.getFieldValue(fieldName, this))
-								.filter(StringUtils::notBlank)
-								.map(signature ->
-										dataTypes.stream().anyMatch(type ->
-												ObjectUtils.nullSafeEquals(signature, this.signature(type, fieldName))))
-								.orElse(Boolean.FALSE))
-				.orElse(Boolean.TRUE);
+	@Nonnull
+	private List<StringUtils.StringType> dataTypes() {
+		List<StringUtils.StringType> dataTypes = new ArrayList<>();
+		Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
+				.ifPresent(config -> {
+					dataTypes.add(config.defaultType());
+					Stream.of(config.types())
+							.filter(type -> !dataTypes.contains(type))
+							.forEach(dataTypes::add);
+				});
+		return dataTypes;
 	}
 
 	/**
@@ -236,6 +240,35 @@ public abstract class BeanObject implements Serializable, Cloneable {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
 		return ConvertUtils.bytesToHex(SecurityUtils.SHA256(fieldsMap));
+	}
+
+	/**
+	 * <h3 class="en-US">Verify the digital signature</h3>
+	 * <h3 class="zh-CN">验证数字签名</h3>
+	 *
+	 * @param signature  <span class="en-US">Digital signature</span>
+	 *                   <span class="zh-CN">数字签名</span>
+	 * @param stringType <span class="en-US">Target string type</span>
+	 *                   <span class="zh-CN">目标字符串类型</span>
+	 * @param fieldName  <span class="en-US">The name of the attribute that stores the digital signature</span>
+	 *                   <span class="zh-CN">保存数字签名的属性名</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
+	 */
+	private boolean verify(final String signature, final StringUtils.StringType stringType, final String fieldName) {
+		if (StringUtils.isEmpty(signature)) {
+			return Boolean.FALSE;
+		}
+		String[] ignoreFields = Optional.ofNullable(this.getClass().getAnnotation(JsonIgnoreProperties.class))
+				.map(JsonIgnoreProperties::value)
+				.map(fieldNames -> (String[]) CollectionUtils.addObjectToArray(fieldNames, fieldName))
+				.orElse(new String[]{fieldName});
+		TreeMap<String, Object> fieldsMap = this.fieldsMap(stringType, ignoreFields);
+		if (fieldsMap.isEmpty()) {
+			return Boolean.FALSE;
+		}
+		return ObjectUtils.nullSafeEquals(signature, ConvertUtils.bytesToHex(SecurityUtils.SHA256(fieldsMap)));
+
 	}
 
 	private TreeMap<String, Object> fieldsMap(final StringUtils.StringType stringType, final String... ignoreFields) {

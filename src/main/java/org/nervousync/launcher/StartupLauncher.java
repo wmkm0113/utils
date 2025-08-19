@@ -57,9 +57,14 @@ public interface StartupLauncher {
 	void stop();
 
 	/**
+	 * <h3 class="en-US">Current launcher running status</h3>
+	 * <h3 class="zh-CN">当前启动器运行状态</h3>
+	 */
+	boolean isRunning();
+
+	/**
 	 * <h3 class="en-US">Destroy current launcher instance</h3>
 	 * <h3 class="zh-CN">销毁当前启动器实例</h3>
 	 */
 	void destroy();
-
 }

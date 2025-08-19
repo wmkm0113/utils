@@ -238,6 +238,9 @@ public final class MailUtils {
 			}
 			try {
 				Properties properties = this.sendOperator.readConfig(this.sendConfig);
+				if (this.logger.isDebugEnabled()) {
+					properties.put("mail.debug", Boolean.TRUE.toString());
+				}
 				if (StringUtils.notBlank(this.userName)) {
 					properties.setProperty("mail.smtp.from", this.userName);
 				}
@@ -328,8 +331,8 @@ public final class MailUtils {
 		 * @return <span class="en-US">Mail UID list</span>
 		 * <span class="zh-CN">邮件唯一标识列表</span>
 		 */
-		public List<String> mailList() {
-			return this.mailList(Globals.DEFAULT_EMAIL_FOLDER_INBOX);
+		public List<String> mailUids() {
+			return this.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX);
 		}
 
 		/**
@@ -341,8 +344,8 @@ public final class MailUtils {
 		 * @return <span class="en-US">Mail UID list</span>
 		 * <span class="zh-CN">邮件唯一标识列表</span>
 		 */
-		public List<String> mailList(final String folderName) {
-			return mailList(folderName, Globals.DEFAULT_VALUE_INT, Globals.DEFAULT_VALUE_INT);
+		public List<String> mailUids(final String folderName) {
+			return mailUids(folderName, Globals.DEFAULT_VALUE_INT, Globals.DEFAULT_VALUE_INT);
 		}
 
 		/**
@@ -358,7 +361,7 @@ public final class MailUtils {
 		 * @return <span class="en-US">Mail UID list</span>
 		 * <span class="zh-CN">邮件唯一标识列表</span>
 		 */
-		public List<String> mailList(final String folderName, final int begin, final int end) {
+		public List<String> mailUids(final String folderName, final int begin, final int end) {
 			if (this.receiveOperator == null || end < begin) {
 				return Collections.emptyList();
 			}
@@ -615,7 +618,6 @@ public final class MailUtils {
 				return Boolean.FALSE;
 			}
 			try (Store store = connect(); Folder folder = openFolder(store, Boolean.FALSE, folderName)) {
-
 				if (!folder.exists() || !folder.isOpen()) {
 					return Boolean.FALSE;
 				}
@@ -646,6 +648,9 @@ public final class MailUtils {
 		 */
 		private Store connect() throws MessagingException {
 			Properties properties = this.receiveOperator.readConfig(this.receiveConfig);
+			if (this.logger.isDebugEnabled()) {
+				properties.put("mail.debug", Boolean.TRUE.toString());
+			}
 			Session session =
 					Session.getInstance(properties, new DefaultAuthenticator(this.userName, this.passWord));
 			session.setDebug(this.logger.isDebugEnabled());

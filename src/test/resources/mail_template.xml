@@ -3,13 +3,13 @@
 <properties>
     <entry key="config.send.address"><!-- SMTP server address --></entry>
     <entry key="config.send.port"><!-- SMTP server port --></entry>
-    <entry key="config.send.ssl"><!-- SMTP server using ssl, value: true/false --></entry>
+	<entry key="config.send.secure.protocol"><!-- SMTP server used secure protocol, value: NONE/SSL/TLS --></entry>
     <entry key="config.send.auth"><!-- SMTP server authenticate login status, value: true/false --></entry>
     <entry key="config.receive.protocol"><!-- Receive server protocol, value: POP3/IMAP --></entry>
     <entry key="config.receive.address"><!-- Receive server address --></entry>
     <entry key="config.receive.port"><!-- Receive server port --></entry>
-    <entry key="config.receive.ssl"><!-- SMTP server using ssl, value: true/false --></entry>
-    <entry key="config.receive.auth"><!-- SMTP server authenticate login status, value: true/false --></entry>
+	<entry key="config.receive.secure.protocol"><!-- Receive server used secure protocol, value: NONE/SSL/TLS --></entry>
+    <entry key="config.receive.auth"><!-- Receive server authenticate login status, value: true/false --></entry>
     <entry key="config.userName"><!-- Authenticate username/email address --></entry>
     <entry key="config.passWord"><!-- Authenticate password --></entry>
     <entry key="config.storagePath"><!-- Attachment file storage path --></entry>

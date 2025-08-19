@@ -24,18 +24,14 @@ import org.nervousync.beans.launcher.StartupConfig;
 import org.nervousync.commons.Globals;
 import org.nervousync.configs.ConfigureManager;
 import org.nervousync.enumerations.launcher.StartupType;
-import org.nervousync.utils.DateTimeUtils;
-import org.nervousync.utils.ObjectUtils;
-import org.nervousync.utils.SystemUtils;
+import org.nervousync.utils.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * <h2 class="en-US">Startup Manager</h2>
@@ -47,6 +43,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @version $Revision: 1.0.0 $ $Date: Jun 28, 2022 15:25:33 $
  */
 public final class StartupManager {
+
+	/**
+	 * <span class="en-US">Multilingual supported logger instance</span>
+	 * <span class="zh-CN">多语言支持的日志对象</span>
+	 */
+	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(StartupManager.class);
+
+	/**
+	 * <span class="en-US">Schedule task execution interval</span>
+	 * <span class="en-US">调度任务执行间隔时间</span>
+	 */
 	private static final long SCHEDULE_PERIOD = 30 * 1000L;
 	/**
 	 * <span class="en-US">Singleton instance of StartupManager</span>
@@ -59,10 +66,10 @@ public final class StartupManager {
 	 */
 	private final StartupConfig startupConfig;
 	/**
-	 * <span class="en-US">Registered startup launcher instance</span>
-	 * <span class="en-US">已注册的启动器实例</span>
+	 * <span class="en-US">Registered launcher instance object</span>
+	 * <span class="en-US">注册的启动器实例对象</span>
 	 */
-	private final List<StartupLauncher> runningLaunchers;
+	private final Map<String, StartupLauncher> registeredLaunchers = new HashMap<>();
 	/**
 	 * <span class="en-US">Schedule executor for update startup launcher configure</span>
 	 * <span class="en-US">启动器配置信息更新调度程序</span>
@@ -80,7 +87,6 @@ public final class StartupManager {
 	 */
 	private StartupManager(final StartupConfig startupConfig) {
 		this.startupConfig = (startupConfig == null) ? new StartupConfig() : startupConfig;
-		this.runningLaunchers = new ArrayList<>();
 		this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		this.scheduledExecutorService.scheduleWithFixedDelay(this::scanConfig, Globals.DEFAULT_SCHEDULE_DELAY,
 				SCHEDULE_PERIOD, TimeUnit.MILLISECONDS);
@@ -98,8 +104,8 @@ public final class StartupManager {
 		if (StartupManager.INSTANCE == null) {
 			StartupManager.INSTANCE =
 					Optional.ofNullable(ConfigureManager.getInstance())
-							.map(configureManager ->
-									new StartupManager(configureManager.readConfigure(StartupConfig.class)))
+							.map(configureManager -> configureManager.readConfigure(StartupConfig.class))
+							.map(StartupManager::new)
 							.orElse(null);
 			SystemUtils.registerShutdownHook(StartupManager::shutdown);
 		}
@@ -141,7 +147,17 @@ public final class StartupManager {
 		}
 	}
 
-	public void config(final String className, final StartupType startupType) {
+	/**
+	 * <h3 class="en-US">Update startup type by the given class name of the startup launcher</h3>
+	 * <h3 class="zh-CN">修改启动器的启动类型</h3>
+	 *
+	 * @param className   <span class="en-US">Launcher class name</span>
+	 *                    <span class="en-US">启动器类名</span>
+	 * @param startupType <span class="en-US">Startup type</span>
+	 *                    <span class="en-US">启动类型</span>
+	 */
+	public void update(final String className, final StartupType startupType) {
+		LOGGER.debug("Startup_Manager_Update", className, startupType);
 		final AtomicBoolean modified = new AtomicBoolean(Boolean.FALSE);
 		long startTime = DateTimeUtils.currentUTCTimeMillis();
 
@@ -156,7 +172,7 @@ public final class StartupManager {
 		}
 		List<LauncherConfig> registeredLaunchers = this.startupConfig.getRegisteredLaunchers();
 		registeredLaunchers.replaceAll(launcherConfig -> {
-			if (ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass().getName())
+			if (ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass())
 					&& !ObjectUtils.nullSafeEquals(launcherConfig.getStartupType(), startupType)) {
 				launcherConfig.setStartupType(startupType);
 				modified.set(Boolean.TRUE);
@@ -173,6 +189,29 @@ public final class StartupManager {
 	}
 
 	/**
+	 * <h3 class="en-US">Remove registered startup launcher</h3>
+	 * <h3 class="zh-CN">删除注册的启动器</h3>
+	 *
+	 * @param className   <span class="en-US">Launcher class name</span>
+	 *                    <span class="en-US">启动器类名</span>
+	 */
+	public void remove(final String className) {
+		LOGGER.debug("Startup_Manager_Remove", className);
+		StartupLauncher startupLauncher = this.registeredLaunchers.get(className);
+		if (startupLauncher != null) {
+			startupLauncher.stop();
+			startupLauncher.destroy();
+		}
+		this.registeredLaunchers.remove(className);
+		List<LauncherConfig> registeredLaunchers = this.startupConfig.getRegisteredLaunchers();
+		if (registeredLaunchers.removeIf(launcherConfig ->
+				ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass()))) {
+			this.startupConfig.setRegisteredLaunchers(registeredLaunchers);
+			this.saveConfig();
+		}
+	}
+
+	/**
 	 * <h3 class="en-US">Start registered launcher</h3>
 	 * <h3 class="zh-CN">启动注册的启动器</h3>
 	 *
@@ -180,13 +219,11 @@ public final class StartupManager {
 	 *                  <span class="en-US">启动器类名</span>
 	 */
 	public void startup(final String className) {
-		if (this.runningLauncher(className)) {
-			return;
-		}
+		LOGGER.debug("Startup_Manager_Start", className);
 		this.startupConfig.getRegisteredLaunchers()
 				.stream()
 				.filter(launcherConfig ->
-						ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass().getName()))
+						ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass()))
 				.filter(launcherConfig -> !StartupType.DISABLE.equals(launcherConfig.getStartupType()))
 				.forEach(this::startLauncher);
 	}
@@ -199,21 +236,10 @@ public final class StartupManager {
 	 *                  <span class="en-US">启动器类名</span>
 	 */
 	public void stop(final String className) {
-		if (this.runningLauncher(className)) {
-			this.startupConfig.getRegisteredLaunchers()
-					.stream()
-					.filter(launcherConfig ->
-							ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass().getName()))
-					.filter(launcherConfig -> !StartupType.DISABLE.equals(launcherConfig.getStartupType()))
-					.forEach(launcherConfig ->
-							this.runningLaunchers.removeIf(startupLauncher -> {
-								if (ObjectUtils.nullSafeEquals(launcherConfig.getLauncherClass(),
-										startupLauncher.getClass())) {
-									startupLauncher.stop();
-									return Boolean.TRUE;
-								}
-								return Boolean.FALSE;
-							}));
+		LOGGER.debug("Startup_Manager_Stop", className);
+		StartupLauncher startupLauncher = this.registeredLaunchers.get(className);
+		if (startupLauncher != null && startupLauncher.isRunning()) {
+			startupLauncher.stop();
 		}
 	}
 
@@ -225,30 +251,21 @@ public final class StartupManager {
 	 *                  <span class="en-US">启动器类名</span>
 	 */
 	public void restart(final String className) {
+		LOGGER.debug("Startup_Manager_Restart", className);
 		this.startupConfig.getRegisteredLaunchers()
 				.stream()
 				.filter(launcherConfig ->
-						ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass().getName()))
+						ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass()))
 				.filter(launcherConfig -> !StartupType.DISABLE.equals(launcherConfig.getStartupType()))
 				.forEach(launcherConfig -> {
-					if (this.runningLauncher(className)) {
-						this.runningLaunchers.stream()
-								.filter(startupLauncher ->
-										ObjectUtils.nullSafeEquals(launcherConfig.getLauncherClass(),
-												startupLauncher.getClass()))
-								.forEach(startupLauncher -> {
-									startupLauncher.stop();
-									startupLauncher.startup();
-								});
-					} else {
-						this.startLauncher(launcherConfig);
+					StartupLauncher startupLauncher = this.registeredLaunchers.get(launcherConfig.getLauncherClass());
+					if (startupLauncher != null) {
+						if (startupLauncher.isRunning()) {
+							startupLauncher.stop();
+						}
+						startupLauncher.startup();
 					}
 				});
-	}
-
-	private boolean runningLauncher(@Nonnull final String className) {
-		return this.runningLaunchers.stream()
-				.anyMatch(startupLauncher -> ObjectUtils.nullSafeEquals(className, startupLauncher.getClass().getName()));
 	}
 
 	/**
@@ -259,12 +276,9 @@ public final class StartupManager {
 	 *                       <span class="en-US">启动器配置信息实例对象</span>
 	 */
 	private void startLauncher(@Nonnull final LauncherConfig launcherConfig) {
-		if (this.runningLaunchers.stream().noneMatch(startupLauncher ->
-				ObjectUtils.nullSafeEquals(launcherConfig.getLauncherClass(), startupLauncher.getClass()))) {
-			StartupLauncher startupLauncher =
-					(StartupLauncher) ObjectUtils.newInstance(launcherConfig.getLauncherClass());
+		StartupLauncher startupLauncher = this.registeredLaunchers.get(launcherConfig.getLauncherClass());
+		if (startupLauncher != null && !startupLauncher.isRunning()) {
 			startupLauncher.startup();
-			this.runningLaunchers.add(startupLauncher);
 		}
 	}
 
@@ -279,30 +293,23 @@ public final class StartupManager {
 
 		this.running = Boolean.TRUE;
 
-		List<Class<?>> scannedClasses = new ArrayList<>();
+		List<String> scannedClasses = new ArrayList<>();
 		AtomicBoolean modified = new AtomicBoolean(Boolean.FALSE);
 		List<LauncherConfig> registeredLaunchers = this.startupConfig.getRegisteredLaunchers();
 		ServiceLoader.load(StartupLauncher.class).forEach(startupLauncher -> {
 			Class<?> launcherClass = startupLauncher.getClass();
 			if (launcherClass.isAnnotationPresent(Provider.class) && launcherClass.isAnnotationPresent(Launcher.class)) {
-				scannedClasses.add(launcherClass);
-				Launcher launcher = launcherClass.getAnnotation(Launcher.class);
-				if (registeredLaunchers.stream().anyMatch(launcherConfig ->
-						ObjectUtils.nullSafeEquals(launcherClass, launcherConfig.getLauncherClass()))) {
-					registeredLaunchers.replaceAll(launcherConfig -> {
-						if (ObjectUtils.nullSafeEquals(launcherClass, launcherConfig.getLauncherClass())
-								&& !ObjectUtils.nullSafeEquals(launcher.value(), launcherConfig.getStartupType())) {
-							launcherConfig.setStartupType(launcher.value());
-							modified.set(Boolean.TRUE);
-						}
-						return launcherConfig;
-					});
-				} else {
+				String className = ClassUtils.originalClassName(launcherClass);
+				scannedClasses.add(className);
+				if (this.registeredLaunchers.containsKey(className)) {
+					return;
+				}
+				if (registeredLaunchers.stream().noneMatch(launcherConfig ->
+						ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass()))) {
+					Launcher launcher = launcherClass.getAnnotation(Launcher.class);
 					LauncherConfig launcherConfig = new LauncherConfig();
-
-					launcherConfig.setLauncherClass(launcherClass);
+					launcherConfig.setLauncherClass(className);
 					launcherConfig.setStartupType(launcher.value());
-
 					registeredLaunchers.add(launcherConfig);
 
 					modified.set(Boolean.TRUE);
@@ -310,10 +317,23 @@ public final class StartupManager {
 			}
 		});
 
-		if (registeredLaunchers.removeIf(launcherConfig ->
-				!scannedClasses.contains(launcherConfig.getLauncherClass()))) {
-			modified.set(Boolean.TRUE);
+		List<String> removedLaunchers = this.registeredLaunchers
+				.keySet()
+				.stream()
+				.filter(className -> !scannedClasses.contains(className))
+				.collect(Collectors.toList());
+
+		for (String className : removedLaunchers) {
+			StartupLauncher startupLauncher = this.registeredLaunchers.get(className);
+			startupLauncher.stop();
+			startupLauncher.destroy();
+			this.registeredLaunchers.remove(className);
+			if (registeredLaunchers.removeIf(launcherConfig ->
+					ObjectUtils.nullSafeEquals(className, launcherConfig.getLauncherClass()))) {
+				modified.set(Boolean.TRUE);
+			}
 		}
+
 		if (modified.get()) {
 			this.startupConfig.setRegisteredLaunchers(registeredLaunchers);
 			this.saveConfig();
@@ -325,7 +345,11 @@ public final class StartupManager {
 	private void saveConfig() {
 		this.startupConfig.setLastModify(DateTimeUtils.currentUTCTimeMillis());
 		Optional.ofNullable(ConfigureManager.getInstance())
-				.ifPresent(configureManager -> configureManager.saveConfigure(this.startupConfig));
+				.ifPresent(configureManager -> {
+					if (!configureManager.saveConfigure(this.startupConfig)) {
+						LOGGER.warn("Startup_Manager_Save_Config_Error");
+					}
+				});
 	}
 
 	/**
@@ -333,8 +357,13 @@ public final class StartupManager {
 	 * <h3 class="zh-CN">销毁所有已注册的启动器实例</h3>
 	 */
 	private void destroy() {
-		this.runningLaunchers.forEach(StartupLauncher::destroy);
-		this.runningLaunchers.clear();
 		this.scheduledExecutorService.shutdown();
+		this.registeredLaunchers.forEach((className, startupLauncher) -> {
+			if (startupLauncher.isRunning()) {
+				startupLauncher.stop();
+			}
+			startupLauncher.destroy();
+		});
+		this.registeredLaunchers.clear();
 	}
 }

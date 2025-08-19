@@ -6,6 +6,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.configs.AutoConfig;
 import org.nervousync.configs.ConfigureManager;
 import org.nervousync.enumerations.mail.MailProtocol;
+import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.exceptions.builder.BuilderException;
 import org.nervousync.mail.MailObject;
 import org.nervousync.mail.config.MailConfig;
@@ -58,13 +59,23 @@ public final class MailTest extends BaseTest {
 		X509Certificate x509Certificate = CertificateUtils.x509(keyPair.getPublic(), IDUtils.snowflake(),
 				new Date(currentTime), new Date(currentTime + 365 * 24 * 60 * 60 * 1000L), "TestCert", keyPair.getPrivate(), "SHA1withRSA");
 		PROPERTIES = PropertiesUtils.loadProperties("src/test/resources/mail.xml");
+		SecureProtocol sendSecureProtocol =
+				Optional.ofNullable(PROPERTIES.getProperty("config.send.secure.protocol"))
+						.filter(StringUtils::notBlank)
+						.map(SecureProtocol::valueOf)
+						.orElse(SecureProtocol.NONE);
+		SecureProtocol receiveSecureProtocol =
+				Optional.ofNullable(PROPERTIES.getProperty("config.receive.secure.protocol"))
+						.filter(StringUtils::notBlank)
+						.map(SecureProtocol::valueOf)
+						.orElse(SecureProtocol.NONE);
 		MailConfig mailConfig = MailConfigBuilder.newBuilder()
 				.sendConfig()
 				.mailProtocol(MailProtocol.SMTP)
 				.configHost(PROPERTIES.getProperty("config.send.address"),
 						Integer.parseInt(PROPERTIES.getProperty("config.send.port")))
 				.authLogin(Boolean.parseBoolean(PROPERTIES.getProperty("config.send.auth")))
-				.useSSL(Boolean.parseBoolean(PROPERTIES.getProperty("config.send.ssl")))
+				.secureProtocol(sendSecureProtocol)
 				.connectionTimeout(10)
 				.processTimeout(10)
 				.confirm()
@@ -78,7 +89,7 @@ public final class MailTest extends BaseTest {
 				.configHost(PROPERTIES.getProperty("config.receive.address"),
 						Integer.parseInt(PROPERTIES.getProperty("config.receive.port")))
 				.authLogin(Boolean.parseBoolean(PROPERTIES.getProperty("config.receive.auth")))
-				.useSSL(Boolean.parseBoolean(PROPERTIES.getProperty("config.receive.ssl")))
+				.secureProtocol(receiveSecureProtocol)
 				.confirm()
 				.authentication(PROPERTIES.getProperty("config.userName"), PROPERTIES.getProperty("config.passWord"))
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
@@ -113,7 +124,7 @@ public final class MailTest extends BaseTest {
 				.ifPresent(mailCOnfig -> {
 					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
 					Assertions.assertNotNull(mailAgent);
-					mailAgent.folderList().forEach(this.logger::info);
+					mailAgent.folderList().forEach(folderName -> this.logger.info("Mail_Folder", folderName));
 				});
 	}
 
@@ -125,10 +136,9 @@ public final class MailTest extends BaseTest {
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
 				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.ifPresent(mailConfig -> {
+					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailConfig);
 					Assertions.assertNotNull(mailAgent);
-					this.logger.info("Mail_Count", mailAgent.mailCount());
 					MailObject mailObject = new MailObject();
 					Optional.ofNullable(PROPERTIES.getProperty("mail.sender")).ifPresent(mailObject::setSendAddress);
 					Optional.ofNullable(PROPERTIES.getProperty("mail.receiver"))
@@ -163,7 +173,7 @@ public final class MailTest extends BaseTest {
 				.ifPresent(mailCOnfig -> {
 					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
 					Assertions.assertNotNull(mailAgent);
-					mailAgent.mailList(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
+					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
 							.filter(uid ->
 									Optional.ofNullable(mailAgent.readMail(Globals.DEFAULT_EMAIL_FOLDER_INBOX, uid))
@@ -194,7 +204,7 @@ public final class MailTest extends BaseTest {
 				.ifPresent(mailCOnfig -> {
 					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
 					Assertions.assertNotNull(mailAgent);
-					mailAgent.mailList(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
+					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
 							.filter(uid ->
 									Optional.ofNullable(mailAgent.readMail(Globals.DEFAULT_EMAIL_FOLDER_INBOX, uid))
@@ -228,7 +238,7 @@ public final class MailTest extends BaseTest {
 				.ifPresent(mailCOnfig -> {
 					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
 					Assertions.assertNotNull(mailAgent);
-					mailAgent.mailList(Globals.DEFAULT_EMAIL_FOLDER_TRASH)
+					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_TRASH)
 							.stream()
 							.filter(uid ->
 									Optional.ofNullable(mailAgent.readMail(Globals.DEFAULT_EMAIL_FOLDER_TRASH, uid))
@@ -251,7 +261,7 @@ public final class MailTest extends BaseTest {
 				.ifPresent(mailCOnfig -> {
 					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
 					Assertions.assertNotNull(mailAgent);
-					mailAgent.mailList(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
+					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
 							.filter(uid ->
 									Optional.ofNullable(mailAgent.readMail(Globals.DEFAULT_EMAIL_FOLDER_INBOX, uid))
@@ -260,7 +270,7 @@ public final class MailTest extends BaseTest {
 							.forEach(uid ->
 									this.logger.info("Mail_Flag_Delete",
 											mailAgent.deleteMails(Globals.DEFAULT_EMAIL_FOLDER_INBOX, uid)));
-					mailAgent.mailList(Globals.DEFAULT_EMAIL_FOLDER_TRASH).stream().filter(uid ->
+					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_TRASH).stream().filter(uid ->
 									Optional.ofNullable(mailAgent.readMail(Globals.DEFAULT_EMAIL_FOLDER_TRASH, uid))
 											.map(receiveObject -> MAIL_SUBJECT.equalsIgnoreCase(receiveObject.getSubject()))
 											.orElse(Boolean.FALSE))

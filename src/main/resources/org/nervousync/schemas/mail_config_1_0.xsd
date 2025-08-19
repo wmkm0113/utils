@@ -70,10 +70,17 @@
                     <xsd:documentation>Server port number</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="ssl" type="xsd:boolean" default="false">
+            <xsd:element name="secure_protocol" default="NONE">
                 <xsd:annotation>
-                    <xsd:documentation>Flag for using ssl when connecting to server</xsd:documentation>
+                    <xsd:documentation>Used secure protocol of connecting to the mail server</xsd:documentation>
                 </xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="NONE" />
+						<xsd:enumeration value="SSL" />
+						<xsd:enumeration value="TLS" />
+					</xsd:restriction>
+				</xsd:simpleType>
             </xsd:element>
             <xsd:element name="auth_login" type="xsd:boolean" default="false">
                 <xsd:annotation>

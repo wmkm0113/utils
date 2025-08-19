@@ -465,24 +465,24 @@ public final class ConfigureManager {
 	                            final StringUtils.StringType stringType, final String encoding,
 	                            final String schemaPath) {
 		String fileName = this.parseName(targetClass, stringType, suffix);
-		return Optional.ofNullable(this.existsFiles.get(fileName))
+		T readConfig = Optional.ofNullable(this.existsFiles.get(fileName))
 				.filter(StringUtils::notBlank)
 				.filter(checkType(stringType))
 				.map(filePath -> FileUtils.readFile(filePath, encoding))
 				.map(readData -> StringUtils.stringToObject(readData, stringType, targetClass, schemaPath))
-				.map(readConfig -> {
-					if (readConfig instanceof BeanObject) {
-						if (((BeanObject) readConfig).validate()) {
-							this.decryptFields((BeanObject) readConfig);
-							return readConfig;
-						} else {
-							LOGGER.error("Match_Signature_Failed", fileName);
-							return null;
-						}
-					}
-					return readConfig;
-				})
 				.orElse(null);
+		if (readConfig != null) {
+			if (readConfig instanceof BeanObject) {
+				this.decryptFields((BeanObject) readConfig);
+				if (((BeanObject) readConfig).validate()) {
+					return readConfig;
+				} else {
+					LOGGER.error("Match_Signature_Failed", fileName);
+					return null;
+				}
+			}
+		}
+		return readConfig;
 	}
 
 	private String suffixName(@Nonnull final String fileName, @Nonnull final Class<?> clazz) {
@@ -746,7 +746,7 @@ public final class ConfigureManager {
 			case SERIALIZABLE:
 				return ".dat";
 			case YAML:
-				return ".yml";
+				return ".yaml";
 			default:
 				return Globals.DEFAULT_VALUE_STRING;
 		}
