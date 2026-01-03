@@ -91,6 +91,7 @@ import java.util.*;
  * @author Steven Wee     <a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.5 $ $Date: Jul 31, 2012 20:54:04 $
  */
+@SuppressWarnings("unused")
 public final class MailUtils {
 	/**
 	 * <h3 class="en-US">Private constructor for MailUtils</h3>

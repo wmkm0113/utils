@@ -40,6 +40,7 @@ import org.nervousync.utils.StringUtils;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.4 $ $Date: Sep 25, 2022 11:04:17 $
  */
+@SuppressWarnings("unused")
 public final class RequestInfo {
 	/**
 	 * <span class="en-US">Enumeration value of HttpMethodOption</span>

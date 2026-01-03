@@ -25,6 +25,7 @@ import org.nervousync.commons.Globals;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Sep 22, 2022 17:36:55 $
  */
+@SuppressWarnings("unused")
 public final class CutOptions {
 	/**
 	 * <h3 class="en-US">Begin position X, default value is 0</h3>

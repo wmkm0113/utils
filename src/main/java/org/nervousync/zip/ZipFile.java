@@ -73,6 +73,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 17:01:20 $
  */
+@SuppressWarnings("unused")
 public final class ZipFile implements Cloneable {
 
 	private final byte[] EMPTY_SHORT_BUFFER = {0, 0};
@@ -2481,10 +2482,12 @@ public final class ZipFile implements Cloneable {
 			int extraFieldLength = 0;
 			if (writeZip64FileSize || writeZip64OffsetLocalHeader) {
 				extraFieldLength += 4;
-				if (writeZip64FileSize)
+				if (writeZip64FileSize) {
 					extraFieldLength += 16;
-				if (writeZip64OffsetLocalHeader)
+				}
+				if (writeZip64OffsetLocalHeader) {
 					extraFieldLength += 8;
+				}
 			}
 			if (generalFileHeader.getAesExtraDataRecord() != null) {
 				extraFieldLength += 11;

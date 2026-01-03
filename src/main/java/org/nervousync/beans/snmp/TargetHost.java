@@ -31,6 +31,7 @@ import org.nervousync.enumerations.snmp.auth.SNMPPrivProtocol;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.2 $ $Date: Sep 25, 2022 21:47:36 $
  */
+@SuppressWarnings("unused")
 public final class TargetHost implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>

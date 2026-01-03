@@ -32,6 +32,7 @@ import org.snmp4j.smi.VariableBinding;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.3 $ $Date: May 25, 2022 21:55:18 $
  */
+@SuppressWarnings("unused")
 public final class SNMPData implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>

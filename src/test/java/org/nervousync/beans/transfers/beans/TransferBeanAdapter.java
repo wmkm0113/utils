@@ -16,14 +16,13 @@
  */
 package org.nervousync.beans.transfers.beans;
 
-import org.nervousync.annotations.beans.OutputConfig;
+import jakarta.annotation.Nonnull;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.ClassUtils;
 import org.nervousync.utils.StringUtils;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -39,7 +38,7 @@ public abstract class TransferBeanAdapter extends TransferAdapter {
 	 * <span class="en-US">Target class</span>
 	 * <span class="zh-CN">目标类</span>
 	 */
-	private final Class<?> beanClass;
+	private final Class<? extends BeanObject> beanClass;
 	/**
 	 * <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
 	 * <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
@@ -58,32 +57,29 @@ public abstract class TransferBeanAdapter extends TransferAdapter {
 	 * @throws IllegalArgumentException <span class="en-US">If target class is not the child class of org.nervousync.beans.core.BeanObject</span>
 	 *                                  <span class="zh-CN">如果目标类不是org.nervousync.beans.core.BeanObject的子类</span>
 	 */
-	protected TransferBeanAdapter(final String className, final StringUtils.StringType stringType)
+	@SuppressWarnings("unchecked")
+	protected TransferBeanAdapter(final String className, @Nonnull final StringUtils.StringType stringType)
 			throws IllegalArgumentException {
-		this.beanClass = ClassUtils.forName(className);
+		this.beanClass = (Class<? extends BeanObject>) ClassUtils.forName(className);
 		if (!ClassUtils.isAssignable(BeanObject.class, this.beanClass)) {
 			throw new IllegalArgumentException("Argument className must extends org.nervousync.beans.core.BeanObject");
 		}
-
-		if (stringType == null) {
-			this.stringType = Optional.ofNullable(this.beanClass.getAnnotation(OutputConfig.class))
-					.map(OutputConfig::defaultType)
-					.orElseThrow(() -> new IllegalArgumentException("Not found default string type"));
-		} else {
-			this.stringType = Optional.ofNullable(this.beanClass.getAnnotation(OutputConfig.class))
-					.filter(outputConfig ->
-							outputConfig.defaultType().equals(stringType)
-									|| Arrays.asList(outputConfig.types()).contains(stringType))
-					.map(outputConfig -> stringType)
-					.orElseThrow(() -> new IllegalArgumentException("Not support the given string type"));
-		}
+		this.stringType = stringType;
 	}
 
 	@Override
 	public final String marshal(final Object object) {
 		return Optional.ofNullable(object)
 				.filter(obj -> obj instanceof BeanObject)
-				.map(obj -> ((BeanObject) obj).toString(this.stringType))
+				.map(obj -> (BeanObject) obj)
+				.map(beanObject -> {
+					switch (this.stringType) {
+						case JSON: return beanObject.toJson();
+						case YAML: return beanObject.toYaml();
+						case XML: return beanObject.toXml();
+						default: return beanObject.toString();
+					}
+				})
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 

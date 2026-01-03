@@ -48,16 +48,17 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2022 16:27:18 $
  */
-public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBuilder<T, MailConfig> {
+@SuppressWarnings("unused")
+public final class MailConfigBuilder<P extends ParentBuilder> extends AbstractBuilder<P, MailConfig> {
 
 	/**
-	 * <h2 class="en-US">Current mail configure information</h2>
-	 * <h2 class="zh-CN">当前邮件配置信息</h2>
+	 * <span class="en-US">Current mail configure information</span>
+	 * <span class="zh-CN">当前邮件配置信息</span>
 	 */
 	private final MailConfig mailConfig;
 	/**
-	 * <h2 class="en-US">Configure information modified flag</h2>
-	 * <h2 class="zh-CN">配置信息修改标记</h2>
+	 * <span class="en-US">Configure information modified flag</span>
+	 * <span class="zh-CN">配置信息修改标记</span>
 	 */
 	private boolean modified = Boolean.FALSE;
 
@@ -70,7 +71,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @param mailConfig    <span class="en-US">Mail configure information</span>
 	 *                      <span class="zh-CN">邮件配置信息</span>
 	 */
-	private MailConfigBuilder(final T parentBuilder, final MailConfig mailConfig) {
+	private MailConfigBuilder(final P parentBuilder, final MailConfig mailConfig) {
 		super(parentBuilder);
 		this.mailConfig = (mailConfig == null) ? new MailConfig() : mailConfig;
 	}
@@ -82,7 +83,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Generated MailConfigBuilder instance</span>
 	 * <span class="zh-CN">生成的邮件配置构造器实例对象</span>
 	 */
-	public static MailConfigBuilder<?> newBuilder() {
+	public static <P extends ParentBuilder> MailConfigBuilder<P> newBuilder() {
 		return newBuilder(null, new MailConfig());
 	}
 
@@ -95,7 +96,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Generated MailConfigBuilder instance</span>
 	 * <span class="zh-CN">生成的邮件配置构造器实例对象</span>
 	 */
-	public static <T extends ParentBuilder> MailConfigBuilder<T> newBuilder(final T parentBuilder) {
+	public static <P extends ParentBuilder> MailConfigBuilder<P> newBuilder(final P parentBuilder) {
 		return newBuilder(parentBuilder, new MailConfig());
 	}
 
@@ -110,7 +111,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Generated MailConfigBuilder instance</span>
 	 * <span class="zh-CN">生成的邮件配置构造器实例对象</span>
 	 */
-	public static <T extends ParentBuilder> MailConfigBuilder<T> newBuilder(final T parentBuilder, final MailConfig mailConfig) {
+	public static <P extends ParentBuilder> MailConfigBuilder<P> newBuilder(final P parentBuilder, final MailConfig mailConfig) {
 		return new MailConfigBuilder<>(parentBuilder, mailConfig);
 	}
 
@@ -128,7 +129,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 *                          <span class="en-US">If username string not a valid e-mail address</span>
 	 *                          <span class="zh-CN">当用户名不是合法的电子邮件地址时</span>
 	 */
-	public MailConfigBuilder<T> authentication(final String userName, final String password)
+	public MailConfigBuilder<P> authentication(final String userName, final String password)
 			throws BuilderException {
 		if (!StringUtils.matches(userName, RegexGlobals.EMAIL_ADDRESS)) {
 			throw new BuilderException(0x0000000E0001L);
@@ -151,7 +152,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">ProxyConfigBuilder instance</span>
 	 * <span class="zh-CN">代理服务器配置构建器实例对象</span>
 	 */
-	public ProxyConfigBuilder<MailConfigBuilder<T>> proxyConfig() {
+	public ProxyConfigBuilder<MailConfigBuilder<P>> proxyConfig() {
 		return new ProxyConfigBuilder<>(this, this.mailConfig.getProxyConfig());
 	}
 
@@ -162,7 +163,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public MailConfigBuilder<T> removeProxyConfig() {
+	public MailConfigBuilder<P> removeProxyConfig() {
 		if (this.mailConfig.getProxyConfig() != null) {
 			this.mailConfig.setProxyConfig(null);
 			this.modified = Boolean.TRUE;
@@ -177,10 +178,10 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">ServerConfigBuilder instance</span>
 	 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 	 */
-	public ServerConfigBuilder sendConfig() {
+	public ServerConfigBuilder<MailConfigBuilder<P>> sendConfig() {
 		return Optional.ofNullable(this.mailConfig.getSendConfig())
-				.map(serverConfig -> new ServerConfigBuilder(this, serverConfig))
-				.orElse(new ServerConfigBuilder(this, new MailConfig.ServerConfig(Boolean.TRUE)));
+				.map(serverConfig -> new ServerConfigBuilder<>(this, serverConfig))
+				.orElse(new ServerConfigBuilder<>(this, new MailConfig.ServerConfig(Boolean.TRUE)));
 	}
 
 	/**
@@ -190,7 +191,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public MailConfigBuilder<T> removeSendConfig() {
+	public MailConfigBuilder<P> removeSendConfig() {
 		if (this.mailConfig.getSendConfig() != null) {
 			this.mailConfig.setSendConfig(null);
 			this.modified = Boolean.TRUE;
@@ -205,10 +206,10 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">ServerConfigBuilder instance</span>
 	 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 	 */
-	public ServerConfigBuilder receiveConfig() {
+	public ServerConfigBuilder<MailConfigBuilder<P>> receiveConfig() {
 		return Optional.ofNullable(this.mailConfig.getReceiveConfig())
-				.map(serverConfig -> new ServerConfigBuilder(this, serverConfig))
-				.orElse(new ServerConfigBuilder(this, new MailConfig.ServerConfig(Boolean.FALSE)));
+				.map(serverConfig -> new ServerConfigBuilder<>(this, serverConfig))
+				.orElse(new ServerConfigBuilder<>(this, new MailConfig.ServerConfig(Boolean.FALSE)));
 	}
 
 	/**
@@ -218,7 +219,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public MailConfigBuilder<T> removeReceiveConfig() {
+	public MailConfigBuilder<P> removeReceiveConfig() {
 		if (this.mailConfig.getReceiveConfig() != null) {
 			this.mailConfig.setReceiveConfig(null);
 			this.modified = Boolean.TRUE;
@@ -237,7 +238,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @throws BuilderException <span class="en-US">If storage path is empty string or folder not exists</span>
 	 *                          <span class="zh-CN">如果本地保存地址为空字符串或目录不存在</span>
 	 */
-	public MailConfigBuilder<T> storagePath(final String storagePath) throws BuilderException {
+	public MailConfigBuilder<P> storagePath(final String storagePath) throws BuilderException {
 		if (StringUtils.isEmpty(storagePath) || !FileUtils.makeDir(storagePath)) {
 			throw new BuilderException(0x0000000E0002L);
 		}
@@ -260,7 +261,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @return <span class="en-US">ServerConfigBuilder instance</span>
 	 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 	 */
-	public MailConfigBuilder<T> signer(final X509Certificate x509Certificate, final PrivateKey privateKey) {
+	public MailConfigBuilder<P> signer(final X509Certificate x509Certificate, final PrivateKey privateKey) {
 		if (x509Certificate != null && privateKey != null) {
 			try {
 				String certData = StringUtils.base64Encode(x509Certificate.getEncoded());
@@ -326,7 +327,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Jul 31, 2022 16:35:16 $
 	 */
-	public static final class ServerConfigBuilder extends AbstractBuilder<MailConfigBuilder<?>, MailConfig.ServerConfig> {
+	public static final class ServerConfigBuilder<P extends ParentBuilder> extends AbstractBuilder<P, MailConfig.ServerConfig> {
 
 		/**
 		 * <span class="en-US">Server configure information</span>
@@ -334,8 +335,8 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 */
 		private final MailConfig.ServerConfig serverConfig;
 		/**
-		 * <h2 class="en-US">Configure information modified flag</h2>
-		 * <h2 class="zh-CN">配置信息修改标记</h2>
+		 * <span class="en-US">Configure information modified flag</span>
+		 * <span class="zh-CN">配置信息修改标记</span>
 		 */
 		private boolean modified = Boolean.FALSE;
 
@@ -348,8 +349,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @param serverConfig  <span class="en-US">Server configure information</span>
 		 *                      <span class="zh-CN">服务器配置</span>
 		 */
-		private ServerConfigBuilder(final MailConfigBuilder<?> parentBuilder,
-		                            @Nonnull final MailConfig.ServerConfig serverConfig) {
+		private ServerConfigBuilder(final P parentBuilder, @Nonnull final MailConfig.ServerConfig serverConfig) {
 			super(parentBuilder);
 			this.serverConfig = serverConfig;
 		}
@@ -365,7 +365,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder configHost(final String hostAddress, final int hostPort) {
+		public ServerConfigBuilder<P> configHost(final String hostAddress, final int hostPort) {
 			if (ObjectUtils.nullSafeEquals(this.serverConfig.getHostName(), hostAddress)
 					&& this.serverConfig.getHostPort() == hostPort) {
 				return this;
@@ -387,7 +387,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder secureProtocol(@Nonnull final SecureProtocol secureProtocol) {
+		public ServerConfigBuilder<P> secureProtocol(@Nonnull final SecureProtocol secureProtocol) {
 			if (ObjectUtils.nullSafeEquals(this.serverConfig.getSecureProtocol(), secureProtocol)) {
 				return this;
 			}
@@ -406,7 +406,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder authLogin(final boolean authLogin) {
+		public ServerConfigBuilder<P> authLogin(final boolean authLogin) {
 			if (ObjectUtils.nullSafeEquals(this.serverConfig.isAuthLogin(), authLogin)) {
 				return this;
 			}
@@ -424,7 +424,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder mailProtocol(final MailProtocol protocolOption) {
+		public ServerConfigBuilder<P> mailProtocol(final MailProtocol protocolOption) {
 			if (MailProtocol.UNKNOWN.equals(protocolOption)
 					|| ObjectUtils.nullSafeEquals(this.serverConfig.getProtocolOption(), protocolOption)) {
 				return this;
@@ -443,7 +443,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder connectionTimeout(final int connectionTimeout) {
+		public ServerConfigBuilder<P> connectionTimeout(final int connectionTimeout) {
 			if (connectionTimeout <= 0 || this.serverConfig.getConnectionTimeout() == connectionTimeout) {
 				return this;
 			}
@@ -461,7 +461,7 @@ public final class MailConfigBuilder<T extends ParentBuilder> extends AbstractBu
 		 * @return <span class="en-US">ServerConfigBuilder instance</span>
 		 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 		 */
-		public ServerConfigBuilder processTimeout(final int processTimeout) {
+		public ServerConfigBuilder<P> processTimeout(final int processTimeout) {
 			if (processTimeout <= 0 || this.serverConfig.getProcessTimeout() == processTimeout) {
 				return this;
 			}

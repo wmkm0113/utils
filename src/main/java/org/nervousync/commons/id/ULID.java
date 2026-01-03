@@ -31,6 +31,7 @@ import java.util.UUID;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: May 21, 2025 14:27:18 $
  */
+@SuppressWarnings("unused")
 public final class ULID implements Serializable, Comparable<ULID> {
 
 	/**
@@ -180,8 +181,9 @@ public final class ULID implements Serializable, Comparable<ULID> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if ((null == obj) || (obj.getClass() != ULID.class))
+		if ((null == obj) || (obj.getClass() != ULID.class)) {
 			return false;
+		}
 		ULID id = (ULID) obj;
 		return (this.mostSigBits == id.mostSigBits &&
 				this.leastSigBits == id.leastSigBits);

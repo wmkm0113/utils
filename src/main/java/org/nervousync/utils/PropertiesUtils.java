@@ -46,6 +46,7 @@ import java.util.Properties;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 14, 2010 11:47:08 $
  */
+@SuppressWarnings("unused")
 public final class PropertiesUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -119,7 +120,7 @@ public final class PropertiesUtils {
 			String fileName = url.getFile();
 			String fileExtName = StringUtils.getFilenameExtension(fileName);
 			inputStream = url.openStream();
-			return loadProperties(inputStream, fileExtName.equalsIgnoreCase("xml"));
+			return loadProperties(inputStream, "xml".equalsIgnoreCase(fileExtName));
 		} catch (Exception e) {
 			LOGGER.error("Load_Properties_Error");
 			if (LOGGER.isDebugEnabled()) {

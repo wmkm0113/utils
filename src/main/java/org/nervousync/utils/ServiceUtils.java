@@ -33,6 +33,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.web.HttpMethodOption;
 import org.nervousync.exceptions.beans.network.NetworkInfoException;
 import org.nervousync.exceptions.services.ServiceException;
+import org.nervousync.http.header.ContentType;
 
 import javax.xml.namespace.QName;
 import java.lang.annotation.Annotation;
@@ -60,6 +61,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2020 15:52:33 $
  */
+@SuppressWarnings("unused")
 public final class ServiceUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -652,13 +654,7 @@ public final class ServiceUtils {
 					if (void.class.equals(returnType)) {
 						return null;
 					}
-					String contentType = response.getHeaderString("Content-Type");
-					String charsetEncoding =
-							Arrays.stream(StringUtils.tokenizeToStringArray(contentType, ";"))
-									.filter(string -> string.trim().toLowerCase().startsWith("charset="))
-									.findFirst()
-									.map(string -> string.substring("charset=".length()))
-									.orElse(Globals.DEFAULT_ENCODING);
+					ContentType contentType = ContentType.parse(response.getHeaderString("Content-Type"));
 
 					Class<?> paramClass = ClassUtils.componentType(method.getReturnType());
 
@@ -674,11 +670,13 @@ public final class ServiceUtils {
 					}
 
 					if (returnType.isArray()) {
-						return Optional.ofNullable(StringUtils.stringToList(responseData, charsetEncoding, paramClass))
+						return Optional.ofNullable(StringUtils.stringToList(responseData, contentType.getStringType(),
+										contentType.getCharsetEncoding(), paramClass))
 								.map(List::toArray)
 								.orElse(new ArrayList<>().toArray());
 					} else if (List.class.isAssignableFrom(returnType)) {
-						return Optional.ofNullable(StringUtils.stringToList(responseData, charsetEncoding, paramClass))
+						return Optional.ofNullable(StringUtils.stringToList(responseData, contentType.getStringType(),
+										contentType.getCharsetEncoding(), paramClass))
 								.orElse(new ArrayList<>());
 					}
 					switch (response.getHeaderString(HttpHeaders.CONTENT_TYPE)) {

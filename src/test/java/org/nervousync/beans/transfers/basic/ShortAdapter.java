@@ -28,6 +28,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 21, 2023 11:34:52 $
  */
+@SuppressWarnings("unused")
 public final class ShortAdapter extends TransferAdapter {
 
 	@Override

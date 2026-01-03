@@ -18,10 +18,8 @@
 package org.nervousync.beans.i18n;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:46:22 $
  */
-@OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
 public final class BundleResource extends BeanObject {
 
 	/**

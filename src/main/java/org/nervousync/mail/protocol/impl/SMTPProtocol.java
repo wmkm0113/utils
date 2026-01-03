@@ -16,9 +16,13 @@
  */
 package org.nervousync.mail.protocol.impl;
 
+import org.nervousync.commons.Globals;
+import org.nervousync.mail.config.MailConfig;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.mail.operator.SendOperator;
 import org.nervousync.mail.protocol.BaseProtocol;
+
+import java.util.Properties;
 
 /**
  * Implement SMTP protocol
@@ -46,5 +50,29 @@ public final class SMTPProtocol extends BaseProtocol implements SendOperator {
 		this.portParam = "mail.smtp.port";
 		this.connectionTimeoutParam = "mail.smtp.connectiontimeout";
 		this.timeoutParam = "mail.smtp.timeout";
+	}
+
+	@Override
+	protected void config(final Properties properties, final MailConfig.ServerConfig serverConfig, final int port) {
+		properties.setProperty(MAIL_STORE_PROTOCOL, "smtp");
+		properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtp");
+		if (serverConfig.isAuthLogin()) {
+			properties.setProperty("mail.smtp.auth", Boolean.TRUE.toString());
+		}
+		switch (serverConfig.getSecureProtocol()) {
+			case SSL:
+				properties.setProperty(MAIL_STORE_PROTOCOL, "smtps");
+				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtps");
+				properties.setProperty("mail.smtp.ssl.enable", Boolean.TRUE.toString());
+				properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY_CLASS);
+				properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
+				if (port != Globals.DEFAULT_VALUE_INT) {
+					properties.setProperty("mail.smtp.socketFactory.port", Integer.toString(port));
+				}
+				break;
+			case TLS:
+				properties.setProperty("mail.smtp.starttls.enable", Boolean.TRUE.toString());
+				break;
+		}
 	}
 }

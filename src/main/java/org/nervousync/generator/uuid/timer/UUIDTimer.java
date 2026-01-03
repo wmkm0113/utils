@@ -23,6 +23,7 @@ package org.nervousync.generator.uuid.timer;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.1 $ $Date: Jul 06, 2022 12:54:12 $
  */
+@SuppressWarnings("EmptyMethod")
 public interface UUIDTimer {
 
 	/**

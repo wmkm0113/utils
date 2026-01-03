@@ -24,6 +24,7 @@ package org.nervousync.enumerations.launcher;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Feb 27, 2024 10:49:12 $
  */
+@SuppressWarnings("unused")
 public enum StartupType {
 	/**
 	 * <span class="en-US">Automatic</span>

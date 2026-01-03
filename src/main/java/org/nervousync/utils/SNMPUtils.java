@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Oct 25, 2017 20:50:34 $
  */
+@SuppressWarnings("unused")
 public final class SNMPUtils {
 	/**
 	 * <span class="en-US">Singleton instance</span>

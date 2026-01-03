@@ -23,6 +23,7 @@ package org.nervousync.enumerations.web;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: May 22, 2015 12:12:30 $
  */
+@SuppressWarnings("unused")
 public enum HttpMethodOption {
 	/**
      * <span class="en-US">HTTP method: GET</span>

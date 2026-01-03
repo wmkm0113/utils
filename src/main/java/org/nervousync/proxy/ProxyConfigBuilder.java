@@ -35,7 +35,8 @@ import java.net.Proxy;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2019 16:22:54 $
  */
-public final class ProxyConfigBuilder<T extends ParentBuilder> extends AbstractBuilder<T, ProxyConfig> {
+@SuppressWarnings("unused")
+public final class ProxyConfigBuilder<P extends ParentBuilder> extends AbstractBuilder<P, ProxyConfig> {
 
 	/**
 	 * <span class="en-US">Proxy configure information</span>
@@ -68,7 +69,7 @@ public final class ProxyConfigBuilder<T extends ParentBuilder> extends AbstractB
 	 * @param proxyConfig   <span class="en-US">Proxy configure information</span>
 	 *                      <span class="zh-CN">代理服务器配置信息</span>
 	 */
-	public ProxyConfigBuilder(final T parentBuilder, final ProxyConfig proxyConfig) {
+	public ProxyConfigBuilder(final P parentBuilder, final ProxyConfig proxyConfig) {
 		super(parentBuilder);
 		this.proxyConfig = proxyConfig;
 	}
@@ -82,7 +83,7 @@ public final class ProxyConfigBuilder<T extends ParentBuilder> extends AbstractB
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public ProxyConfigBuilder<T> proxyType(final Proxy.Type proxyType) {
+	public ProxyConfigBuilder<P> proxyType(final Proxy.Type proxyType) {
 		if (ObjectUtils.nullSafeEquals(this.proxyConfig.getProxyType(), proxyType)) {
 			return this;
 		}
@@ -102,7 +103,7 @@ public final class ProxyConfigBuilder<T extends ParentBuilder> extends AbstractB
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public ProxyConfigBuilder<T> serverConfig(final String serverAddress, final int serverPort) {
+	public ProxyConfigBuilder<P> serverConfig(final String serverAddress, final int serverPort) {
 		if (Proxy.Type.DIRECT.equals(this.proxyConfig.getProxyType())
 				|| (ObjectUtils.nullSafeEquals(this.proxyConfig.getProxyAddress(), serverAddress)
 						&& this.proxyConfig.getProxyPort() == serverPort)) {
@@ -125,7 +126,7 @@ public final class ProxyConfigBuilder<T extends ParentBuilder> extends AbstractB
 	 * @return <span class="en-US">Current builder instance</span>
 	 * <span class="zh-CN">当前构造器实例对象</span>
 	 */
-	public ProxyConfigBuilder<T> authenticator(final String userName, final String passWord) {
+	public ProxyConfigBuilder<P> authenticator(final String userName, final String passWord) {
 		if (Proxy.Type.DIRECT.equals(this.proxyConfig.getProxyType())
 				|| (ObjectUtils.nullSafeEquals(this.proxyConfig.getUserName(), userName)
 						&& ObjectUtils.nullSafeEquals(this.proxyConfig.getPassword(), passWord))) {

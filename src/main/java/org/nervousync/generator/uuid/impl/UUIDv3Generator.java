@@ -33,6 +33,7 @@ import java.util.UUID;
  * @version $Revision: 1.0.0 $ $Date: Jul 06, 2022 12:55:12 $
  */
 @Deprecated(since = "1.2.4")
+@SuppressWarnings("DeprecatedIsStillUsed")
 @Provider(name = IDUtils.UUIDv3, titleKey = "version3.uuid.id.generator.name")
 public final class UUIDv3Generator extends UUIDGenerator {
 
@@ -62,10 +63,14 @@ public final class UUIDv3Generator extends UUIDGenerator {
 	@Override
 	public UUID generate(final byte[] dataBytes) {
 		byte[] randomBytes = SecurityUtils.MD5(dataBytes);
-		randomBytes[6] &= 0x0F;     /* clear version        */
-		randomBytes[6] |= 0x30;     /* set to version 3     */
-		randomBytes[8] &= 0x3F;     /* clear variant        */
-		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
+		/* clear version */
+		randomBytes[6] &= 0x0F;
+		/* set to version 3 */
+		randomBytes[6] |= 0x30;
+		/* clear variant */
+		randomBytes[8] &= 0x3F;
+		/* set to IETF variant */
+		randomBytes[8] |= (byte) 0x80;
 		return new UUID(RawUtils.readLong(randomBytes), RawUtils.readLong(randomBytes, 8));
 	}
 }

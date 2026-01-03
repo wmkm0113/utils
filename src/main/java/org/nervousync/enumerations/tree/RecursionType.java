@@ -24,6 +24,7 @@ package org.nervousync.enumerations.tree;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Nov 3, 2017 17:22:19 $
  */
+@SuppressWarnings("unused")
 public enum RecursionType {
     /**
 	 * <span class="en-US">Normal</span>

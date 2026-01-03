@@ -59,6 +59,6 @@ public final class RC2CryptoAdapterImpl extends SymmetricCryptoAdapter {
 	@Override
 	protected Cipher initCipher() throws CryptoException {
 		return super.generateCipher(new SecretKeySpec(this.cipherKey.getKeyBytes(), "RC2"),
-				this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 8);
+				"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 8);
 	}
 }

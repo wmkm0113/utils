@@ -26,6 +26,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.web.HttpMethodOption;
 import org.nervousync.http.cookie.CookieEntity;
 import org.nervousync.http.entity.HttpEntity;
+import org.nervousync.http.header.ContentType;
 import org.nervousync.http.security.GeneX509TrustManager;
 import org.nervousync.proxy.ProxyConfig;
 
@@ -74,6 +75,7 @@ import java.util.function.Function;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.4 $ $Date: May 13, 2014 15:36:52 $
  */
+@SuppressWarnings("unused")
 public final class RequestUtils {
 	/**
 	 * <span class="en-US">HTTP Method: GET</span>
@@ -321,14 +323,18 @@ public final class RequestUtils {
 				}
 				response = buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofByteArray()).body();
 			} else {
-				String responseData =
-						buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofString()).body();
+				HttpResponse<String> httpResponse =
+						buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofString());
+				String responseData = httpResponse.body();
+				ContentType contentType = ContentType.parse(httpResponse.headers().firstValue("Content-Type").orElse(Globals.DEFAULT_VALUE_STRING));
 				if (String.class.equals(targetClass)) {
 					response = responseData;
 				} else if (targetClass.isArray() || ClassUtils.isAssignable(targetClass, Collection.class)) {
-					response = StringUtils.stringToList(responseData, "", targetClass);
+					response = StringUtils.stringToList(responseData, contentType.getStringType(),
+							contentType.getCharsetEncoding(), targetClass);
 				} else {
-					response = StringUtils.stringToObject(responseData, targetClass);
+					response = StringUtils.stringToObject(responseData, contentType.getStringType(),
+							contentType.getCharsetEncoding(), targetClass);
 				}
 			}
 			return (response == null) ? null : targetClass.cast(response);
@@ -674,14 +680,15 @@ public final class RequestUtils {
 		StringBuilder requestUrl = new StringBuilder();
 		int port = request.getServerPort();
 		if (port < 0) {
-			port = 80; // Work around java.net.URL bug
+			// Work around java.net.URL bug
+			port = 80;
 		}
 		String scheme = request.getScheme();
 		requestUrl.append(scheme);
 		requestUrl.append("://");
 		requestUrl.append(request.getServerName());
-		if ((scheme.equalsIgnoreCase("http") && (port != 80))
-				|| (scheme.equalsIgnoreCase("https") && (port != 443))) {
+		if (("http".equalsIgnoreCase(scheme) && (port != 80))
+				|| ("https".equalsIgnoreCase(scheme) && (port != 443))) {
 			requestUrl.append(':');
 			requestUrl.append(port);
 		}

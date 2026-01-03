@@ -30,6 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Aug 06, 2018 08:56:50 $
  */
+@SuppressWarnings("unused")
 public final class RequestAttribute {
 
 	/**

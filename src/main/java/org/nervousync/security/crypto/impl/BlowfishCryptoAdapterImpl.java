@@ -59,6 +59,6 @@ public final class BlowfishCryptoAdapterImpl extends SymmetricCryptoAdapter {
 	@Override
 	protected Cipher initCipher() throws CryptoException {
 		return super.generateCipher(new SecretKeySpec(this.cipherKey.getKeyBytes(), "Blowfish"),
-				this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 8);
+				"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 8);
 	}
 }

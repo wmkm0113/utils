@@ -516,6 +516,7 @@ public final class ZipOptions implements Cloneable {
 		this.sourceExternalStream = sourceExternalStream;
 	}
 
+	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}

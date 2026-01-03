@@ -21,6 +21,7 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import org.eclipse.angus.mail.imap.IMAPFolder;
 import org.nervousync.commons.Globals;
+import org.nervousync.mail.config.MailConfig;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.mail.operator.ReceiveOperator;
 import org.nervousync.mail.operator.SendOperator;
@@ -29,6 +30,7 @@ import org.nervousync.mail.protocol.BaseProtocol;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * <h2 class="en-US">Implements class of JavaMail IMAP protocol</h2>
@@ -57,6 +59,45 @@ public final class IMAPProtocol extends BaseProtocol implements SendOperator, Re
 		this.portParam = "mail.imap.port";
 		this.connectionTimeoutParam = "mail.imap.connectiontimeout";
 		this.timeoutParam = "mail.imap.timeout";
+	}
+
+	@Override
+	protected void config(final Properties properties, final MailConfig.ServerConfig serverConfig, final int port) {
+		boolean gmail = serverConfig.getHostName().toLowerCase().endsWith("gmail.com");
+		properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimap" : "imap");
+		if (serverConfig.isAuthLogin()) {
+			if (gmail) {
+				properties.setProperty("mail.gimap.auth.plain.disable", Boolean.TRUE.toString());
+				properties.setProperty("mail.gimap.auth.login.disable", Boolean.TRUE.toString());
+			} else {
+				properties.setProperty("mail.imap.auth.plain.disable", Boolean.TRUE.toString());
+				properties.setProperty("mail.imap.auth.login.disable", Boolean.TRUE.toString());
+			}
+		}
+
+		switch (serverConfig.getSecureProtocol()) {
+			case SSL:
+				properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimaps" : "imaps");
+				if (gmail) {
+					properties.setProperty("mail.gimap.socketFactory.class", SSL_FACTORY_CLASS);
+					if (port != Globals.DEFAULT_VALUE_INT) {
+						properties.setProperty("mail.gimap.socketFactory.port", Integer.toString(port));
+					}
+				} else {
+					properties.setProperty("mail.imap.socketFactory.class", SSL_FACTORY_CLASS);
+					if (port != Globals.DEFAULT_VALUE_INT) {
+						properties.setProperty("mail.imap.socketFactory.port", Integer.toString(port));
+					}
+				}
+				break;
+			case TLS:
+				if (gmail) {
+					properties.setProperty("mail.gimap.starttls.enable", Boolean.TRUE.toString());
+				} else {
+					properties.setProperty("mail.imap.starttls.enable", Boolean.TRUE.toString());
+				}
+				break;
+		}
 	}
 
 	/**

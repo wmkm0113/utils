@@ -64,7 +64,7 @@ public final class DESCryptoAdapterImpl extends SymmetricCryptoAdapter {
 			DESKeySpec desKeySpec = new DESKeySpec(this.cipherKey.getKeyBytes());
 			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 			return super.generateCipher(keyFactory.generateSecret(desKeySpec),
-					this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 8);
+					"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 8);
 		} catch (Exception e) {
 			throw new CryptoException(0x00000015000BL, e);
 		}

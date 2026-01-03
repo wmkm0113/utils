@@ -28,6 +28,7 @@ import java.util.Collection;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Apr 3, 2025 14:34:18 $
  */
+@SuppressWarnings("unused")
 public final class ImmutableCollection<E> extends AbstractCollection<E> implements Collection<E> {
 
 	/**

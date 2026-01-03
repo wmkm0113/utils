@@ -32,6 +32,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Apr 3, 2025 14:27:28 $
  */
+@SuppressWarnings("unused")
 public final class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 
 	/**
@@ -331,6 +332,7 @@ public final class ImmutableMap<K, V> implements Map<K, V>, Serializable {
 		 * @return <span class="en-US">Current instance of immutable mapping builder</span>
 		 * <span class="zh-CN">当前构建器实例对象</span>
 		 */
+		@SuppressWarnings("UnusedReturnValue")
 		public Builder<K, V> put(final K key, final V value) {
 			return this.put(ImmutableEntry.of(key, value));
 		}

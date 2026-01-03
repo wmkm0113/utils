@@ -28,6 +28,7 @@ import java.io.Serializable;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.3 $Date: Dec 10, 2021 18:25:52 $
  */
+@SuppressWarnings("unused")
 public final class IPRange implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>

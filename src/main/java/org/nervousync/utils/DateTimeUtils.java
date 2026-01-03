@@ -16,6 +16,7 @@
  */
 package org.nervousync.utils;
 
+import jakarta.annotation.Nonnull;
 import org.intellij.lang.annotations.MagicConstant;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.utils.DataInvalidException;
@@ -29,9 +30,6 @@ import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * <h2 class="en-US">Date time utilities</h2>
@@ -40,6 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 11:15:20 $
  */
+@SuppressWarnings("unused")
 public final class DateTimeUtils {
 
 	/**
@@ -74,7 +73,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">静态DateTimeFormatter实例，使用SiteMap的日期格式</span>
 	 */
 	public static final DateTimeFormatter DEFAULT_SITE_MAP_PATTERN =
-			DateTimeFormatter.ofPattern(DEFAULT_DATETIME_PATTERN_ISO8601 + DateTimeUtils.getTimeZone());
+			DateTimeFormatter.ofPattern(DEFAULT_DATETIME_PATTERN_ISO8601 + DateTimeUtils.systemTimeZone());
 	/**
 	 * <span class="en-US">Static DateTimeFormatter instance for date format yyyyMMdd</span>
 	 * <span class="zh-CN">静态DateTimeFormatter实例，使用的日期格式：yyyyMMdd</span>
@@ -90,11 +89,6 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">静态DateTimeFormatter实例，使用的日期格式：yyyyMMddHHmm</span>
 	 */
 	public static final DateTimeFormatter DEFAULT_LONG_PATTERN = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-	/**
-	 * <span class="en-US">Current UTC Clock Instance</span>
-	 * <span class="zh-CN">当前UTC时钟实例对象</span>
-	 */
-	private static final UTCClock UTC_CLOCK = new UTCClock();
 
 	/**
 	 * <h3 class="en-US">Private constructor for DateTimeUtils</h3>
@@ -129,7 +123,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">日期实例对象</span>
 	 */
 	public static Date parseSiteMapDate(final String string) {
-		return parseDate(string, DEFAULT_DATETIME_PATTERN_ISO8601 + DateTimeUtils.getTimeZone());
+		return parseDate(string, DEFAULT_DATETIME_PATTERN_ISO8601 + DateTimeUtils.systemTimeZone());
 	}
 
 	/**
@@ -206,8 +200,7 @@ public final class DateTimeUtils {
 		if (utcTime < 0L) {
 			return null;
 		}
-		TimeZone timeZone = Calendar.getInstance().getTimeZone();
-		return Instant.ofEpochMilli(utcTime + timeZone.getRawOffset()).atZone(timeZone.toZoneId()).toLocalDateTime();
+		return Instant.ofEpochMilli(utcTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 
 	/**
@@ -514,7 +507,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">读取的值</span>
 	 */
 	public static long currentTimeMillis() {
-		return UTC_CLOCK.currentTimeMillis();
+		return currentUTCTimeMillis() + systemOffsetMilliseconds();
 	}
 
 	/**
@@ -525,7 +518,7 @@ public final class DateTimeUtils {
 	 * <span class="zh-CN">读取的值</span>
 	 */
 	public static long currentUTCTimeMillis() {
-		return UTC_CLOCK.currentUTCTimeMillis();
+		return Instant.now().toEpochMilli();
 	}
 
 	/**
@@ -559,8 +552,7 @@ public final class DateTimeUtils {
 	public static String formatDate(final Date date, final DateTimeFormatter dateTimeFormatter,
 	                                final TimeZone timeZone) {
 		Date useDate = (date == null) ? new Date() : date;
-		return useDate.toInstant().atZone(timeZone.toZoneId()).toLocalDateTime()
-				.format(dateTimeFormatter);
+		return useDate.toInstant().atZone(timeZone.toZoneId()).toLocalDateTime().format(dateTimeFormatter);
 	}
 
 	/**
@@ -903,6 +895,17 @@ public final class DateTimeUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Read the offset in milliseconds of the given time zone id instance object</h3>
+	 * <h3 class="zh-CN">读取给定时区ID实例对象的偏移毫秒数</h3>
+	 *
+	 * @return <span class="en-US">The offset in milliseconds</span>
+	 * <span class="zh-CN">偏移毫秒数</span>
+	 */
+	public static long offsetMilliseconds(@Nonnull final ZoneId zoneId) {
+		return zoneId.getRules().getOffset(Instant.now()).getTotalSeconds() * 1000L;
+	}
+
+	/**
 	 * <h3 class="en-US">Calculate days count of given month count from current day</h3>
 	 * <h3 class="zh-CN">根据给定的月数计算当前日期往后月数有多少天</h3>
 	 *
@@ -929,7 +932,7 @@ public final class DateTimeUtils {
 	 * @return <span class="en-US">formatted time zone string</span>
 	 * <span class="zh-CN">格式化后的时区字符串</span>
 	 */
-	private static String getTimeZone() {
+	private static String systemTimeZone() {
 		StringBuilder stringBuilder = new StringBuilder();
 		int zoneCode = TimeZone.getDefault().getRawOffset() / (1000 * 60 * 60);
 		stringBuilder.append(zoneCode >= 0 ? "+" : "-");
@@ -941,79 +944,13 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h2 class="en-US">UTC Clock</h2>
-	 * <h2 class="zh-CN">UTC时钟</h2>
+	 * <h3 class="en-US">Read the offset in milliseconds of the default time zone</h3>
+	 * <h3 class="zh-CN">读取默认时区的偏移毫秒数</h3>
 	 *
-	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
-	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2010 11:46:19 $
+	 * @return <span class="en-US">The offset in milliseconds</span>
+	 * <span class="zh-CN">偏移毫秒数</span>
 	 */
-	private static final class UTCClock {
-		/**
-		 * <span class="en-US">Current local time milliseconds</span>
-		 * <span class="zh-CN">当前本地时间的毫秒数</span>
-		 */
-		private final AtomicLong currentLocalTime = new AtomicLong(System.currentTimeMillis());
-		/**
-		 * <span class="en-US">Current local timezone offset value</span>
-		 * <span class="zh-CN">本地时区偏移值</span>
-		 */
-		private static final int RAW_OFFSET = TimeZone.getDefault().getRawOffset();
-		/**
-		 * <span class="en-US">Current UTC time milliseconds</span>
-		 * <span class="zh-CN">当前UTC时间的毫秒数</span>
-		 */
-		private final AtomicLong currentUTCTime = new AtomicLong(System.currentTimeMillis() - RAW_OFFSET);
-
-		private final ScheduledThreadPoolExecutor threadPoolExecutor;
-
-		/**
-		 * <h3 class="en-US">Constructor method for the UTC clock</h3>
-		 * <h3 class="zh-CN">UTC时钟的构造方法</h3>
-		 */
-		public UTCClock() {
-			this.threadPoolExecutor = new ScheduledThreadPoolExecutor(1, r -> {
-				Thread thread = new Thread(r);
-				thread.setDaemon(Boolean.TRUE);
-				return thread;
-			});
-			this.threadPoolExecutor.scheduleAtFixedRate(this::readTime, 0L, 1L, TimeUnit.MILLISECONDS);
-			SystemUtils.registerShutdownHook(this::destroy);
-		}
-
-		/**
-		 * <h3 class="en-US">Read current local time milliseconds</h3>
-		 * <h3 class="zh-CN">读取当前本地时间的毫秒数</h3>
-		 *
-		 * @return <span class="en-US">Current local time milliseconds</span>
-		 * <span class="zh-CN">当前本地时间的毫秒数</span>
-		 */
-		public long currentTimeMillis() {
-			return this.currentLocalTime.get();
-		}
-
-		/**
-		 * <h3 class="en-US">Read current UTC time milliseconds</h3>
-		 * <h3 class="zh-CN">读取当前UTC时间的毫秒数</h3>
-		 *
-		 * @return <span class="en-US">Current UTC time milliseconds</span>
-		 * <span class="zh-CN">当前UTC时间的毫秒数</span>
-		 */
-		public long currentUTCTimeMillis() {
-			return this.currentUTCTime.get();
-		}
-
-		/**
-		 * <h3 class="en-US">Schedule method for read current local time and UTC time</h3>
-		 * <h3 class="zh-CN">调度方法用于读取当前本地时间和UTC时间</h3>
-		 */
-		private void readTime() {
-			long currentTime = System.currentTimeMillis();
-			this.currentLocalTime.set(currentTime);
-			this.currentUTCTime.set(currentTime - RAW_OFFSET);
-		}
-
-		void destroy() {
-			this.threadPoolExecutor.shutdown();
-		}
+	private static long systemOffsetMilliseconds() {
+		return offsetMilliseconds(ZoneId.systemDefault());
 	}
 }

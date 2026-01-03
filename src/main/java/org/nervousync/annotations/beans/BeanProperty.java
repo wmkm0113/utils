@@ -41,6 +41,7 @@ import java.lang.annotation.*;
 @Repeatable(BeanProperties.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
+@SuppressWarnings("unused")
 public @interface BeanProperty {
 	/**
 	 * <h3 class="en-US">Priority value of JavaBean property</h3>

@@ -30,6 +30,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 29, 2023 17:19:28 $
  */
+@SuppressWarnings("unused")
 public final class ClassAdapter extends XmlAdapter<String, Class<?>> {
 
 	@Override

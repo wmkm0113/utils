@@ -36,6 +36,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: May 1, 2018 13:49:46 $
  */
+@SuppressWarnings("unused")
 public final class ImageUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>

@@ -49,6 +49,7 @@ import java.util.Properties;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 12, 2010 15:12:05 $
  */
+@SuppressWarnings("unused")
 public final class ConvertUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>

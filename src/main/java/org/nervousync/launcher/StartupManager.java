@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jun 28, 2022 15:25:33 $
  */
+@SuppressWarnings("unused")
 public final class StartupManager {
 
 	/**

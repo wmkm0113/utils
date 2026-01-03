@@ -35,6 +35,7 @@ import java.util.Objects;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Oct 30, 2018 15:38:36 $
  */
+@SuppressWarnings("unused")
 public final class TrustCert {
 	/**
 	 * <span class="en-US">Certificate library data bytes</span>
@@ -163,8 +164,12 @@ public final class TrustCert {
 	 */
 	@Override
 	public boolean equals(final Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		TrustCert trustCert = (TrustCert) o;
 		return Arrays.equals(this.certContent, trustCert.certContent)
 				&& Objects.equals(this.certPassword, trustCert.certPassword);

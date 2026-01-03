@@ -45,6 +45,7 @@ import java.util.zip.CRC32;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 11:08:14 $
  */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public final class FileUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -3645,6 +3646,7 @@ public final class FileUtils {
 		 *
 		 * @see FileFilter#accept(File)
 		 */
+		@Override
 		public boolean accept(File dir, String name) {
 			if (this.fileNameRegex != null && dir != null && dir.isDirectory()
 					&& dir.exists() && name != null) {
@@ -3682,6 +3684,7 @@ public final class FileUtils {
 		 *
 		 * @see FileFilter#accept(File)
 		 */
+		@Override
 		public boolean accept(File dir, String name) {
 			if (this.fileExtName != null && dir != null && dir.isDirectory()
 					&& dir.exists() && name != null) {

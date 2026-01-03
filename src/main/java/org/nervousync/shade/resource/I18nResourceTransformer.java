@@ -166,7 +166,7 @@ public final class I18nResourceTransformer implements ReproducibleResourceTransf
 		JarEntry jarEntry = new JarEntry(MultilingualUtils.BUNDLE_RESOURCE_PATH);
 		jarEntry.setTime(currentTime);
 		jarOutputStream.putNextEntry(jarEntry);
-		IOUtils.writeContent(this.bundleResource.toString(), FileUtils.CRLF, jarOutputStream, Globals.DEFAULT_ENCODING);
+		IOUtils.writeContent(this.bundleResource.toJson(), FileUtils.CRLF, jarOutputStream, Globals.DEFAULT_ENCODING);
 	}
 
 	public void setGroupId(final String groupId) {

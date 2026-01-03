@@ -59,6 +59,6 @@ public final class AESCryptoAdapterImpl extends SymmetricCryptoAdapter {
 	@Override
 	protected Cipher initCipher() throws CryptoException {
 		return super.generateCipher(new SecretKeySpec(this.cipherKey.getKeyBytes(), "AES"),
-				this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 16);
+				"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 16);
 	}
 }

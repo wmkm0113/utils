@@ -18,11 +18,13 @@ package org.nervousync.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.profile.pegdown.Extensions;
@@ -109,6 +111,23 @@ public final class StringUtils {
 	 * <span class="zh-CN">多语言支持的日志对象</span>
 	 */
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(StringUtils.class);
+	/**
+	 * <span class="en-US">JSON object mapper instance</span>
+	 * <span class="zh-CN">JSON数据映射实例对象</span>
+	 */
+	private static final ObjectMapper JSON_MAPPER =
+			JsonMapper.builder().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+					.addModule(new JavaTimeModule())
+					.build();
+	/**
+	 * <span class="en-US">YAML object mapper instance</span>
+	 * <span class="zh-CN">YAML数据映射实例对象</span>
+	 */
+	private static final ObjectMapper YAML_MAPPER =
+			JsonMapper.builder(YAMLFactory.builder().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER).build())
+					.addModule(new JavaTimeModule())
+					.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+					.build();
 	/**
 	 * <span class="en-US">Top folder path</span>
 	 * <span class="zh-CN">上级目录路径</span>
@@ -495,7 +514,7 @@ public final class StringUtils {
 	 * <span class="zh-CN">解码后的二进制字节数组</span>
 	 */
 	public static byte[] base64Decode(final String string) {
-		if (StringUtils.isEmpty(string)) {
+		if (StringUtils.isEmpty(string) || !StringUtils.matches(string, RegexGlobals.BASE64)) {
 			return new byte[0];
 		}
 		String origString = string;
@@ -1255,9 +1274,10 @@ public final class StringUtils {
 		if (inString == null || oldPattern == null || newPattern == null) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
-		StringBuilder stringBuilder = new StringBuilder();
 		// output StringBuilder we'll build up
-		int pos = 0; // our position in the old string
+		StringBuilder stringBuilder = new StringBuilder();
+		// our position in the old string
+		int pos = 0;
 		int index = inString.indexOf(oldPattern);
 		// the index of an occurrence we've found, or -1
 		int patLen = oldPattern.length();
@@ -2252,7 +2272,6 @@ public final class StringUtils {
 	 */
 	public static String objectToString(final Object object, final StringType stringType, final boolean formatOutput,
 	                                    final boolean outputFragment, final String encoding) {
-		ObjectMapper objectMapper;
 		switch (stringType) {
 			case XML:
 				if (!object.getClass().isAnnotationPresent(XmlRootElement.class)) {
@@ -2307,47 +2326,35 @@ public final class StringUtils {
 					IOUtils.closeStream(stringWriter);
 				}
 			case JSON:
-				objectMapper = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+				try {
+					return formatOutput
+							? JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+							: JSON_MAPPER.writeValueAsString(object);
+				} catch (JsonProcessingException e) {
+					LOGGER.error("Convert_String_Error");
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Stack_Message_Error", e);
+					}
+				}
 				break;
 			case YAML:
-				objectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
-						.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+				try {
+					return formatOutput
+							? YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+							: YAML_MAPPER.writeValueAsString(object);
+				} catch (JsonProcessingException e) {
+					LOGGER.error("Convert_String_Error");
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Stack_Message_Error", e);
+					}
+				}
 				break;
 			case SERIALIZABLE:
 				return StringUtils.base64Encode(ConvertUtils.toByteArray(object));
 			default:
 				return Globals.DEFAULT_VALUE_STRING;
 		}
-		try {
-			return formatOutput
-					? objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object)
-					: objectMapper.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			LOGGER.error("Convert_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-		}
 		return Globals.DEFAULT_VALUE_STRING;
-	}
-
-	/**
-	 * <h3 class="en-US">Parse strings to target JavaBean instance. </h3>
-	 * <h3 class="zh-CN">解析字符串为目标JavaBean实例对象</h3>
-	 *
-	 * @param <T>         <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param string      <span class="en-US">The string will parse</span>
-	 *                    <span class="zh-CN">要解析的字符串</span>
-	 * @param beanClass   <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
-	 *                    <span class="zh-CN">XML描述文件路径（可能为描述文件URI或本地文件路径）</span>
-	 * @return <span class="en-US">Converted object instance</span>
-	 * <span class="zh-CN">转换后的实例对象</span>
-	 */
-	public static <T> T stringToObject(final String string, final Class<T> beanClass, final String... schemaPaths) {
-		return stringToObject(string, Globals.DEFAULT_ENCODING, beanClass, schemaPaths);
 	}
 
 	/**
@@ -2367,8 +2374,8 @@ public final class StringUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static <T> T stringToObject(final String string, final StringType stringType, final Class<T> beanClass,
-	                                   final String... schemaPaths) {
+	public static <T> T stringToObject(final String string, final StringType stringType,
+	                                   final Class<T> beanClass, final String... schemaPaths) {
 		return stringToObject(string, stringType, Globals.DEFAULT_ENCODING, beanClass, schemaPaths);
 	}
 
@@ -2380,6 +2387,8 @@ public final class StringUtils {
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param string      <span class="en-US">The string will parse</span>
 	 *                    <span class="zh-CN">要解析的字符串</span>
+	 * @param stringType  <span class="en-US">The string type</span>
+	 *                    <span class="zh-CN">字符串类型</span>
 	 * @param encoding    <span class="en-US">String charset encoding</span>
 	 *                    <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
@@ -2389,21 +2398,37 @@ public final class StringUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static <T> T stringToObject(final String string, final String encoding,
-	                                   final Class<T> beanClass, final String... schemaPaths) {
+	public static <T> T stringToObject(final String string, final StringType stringType,
+	                                   final String encoding, final Class<T> beanClass,
+	                                   final String... schemaPaths) {
 		if (StringUtils.isEmpty(string)) {
 			LOGGER.error("Parse_Empty_String_Error");
 			return null;
 		}
-		if (ClassUtils.isAssignable(Map.class, beanClass)) {
-			return beanClass.cast(StringUtils.dataToMap(string, StringType.JSON));
+
+		String charsetEncoding =
+				Optional.ofNullable(beanClass.getAnnotation(OutputConfig.class))
+						.map(OutputConfig::encoding)
+						.orElse(encoding);
+		if (StringUtils.isEmpty(charsetEncoding)) {
+			charsetEncoding = Globals.DEFAULT_ENCODING;
+		}
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Parse_String_Debug", string, charsetEncoding, beanClass.getName());
 		}
 
-		OutputConfig outputConfig = beanClass.getAnnotation(OutputConfig.class);
-		if (outputConfig == null) {
-			return stringToObject(string, StringType.SERIALIZABLE, encoding, beanClass, schemaPaths);
+		if (StringType.SIMPLE.equals(stringType)) {
+			return ClassUtils.parseSimpleData(string, beanClass);
 		}
-		return stringToObject(string, outputConfig.defaultType(), outputConfig.encoding(), beanClass, schemaPaths);
+		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(charsetEncoding))) {
+			return streamToObject(inputStream, stringType, beanClass, schemaPaths);
+		} catch (IOException e) {
+			LOGGER.error("Parse_String_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -2414,6 +2439,8 @@ public final class StringUtils {
 	 *                  <span class="zh-CN">目标JavaBean类</span>
 	 * @param string    <span class="en-US">The string will parse</span>
 	 *                  <span class="zh-CN">要解析的字符串</span>
+	 * @param stringType  <span class="en-US">The string type</span>
+	 *                    <span class="zh-CN">字符串类型</span>
 	 * @param encoding  <span class="en-US">String charset encoding</span>
 	 *                  <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass <span class="en-US">target JavaBean class</span>
@@ -2421,7 +2448,8 @@ public final class StringUtils {
 	 * @return <span class="en-US">Converted object instance list</span>
 	 * <span class="zh-CN">转换后的实例对象列表</span>
 	 */
-	public static <T> List<T> stringToList(final String string, final String encoding, final Class<T> beanClass) {
+	public static <T> List<T> stringToList(final String string, final StringType stringType,
+	                                       final String encoding, final Class<T> beanClass) {
 		if (StringUtils.isEmpty(string)) {
 			LOGGER.error("Parse_Empty_String_Error");
 			return null;
@@ -2433,7 +2461,7 @@ public final class StringUtils {
 
 		String stringEncoding = (encoding == null) ? Globals.DEFAULT_ENCODING : encoding;
 		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(stringEncoding))) {
-			return streamToList(inputStream, beanClass);
+			return streamToList(inputStream, stringType, beanClass);
 		} catch (IOException e) {
 			LOGGER.error("Parse_String_Error");
 			if (LOGGER.isDebugEnabled()) {
@@ -2503,10 +2531,18 @@ public final class StringUtils {
 	 *                     <span class="en-US">If an error occurs when read data from input stream</span>
 	 *                     <span class="zh-CN">如果从输入流中读取数据时出现异常</span>
 	 */
-	public static <T> List<T> streamToList(final InputStream inputStream, final Class<T> beanClass) throws IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, beanClass);
-		return objectMapper.readValue(inputStream, javaType);
+	public static <T> List<T> streamToList(final InputStream inputStream, final StringType stringType,
+	                                       final Class<T> beanClass) throws IOException {
+		switch (stringType) {
+			case JSON:
+				return JSON_MAPPER.readValue(inputStream,
+						new ObjectMapper().getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+			case YAML:
+				return YAML_MAPPER.readValue(inputStream,
+						new ObjectMapper().getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+			default:
+				return Collections.emptyList();
+		}
 	}
 
 	/**
@@ -2535,33 +2571,6 @@ public final class StringUtils {
 					}
 				})
 				.orElse(Boolean.FALSE);
-	}
-
-	/**
-	 * <h3 class="en-US">Parse the content of input stream to target JavaBean instance list. </h3>
-	 * <h3 class="zh-CN">解析输入流中的内容为目标JavaBean实例对象列表</h3>
-	 *
-	 * @param <T>         <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param inputStream <span class="en-US">Input stream instance</span>
-	 *                    <span class="zh-CN">输入流对象实例</span>
-	 * @param beanClass   <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
-	 *                    <span class="zh-CN">XML描述文件路径（可能为描述文件URI或本地文件路径）</span>
-	 * @return <span class="en-US">Converted object instance list</span>
-	 * <span class="zh-CN">转换后的实例对象列表</span>
-	 * @throws IOException the io exception
-	 *                     <span class="en-US">If an error occurs when read data from input stream</span>
-	 *                     <span class="zh-CN">如果从输入流中读取数据时出现异常</span>
-	 */
-	public static <T> T streamToObject(final InputStream inputStream, final Class<T> beanClass,
-	                                   final String... schemaPaths) throws IOException {
-		OutputConfig outputConfig = beanClass.getAnnotation(OutputConfig.class);
-		if (outputConfig == null) {
-			return streamToObject(inputStream, StringType.SERIALIZABLE, beanClass, schemaPaths);
-		}
-		return streamToObject(inputStream, outputConfig.defaultType(), beanClass, schemaPaths);
 	}
 
 	/**
@@ -2610,12 +2619,9 @@ public final class StringUtils {
 						.map(beanClass::cast)
 						.orElse(null);
 			case JSON:
-				return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-						.readValue(IOUtils.readContent(inputStream), beanClass);
+				return JSON_MAPPER.readValue(IOUtils.readContent(inputStream), beanClass);
 			case YAML:
-				return new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
-						.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-						.readValue(IOUtils.readContent(inputStream), beanClass);
+				return YAML_MAPPER.readValue(IOUtils.readContent(inputStream), beanClass);
 			default:
 				return null;
 		}
@@ -2633,21 +2639,15 @@ public final class StringUtils {
 	 * <span class="zh-CN">转换后的数据映射表</span>
 	 */
 	public static Map<String, Object> dataToMap(final String string, final StringType stringType) {
-		ObjectMapper objectMapper;
-		switch (stringType) {
-			case JSON:
-				objectMapper = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-				break;
-			case YAML:
-				objectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
-						.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-				break;
-			default:
-				return new HashMap<>();
-		}
 		try {
-			return objectMapper.readValue(string, new TypeReference<>() {
-			});
+			switch (stringType) {
+				case JSON:
+					return JSON_MAPPER.readValue(string, new TypeReference<>() {});
+				case YAML:
+					return YAML_MAPPER.readValue(string, new TypeReference<>() {});
+				default:
+					return new HashMap<>();
+			}
 		} catch (Exception e) {
 			LOGGER.error("Convert_To_Data_Map_Error");
 			if (StringUtils.LOGGER.isDebugEnabled()) {
@@ -2668,7 +2668,6 @@ public final class StringUtils {
 	 * <span class="zh-CN">替换后的字符串</span>
 	 */
 	public static String formatForText(final String sourceString) {
-
 		if (StringUtils.isEmpty(sourceString)) {
 			return sourceString;
 		}
@@ -3021,46 +3020,6 @@ public final class StringUtils {
 	 */
 	public enum CodeType {
 		CHN_Social_Code, CHN_ID_Code, Luhn
-	}
-
-	/**
-	 * <h3 class="en-US">Parse strings to target JavaBean instance. </h3>
-	 * <h3 class="zh-CN">解析字符串为目标JavaBean实例对象</h3>
-	 *
-	 * @param <T>         <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param string      <span class="en-US">The string will parse</span>
-	 *                    <span class="zh-CN">要解析的字符串</span>
-	 * @param stringType  <span class="en-US">The string type</span>
-	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding    <span class="en-US">String charset encoding</span>
-	 *                    <span class="zh-CN">字符串的字符集编码</span>
-	 * @param beanClass   <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
-	 *                    <span class="zh-CN">XML描述文件路径（可能为描述文件URI或本地文件路径）</span>
-	 * @return <span class="en-US">Converted object instance</span>
-	 * <span class="zh-CN">转换后的实例对象</span>
-	 */
-	private static <T> T stringToObject(final String string, final StringType stringType, final String encoding,
-	                                    final Class<T> beanClass, final String... schemaPaths) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Parse_String_Debug", string, encoding, beanClass.getName());
-		}
-
-		if (StringType.SIMPLE.equals(stringType)) {
-			return ClassUtils.parseSimpleData(string, beanClass);
-		}
-		String stringEncoding = isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding;
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(stringEncoding))) {
-			return streamToObject(inputStream, stringType, beanClass, schemaPaths);
-		} catch (IOException e) {
-			LOGGER.error("Parse_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-		}
-		return null;
 	}
 
 	/**

@@ -40,6 +40,7 @@ public class ZipOutputStream extends DeflaterOutputStream {
 		super(outputStream, zipFile);
 	}
 
+	@Override
 	public void write(final int value) throws IOException {
 		byte[] b = new byte[1];
 		b[0] = (byte) value;

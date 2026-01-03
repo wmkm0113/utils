@@ -16,6 +16,7 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public final class CryptoTest extends BaseTest {
 
     private static final String[] AES_CIPHER_MODES =

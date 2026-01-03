@@ -47,6 +47,7 @@ import java.math.BigInteger;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Aug 15, 2022 16:23:13 $
  */
+@SuppressWarnings("unused")
 public final class IPUtils {
 	/**
 	 * <span class="en-US">Split character for IPv4 address</span>

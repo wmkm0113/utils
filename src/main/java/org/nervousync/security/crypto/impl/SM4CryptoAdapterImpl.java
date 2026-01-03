@@ -68,7 +68,7 @@ public final class SM4CryptoAdapterImpl extends SymmetricCryptoAdapter {
 			secureRandom.setSeed(this.cipherKey.getKeyBytes());
 			keyGenerator.init(this.cipherKey.getKeySize(), secureRandom);
 			return super.generateCipher(keyGenerator.generateKey(),
-					this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 16);
+					"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 16);
 		} catch (Exception e) {
 			if (e instanceof CryptoException) {
 				throw (CryptoException) e;

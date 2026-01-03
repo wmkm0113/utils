@@ -16,6 +16,8 @@
  */
 package org.nervousync.beans.transfers.beans;
 
+import org.nervousync.utils.StringUtils;
+
 /**
  * <h2 class="en-US">JavaBean convert adapter</h2>
  * <h2 class="zh-CN">JavaBean数据转换适配器</h2>
@@ -35,6 +37,6 @@ public final class BeanObjectAdapter extends TransferBeanAdapter {
 	 *                                  <span class="zh-CN">如果目标类不是org.nervousync.beans.core.BeanObject的子类</span>
 	 */
 	public BeanObjectAdapter(final String className) throws IllegalArgumentException {
-		super(className, null);
+		super(className, StringUtils.StringType.XML);
 	}
 }

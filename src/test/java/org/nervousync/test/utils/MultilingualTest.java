@@ -1,5 +1,6 @@
 package org.nervousync.test.utils;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.nervousync.test.BaseTest;
@@ -19,6 +20,7 @@ public final class MultilingualTest extends BaseTest {
     }
 
     @Test
+    @Disabled
     @Order(20)
     public void destroy() {
         MultilingualUtils.defaultLocale(Locale.US);

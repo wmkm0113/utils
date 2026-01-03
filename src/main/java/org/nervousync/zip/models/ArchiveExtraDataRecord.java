@@ -20,6 +20,7 @@ package org.nervousync.zip.models;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Nov 28, 2017 16:56:08 $
  */
+@SuppressWarnings("unused")
 public final class ArchiveExtraDataRecord {
 
 	private int signature;

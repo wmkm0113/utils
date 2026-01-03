@@ -17,7 +17,6 @@
 package org.nervousync.mail.config;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.beans.Signature;
 import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.core.BeanObject;
@@ -25,7 +24,6 @@ import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.proxy.ProxyConfig;
-import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Mail configure information define</h2>
@@ -34,10 +32,10 @@ import org.nervousync.utils.StringUtils;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2021 19:06:18 $
  */
+@SuppressWarnings("unused")
 @Signature("signature")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class MailConfig extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>

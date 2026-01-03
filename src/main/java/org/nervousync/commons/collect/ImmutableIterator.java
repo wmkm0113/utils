@@ -26,6 +26,7 @@ import java.util.Iterator;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Apr 3, 2025 14:39:52 $
  */
+@SuppressWarnings("unused")
 public final class ImmutableIterator<E> implements Iterator<E> {
 
 	/**

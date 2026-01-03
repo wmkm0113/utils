@@ -153,6 +153,7 @@ public class PartInputStream extends InputStream {
 		}
 	}
 
+	@Override
 	public int available() {
 		long amount = this.length - this.readBytes;
 		if (amount > Integer.MAX_VALUE) {
@@ -161,6 +162,7 @@ public class PartInputStream extends InputStream {
 		return (int) amount;
 	}
 
+	@Override
 	public long skip(final long length) throws IOException {
 		if (length < 0L) {
 			throw new IllegalArgumentException();
@@ -185,6 +187,7 @@ public class PartInputStream extends InputStream {
 		this.input.seek(pos);
 	}
 
+	@Override
 	public void close() throws IOException {
 		this.input.close();
 	}

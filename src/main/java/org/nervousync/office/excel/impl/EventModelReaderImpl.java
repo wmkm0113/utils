@@ -283,10 +283,10 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 				return;
 			}
 
-			if (name.equals("c") || name.equals("f")) {
+			if ("c".equals(name) || "f".equals(name)) {
 				this.parseCellDataType(attributes);
 				this.currentCol++;
-			} else if (name.equalsIgnoreCase("mergeCell")) {
+			} else if ("mergeCell".equalsIgnoreCase(name)) {
 				String mergeRef = attributes.getValue("ref");
 				String[] itemRef = StringUtils.tokenizeToStringArray(mergeRef, ":");
 				int beginRow = Integer.parseInt(this.parseRow(itemRef[0])) - 1;
@@ -316,7 +316,7 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 		public void endElement(final String uri, final String localName, final String name) {
 			if ((this.beginRow != Globals.DEFAULT_VALUE_INT && this.currentRow < this.beginRow)
 					|| (this.endRow != Globals.DEFAULT_VALUE_INT && this.currentRow >= this.endRow)) {
-				if (name.equals("row")) {
+				if ("row".equals(name)) {
 					this.currentRow++;
 					this.currentCol = Globals.INITIALIZE_INT_VALUE;
 				}
@@ -377,6 +377,7 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 			}
 		}
 
+		@Override
 		public void characters(final char[] ch, final int start, final int length) {
 			if ((this.beginRow != Globals.DEFAULT_VALUE_INT && this.currentRow < this.beginRow)
 					|| (this.endRow != Globals.DEFAULT_VALUE_INT && this.currentRow >= this.endRow)) {

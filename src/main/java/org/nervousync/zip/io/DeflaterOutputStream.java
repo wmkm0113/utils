@@ -68,6 +68,7 @@ public class DeflaterOutputStream extends CipherOutputStream {
 		}
 	}
 
+	@Override
 	public void putNextEntry(final File file, final ZipOptions zipOptions) throws ZipException {
 		super.putNextEntry(file, zipOptions);
 
@@ -81,6 +82,7 @@ public class DeflaterOutputStream extends CipherOutputStream {
 		}
 	}
 
+	@Override
 	public void closeEntry() throws IOException, ZipException {
 		if (this.zipOptions.getCompressionMethod() == Globals.COMP_DEFLATE) {
 			if (!this.deflater.finished()) {

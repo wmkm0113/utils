@@ -21,6 +21,7 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import org.eclipse.angus.mail.pop3.POP3Folder;
 import org.nervousync.commons.Globals;
+import org.nervousync.mail.config.MailConfig;
 import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.mail.operator.ReceiveOperator;
 import org.nervousync.mail.protocol.BaseProtocol;
@@ -28,6 +29,7 @@ import org.nervousync.mail.protocol.BaseProtocol;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * <h2 class="en-US">Implements class of JavaMail POP3 protocol</h2>
@@ -56,6 +58,28 @@ public final class POP3Protocol extends BaseProtocol implements ReceiveOperator 
 		this.portParam = "mail.pop3.port";
 		this.connectionTimeoutParam = "mail.pop3.connectiontimeout";
 		this.timeoutParam = "mail.pop3.timeout";
+	}
+
+	@Override
+	protected void config(final Properties properties, final MailConfig.ServerConfig serverConfig, final int port) {
+		properties.setProperty(MAIL_STORE_PROTOCOL, "pop3");
+		properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3");
+
+		switch (serverConfig.getSecureProtocol()) {
+			case SSL:
+				properties.setProperty(MAIL_STORE_PROTOCOL, "pop3s");
+				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3s");
+				properties.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY_CLASS);
+				if (port != 0) {
+					properties.setProperty("mail.pop3.socketFactory.port", Integer.toString(port));
+				}
+				properties.setProperty("mail.pop3.disabletop", Boolean.TRUE.toString());
+				properties.setProperty("mail.pop3.ssl.enable", Boolean.TRUE.toString());
+				break;
+			case TLS:
+				properties.setProperty("mail.pop3.starttls.enable", Boolean.TRUE.toString());
+				break;
+		}
 	}
 
 	/**

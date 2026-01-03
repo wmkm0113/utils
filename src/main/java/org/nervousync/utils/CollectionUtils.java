@@ -50,6 +50,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 16:27:49 $
  */
+@SuppressWarnings("unused")
 public final class CollectionUtils {
 	/**
 	 * <h3 class="en-US">Private constructor for CollectionUtils</h3>

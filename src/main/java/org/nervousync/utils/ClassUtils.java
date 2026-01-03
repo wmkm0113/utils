@@ -37,6 +37,7 @@ import java.util.stream.Stream;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 15:53:41 $
  */
+@SuppressWarnings("unused")
 public final class ClassUtils {
 	/**
 	 * <span class="en-US">Suffix for array class names: "[]"</span>
@@ -194,9 +195,6 @@ public final class ClassUtils {
 	public static <T> T parseSimpleData(final String dataValue, final Class<T> typeClass) {
 		if (StringUtils.isEmpty(dataValue) || typeClass == null) {
 			return null;
-		}
-		if (ClassUtils.isAssignable(typeClass, BeanObject.class)) {
-			return StringUtils.stringToObject(dataValue, typeClass);
 		}
 		Object paramObj = null;
 		DataType dataType = retrieveSimpleDataType(typeClass);

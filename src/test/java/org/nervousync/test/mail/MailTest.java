@@ -79,11 +79,11 @@ public final class MailTest extends BaseTest {
 				.connectionTimeout(10)
 				.processTimeout(10)
 				.confirm()
-				.proxyConfig()
-				.proxyType(Proxy.Type.SOCKS)
-				.serverConfig("127.0.0.1", 1080)
-				.authenticator(PROPERTIES.getProperty("config.userName"), PROPERTIES.getProperty("config.passWord"))
-				.confirm()
+//				.proxyConfig()
+//				.proxyType(Proxy.Type.SOCKS)
+//				.serverConfig("127.0.0.1", 1080)
+//				.authenticator(PROPERTIES.getProperty("config.userName"), PROPERTIES.getProperty("config.passWord"))
+//				.confirm()
 				.receiveConfig()
 				.mailProtocol(MailProtocol.valueOf(PROPERTIES.getProperty("config.receive.protocol")))
 				.configHost(PROPERTIES.getProperty("config.receive.address"),
@@ -95,22 +95,17 @@ public final class MailTest extends BaseTest {
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
 				.signer(x509Certificate, keyPair.getPrivate())
 				.build();
-		String xmlContent = mailConfig.toString();
+		String xmlContent = mailConfig.toXml();
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
-		MailConfig parseConfig = StringUtils.stringToObject(xmlContent, MailConfig.class, "https://nervousync.org/schemas/mail");
-		this.logger.info("Mail_Config_Validate", parseConfig.validate());
-		this.logger.info("Mail_Parse_Config_Info", parseConfig.toString());
+		MailConfig parseConfig = StringUtils.stringToObject(xmlContent, StringUtils.StringType.XML, MailConfig.class, "https://nervousync.org/schemas/mail");
+		this.logger.info("Mail_Config_Validate", parseConfig.validate(StringUtils.StringType.XML));
+		this.logger.info("Mail_Parse_Config_Info", parseConfig.toJson());
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
 		Optional.ofNullable(CONFIGURE_MANAGER.readConfigure(MailConfig.class))
-				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", readConfig.toString()));
-		this.logger.info("Mail_Config_Convert",
-				CONFIGURE_MANAGER.convertType(MailConfig.class, StringUtils.StringType.XML, StringUtils.StringType.JSON));
-		this.logger.info("Mail_Config_Convert",
-				CONFIGURE_MANAGER.convertType(MailConfig.class, StringUtils.StringType.JSON, StringUtils.StringType.XML,
-						Globals.DEFAULT_VALUE_STRING));
+				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", readConfig.toJson()));
 
 		AutomaticConfig automaticConfig = new AutomaticConfig();
-		this.logger.info("Mail_Generate_Config_Info", automaticConfig.getMailConfig().toString());
+		this.logger.info("Mail_Generate_Config_Info", automaticConfig.getMailConfig().toJson());
 	}
 
 	@Test
@@ -301,6 +296,10 @@ public final class MailTest extends BaseTest {
 
 	private static final class AutomaticConfig extends AutoConfig {
 
+		/**
+		 * <span class="en-US">E-Mail configure information</span>
+		 * <span class="zh-CN">电子邮件配置信息</span>
+		 */
 		@Configuration
 		private MailConfig mailConfig;
 

@@ -20,6 +20,7 @@ import java.util.Arrays;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0 $ $Date: Jul 13, 2016 16:41:24 $
  */
+@SuppressWarnings("unused")
 public final class CodeOptions {
 
 	/**

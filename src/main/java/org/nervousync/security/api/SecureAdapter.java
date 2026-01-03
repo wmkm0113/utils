@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 13, 2012 11:23:38 $
  */
+@SuppressWarnings("unused")
 public abstract class SecureAdapter {
 	/**
 	 * <h3 class="en-US">Append given string to current adapter</h3>

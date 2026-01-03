@@ -23,6 +23,7 @@ package org.nervousync.enumerations.ip;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Sep 21, 2018 18:25:33 $
  */
+@SuppressWarnings("unused")
 public enum IPType {
 	/**
      * <span class="en-US">IPv4 address</span>

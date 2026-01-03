@@ -71,6 +71,7 @@ public class InflaterInputStream extends PartInputStream {
 		return new InflaterInputStream(zipFile, currentIndex, input, length, originalSize, decryptor, isAESEncryptedFile);
 	}
 
+	@Override
 	public int read() throws IOException {
 		return this.read(this.oneByteBuffer, 0, 1) == Globals.DEFAULT_VALUE_INT ?
 				Globals.DEFAULT_VALUE_INT : this.oneByteBuffer[0] & 0xFF;

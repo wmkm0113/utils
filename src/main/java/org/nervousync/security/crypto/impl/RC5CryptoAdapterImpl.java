@@ -60,6 +60,6 @@ public final class RC5CryptoAdapterImpl extends SymmetricCryptoAdapter {
 	@Override
 	protected Cipher initCipher() throws CryptoException {
 		return super.generateCipher(new SecretKeySpec(this.cipherKey.getKeyBytes(), "RC5"),
-				this.cipherConfig.getMode().equalsIgnoreCase("ECB") ? 0 : 8);
+				"ECB".equalsIgnoreCase(this.cipherConfig.getMode()) ? 0 : 8);
 	}
 }

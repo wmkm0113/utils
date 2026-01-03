@@ -18,10 +18,8 @@
 package org.nervousync.beans.i18n;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Internationalization Information Data</h2>
@@ -30,7 +28,6 @@ import org.nervousync.utils.StringUtils;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:51:46 $
  */
-@OutputConfig(defaultType = StringUtils.StringType.JSON)
 public final class BundleMessage extends BeanObject {
 
 	/**

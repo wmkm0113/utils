@@ -105,13 +105,13 @@ public final class SecureFactory {
 		String factoryPath = SystemUtils.USER_HOME + DEFAULT_SECURE_FACTORY_CONFIG;
 		FactoryConfig factoryConfig = Optional.of(FileUtils.readFile(factoryPath))
 				.filter(StringUtils::notBlank)
-				.map(string -> StringUtils.stringToObject(string, FactoryConfig.class))
+				.map(string -> StringUtils.stringToObject(string, StringUtils.StringType.XML, FactoryConfig.class))
 				.orElse(null);
 		if (factoryConfig == null) {
 			factoryConfig = new FactoryConfig();
 			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA1024);
 			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA1024)));
-			FileUtils.saveFile(factoryPath, factoryConfig.toString());
+			FileUtils.saveFile(factoryPath, factoryConfig.toXml());
 		}
 		FACTORY_NODE = new SecureNode(factoryConfig);
 		initialize(Boolean.FALSE);
@@ -271,17 +271,33 @@ public final class SecureFactory {
 				.orElse(dataContent);
 	}
 
+	/**
+	 * <h3 class="en-US">Read secure settings configure information</h3>
+	 * <h3 class="zh-CN">读取安全配置信息</h3>
+	 *
+	 * @return <span class="en-US">SecureSettings instance object, or <code>null</code> if file not exists or file content is empty string</span>
+	 * <span class="zh-CN">安全配置信息实例对象，如果文件不存在或文件内容为空字符串则返回<code>null</code></span>
+	 */
 	private static SecureSettings readConfigure() {
 		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
 		return Optional.of(FileUtils.readFile(configPath))
 				.filter(StringUtils::notBlank)
-				.map(string -> StringUtils.stringToObject(string, SecureSettings.class))
+				.map(string -> StringUtils.stringToObject(string, StringUtils.StringType.XML, SecureSettings.class))
 				.orElse(null);
 	}
 
+	/**
+	 * <h3 class="en-US">Save secure settings configure information</h3>
+	 * <h3 class="zh-CN">保存安全配置信息</h3>
+	 *
+	 * @param secureSettings <span class="en-US">Secure config information</span>
+	 *                       <span class="zh-CN">安全配置信息</span>
+	 * @return <span class="en-US">Save result</span>
+	 * <span class="zh-CN">保存结果</span>
+	 */
 	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
 		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
-		return FileUtils.saveFile(configPath, secureSettings.toString());
+		return FileUtils.saveFile(configPath, secureSettings.toXml());
 	}
 
 	/**
@@ -293,7 +309,7 @@ public final class SecureFactory {
 	 */
 	private void register(@Nonnull final SecureConfig secureConfig) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Security_Current_Config", secureConfig.toString());
+			LOGGER.debug("Security_Current_Config", secureConfig.toXml());
 		}
 		if (this.registeredNodes.containsKey(secureConfig.getSecureName())) {
 			LOGGER.warn("Security_Override_Config", secureConfig.getSecureName());

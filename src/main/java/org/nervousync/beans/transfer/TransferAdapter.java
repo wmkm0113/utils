@@ -23,6 +23,7 @@ package org.nervousync.beans.transfer;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 21, 2023 10:25:22 $
  */
+@SuppressWarnings("RedundantThrows")
 public abstract class TransferAdapter {
 
     /**

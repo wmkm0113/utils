@@ -18,7 +18,6 @@ package org.nervousync.beans.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.beans.Signature;
@@ -29,7 +28,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * <h2 class="en-US">Abstract class of JavaBean</h2>
@@ -49,9 +47,9 @@ import java.util.stream.Stream;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 6, 2021 17:10:23 $
  */
+@SuppressWarnings("unused")
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(defaultType = StringUtils.StringType.XML, formatted = true)
 public abstract class BeanObject implements Serializable, Cloneable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -99,35 +97,55 @@ public abstract class BeanObject implements Serializable, Cloneable {
 	}
 
 	/**
+	 * <h3 class="en-US">Converts to XML string</h3>
+	 * <h3 class="zh-CN">转换为XML字符串</h3>
+	 *
+	 * @return <span class="en-US">The converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	public final String toXml() {
+		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
+				.map(outputConfig ->
+						this.toString(StringUtils.StringType.XML, outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(this.toString(StringUtils.StringType.XML, Boolean.TRUE, Globals.DEFAULT_ENCODING));
+	}
+
+	/**
+	 * <h3 class="en-US">Converts to JSON string</h3>
+	 * <h3 class="zh-CN">转换为JSON字符串</h3>
+	 *
+	 * @return <span class="en-US">The converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	public final String toJson() {
+		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
+				.map(outputConfig ->
+						this.toString(StringUtils.StringType.JSON, outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(this.toString(StringUtils.StringType.JSON, Boolean.TRUE, Globals.DEFAULT_ENCODING));
+	}
+
+	/**
+	 * <h3 class="en-US">Converts to YAML string</h3>
+	 * <h3 class="zh-CN">转换为YAML字符串</h3>
+	 *
+	 * @return <span class="en-US">The converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	public final String toYaml() {
+		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
+				.map(outputConfig ->
+						this.toString(StringUtils.StringType.YAML, outputConfig.formatted(), outputConfig.encoding()))
+				.orElse(this.toString(StringUtils.StringType.YAML, Boolean.TRUE, Globals.DEFAULT_ENCODING));
+	}
+
+	/**
 	 * (non-javadoc)
 	 *
 	 * @see Object#toString()
 	 */
 	@Override
 	public final String toString() {
-		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
-				.map(outputConfig ->
-						this.toString(outputConfig.defaultType(), outputConfig.formatted(), outputConfig.encoding()))
-				.orElse(this.toString(StringUtils.StringType.SERIALIZABLE, Boolean.FALSE, Globals.DEFAULT_ENCODING));
-	}
-
-	/**
-	 * <h3 class="en-US">Converts to a string of the given type</h3>
-	 * <h3 class="zh-CN">转换为给定类型的字符串</h3>
-	 *
-	 * @param stringType <span class="en-US">Target string type</span>
-	 *                   <span class="zh-CN">目标字符串类型</span>
-	 * @return <span class="en-US">The converted string, or an empty string if the given type is not supported</span>
-	 * <span class="zh-CN">转换后的字符串，如果给定类型不支持，则返回空字符串</span>
-	 */
-	public final String toString(@Nonnull final StringUtils.StringType stringType) {
-		return Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
-				.filter(outputConfig ->
-						outputConfig.defaultType().equals(stringType)
-								|| Arrays.asList(outputConfig.types()).contains(stringType))
-				.map(outputConfig ->
-						this.toString(stringType, outputConfig.formatted(), outputConfig.encoding()))
-				.orElse(super.toString());
+		return this.toString(StringUtils.StringType.SERIALIZABLE, Boolean.FALSE, Globals.DEFAULT_ENCODING);
 	}
 
 	/**
@@ -158,11 +176,7 @@ public abstract class BeanObject implements Serializable, Cloneable {
 	 * @return <span class="en-US">Verify result</span>
 	 * <span class="zh-CN">验证结果</span>
 	 */
-	public final boolean validate() {
-		List<StringUtils.StringType> dataTypes = this.dataTypes();
-		if (dataTypes.isEmpty()) {
-			return Boolean.FALSE;
-		}
+	public final boolean validate(final StringUtils.StringType stringType) {
 		final Signature signAnno = this.getClass().getAnnotation(Signature.class);
 		if (signAnno == null || StringUtils.isEmpty(signAnno.value())) {
 			//  No signature field defined
@@ -172,20 +186,7 @@ public abstract class BeanObject implements Serializable, Cloneable {
 		if (StringUtils.isEmpty(signature)) {
 			return Boolean.FALSE;
 		}
-		return dataTypes.stream().anyMatch(type -> this.verify(signature, type, signAnno.value()));
-	}
-
-	@Nonnull
-	private List<StringUtils.StringType> dataTypes() {
-		List<StringUtils.StringType> dataTypes = new ArrayList<>();
-		Optional.ofNullable(this.getClass().getAnnotation(OutputConfig.class))
-				.ifPresent(config -> {
-					dataTypes.add(config.defaultType());
-					Stream.of(config.types())
-							.filter(type -> !dataTypes.contains(type))
-							.forEach(dataTypes::add);
-				});
-		return dataTypes;
+		return this.verify(signature, stringType, signAnno.value());
 	}
 
 	/**

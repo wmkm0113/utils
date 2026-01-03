@@ -30,6 +30,7 @@ import java.util.Arrays;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jan 13, 2010 13:49:41 $
  */
+@SuppressWarnings("unused")
 public final class CookieUtils {
 	/**
 	 * <h3 class="en-US">Private constructor for CookieUtils</h3>

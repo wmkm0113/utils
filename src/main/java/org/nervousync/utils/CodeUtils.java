@@ -36,6 +36,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Nov 13, 2023 18:51:21 $
  */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public final class CodeUtils {
 
 	/**

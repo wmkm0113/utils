@@ -28,6 +28,7 @@ import java.util.Locale;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.4 $ $Date: Jul 2, 2018 18:44:29 $
  */
+@SuppressWarnings("unused")
 public final class Globals {
 
 	private static final SecureRandom RANDOM = new SecureRandom();
@@ -425,8 +426,9 @@ public final class Globals {
 	public static final int STD_DEC_HDR_SIZE = 12;
 	/**
 	 * The constant ENDHDR.
+	 * END header size
 	 */
-	public static final int ENDHDR = 22; // END header size
+	public static final int ENDHDR = 22;
 
 	/**
 	 * The constant BUFFER_SIZE.

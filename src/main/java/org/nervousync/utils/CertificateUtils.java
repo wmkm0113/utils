@@ -73,6 +73,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jun 25, 2015 16:26:15 $
  */
+@SuppressWarnings("unused")
 public final class CertificateUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -126,7 +127,7 @@ public final class CertificateUtils {
 
 			//	Initialize keyPair instance
 			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(algorithm, "BC");
-			if (algorithm.equalsIgnoreCase("EC")) {
+			if ("EC".equalsIgnoreCase(algorithm)) {
 				ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec(stdName);
 				keyPairGenerator.initialize(ecGenParameterSpec, secureRandom);
 			} else {
@@ -468,7 +469,7 @@ public final class CertificateUtils {
 			}
 			LdapName ldapName = new LdapName(x509Certificate.getSubjectX500Principal().getName());
 			String matchDomain = ldapName.getRdns().stream()
-					.filter(rdn -> rdn.getType().equalsIgnoreCase("CN"))
+					.filter(rdn -> "CN".equalsIgnoreCase(rdn.getType()))
 					.findFirst()
 					.map(rdn -> (String) rdn.getValue())
 					.orElse(Globals.DEFAULT_VALUE_STRING);

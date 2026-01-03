@@ -104,8 +104,9 @@ public final class CUID implements Serializable, Comparable<CUID> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if ((null == obj) || (obj.getClass() != CUID.class))
+		if ((null == obj) || (obj.getClass() != CUID.class)) {
 			return false;
+		}
 		CUID id = (CUID) obj;
 		return ObjectUtils.nullSafeEquals(this.value, id.value);
 	}

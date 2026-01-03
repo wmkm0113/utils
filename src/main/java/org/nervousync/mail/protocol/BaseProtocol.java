@@ -34,6 +34,7 @@ import org.nervousync.utils.StringUtils;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2012 19:07:08 $
  */
+@SuppressWarnings("unused")
 public abstract class BaseProtocol implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
@@ -44,17 +45,17 @@ public abstract class BaseProtocol implements Serializable {
 	 * <span class="en-US">Default SSL socket factory class, using for connecting to ssl mail server</span>
 	 * <span class="zh-CN">默认的安全套接字工厂类，用于连接到电子邮件服务器时使用安全连接</span>
 	 */
-	private static final String SSL_FACTORY_CLASS = "javax.net.ssl.SSLSocketFactory";
+	protected static final String SSL_FACTORY_CLASS = "javax.net.ssl.SSLSocketFactory";
 	/**
 	 * <span class="en-US">Protocol key name of connecting to mail server store</span>
 	 * <span class="zh-CN">连接到电子邮件服务器的通讯协议类型键值名</span>
 	 */
-	private static final String MAIL_STORE_PROTOCOL = "mail.store.protocol";
+	protected static final String MAIL_STORE_PROTOCOL = "mail.store.protocol";
 	/**
 	 * <span class="en-US">Protocol key name of connecting to mail server transport</span>
 	 * <span class="zh-CN">连接到电子邮件服务器的传输协议类型键值名</span>
 	 */
-	private static final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
+	protected static final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
 	/**
 	 * <span class="en-US">Connect timeout value</span>
 	 * <span class="zh-CN">连接超时时间</span>
@@ -124,92 +125,12 @@ public abstract class BaseProtocol implements Serializable {
 			Security.addProvider(Security.getProvider("SunJSSE"));
 		}
 
-		switch (serverConfig.getProtocolOption()) {
-			case IMAP:
-				boolean gmail = serverConfig.getHostName().toLowerCase().endsWith("gmail.com");
-				properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimap" : "imap");
-				if (serverConfig.isAuthLogin()) {
-					if (gmail) {
-						properties.setProperty("mail.gimap.auth.plain.disable", Boolean.TRUE.toString());
-						properties.setProperty("mail.gimap.auth.login.disable", Boolean.TRUE.toString());
-					} else {
-						properties.setProperty("mail.imap.auth.plain.disable", Boolean.TRUE.toString());
-						properties.setProperty("mail.imap.auth.login.disable", Boolean.TRUE.toString());
-					}
-				}
-
-				switch (serverConfig.getSecureProtocol()) {
-					case SSL:
-						properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimaps" : "imaps");
-						if (gmail) {
-							properties.setProperty("mail.gimap.socketFactory.class", SSL_FACTORY_CLASS);
-							if (port != Globals.DEFAULT_VALUE_INT) {
-								properties.setProperty("mail.gimap.socketFactory.port", Integer.toString(port));
-							}
-						} else {
-							properties.setProperty("mail.imap.socketFactory.class", SSL_FACTORY_CLASS);
-							if (port != Globals.DEFAULT_VALUE_INT) {
-								properties.setProperty("mail.imap.socketFactory.port", Integer.toString(port));
-							}
-						}
-						break;
-					case TLS:
-						if (gmail) {
-							properties.setProperty("mail.gimap.starttls.enable", Boolean.TRUE.toString());
-						} else {
-							properties.setProperty("mail.imap.starttls.enable", Boolean.TRUE.toString());
-						}
-						break;
-				}
-				break;
-			case SMTP:
-				properties.setProperty(MAIL_STORE_PROTOCOL, "smtp");
-				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtp");
-				if (serverConfig.isAuthLogin()) {
-					properties.setProperty("mail.smtp.auth", Boolean.TRUE.toString());
-				}
-				switch (serverConfig.getSecureProtocol()) {
-					case SSL:
-						properties.setProperty(MAIL_STORE_PROTOCOL, "smtps");
-						properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "smtps");
-						properties.setProperty("mail.smtp.ssl.enable", Boolean.TRUE.toString());
-						properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY_CLASS);
-						properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
-						if (port != Globals.DEFAULT_VALUE_INT) {
-							properties.setProperty("mail.smtp.socketFactory.port", Integer.toString(port));
-						}
-						break;
-					case TLS:
-						properties.setProperty("mail.smtp.starttls.enable", Boolean.TRUE.toString());
-						break;
-				}
-				break;
-			case POP3:
-				properties.setProperty(MAIL_STORE_PROTOCOL, "pop3");
-				properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3");
-
-				switch (serverConfig.getSecureProtocol()) {
-					case SSL:
-						properties.setProperty(MAIL_STORE_PROTOCOL, "pop3s");
-						properties.setProperty(MAIL_TRANSPORT_PROTOCOL, "pop3s");
-						properties.setProperty("mail.pop3.socketFactory.class", SSL_FACTORY_CLASS);
-						if (port != 0) {
-							properties.setProperty("mail.pop3.socketFactory.port", Integer.toString(port));
-						}
-						properties.setProperty("mail.pop3.disabletop", Boolean.TRUE.toString());
-						properties.setProperty("mail.pop3.ssl.enable", Boolean.TRUE.toString());
-						break;
-					case TLS:
-						properties.setProperty("mail.pop3.starttls.enable", Boolean.TRUE.toString());
-						break;
-				}
-				break;
-			default:
-				return new Properties();
-		}
+		this.config(properties, serverConfig, port);
 		this.configProxy(serverConfig.getProtocolOption(), properties);
 		return properties;
 	}
+
+	protected abstract void config(final Properties properties, final MailConfig.ServerConfig serverConfig, final int port);
 
 	/**
 	 * <h3 class="en-US">Add proxy configure information to target Properties instance</h3>

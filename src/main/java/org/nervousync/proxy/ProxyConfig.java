@@ -19,11 +19,9 @@ package org.nervousync.proxy;
 import java.net.Proxy.Type;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.StringUtils;
 
 /**
  * <h2 class="en-US">Proxy server configure</h2>
@@ -35,8 +33,6 @@ import org.nervousync.utils.StringUtils;
 @XmlType(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
 @XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
 @XmlAccessorType(XmlAccessType.NONE)
-@OutputConfig(formatted = true, defaultType = StringUtils.StringType.XML,
-		types = {StringUtils.StringType.XML, StringUtils.StringType.JSON, StringUtils.StringType.YAML})
 public final class ProxyConfig extends BeanObject {
 	/**
 	 * <span class="en-US">Serial version UID</span>

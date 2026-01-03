@@ -42,8 +42,11 @@ public final class BeanTest extends BaseTest {
     public void copyTest() {
         GenericBean genericBean = new GenericBean();
         BeanUtils.copyData(generateGeneric(), genericBean);
+		String string = genericBean.toYaml();
         this.logger.info("Bean_Copy_Result", "generic",
                 StringUtils.objectToString(genericBean, StringUtils.StringType.YAML, Boolean.TRUE));
+		GenericBean parsedObject = StringUtils.stringToObject(string, StringUtils.StringType.YAML, GenericBean.class);
+		this.logger.info("Bean_Copy_Result", "generic", parsedObject.toJson());
         WrapperBean wrapperBean = new WrapperBean();
         BeanUtils.copyData(generateWrapper(), wrapperBean);
         this.logger.info("Bean_Copy_Result", "wrapper",
@@ -133,7 +136,7 @@ public final class BeanTest extends BaseTest {
         origBean.setTestShort((short) 27);
         origBean.setTestString("Wrapper String");
 
-        this.logger.info("Bean_Generate_Result", WrapperBean.class.getSimpleName(), origBean.toString());
+        this.logger.info("Bean_Generate_Result", WrapperBean.class.getSimpleName(), origBean.toJson());
         return origBean;
     }
 
@@ -147,7 +150,7 @@ public final class BeanTest extends BaseTest {
         beanOne.setBeanOneBoolean(Boolean.TRUE);
         beanOne.setDataBean(generateDataBean());
 
-        this.logger.info("Bean_Generate_Result", BeanOne.class.getSimpleName(), beanOne.toString());
+        this.logger.info("Bean_Generate_Result", BeanOne.class.getSimpleName(), beanOne.toJson());
         return beanOne;
     }
 
@@ -157,7 +160,7 @@ public final class BeanTest extends BaseTest {
         innerBean.setInnerCode(227);
         innerBean.setInnerName("Inner name");
 
-        this.logger.info("Bean_Generate_Result", InnerBean.class.getSimpleName(), innerBean.toString());
+        this.logger.info("Bean_Generate_Result", InnerBean.class.getSimpleName(), innerBean.toJson());
         return innerBean;
     }
 
@@ -167,7 +170,7 @@ public final class BeanTest extends BaseTest {
         dataBean.setDataInteger(227);
         dataBean.setDataString("Data String");
 
-        this.logger.info("Bean_Generate_Result", DataBean.class.getSimpleName(), dataBean.toString());
+        this.logger.info("Bean_Generate_Result", DataBean.class.getSimpleName(), dataBean.toJson());
         return dataBean;
     }
 
@@ -178,7 +181,7 @@ public final class BeanTest extends BaseTest {
         beanTwo.setBeanString("Bean Two String");
         beanTwo.setBeanInner(generateInnerBean());
 
-        this.logger.info("Bean_Generate_Result", BeanTwo.class.getSimpleName(), beanTwo.toString());
+        this.logger.info("Bean_Generate_Result", BeanTwo.class.getSimpleName(), beanTwo.toJson());
         return beanTwo;
     }
 
@@ -189,7 +192,7 @@ public final class BeanTest extends BaseTest {
         beanThree.setBooleanString("True");
         beanThree.setJsonString("{\"dataString\":\"Data String\",\"dataInteger\":227}");
 
-        this.logger.info("Bean_Generate_Result", BeanThree.class.getSimpleName(), beanThree.toString());
+        this.logger.info("Bean_Generate_Result", BeanThree.class.getSimpleName(), beanThree.toJson());
         return beanThree;
     }
 
@@ -201,7 +204,7 @@ public final class BeanTest extends BaseTest {
         beanFour.setXmlString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><data_bean><data_string>Data String</data_string><data_integer>227</data_integer></data_bean>");
         beanFour.setBase32Data(StringUtils.base32Encode("Bean Four Base32".getBytes()));
 
-        this.logger.info("Bean_Generate_Result", BeanFour.class.getSimpleName(), beanFour.toString());
+        this.logger.info("Bean_Generate_Result", BeanFour.class.getSimpleName(), beanFour.toJson());
         return beanFour;
     }
 
@@ -212,11 +215,10 @@ public final class BeanTest extends BaseTest {
         beanFive.setYamlString("dataString: \"Data String\"\ndataInteger: 227\n");
         beanFive.setOrigBean(generateDataBean());
 
-        this.logger.info("Bean_Generate_Result", BeanFive.class.getSimpleName(), beanFive.toString());
+        this.logger.info("Bean_Generate_Result", BeanFive.class.getSimpleName(), beanFive.toJson());
         return beanFive;
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class GenericBean extends BeanObject {
 
         private static final long serialVersionUID = -8250897818064674830L;
@@ -294,7 +296,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class WrapperBean extends BeanObject {
 
         private static final long serialVersionUID = 8469520795055346340L;
@@ -381,7 +382,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON)
     public static final class InnerBean extends BeanObject {
         private static final long serialVersionUID = 2456743666460180276L;
         private String innerName;
@@ -404,7 +404,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanOne extends BeanObject {
 
         private static final long serialVersionUID = 2148709510427702608L;
@@ -497,7 +496,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanTwo extends BeanObject {
         private static final long serialVersionUID = -3903310914229238786L;
         @BeanProperty(targetBean = BeanOne.class, transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
@@ -532,7 +530,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanThree extends BeanObject {
 
         private static final long serialVersionUID = 2676597737207266268L;
@@ -569,7 +566,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanFour extends BeanObject {
 
         private static final long serialVersionUID = 2131533619703353105L;
@@ -613,7 +609,6 @@ public final class BeanTest extends BaseTest {
         }
     }
 
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, formatted = true)
     public static final class BeanFive extends BeanObject {
 
         private static final long serialVersionUID = -2793808469846338003L;
@@ -649,7 +644,6 @@ public final class BeanTest extends BaseTest {
 
     @XmlRootElement(name = "data_bean")
     @XmlAccessorType(XmlAccessType.NONE)
-    @OutputConfig(defaultType = StringUtils.StringType.JSON, types = {StringUtils.StringType.JSON, StringUtils.StringType.YAML, StringUtils.StringType.XML})
     public static final class DataBean extends BeanObject {
 
         private static final long serialVersionUID = -9087272100087754448L;

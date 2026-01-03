@@ -45,10 +45,14 @@ public final class UUIDv4Generator extends UUIDGenerator {
 	public UUID generate() {
 		byte[] randomBytes = new byte[16];
 		Globals.randomBytes(randomBytes);
-		randomBytes[6] &= 0x0F;     /* clear version        */
-		randomBytes[6] |= 0x40;     /* set to version 4     */
-		randomBytes[8] &= 0x3F;     /* clear variant        */
-		randomBytes[8] |= (byte) 0x80;     /* set to IETF variant  */
+		/* clear version */
+		randomBytes[6] &= 0x0F;
+		/* set to version 4 */
+		randomBytes[6] |= 0x40;
+		/* clear variant */
+		randomBytes[8] &= 0x3F;
+		/* set to IETF variant */
+		randomBytes[8] |= (byte) 0x80;
 		return new UUID(RawUtils.readLong(randomBytes), RawUtils.readLong(randomBytes, 8));
 	}
 

@@ -30,6 +30,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.4 $ $Date: Jan 13, 2010 16:26:58 $
  */
+@SuppressWarnings("unused")
 public final class ReflectionUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -1315,6 +1316,7 @@ public final class ReflectionUtils {
 		 * @return <span class="en-US">check result</span>
 		 * <span class="zh-CN">检查结果</span>
 		 */
+		@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 		boolean matches(Class<?> clazz);
 	}
 

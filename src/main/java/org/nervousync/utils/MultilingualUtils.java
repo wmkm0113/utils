@@ -40,6 +40,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:39:41 $
  */
+@SuppressWarnings("unused")
 public final class MultilingualUtils {
 	/**
 	 * <span class="en-US">Logger instance</span>
@@ -370,7 +371,7 @@ public final class MultilingualUtils {
 		try {
 			BundleResource bundleResource =
 					new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-							.readValue(url, BundleResource.class);
+							.readValue(IOUtils.readContent(url.openStream()), BundleResource.class);
 			if (bundleResource == null) {
 				throw new IOException("Load bundle resource error! ");
 			}
