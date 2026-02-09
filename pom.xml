@@ -72,12 +72,19 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.version>3.15.0</maven.compiler.version>
+        <maven.jar.version>3.5.0</maven.jar.version>
+        <maven.surefire.version>3.5.4</maven.surefire.version>
+        <maven.resource.version>3.4.0</maven.resource.version>
+        <maven.source.version>3.4.0</maven.source.version>
+        <maven.javadoc.version>3.12.0</maven.javadoc.version>
+        <maven.gpg.version>3.2.8</maven.gpg.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.activation.version>2.1.4</jakarta.activation.version>
-        <jackson.version>2.20.1</jackson.version>
-        <junit.jupiter.version>5.14.1</junit.jupiter.version>
+        <jackson.version>2.21.0</jackson.version>
+        <junit.jupiter.version>5.14.2</junit.jupiter.version>
         <bcprov.version>1.83</bcprov.version>
     </properties>
     <dependencyManagement>
@@ -234,7 +241,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>${maven.surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
