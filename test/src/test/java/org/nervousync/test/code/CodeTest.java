@@ -38,7 +38,7 @@ public class CodeTest extends BaseTest {
 	public void qrCode() {
 		String text = StringUtils.randomString(64);
 		CodeOptions codeOptions = CodeOptions.newBuilder(BarcodeFormat.QR_CODE)
-				.markIcon(MarkOptions.MarkLocation.CENTER, "D:/wechat.png", 1f)
+				.markIcon(MarkOptions.MarkLocation.CENTER, "src/test/resources/Logo.png", 1f)
 				.codeSize(1500, 1500)
 				.build();
 		Optional.ofNullable(CodeUtils.generate(text, codeOptions))
