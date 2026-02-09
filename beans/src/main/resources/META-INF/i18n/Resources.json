@@ -1,0 +1,82 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Load_Schema_Mapping_Error": {
+        "pattern": "An error occurs when load schema mapping"
+      },
+      "Register_Bean_Config_Count_Debug": {
+        "pattern": "Registered bean config count: {0}"
+      },
+      "Data_Map_Debug": {
+        "pattern": "Data Map: {0}"
+      },
+      "Convert_String_Error": {
+        "pattern": "An error occurred while converting the instance object to a string"
+      },
+      "Parse_Empty_String_Error": {
+        "pattern": "Cannot parse empty string"
+      },
+      "Parse_String_Debug": {
+        "pattern": "Parse string: {0} use encoding: {1} to bean: {2}"
+      },
+      "Parse_String_Error": {
+        "pattern": "Error parsing empty string"
+      },
+      "Parse_File_Error": {
+        "pattern": "Error parsing file"
+      },
+      "Convert_To_Data_Map_Error": {
+        "pattern": "An error occurred while converting a string to a data map"
+      },
+      "JavaBean_Property_Mapping_Existed_Warn": {
+        "pattern": "JavaBean property mapping existed! Bean class: {0}, field: {1}"
+      },
+      "Load_Schemas_Error": {
+        "pattern": "Error reading schema file"
+      },
+      "Resolving_Schema_Debug": {
+        "pattern": "Resolving TYPE: {0}, NAMESPACE_URI: {1}, PUBLIC_ID: {2}, SYSTEM_ID: {3}, BASE_URI: {4}"
+      }
+    },
+    "zh-CN": {
+      "Load_Schema_Mapping_Error": {
+        "pattern": "加载资源描述文件映射表出错"
+      },
+      "Register_Bean_Config_Count_Debug": {
+        "pattern": "已注册的JavaBean配置数量：{0}"
+      },
+      "Data_Map_Debug": {
+        "pattern": "数据映射表：{0}"
+      },
+      "Convert_String_Error": {
+        "pattern": "转换实例对象为字符串时出现错误"
+      },
+      "Parse_Empty_String_Error": {
+        "pattern": "无法解析空字符串"
+      },
+      "Parse_String_Debug": {
+        "pattern": "解析字符串：{0}，使用字符集编码：{1}，目标对象类：{2}"
+      },
+      "Parse_String_Error": {
+        "pattern": "解析空字符串时出错"
+      },
+      "Parse_File_Error": {
+        "pattern": "解析文件时出错"
+      },
+      "Convert_To_Data_Map_Error": {
+        "pattern": "转换字符串为数据映射表时出现错误"
+      },
+      "JavaBean_Property_Mapping_Existed_Warn": {
+        "pattern": "JavaBean属性映射信息已存在！Bean类名：{0}，属性名：{1}"
+      },
+      "Load_Schemas_Error": {
+        "pattern": "读取资源描述文件出错"
+      },
+      "Resolving_Schema_Debug": {
+        "pattern": "正在解析类型：{0}，NAMESPACE_URI：{1}，PUBLIC_ID：{2}，SYSTEM_ID：{3}。 BASE_URI：{4}"
+      }
+    }
+  }
+}

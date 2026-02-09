@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.nervousync</groupId>
+        <artifactId>utils-parent</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>utils-net</artifactId>
+    <packaging>jar</packaging>
+    <name>Nervousync Java Network Utilities</name>
+    <properties>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <jakarta.webservice.version>3.1.0</jakarta.webservice.version>
+        <jakarta.xml.webservice.version>4.0.2</jakarta.xml.webservice.version>
+        <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
+        <snmp4j.version>3.9.6</snmp4j.version>
+        <jcifs.version>2.1.40</jcifs.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Jakarta Servlet -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Java WebService -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>${jakarta.webservice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>${jakarta.xml.webservice.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.xml.soap</groupId>
+                    <artifactId>jakarta.xml.soap-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jakarta.xml.bind-api</artifactId>
+                    <groupId>jakarta.xml.bind</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jakarta.jws-api</artifactId>
+                    <groupId>jakarta.jws</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+        <!-- SNMP Support -->
+        <dependency>
+            <groupId>org.snmp4j</groupId>
+            <artifactId>snmp4j</artifactId>
+            <version>${snmp4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- SMB Support -->
+        <dependency>
+            <groupId>org.codelibs</groupId>
+            <artifactId>jcifs</artifactId>
+            <version>${jcifs.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk18on</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</project>

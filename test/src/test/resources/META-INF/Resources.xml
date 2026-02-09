@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Nano_Random">Generated NanoID: {0}</entry>
+    <entry key="Nano_Reconfigure_Random">Generated reconfigured NanoID: {0}</entry>
+    <entry key="Snowflake_Random">Generate snowflake ID: {0}</entry>
+    <entry key="Snowflake_Reconfigure_Random">Generate reconfigured snowflake ID：{0}</entry>
+    <entry key="CUID_Random">Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Generated value: {1}, version: {0}</entry>
+    <entry key="ULID_Random">Generate Universally Unique Lexicographically Sortable Identifier: {0}</entry>
+    <entry key="ULID_Reconfigure_Random">Generate reconfigured Universally Unique Lexicographically Sortable Identifier：{0}</entry>
+    <entry key="UUID_Random">UUID version {0}, generated ID: {1}</entry>
+    <entry key="Office_Sheet_Exists">Data sheet: {0}, exists: {1}</entry>
+    <entry key="Office_Excel_Rows_Count">Data sheet: {0}, rows count: {1}</entry>
+    <entry key="Collection_Is_Empty">Check collection type: {0}, is empty : {1}</entry>
+    <entry key="Collection_Length">Check collection type: {0}, length : {1}</entry>
+    <entry key="Location_Calculate_Distance">Calculate location distance: {0} meters</entry>
+    <entry key="Location_Convert_GCJ02">Convert location point to GCJ02, Longitude: {0}, Latitude: {1}</entry>
+    <entry key="Location_Convert_BD09">Convert location point to BD09, Longitude: {0}, Latitude: {1}</entry>
+    <entry key="Crypto_Not_Support">Not support crypto: {0}, algorithm config: {1}</entry>
+    <entry key="Crypto_Key_Length">{0} key: {1}</entry>
+    <entry key="Encrypt_Result">{0}/{1}/{2} encrypt result: {3}</entry>
+    <entry key="Decrypt_Result">{0}/{1}/{2} decrypt result: {3}</entry>
+    <entry key="Signature_Result">Random string: {0} using {1} signature result: {2}</entry>
+    <entry key="Verify_Result">{0} verify result: {1}</entry>
+    <entry key="CRC_Result">CRC algorithm: {0}, result: {1}</entry>
+    <entry key="Digits_Result">Digits algorithm: {0}, result: {1} {2}</entry>
+    <entry key="Hmac_Result">Hmac algorithm: {0}, key: {1}, result: {2} {3}</entry>
+    <entry key="System_Info">Operate system: {0}, version: {1}, username: {2}, home directory: {3}, work folder: {4}, identified key: {5}</entry>
+    <entry key="System_Java_Info">Java version: {0}, major version: {1}, Java home: {2}, tmp directory: {3}</entry>
+    <entry key="System_Adaptor">Adaptor {0} {1} address:</entry>
+    <entry key="System_Adaptor_IP_Info">IP address: {0}: site local: {1}，loop back: {2}, link local: {3}</entry>
+    <entry key="String_Encode">{0} encoding result: {1}</entry>
+    <entry key="String_Decode">{0} decode verify result: {1}</entry>
+    <entry key="Operate_System">Windows: {0}, Unix: {1}, Linux: {2}, MacOS: {3}, MacOSX: {4}, OS2: {5}, Solaris: {6}, SunOS: {7}, MPEiX: {8}, HPUX: {9}, AIX: {10}, OS390: {11}, FreeBSD: {12}, Irix: {13}, DigitalUnix: {14}, Netware: {15}, OSF1: {16}, OpenVMS: {17}</entry>
+</properties>

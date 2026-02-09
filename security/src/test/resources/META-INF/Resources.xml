@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Execute_Begin_Test">Starting execute class {0} method: {1}</entry>
+    <entry key="Execute_End_Test">Execute class {0} method: {1} finished</entry>
+    <entry key="Crypto_Not_Support">Not support crypto: {0}, algorithm config: {1}</entry>
+    <entry key="Crypto_Key_Length">{0} key: {1}</entry>
+    <entry key="Encrypt_Result">{0}/{1}/{2} encrypt result: {3}</entry>
+    <entry key="Decrypt_Result">{0}/{1}/{2} decrypt result: {3}</entry>
+    <entry key="SM2_Encrypt_Result">SM2 encrypt result: {0}, data type: {1}</entry>
+    <entry key="SM2_Decrypt_Result">SM2 decrypt result: {0}, data type: {1}</entry>
+    <entry key="Signature_Result">Random string: {0} using {1} signature result: {2}</entry>
+    <entry key="Verify_Result">{0} verify result: {1}</entry>
+    <entry key="CRC_Result">CRC algorithm: {0}, result: {1}</entry>
+    <entry key="Digits_Result">Digits algorithm: {0}, result: {1} {2}</entry>
+    <entry key="Hmac_Result">Hmac algorithm: {0}, key: {1}, result: {2} {3}</entry>
+    <entry key="Secure_Init_System_Result">System secure config result: {0}</entry>
+    <entry key="Secure_Init_Config_Result">Initialize secure config result: {0}</entry>
+    <entry key="Secure_Remove_Result">Remove secure config result: {0}</entry>
+    <entry key="Secure_Encrypt_Result">Secure encrypt result: {0}</entry>
+    <entry key="Secure_Decrypt_Result">Secure decrypt result: {0}</entry>
+    <entry key="Secure_Register_Status">Secure config register status: {0}</entry>
+</properties>

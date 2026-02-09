@@ -1,0 +1,1235 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "errors": {
+    "0x000000150001": "Length_Not_Enough_Crypto_Error",
+    "0x000000150002": "Append_Data_Crypto_Error",
+    "0x000000150003": "Mode_Invalid_Crypto_Error",
+    "0x000000150004": "Process_Data_Crypto_Error",
+    "0x000000150005": "Signature_Data_Crypto_Error",
+    "0x000000150006": "Finish_Verify_Crypto_Error",
+    "0x000000150007": "Verify_Method_Crypto_Error",
+    "0x000000150008": "Verify_Signature_Crypto_Error",
+    "0x000000150009": "Init_Key_Crypto_Error",
+    "0x00000015000A": "Init_Signature_Crypto_Error",
+    "0x00000015000B": "Init_Cipher_Crypto_Error",
+    "0x00000015000C": "Not_Support_Mode_Crypto_Error",
+    "0x00000015000D": "Unknown_Algorithm_Digits_Error",
+    "0x0000000C0001": "Null_Point_Location_Error",
+    "0x0000000C0002": "Not_Support_Type_Location_Error",
+    "0x0000001A0001": "Null_Network_Interface_Error",
+    "0x0000001A0002": "Retrieve_Network_Interface_Error",
+    "0x000000AE0001": "Office_Ext_Name_Invalid",
+    "0x000000AE0002": "Office_Excel_File_Not_Exists",
+    "0x000000130001": "Out_Of_Index_Raw_Error",
+    "0x000000130002": "Length_Not_Enough_Raw_Error",
+    "0x000000130003": "Length_Bits_Invalid_Raw_Error",
+    "0x000000130004": "Data_Bits_Invalid_Raw_Error",
+    "0x000000130005": "Data_Size_Invalid_Raw_Error",
+    "0x000000130006": "Data_Size_Unknown_Raw_Error",
+    "0x000000FF0001": "Parameter_Invalid_Error",
+    "0x000000FF0002": "Not_Support_Encoding_Error",
+    "0x0000001B0001": "Not_Supported_Encryption_Mode_Zip_Error",
+    "0x0000001B0002": "Not_Initialized_AES_Engine_Zip_Error",
+    "0x0000001B0003": "Input_Buffer_Too_Short_Zip_Error",
+    "0x0000001B0004": "Invalid_Key_Length_AES_Zip_Error",
+    "0x0000001B0005": "Invalid_Key_Strength_AES_Zip_Error",
+    "0x0000001B0006": "Invalid_Password_Zip_Error",
+    "0x0000001B0007": "Invalid_Derived_Password_Verifier_Zip_Error",
+    "0x0000001B0008": "Invalid_Derived_Key_Zip_Error",
+    "0x0000001B0009": "Invalid_Salt_Length_Zip_Error",
+    "0x0000001B000A": "Init_Crypto_Zip_Error",
+    "0x0000001B000B": "Decrypt_Crypto_Zip_Error",
+    "0x0000001B000C": "Encrypt_Crypto_Zip_Error",
+    "0x0000001B000D": "Wrong_Password_Zip_Error",
+    "0x0000001B000E": "Null_Local_File_Header_Zip_Error",
+    "0x0000001B000F": "Null_General_File_Header_Zip_Error",
+    "0x0000001B0010": "Invalid_AES_Extra_Data_Zip_Error",
+    "0x0000001B0011": "Output_Buffer_Too_Short_Zip_Error",
+    "0x0000001B0012": "Finished_Encryptor_AES_Zip_Error",
+    "0x0000001B0013": "Null_Input_File_Zip_Error",
+    "0x0000001B0014": "Invalid_Encryptor_AES_Zip_Error",
+    "0x0000001B0015": "Failed_Add_File_Zip_Error",
+    "0x0000001B0016": "Null_File_Name_Zip_Error",
+    "0x0000001B0017": "Write_Local_File_Header_Zip_Error",
+    "0x0000001B0018": "Not_Allow_Update_Files_Zip_Error",
+    "0x0000001B0019": "CRC_Failed_Zip_Error",
+    "0x0000001B001A": "Read_Access_Failed_Zip_Error",
+    "0x0000001B001B": "Null_Path_Zip_Error",
+    "0x0000001B001C": "Exists_Path_Zip_Error",
+    "0x0000001B001D": "Invalid_Offset_Local_Header_Zip_Error",
+    "0x0000001B001E": "Null_Input_Path_Zip_Error",
+    "0x0000001B0020": "Determining_File_Name_Zip_Error",
+    "0x0000001B0021": "Null_Options_Zip_Error",
+    "0x0000001B0022": "Null_Input_Stream_Zip_Error",
+    "0x0000001B0023": "Null_Destination_Path_Zip_Error",
+    "0x0000001B0024": "Invalid_Central_Directory_Zip_Error",
+    "0x0000001B0025": "Null_Entry_Path_Zip_Error",
+    "0x0000001B0026": "Entry_Path_Not_Directory_Zip_Error",
+    "0x0000001B0027": "Null_Remove_Entry_Path_Zip_Error",
+    "0x0000001B0028": "Invalid_File_Zip_Error",
+    "0x0000001B0029": "Null_End_Central_Directory_Zip_Error",
+    "0x0000001B002A": "Invalid_Comment_Length_Zip_Error",
+    "0x0000001B002B": "Write_Comment_Zip_Error",
+    "0x0000001B002C": "Not_Split_File_Zip_Error",
+    "0x0000001B002D": "Merge_Split_File_Zip_Error",
+    "0x0000001B002E": "Null_Output_Stream_Zip_Error",
+    "0x0000001B0030": "Unknown_File_Header_Zip_Error",
+    "0x0000001B0031": "Null_Target_File_Zip_Error",
+    "0x0000001B0032": "Process_File_Attribute_ReadOnly_Zip_Error",
+    "0x0000001B0033": "Process_File_Attribute_Last_Modify_Zip_Error",
+    "0x0000001B0034": "Invalid_Last_Modify_Zip_Error",
+    "0x0000001B0035": "Invalid_Binary_Data_Zip_Error",
+    "0x0000001B0036": "Not_Folder_Zip_Error",
+    "0x0000001B0037": "Cannot_Read_Folder_Zip_Error",
+    "0x0000001B0038": "Invalid_Output_Folder_Zip_Error",
+    "0x0000001B0039": "Read_Extra_Data_Zip_Error",
+    "0x0000001B003A": "Read_Zip64_Extend_Data_Zip_Error",
+    "0x0000001B003B": "Process_AES_Extra_Data_Zip_Error",
+    "0x0000001B003C": "Read_Zip64_ECDR_Zip_Error",
+    "0x0000001B003D": "Invalid_Signature_Zip64_ECDR_Zip_Error",
+    "0x0000001B003E": "Read_Central_Directory_Zip_Error",
+    "0x0000001B0040": "Entry_Central_Directory_Not_Found_Zip_Error",
+    "0x0000001B0041": "Read_Zip64_ECDRL_Zip_Error",
+    "0x0000001B0042": "Read_ECDR_Zip_Error",
+    "0x0000001B0043": "Extract_File_Zip_Error",
+    "0x0000001B0044": "Remove_Entry_Zip_Error",
+    "0x0000001B0045": "Write_Zip64_ECDRL_Zip_Error",
+    "0x0000001B0046": "Write_ECDR_Zip_Error",
+    "0x0000001B0047": "Write_Header_Zip_Error",
+    "0x0000001B0048": "Write_Zip64_Header_Zip_Error",
+    "0x0000001B0049": "Read_Entry_Zip_Error",
+    "0x0000001B004A": "Unknown_Compress_Type_Zip_Error",
+    "0x0000001B004B": "Invalid_Compress_Level_Zip_Error",
+    "0x0000001B004C": "Need_Password_Zip_Error",
+    "0x0000001B004D": "Copy_Data_Zip_Error",
+    "0x0000001B004E": "Invalid_CRC_Check_Zip_Error",
+    "0x0000001B0050": "Invalid_Decryptor_Zip_Error",
+    "0x0000001B0051": "Invalid_Local_Header_Signature_Zip_Error",
+    "0x0000001B0052": "Not_Found_Header_Zip_Error",
+    "0x0000001B0053": "Convert_Object_To_Array_Error",
+    "0x0000001B0054": "Convert_Array_To_Object_Error",
+    "0x0000001B0055": "Read_AES_Bytes_Zip_Error",
+    "0x0000001B0056": "Invalid_Buffer_Size_Zip_Error",
+    "0x0000001B0057": "Min_Split_Size_Zip_Error",
+    "0x0000001B0058": "Open_Split_File_Zip_Error",
+    "0x0000001D0001": "Code_Size_Invalid",
+    "0x0000001D0002": "Mark_File_Not_Found"
+  },
+  "messages": {
+    "en-US": {
+      "Execute_Begin_Test": {
+        "pattern": "Starting execute class {0} method: {1}"
+      },
+      "Execute_End_Test": {
+        "pattern": "Execute class {0} method: {1} finished"
+      },
+      "System_Information": {
+        "pattern": "Current operate system name: {0}, version: {1}, current user name: {2}, user home directory path: {3}, current user work directory path: {4}, JDK version: {5}, JDK major version: {6}, Java home directory: {7}, Java tmp directory path: {8}"
+      },
+      "Null_Network_Interface_Error": {
+        "pattern": "The network interface instance object is null"
+      },
+      "Retrieve_Network_Interface_Error": {
+        "pattern": "Error getting network interface instance object"
+      },
+      "Length_Not_Enough_Crypto_Error": {
+        "pattern": "Data length is not enough"
+      },
+      "Append_Data_Crypto_Error": {
+        "pattern": "Error appending data"
+      },
+      "Mode_Invalid_Crypto_Error": {
+        "pattern": "Invalid cipher mode"
+      },
+      "Process_Data_Crypto_Error": {
+        "pattern": "Process encrypt/decrypt data error"
+      },
+      "Signature_Data_Crypto_Error": {
+        "pattern": "Process signature data error"
+      },
+      "Finish_Verify_Crypto_Error": {
+        "pattern": "Can not support finish method at the verifying mode, use verify method instead"
+      },
+      "Verify_Method_Crypto_Error": {
+        "pattern": "Only used verify method in the verifying mode"
+      },
+      "Verify_Signature_Crypto_Error": {
+        "pattern": "Validate signature error"
+      },
+      "Init_Key_Crypto_Error": {
+        "pattern": "Generate key data error"
+      },
+      "Init_Signature_Crypto_Error": {
+        "pattern": "Initialize signer instance error"
+      },
+      "Init_Cipher_Crypto_Error": {
+        "pattern": "Initialize encryptor/decryptor instance error"
+      },
+      "Not_Support_Mode_Crypto_Error": {
+        "pattern": "Not support this operates in current mode"
+      },
+      "Unknown_Algorithm_Digits_Error": {
+        "pattern": "Unknown algorithm: {0}"
+      },
+      "Null_Point_Location_Error": {
+        "pattern": "Location point instance is null"
+      },
+      "Not_Support_Type_Location_Error": {
+        "pattern": "Unknown location type: {0}"
+      },
+      "Out_Of_Index_Raw_Error": {
+        "pattern": "Array index out of bound. Array length: {0}, position: {1}, data length: {2}"
+      },
+      "Length_Not_Enough_Raw_Error": {
+        "pattern": "Data length is not enough"
+      },
+      "Length_Bits_Invalid_Raw_Error": {
+        "pattern": "Invalid bits length"
+      },
+      "Data_Bits_Invalid_Raw_Error": {
+        "pattern": "Invalid bits data"
+      },
+      "Data_Size_Invalid_Raw_Error": {
+        "pattern": "Invalid data size"
+      },
+      "Data_Size_Unknown_Raw_Error": {
+        "pattern": "Unknown data size"
+      },
+      "Not_Supported_Encryption_Mode_Zip_Error": {
+        "pattern": "Unsupported encryption mode"
+      },
+      "Not_Initialized_AES_Engine_Zip_Error": {
+        "pattern": "AES engine was not initialized"
+      },
+      "Input_Buffer_Too_Short_Zip_Error": {
+        "pattern": "Input buffer is too small"
+      },
+      "Invalid_Key_Length_AES_Zip_Error": {
+        "pattern": "Invalid key size (Not 128/192/256)"
+      },
+      "Invalid_Key_Strength_AES_Zip_Error": {
+        "pattern": "Invalid key strength"
+      },
+      "Invalid_Password_Zip_Error": {
+        "pattern": "Password is null or length is zero"
+      },
+      "Invalid_Derived_Password_Verifier_Zip_Error": {
+        "pattern": "Invalid derived password verifier"
+      },
+      "Invalid_Derived_Key_Zip_Error": {
+        "pattern": "Invalid derived key"
+      },
+      "Invalid_Salt_Length_Zip_Error": {
+        "pattern": "Invalid salt data length"
+      },
+      "Init_Crypto_Zip_Error": {
+        "pattern": "Initialize cipher error"
+      },
+      "Decrypt_Crypto_Zip_Error": {
+        "pattern": "Decrypt data error"
+      },
+      "Encrypt_Crypto_Zip_Error": {
+        "pattern": "Encrypt data error"
+      },
+      "Wrong_Password_Zip_Error": {
+        "pattern": "Wrong password"
+      },
+      "Null_Local_File_Header_Zip_Error": {
+        "pattern": "Local file header is null"
+      },
+      "Null_General_File_Header_Zip_Error": {
+        "pattern": "General file header is null"
+      },
+      "Invalid_AES_Extra_Data_Zip_Error": {
+        "pattern": "Invalid AES extra data"
+      },
+      "Output_Buffer_Too_Short_Zip_Error": {
+        "pattern": "Output buffer size is too small"
+      },
+      "Finished_Encryptor_AES_Zip_Error": {
+        "pattern": "AES encryptor was in finished state"
+      },
+      "Null_Input_File_Zip_Error": {
+        "pattern": "Input file is null or not exists"
+      },
+      "Invalid_Encryptor_AES_Zip_Error": {
+        "pattern": "Invalid encryptor, maybe AES encryptor?"
+      },
+      "Failed_Add_File_Zip_Error": {
+        "pattern": "Add files to zip file error"
+      },
+      "Null_File_Name_Zip_Error": {
+        "pattern": "File name is null, cannot create target file header"
+      },
+      "Write_Local_File_Header_Zip_Error": {
+        "pattern": "Write local file header data error"
+      },
+      "Not_Allow_Update_Files_Zip_Error": {
+        "pattern": "Current file is split archive, ZIP format not support update file to split archive"
+      },
+      "CRC_Failed_Zip_Error": {
+        "pattern": "CRC check failed"
+      },
+      "Read_Access_Failed_Zip_Error": {
+        "pattern": "Can not read file"
+      },
+      "Null_Path_Zip_Error": {
+        "pattern": "File path is null"
+      },
+      "Exists_Path_Zip_Error": {
+        "pattern": "Zip file existed, please use addFile method to add files to current zip file"
+      },
+      "Invalid_Offset_Local_Header_Zip_Error": {
+        "pattern": "Invalid offset of local file header"
+      },
+      "Null_Input_Path_Zip_Error": {
+        "pattern": "Input path or filename is null or not existed"
+      },
+      "Determining_File_Name_Zip_Error": {
+        "pattern": "Determining file name error"
+      },
+      "Null_Options_Zip_Error": {
+        "pattern": "ZipOptions argument is null"
+      },
+      "Null_Input_Stream_Zip_Error": {
+        "pattern": "Input stream instance is null"
+      },
+      "Null_Destination_Path_Zip_Error": {
+        "pattern": "Destination path is null!"
+      },
+      "Invalid_Central_Directory_Zip_Error": {
+        "pattern": "Invalid central directory in zip entity"
+      },
+      "Invalid_Last_Modify_Zip_Error": {
+        "pattern": "Invalid last modify time value"
+      },
+      "Invalid_Binary_Data_Zip_Error": {
+        "pattern": "Invalid binary data"
+      },
+      "Not_Folder_Zip_Error": {
+        "pattern": "Current file path is not a folder, path: {0}"
+      },
+      "Cannot_Read_Folder_Zip_Error": {
+        "pattern": "Read folder data error! Folder path: {0}"
+      },
+      "Invalid_Output_Folder_Zip_Error": {
+        "pattern": "Invalid output folder path! Folder path: {0}"
+      },
+      "Read_Extra_Data_Zip_Error": {
+        "pattern": "Read extra data records error!"
+      },
+      "Read_Zip64_Extend_Data_Zip_Error": {
+        "pattern": "Read ZIP64 extend data information error!"
+      },
+      "Process_AES_Extra_Data_Zip_Error": {
+        "pattern": "Read and save AES extra data record error"
+      },
+      "Read_Zip64_ECDR_Zip_Error": {
+        "pattern": "Read Zip64 end central directory record error"
+      },
+      "Invalid_Signature_Zip64_ECDR_Zip_Error": {
+        "pattern": "Invalid signature for Zip64 end central directory record"
+      },
+      "Read_Central_Directory_Zip_Error": {
+        "pattern": "Read central directory data error! "
+      },
+      "Entry_Central_Directory_Not_Found_Zip_Error": {
+        "pattern": "Expected central directory entry not found! Index: {0}"
+      },
+      "Read_Zip64_ECDRL_Zip_Error": {
+        "pattern": "Read Zip64 end central directory locator record error"
+      },
+      "Read_ECDR_Zip_Error": {
+        "pattern": "Read end central directory record error"
+      },
+      "Remove_Entry_Zip_Error": {
+        "pattern": "Remove zip entry error"
+      },
+      "Write_Zip64_ECDRL_Zip_Error": {
+        "pattern": "Write Zip64 end central directory locator record error"
+      },
+      "Write_ECDR_Zip_Error": {
+        "pattern": "Write end central directory record error"
+      },
+      "Write_Header_Zip_Error": {
+        "pattern": "Write zip header bytes error"
+      },
+      "Write_Zip64_Header_Zip_Error": {
+        "pattern": "Write zip64 header bytes error"
+      },
+      "Read_Entry_Zip_Error": {
+        "pattern": "Read zip entry data error"
+      },
+      "Unknown_Compress_Type_Zip_Error": {
+        "pattern": "Unsupported compression type!"
+      },
+      "Invalid_Compress_Level_Zip_Error": {
+        "pattern": "Invalid compression level. compression level dor deflate should be in the range of 0-9"
+      },
+      "Need_Password_Zip_Error": {
+        "pattern": "Need password for encrypt!"
+      },
+      "Copy_Data_Zip_Error": {
+        "pattern": "Copy data error! "
+      },
+      "Invalid_CRC_Check_Zip_Error": {
+        "pattern": "Zip file process crc check error! "
+      },
+      "Invalid_Decryptor_Zip_Error": {
+        "pattern": "Invalid decryptor when trying to calculate compressed size for AES encrypted file: {0}"
+      },
+      "Invalid_Local_Header_Signature_Zip_Error": {
+        "pattern": "Invalid local header signature for file: {0}"
+      },
+      "Not_Found_Header_Zip_Error": {
+        "pattern": "Zip headers not found. probably not a zip file"
+      },
+      "Read_AES_Bytes_Zip_Error": {
+        "pattern": "Error occurred while reading stored AES authentication bytes"
+      },
+      "Invalid_Buffer_Size_Zip_Error": {
+        "pattern": "Negative buffer size"
+      },
+      "Min_Split_Size_Zip_Error": {
+        "pattern": "Split length less than minimum allowed split length of {0} bytes"
+      },
+      "Open_Split_File_Zip_Error": {
+        "pattern": "Check buffer size and start next split file error! "
+      },
+      "Extract_File_Zip_Error": {
+        "pattern": "Extract zip file error"
+      },
+      "Null_Entry_Path_Zip_Error": {
+        "pattern": "Entry path is null or empty string"
+      },
+      "Entry_Path_Not_Directory_Zip_Error": {
+        "pattern": "Entry path: {0} is not directory entry!"
+      },
+      "Null_Remove_Entry_Path_Zip_Error": {
+        "pattern": "Remove entry path arrays is null"
+      },
+      "Invalid_File_Zip_Error": {
+        "pattern": "Invalid zip file! "
+      },
+      "Null_End_Central_Directory_Zip_Error": {
+        "pattern": "End of central directory is null!"
+      },
+      "Invalid_Comment_Length_Zip_Error": {
+        "pattern": "Comment length exceeds maximum length"
+      },
+      "Write_Comment_Zip_Error": {
+        "pattern": "Write comment information error! "
+      },
+      "Not_Split_File_Zip_Error": {
+        "pattern": "Archive not a split zip file"
+      },
+      "Merge_Split_File_Zip_Error": {
+        "pattern": "Merge split zip file error! "
+      },
+      "Null_Output_Stream_Zip_Error": {
+        "pattern": "Output stream parameters is null, cannot finalize zip file"
+      },
+      "Unknown_File_Header_Zip_Error": {
+        "pattern": "Unknown file header"
+      },
+      "Null_Target_File_Zip_Error": {
+        "pattern": "Target file is null"
+      },
+      "Process_File_Attribute_ReadOnly_Zip_Error": {
+        "pattern": "Process file read only attribute error! "
+      },
+      "Process_File_Attribute_Last_Modify_Zip_Error": {
+        "pattern": "Process file last modify time attribute error! "
+      },
+      "Code_Size_Invalid": {
+        "pattern": "Barcode/QR code size invalid"
+      },
+      "Mark_File_Not_Found": {
+        "pattern": "Icon mark file not found"
+      },
+      "Parameter_Invalid_Error": {
+        "pattern": "Invalid arguments"
+      },
+      "Not_Support_Encoding_Error": {
+        "pattern": "Unsupported charset encoding"
+      },
+      "Code_Error": {
+        "pattern": "Error code: {0}"
+      },
+      "Stack_Message_Error": {
+        "pattern": "Error stack message:"
+      },
+      "Alphabet_Nano_Error": {
+        "pattern": "Alphabet must contain between 1 and 255 symbols."
+      },
+      "Config_Snowflake_Error": {
+        "pattern": "Snowflake config: reference time: {0}, deviceId: {1}, instanceId: {2}"
+      },
+      "Generate_Snowflake_Debug": {
+        "pattern": "Last time: {0}, reference time: {1}, Device ID: {2}, instanceId: {3}, sequenceIndex: {4}"
+      },
+      "Config_ULID_Error": {
+        "pattern": "Universally Unique Lexicographically Sortable Identifier config: reference time: {0}"
+      },
+      "Generate_ULID_Debug": {
+        "pattern": "Last time: {0}, reference time: {1}, sequenceIndex: {2}"
+      },
+      "Go_Back_Time_UUID_Debug": {
+        "pattern": "System time going backwards! (got value {0}, last {1})"
+      },
+      "Timestamp_Over_Run_Warn": {
+        "pattern": "Timestamp over-run: need to reinitialize random sequence"
+      },
+      "Virtual_Clock_Warn": {
+        "pattern": "Need to wait for {0} milliseconds; the virtual clock advanced too far in the future"
+      },
+      "Detect_Charset_Error": {
+        "pattern": "Detect charset encoding error! String: {0}"
+      },
+      "Not_Found_File_Error": {
+        "pattern": "Can not found file: {0}"
+      },
+      "Key_Size_Invalid_Error": {
+        "pattern": "Illegal key size"
+      },
+      "Random_Algorithm_Default_Warn": {
+        "pattern": "Random algorithm not configure, use default: SHA1PRNG"
+      },
+      "Convert_Object_To_Array_Error": {
+        "pattern": "An error occurs when converting instance to byte array"
+      },
+      "Convert_Array_To_Object_Error": {
+        "pattern": "An error occurs when converting byte array to instance"
+      },
+      "Last_Modify_Read_File_Error": {
+        "pattern": "An error occurs when reading file last modified time"
+      },
+      "Size_Read_File_Error": {
+        "pattern": "An error occurs when reading file size"
+      },
+      "Target_Save_File_Error": {
+        "pattern": "An error occurs when saving file to specified location"
+      },
+      "Copy_length_File_Debug": {
+        "pattern": "Copied data length: {0}"
+      },
+      "Input_Stream_Open_Error": {
+        "pattern": "An error occurs when opening input stream"
+      },
+      "Entry_Content_Load_Error": {
+        "pattern": "An error occurs when load entry content from archive file"
+      },
+      "Entry_Length_Load_Error": {
+        "pattern": "An error occurs when load entry length from archive file"
+      },
+      "Entry_List_Error": {
+        "pattern": "An error occurs when load entry list from archive file"
+      },
+      "Read_Files_Error": {
+        "pattern": "An error occurs when reading file data"
+      },
+      "Remove_Files_Error": {
+        "pattern": "An error occurs when removing file data"
+      },
+      "Copy_Files_Error": {
+        "pattern": "An error occurs when copying file data"
+      },
+      "Move_Files_Error": {
+        "pattern": "An error occurs when moving file data"
+      },
+      "CRC_Calculate_Files_Error": {
+        "pattern": "An error occurs when calculating CRC32 value of file"
+      },
+      "Create_Directory_Error": {
+        "pattern": "An error occurs when creating directories"
+      },
+      "Copy_Directory_Error": {
+        "pattern": "An error occurs when copying directory data"
+      },
+      "Remove_Directory_Error": {
+        "pattern": "An error occurs when removing directory data"
+      },
+      "Move_Directory_Error": {
+        "pattern": "An error occurs when moving directory data"
+      },
+      "Destroy_Generator_Registered_ID_Debug": {
+        "pattern": "Destroys the initialized generator instance object"
+      },
+      "Read_Image_Error": {
+        "pattern": "An error occurs when reading image file"
+      },
+      "Cut_Image_Error": {
+        "pattern": "An error occurs when cutting image file"
+      },
+      "Resize_Image_Error": {
+        "pattern": "An error occurs when resizing image file"
+      },
+      "Water_Mark_Image_Error": {
+        "pattern": "An error occurs when adding image watermark"
+      },
+      "Width_Exceeds_Original_Image_Error": {
+        "pattern": "Target width exceeds original image width"
+      },
+      "Height_Exceeds_Original_Image_Error": {
+        "pattern": "Target height exceeds original image height"
+      },
+      "Close_Stream_IO_Error": {
+        "pattern": "An error occurs when closing stream"
+      },
+      "Create_Instance_Object_Error": {
+        "pattern": "An error occurs when creating proxy instance object"
+      },
+      "Load_Properties_Error": {
+        "pattern": "An error occurs when loading property information file"
+      },
+      "Modify_Properties_Error": {
+        "pattern": "An error occurs when modifying property information file"
+      },
+      "Save_Properties_Error": {
+        "pattern": "An error occurs when saving property information to target file"
+      },
+      "Fields_Retrieve_Reflection_Error": {
+        "pattern": "An error occurs when retrieving field information"
+      },
+      "Methods_Retrieve_Reflection_Error": {
+        "pattern": "An error occurs when retrieving method information"
+      },
+      "Set_Value_Reflection_Error": {
+        "pattern": "An error occurs when setting field value, field name: {0}, value type: {1}"
+      },
+      "Parameter_Null_Register_Security_Error": {
+        "pattern": "Algorithm name or configuration information is null"
+      },
+      "Registered_CRC_Algorithm": {
+        "pattern": "Registered CRC configure: {0}"
+      },
+      "Lager_CRC_Security_Error": {
+        "pattern": "Only supports algorithms below CRC32"
+      },
+      "Override_Config_Register_Security_Warn": {
+        "pattern": "Algorithm name: {0} is already registered, overwriting existing configuration"
+      },
+      "Calculate_Value_Security_Error": {
+        "pattern": "An error occurs when calculate {0} value"
+      },
+      "Calculate_Digits_Security_Error": {
+        "pattern": "An error occurs when calculate digest value"
+      },
+      "Retrieve_MAC_System_Error": {
+        "pattern": "An error occurred while reading the MAC address of the local network interface"
+      },
+      "Generate_Identified_ID_System_Error": {
+        "pattern": "Error in generating system unique identification ID"
+      },
+      "Retrieve_Network_Interface_System_Error": {
+        "pattern": "An error occurs when reading local network interface information"
+      },
+      "nano.id.generator.name": {
+        "pattern": "Nano ID"
+      },
+      "snowflake.id.generator.name": {
+        "pattern": "Snowflake ID"
+      },
+      "version1.cuid.id.generator.name": {
+        "pattern": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Version 1"
+      },
+      "version2.cuid.id.generator.name": {
+        "pattern": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Version 2"
+      },
+      "ulid.id.generator.name": {
+        "pattern": "Universally Unique Lexicographically Sortable Identifier"
+      },
+      "version1.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 1"
+      },
+      "version2.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 2"
+      },
+      "version3.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 3"
+      },
+      "version4.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 4"
+      },
+      "version5.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 5"
+      },
+      "version6.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 6"
+      },
+      "Office_Ext_Name_Invalid": {
+        "pattern": "Unknown file ext name: {0}"
+      },
+      "Office_Excel_File_Not_Exists": {
+        "pattern": "Excel file not found, file location path: {0}"
+      },
+      "Office_Excel_File_Write_Error": {
+        "pattern": "Write excel file error, file location path: {0}"
+      },
+      "MBean_Object_Name_Generate_Error": {
+        "pattern": "Generate MBean object name failed!"
+      },
+      "MBean_Object_Register_Error": {
+        "pattern": "Register MBean object to JMX manager failed!"
+      }
+    },
+    "zh-CN": {
+      "Execute_Begin_Test": {
+        "pattern": "开始执行测试类 {0} 的 {1} 方法"
+      },
+      "Execute_End_Test": {
+        "pattern": "执行测试类 {0} 的 {1} 方法结束"
+      },
+      "System_Information": {
+        "pattern": "当前操作系统名称：{0}，版本号：{1}，当前用户：{2}，用户主目录地址：{3}，当前用户工作目录地址：{4}，JDK版本：{5}，JDK主版本号：{6}，Java目录地址：{7}，Java临时文件目录地址：{8}"
+      },
+      "Null_Network_Interface_Error": {
+        "pattern": "网络接口实例对象为空"
+      },
+      "Retrieve_Network_Interface_Error": {
+        "pattern": "获取网络接口实例对象时出错"
+      },
+      "Length_Not_Enough_Crypto_Error": {
+        "pattern": "数据长度不够"
+      },
+      "Append_Data_Crypto_Error": {
+        "pattern": "添加数据出现异常"
+      },
+      "Mode_Invalid_Crypto_Error": {
+        "pattern": "加解密模式错误"
+      },
+      "Process_Data_Crypto_Error": {
+        "pattern": "执行数据加密解密时出现异常"
+      },
+      "Signature_Data_Crypto_Error": {
+        "pattern": "执行数据签名时出现异常"
+      },
+      "Finish_Verify_Crypto_Error": {
+        "pattern": "finish方法不支持在验证模式下调用，请调用verify方法"
+      },
+      "Verify_Method_Crypto_Error": {
+        "pattern": "verify方法仅可以运行于签名验证模式下"
+      },
+      "Verify_Signature_Crypto_Error": {
+        "pattern": "验证数据签名时出现异常"
+      },
+      "Init_Key_Crypto_Error": {
+        "pattern": "生成密钥数据出现异常"
+      },
+      "Init_Signature_Crypto_Error": {
+        "pattern": "初始化数字签名实例对象出现异常"
+      },
+      "Init_Cipher_Crypto_Error": {
+        "pattern": "初始化加密解密实例对象出现异常"
+      },
+      "Not_Support_Mode_Crypto_Error": {
+        "pattern": "当前模式不支持此操作"
+      },
+      "Unknown_Algorithm_Digits_Error": {
+        "pattern": "未知的算法名称：{0}"
+      },
+      "Null_Point_Location_Error": {
+        "pattern": "坐标点为空"
+      },
+      "Not_Support_Type_Location_Error": {
+        "pattern": "未知的坐标类型：{0}"
+      },
+      "Out_Of_Index_Raw_Error": {
+        "pattern": "数组下标越界。数组长度：{0}，起始下标：{1}，数据长度: {2}"
+      },
+      "Length_Not_Enough_Raw_Error": {
+        "pattern": "数据长度不够"
+      },
+      "Length_Bits_Invalid_Raw_Error": {
+        "pattern": "数组长度非法"
+      },
+      "Data_Bits_Invalid_Raw_Error": {
+        "pattern": "数组数据非法"
+      },
+      "Data_Size_Invalid_Raw_Error": {
+        "pattern": "数据长度非法"
+      },
+      "Data_Size_Unknown_Raw_Error": {
+        "pattern": "未知的数据长度"
+      },
+      "Not_Supported_Encryption_Mode_Zip_Error": {
+        "pattern": "不支持的加密方式"
+      },
+      "Not_Initialized_AES_Engine_Zip_Error": {
+        "pattern": "AES引擎未初始化"
+      },
+      "Input_Buffer_Too_Short_Zip_Error": {
+        "pattern": "输入缓冲区太小"
+      },
+      "Invalid_Key_Length_AES_Zip_Error": {
+        "pattern": "非法的密钥长度（不为128/192/256）"
+      },
+      "Invalid_Key_Strength_AES_Zip_Error": {
+        "pattern": "非法的密钥强度"
+      },
+      "Invalid_Password_Zip_Error": {
+        "pattern": "密码为空或长度为0"
+      },
+      "Invalid_Derived_Password_Verifier_Zip_Error": {
+        "pattern": "非法的派生密码验证器"
+      },
+      "Invalid_Derived_Key_Zip_Error": {
+        "pattern": "非法的派生密钥"
+      },
+      "Invalid_Salt_Length_Zip_Error": {
+        "pattern": "非法的盐数据长度"
+      },
+      "Init_Crypto_Zip_Error": {
+        "pattern": "初始化加密解密器出现异常"
+      },
+      "Decrypt_Crypto_Zip_Error": {
+        "pattern": "解密数据出现异常"
+      },
+      "Encrypt_Crypto_Zip_Error": {
+        "pattern": "加密数据出现异常"
+      },
+      "Wrong_Password_Zip_Error": {
+        "pattern": "密码错误"
+      },
+      "Null_Local_File_Header_Zip_Error": {
+        "pattern": "本地文件头为空"
+      },
+      "Null_General_File_Header_Zip_Error": {
+        "pattern": "一般文件头为空"
+      },
+      "Invalid_AES_Extra_Data_Zip_Error": {
+        "pattern": "非法的AES扩展数据记录"
+      },
+      "Output_Buffer_Too_Short_Zip_Error": {
+        "pattern": "输出缓冲区太小"
+      },
+      "Finished_Encryptor_AES_Zip_Error": {
+        "pattern": "AES加密器已经处于完成状态"
+      },
+      "Null_Input_File_Zip_Error": {
+        "pattern": "输入文件为空或不存在"
+      },
+      "Invalid_Encryptor_AES_Zip_Error": {
+        "pattern": "非法的加密器，预期为AES加密器"
+      },
+      "Failed_Add_File_Zip_Error": {
+        "pattern": "添加文件到Zip文件出现异常"
+      },
+      "Null_File_Name_Zip_Error": {
+        "pattern": "文件路径为空，无法创建目标文件头"
+      },
+      "Write_Local_File_Header_Zip_Error": {
+        "pattern": "写入本地文件头时出现异常"
+      },
+      "Not_Allow_Update_Files_Zip_Error": {
+        "pattern": "当前文件是分割文件，ZIP格式不支持更新文件操作"
+      },
+      "CRC_Failed_Zip_Error": {
+        "pattern": "CRC检查未通过"
+      },
+      "Read_Access_Failed_Zip_Error": {
+        "pattern": "文件没有读取权限"
+      },
+      "Null_Path_Zip_Error": {
+        "pattern": "文件路径为空"
+      },
+      "Exists_Path_Zip_Error": {
+        "pattern": "文件已存在，请使用addFile方法添加文件到压缩包"
+      },
+      "Invalid_Offset_Local_Header_Zip_Error": {
+        "pattern": "非法的本地头数据偏移量"
+      },
+      "Null_Input_Path_Zip_Error": {
+        "pattern": "输入路径或文件名为空或不存在"
+      },
+      "Determining_File_Name_Zip_Error": {
+        "pattern": "确定文件名时出错"
+      },
+      "Null_Options_Zip_Error": {
+        "pattern": "压缩选项参数为空"
+      },
+      "Null_Input_Stream_Zip_Error": {
+        "pattern": "输入流为空"
+      },
+      "Null_Destination_Path_Zip_Error": {
+        "pattern": "目标路径为空"
+      },
+      "Invalid_Central_Directory_Zip_Error": {
+        "pattern": "压缩实体中的中心目录无效"
+      },
+      "Invalid_Last_Modify_Zip_Error": {
+        "pattern": "非法的最终修改时间值"
+      },
+      "Invalid_Binary_Data_Zip_Error": {
+        "pattern": "非法二进制数据"
+      },
+      "Not_Folder_Zip_Error": {
+        "pattern": "当前文件路径不是目录，路径信息：{0}"
+      },
+      "Cannot_Read_Folder_Zip_Error": {
+        "pattern": "读取文件夹信息出错！文件夹路径：{0}"
+      },
+      "Invalid_Output_Folder_Zip_Error": {
+        "pattern": "输出文件夹出错！文件夹路径：{0}"
+      },
+      "Read_Extra_Data_Zip_Error": {
+        "pattern": "读取扩展信息数据出错！"
+      },
+      "Read_Zip64_Extend_Data_Zip_Error": {
+        "pattern": "读取ZIP64扩展数据信息出错！"
+      },
+      "Process_AES_Extra_Data_Zip_Error": {
+        "pattern": "读取及保存AES扩展数据记录出错！"
+      },
+      "Read_Zip64_ECDR_Zip_Error": {
+        "pattern": "读取Zip64终止中央目录记录出错！"
+      },
+      "Invalid_Signature_Zip64_ECDR_Zip_Error": {
+        "pattern": "非法的Zip64终止中央目录签名"
+      },
+      "Read_Central_Directory_Zip_Error": {
+        "pattern": "读取中央目录信息出错！"
+      },
+      "Entry_Central_Directory_Not_Found_Zip_Error": {
+        "pattern": "预期的压缩实体中央目录信息未找到！索引值：{0}"
+      },
+      "Read_Zip64_ECDRL_Zip_Error": {
+        "pattern": "读取Zip64终止中央目录记录定位信息出错！"
+      },
+      "Read_ECDR_Zip_Error": {
+        "pattern": "读取终止中央目录记录出错"
+      },
+      "Remove_Entry_Zip_Error": {
+        "pattern": "删除压缩实体出错"
+      },
+      "Write_Zip64_ECDRL_Zip_Error": {
+        "pattern": "写入Zip64终止中央目录记录定位信息出错！"
+      },
+      "Write_ECDR_Zip_Error": {
+        "pattern": "写入终止中央目录记录出错"
+      },
+      "Write_Header_Zip_Error": {
+        "pattern": "写入ZIP头数据出错"
+      },
+      "Write_Zip64_Header_Zip_Error": {
+        "pattern": "写入ZIP64头数据出错"
+      },
+      "Read_Entry_Zip_Error": {
+        "pattern": "读取压缩实体数据出错"
+      },
+      "Unknown_Compress_Type_Zip_Error": {
+        "pattern": "不支持的压缩方式！"
+      },
+      "Invalid_Compress_Level_Zip_Error": {
+        "pattern": "非法的压缩等级。压缩级别应该在0-9的范围内。"
+      },
+      "Need_Password_Zip_Error": {
+        "pattern": "需要设置密码用于数据加密！"
+      },
+      "Copy_Data_Zip_Error": {
+        "pattern": "拷贝数据出错！"
+      },
+      "Invalid_CRC_Check_Zip_Error": {
+        "pattern": "ZIP文件执行CRC检查出错！"
+      },
+      "Invalid_Decryptor_Zip_Error": {
+        "pattern": "错误的解密器用于尝试计算AES压缩大小，压缩文件：{0}"
+      },
+      "Invalid_Local_Header_Signature_Zip_Error": {
+        "pattern": "非法的数据头签名！文件路径：{0}"
+      },
+      "Not_Found_Header_Zip_Error": {
+        "pattern": "ZIP头信息未找到。可能不是ZIP文件"
+      },
+      "Read_AES_Bytes_Zip_Error": {
+        "pattern": "读取存储的AES验证数据出错"
+      },
+      "Invalid_Buffer_Size_Zip_Error": {
+        "pattern": "非法的缓冲区大小"
+      },
+      "Min_Split_Size_Zip_Error": {
+        "pattern": "分卷大小小于允许的最小分卷大小：{0} bytes"
+      },
+      "Open_Split_File_Zip_Error": {
+        "pattern": "检查缓冲区大小及打开下一个分卷文件出错！"
+      },
+      "Extract_File_Zip_Error": {
+        "pattern": "解压缩ZIP文件出错！"
+      },
+      "Null_Entry_Path_Zip_Error": {
+        "pattern": "压缩实体路径为空或空字符串"
+      },
+      "Entry_Path_Not_Directory_Zip_Error": {
+        "pattern": "压缩实体路径：{0} 不是目录！"
+      },
+      "Null_Remove_Entry_Path_Zip_Error": {
+        "pattern": "要删除的压缩实体路径数组为空"
+      },
+      "Invalid_File_Zip_Error": {
+        "pattern": "非法的ZIP文件！"
+      },
+      "Null_End_Central_Directory_Zip_Error": {
+        "pattern": "中央目录结束数据为空！"
+      },
+      "Invalid_Comment_Length_Zip_Error": {
+        "pattern": "备注信息长度超出最大长度"
+      },
+      "Write_Comment_Zip_Error": {
+        "pattern": "写入备注信息出错！"
+      },
+      "Not_Split_File_Zip_Error": {
+        "pattern": "压缩包不是分卷压缩文件"
+      },
+      "Merge_Split_File_Zip_Error": {
+        "pattern": "合并分卷文件出错！"
+      },
+      "Null_Output_Stream_Zip_Error": {
+        "pattern": "输出流参数为空，无法写入压缩文件"
+      },
+      "Unknown_File_Header_Zip_Error": {
+        "pattern": "未知的文件头信息"
+      },
+      "Null_Target_File_Zip_Error": {
+        "pattern": "目标文件为空"
+      },
+      "Process_File_Attribute_ReadOnly_Zip_Error": {
+        "pattern": "处理文件只读属性出错！"
+      },
+      "Process_File_Attribute_Last_Modify_Zip_Error": {
+        "pattern": "处理文件最终修改时间属性出错！"
+      },
+      "Code_Size_Invalid": {
+        "pattern": "条形码/二维码尺寸错误"
+      },
+      "Mark_File_Not_Found": {
+        "pattern": "水印文件未找到"
+      },
+      "Parameter_Invalid_Error": {
+        "pattern": "参数非法"
+      },
+      "Not_Support_Encoding_Error": {
+        "pattern": "不支持的字符集编码"
+      },
+      "Code_Error": {
+        "pattern": "错误代码：{0}"
+      },
+      "Stack_Message_Error": {
+        "pattern": "错误堆栈信息："
+      },
+      "Alphabet_Nano_Error": {
+        "pattern": "字母表必须包含1到255个字符"
+      },
+      "Config_Snowflake_Error": {
+        "pattern": "雪花算法配置信息：起始时间戳：{0}，节点的机器ID：{1}，节点的实例ID：{2}"
+      },
+      "Generate_Snowflake_Debug": {
+        "pattern": "上次生成ID的时间：{0}，起始时间戳：{1}，节点的机器ID：{2}，节点的实例ID：{3}，序列索引：{4}"
+      },
+      "Config_ULID_Error": {
+        "pattern": "通用唯一字典排序标识符配置信息：起始时间戳：{0}"
+      },
+      "Generate_ULID_Debug": {
+        "pattern": "上次生成ID的时间：{0}，起始时间戳：{1}，序列索引：{2}"
+      },
+      "Go_Back_Time_UUID_Debug": {
+        "pattern": "系统时间回滚！（当前时间：{0}，上次生成ID的时间：{1}）"
+      },
+      "Timestamp_Over_Run_Warn": {
+        "pattern": "时间戳超限：需要重新初始化随机序列"
+      },
+      "Virtual_Clock_Warn": {
+        "pattern": "虚拟时钟与系统时钟相差过大，需要等待 {0} 毫秒"
+      },
+      "Detect_Charset_Error": {
+        "pattern": "检测字符串：{0} 的字符集出错"
+      },
+      "Not_Found_File_Error": {
+        "pattern": "未找到文件：{0}"
+      },
+      "Key_Size_Invalid_Error": {
+        "pattern": "密钥长度非法"
+      },
+      "Random_Algorithm_Default_Warn": {
+        "pattern": "未设置随机数生成算法，使用默认算法：SHA1PRNG"
+      },
+      "Convert_Object_To_Array_Error": {
+        "pattern": "转换实例对象为字节数组出错"
+      },
+      "Convert_Array_To_Object_Error": {
+        "pattern": "转换字节数组为实例对象出错"
+      },
+      "Last_Modify_Read_File_Error": {
+        "pattern": "读取文件最后一次修改时间出错"
+      },
+      "Size_Read_File_Error": {
+        "pattern": "读取文件大小出错"
+      },
+      "Target_Save_File_Error": {
+        "pattern": "存储文件到指定位置出错"
+      },
+      "Copy_length_File_Debug": {
+        "pattern": "复制的文件长度：{0}"
+      },
+      "Input_Stream_Open_Error": {
+        "pattern": "打开输入流出错"
+      },
+      "Entry_Content_Load_Error": {
+        "pattern": "读取压缩包内资源信息出错"
+      },
+      "Entry_Length_Load_Error": {
+        "pattern": "读取压缩包内资源大小出错"
+      },
+      "Entry_List_Error": {
+        "pattern": "读取压缩包内资源列表出错"
+      },
+      "Read_Files_Error": {
+        "pattern": "读取文件数据出错"
+      },
+      "Remove_Files_Error": {
+        "pattern": "删除文件出错"
+      },
+      "Copy_Files_Error": {
+        "pattern": "复制文件出错"
+      },
+      "Move_Files_Error": {
+        "pattern": "移动文件出错"
+      },
+      "CRC_Calculate_Files_Error": {
+        "pattern": "计算文件的CRC32值出错"
+      },
+      "Create_Directory_Error": {
+        "pattern": "创建文件夹出错"
+      },
+      "Copy_Directory_Error": {
+        "pattern": "复制文件夹出错"
+      },
+      "Remove_Directory_Error": {
+        "pattern": "删除文件夹出错"
+      },
+      "Move_Directory_Error": {
+        "pattern": "移动文件夹出错"
+      },
+      "Destroy_Generator_Registered_ID_Debug": {
+        "pattern": "销毁已初始化的生成器实例对象"
+      },
+      "Read_Image_Error": {
+        "pattern": "读取图片文件出错"
+      },
+      "Cut_Image_Error": {
+        "pattern": "切割图片文件出错"
+      },
+      "Resize_Image_Error": {
+        "pattern": "放大/缩小图片文件出错"
+      },
+      "Water_Mark_Image_Error": {
+        "pattern": "添加图片水印出错"
+      },
+      "Width_Exceeds_Original_Image_Error": {
+        "pattern": "目标宽度超过原文件宽度"
+      },
+      "Height_Exceeds_Original_Image_Error": {
+        "pattern": "目标高度超过原文件高度"
+      },
+      "Close_Stream_IO_Error": {
+        "pattern": "关闭数据流出错"
+      },
+      "Create_Instance_Object_Error": {
+        "pattern": "创建代理实例对象出错"
+      },
+      "Load_Properties_Error": {
+        "pattern": "加载属性信息文件出错"
+      },
+      "Modify_Properties_Error": {
+        "pattern": "修改属性信息文件出错"
+      },
+      "Save_Properties_Error": {
+        "pattern": "保存属性信息到目标文件出错"
+      },
+      "Fields_Retrieve_Reflection_Error": {
+        "pattern": "获取属性信息出错"
+      },
+      "Methods_Retrieve_Reflection_Error": {
+        "pattern": "获取方法信息出错"
+      },
+      "Set_Value_Reflection_Error": {
+        "pattern": "写入属性信息出错，属性名：{0}，值类型：{1}"
+      },
+      "Parameter_Null_Register_Security_Error": {
+        "pattern": "算法名称或配置信息为null"
+      },
+      "Registered_CRC_Algorithm": {
+        "pattern": "已注册的CRC配置信息：{0}"
+      },
+      "Lager_CRC_Security_Error": {
+        "pattern": "仅支持CRC32以下的算法"
+      },
+      "Override_Config_Register_Security_Warn": {
+        "pattern": "算法{0}已注册，覆盖现有配置"
+      },
+      "Calculate_Value_Security_Error": {
+        "pattern": "计算{0}值出错"
+      },
+      "Calculate_Digits_Security_Error": {
+        "pattern": "计算摘要值出错"
+      },
+      "Retrieve_MAC_System_Error": {
+        "pattern": "读取本地网卡MAC地址出错"
+      },
+      "Generate_Identified_ID_System_Error": {
+        "pattern": "生成系统唯一识别ID出错"
+      },
+      "Retrieve_Network_Interface_System_Error": {
+        "pattern": "读取本地网络接口信息出错"
+      },
+      "nano.id.generator.name": {
+        "pattern": "简短识别码"
+      },
+      "snowflake.id.generator.name": {
+        "pattern": "雪花算法生成识别码"
+      },
+      "version1.cuid.id.generator.name": {
+        "pattern": "高性能、可预测且适用于分布式环境的唯一标识符 版本1"
+      },
+      "version2.cuid.id.generator.name": {
+        "pattern": "高性能、可预测且适用于分布式环境的唯一标识符 版本2"
+      },
+      "ulid.id.generator.name": {
+        "pattern": "通用唯一字典排序标识符"
+      },
+      "version1.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本1"
+      },
+      "version2.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本2"
+      },
+      "version3.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本3"
+      },
+      "version4.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本4"
+      },
+      "version5.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本5"
+      },
+      "version6.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本6"
+      },
+      "Office_Ext_Name_Invalid": {
+        "pattern": "未知的文件扩展名：{0}"
+      },
+      "Office_Excel_File_Not_Exists": {
+        "pattern": "Excel文件未找到，文件位置：{0}"
+      },
+      "Office_Excel_File_Write_Error": {
+        "pattern": "保存Excel文件出错，文件地址：{0}"
+      },
+      "MBean_Object_Name_Generate_Error": {
+        "pattern": "生成MBean的名称出错！"
+      },
+      "MBean_Object_Register_Error": {
+        "pattern": "注册MBean对象到JMX管理器出错！"
+      }
+    }
+  }
+}

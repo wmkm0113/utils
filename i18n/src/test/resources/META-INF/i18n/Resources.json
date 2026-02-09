@@ -1,0 +1,16 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Out_Of_Index_Raw_Error": {
+        "pattern": "Array index out of bound. Array length: {0}, position: {1}, data length: {2}"
+      }
+    },
+    "zh-CN": {
+      "Out_Of_Index_Raw_Error": {
+        "pattern": "数组下标越界。数组长度：{0}，起始下标：{1}，数据长度: {2}"
+      }
+    }
+  }
+}

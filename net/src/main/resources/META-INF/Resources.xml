@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Licensed to the Nervousync Studio (NSYC) under one or more
+  ~ contributor license agreements. See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Unknown_Http_Method">Unknown HTTP request method</entry>
+    <entry key="Unknown_Path_Restful_Service_Method">Unknown Restful service request path</entry>
+    <entry key="Parse_Certificate_Error">An exception occurred while parsing the certificate store</entry>
+    <entry key="Init_Trust_Manager_Certificate_Error">An exception occurred while initializing the trust certificate manager</entry>
+    <entry key="NotFound_X509TrustManager_Certificate_Error">No x509 trust certificate manager found</entry>
+    <entry key="Service_Config_Error">Unknown parameter name or path parameter value is null! </entry>
+    <entry key="Service_Method_Error">Method not supported! Method type: {0}</entry>
+    <entry key="Service_Invoke_Error">Invoke service error! Error message: {0}</entry>
+    <entry key="SNMP_Parameter_Invalid_Error">Invalid arguments for SNMP operator</entry>
+    <entry key="Upload_File_Not_Found_Error">Uploaded file not found</entry>
+    <entry key="Entity_List_Empty_Debug">The list of request parameters is empty</entry>
+    <entry key="Write_Request_Data_Debug">Write request information: {0}</entry>
+    <entry key="System_Certificate_Not_Found_Warn">System certificate store not found</entry>
+    <entry key="Domain_Resolve_Request_Debug">An error occurs when resolving domain name: {0}</entry>
+    <entry key="Read_Server_Certificate_Request_Error">An error occurs when reading server certificate information</entry>
+    <entry key="Process_Data_Request_Error">An error occurs when processing request message</entry>
+    <entry key="Process_Content_Type_Request_Error">An error occurs when processing "Content-Type" header message</entry>
+    <entry key="Process_SSL_Certificate_Request_Error">An error occurs when processing SSL certificate</entry>
+    <entry key="Send_Request_Error">An error occurs when sending request</entry>
+    <entry key="Response_Message_Debug">Response code: {0}, error message: {1}</entry>
+    <entry key="Init_SNMP_Error">An error occurs when initializing SNMP utilities</entry>
+    <entry key="Add_Target_SNMP_Error">An error occurs when adding target monitoring host</entry>
+    <entry key="Retrieve_Data_SNMP_Error">An error occurs when reading monitoring data information</entry>
+    <entry key="Invalid_Block_Segment_Error">Illegal split data block</entry>
+    <entry key="Not_Match_Ext_Name_Files_Warn">Inconsistent file extensions</entry>
+    <entry key="Size_Write_Files_Debug">Write file size: {0}</entry>
+    <entry key="Merge_Files_Error">An error occurs when merging file data</entry>
+    <entry key="Read_Block_Files_Debug">Current block index: {0}, read length: {1}</entry>
+    <entry key="Read_Files_Error">An error occurs when reading file data</entry>
+</properties>

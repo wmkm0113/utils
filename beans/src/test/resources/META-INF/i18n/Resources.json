@@ -1,0 +1,28 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Bean_Generate_Result": {
+        "pattern": "Generate {0} result: {1}"
+      },
+      "Bean_Copy_Result": {
+        "pattern": "Copied {0} result: {1}"
+      },
+      "Bean_Result": {
+        "pattern": "{0} result: {1}"
+      }
+    },
+    "zh-CN": {
+      "Bean_Generate_Result": {
+        "pattern": "生成{0}结果：{1}"
+      },
+      "Bean_Copy_Result": {
+        "pattern": "复制的{0}结果：{1}"
+      },
+      "Bean_Result": {
+        "pattern": "{0}结果：{1}"
+      }
+    }
+  }
+}

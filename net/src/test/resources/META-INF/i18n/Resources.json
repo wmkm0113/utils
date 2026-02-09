@@ -1,0 +1,70 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Request_HTTP_Method": {
+        "pattern": "HTTP method: {0}"
+      },
+      "Request_Resolve_Domain": {
+        "pattern": "Resolve domain: {0}, IP address: {1}"
+      },
+      "Request_Resolve_IP_Count": {
+        "pattern": "Resolve domain {0} receive address count {1}"
+      },
+      "Request_Read_Certificate": {
+        "pattern": "Read domain: {0} SSL certificate, using Base64 encoded: {1}"
+      },
+      "Request_Content_Length": {
+        "pattern": "Response content length: {0}"
+      },
+      "Request_Content_Info": {
+        "pattern": "Response content length: {0}, content info: {1}"
+      },
+      "SNMP_Init_Result": {
+        "pattern": "Initialize result: {0}"
+      },
+      "SNMP_Add_Result": {
+        "pattern": "Add the monitor host result: {0}"
+      },
+      "SNMP_Record_Data": {
+        "pattern": "Identified key: {0}, current time: {1}"
+      },
+      "SNMP_Record_Info": {
+        "pattern": "Data Key: {0}, value: {1}"
+      }
+    },
+    "zh-CN": {
+      "Request_HTTP_Method": {
+        "pattern": "HTTP请求类型：{0}"
+      },
+      "Request_Resolve_Domain": {
+        "pattern": "解析域名：{0}，IP地址：{1}"
+      },
+      "Request_Resolve_IP_Count": {
+        "pattern": "解析域名：{0}， 收到的地址数量：{1}"
+      },
+      "Request_Read_Certificate": {
+        "pattern": "读取域名：{0}的服务器证书信息，使用Base64编码：{1}"
+      },
+      "Request_Content_Length": {
+        "pattern": "响应信息长度：{0}"
+      },
+      "Request_Content_Info": {
+        "pattern": "响应信息长度：{0}，内容：{1}"
+      },
+      "SNMP_Init_Result": {
+        "pattern": "初始化成功：{0}"
+      },
+      "SNMP_Add_Result": {
+        "pattern": "添加监控主机成功：{0}"
+      },
+      "SNMP_Record_Data": {
+        "pattern": "唯一识别代码：{0}，当前时间：{1}"
+      },
+      "SNMP_Record_Info": {
+        "pattern": "数据Key：{0}，数据值：{1}"
+      }
+    }
+  }
+}

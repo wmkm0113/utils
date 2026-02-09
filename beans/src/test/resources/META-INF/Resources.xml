@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Bean_Generate_Result">Generate {0} result: {1}</entry>
+    <entry key="Bean_Copy_Result">Copied {0} result: {1}</entry>
+    <entry key="Bean_Result">{0} result: {1}</entry>
+</properties>

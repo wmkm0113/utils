@@ -1,0 +1,46 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Folders_Mail_Error": {
+        "pattern": "An error occurs when reading email folder"
+      },
+      "Send_Mail_Error": {
+        "pattern": "An error occurs when sending email"
+      },
+      "Receive_Mail_Error": {
+        "pattern": "An error occurs when receiving email"
+      },
+      "Set_Status_Mail_Error": {
+        "pattern": "An error occurs when setting email status"
+      },
+      "Attachment_Receive_Mail_Error": {
+        "pattern": "An error occurs when receiving email attachment information"
+      },
+      "Verify_Signature_Mail_Error": {
+        "pattern": "An error occurs when validating email digital signature"
+      }
+    },
+    "zh-CN": {
+      "Folders_Mail_Error": {
+        "pattern": "读取电子邮箱文件夹出错"
+      },
+      "Send_Mail_Error": {
+        "pattern": "发送电子邮件出错"
+      },
+      "Receive_Mail_Error": {
+        "pattern": "接收电子邮件出错"
+      },
+      "Set_Status_Mail_Error": {
+        "pattern": "设置电子邮件状态出错"
+      },
+      "Attachment_Receive_Mail_Error": {
+        "pattern": "接收电子邮件附件信息出错"
+      },
+      "Verify_Signature_Mail_Error": {
+        "pattern": "验证电子邮件数字签名出错"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Execute_Begin_Test">Starting execute class {0} method: {1}</entry>
+    <entry key="Execute_End_Test">Execute class {0} method: {1} finished</entry>
+    <entry key="Request_HTTP_Method">HTTP method: {0}</entry>
+    <entry key="Request_Resolve_Domain">Resolve domain: {0}, IP address: {1}</entry>
+    <entry key="Request_Resolve_IP_Count">Resolve domain {0} receive address count {1}</entry>
+    <entry key="Request_Read_Certificate">Read domain: {0} SSL certificate, using Base64 encoded: {1}</entry>
+    <entry key="Request_Content_Length">Response content length: {0}</entry>
+    <entry key="Request_Content_Info">Response content length: {0}, content info: {1}</entry>
+    <entry key="SNMP_Init_Result">Initialize result: {0}</entry>
+    <entry key="SNMP_Add_Result">Add the monitor host result: {0}</entry>
+    <entry key="SNMP_Record_Data">Identified key: {0}, current time: {1}</entry>
+    <entry key="SNMP_Record_Info">Data Key: {0}, value: {1}</entry>
+</properties>

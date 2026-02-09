@@ -1,0 +1,82 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Startup_Manager_Update": {
+        "pattern": "Startup manager update startup type! Launcher class name: {0}, startup type: {1}"
+      },
+      "Startup_Manager_Remove": {
+        "pattern": "Startup manager remove registered launcher! Launcher class name: {0}"
+      },
+      "Startup_Manager_Start": {
+        "pattern": "Startup manager execute start! Launcher class name: {0}"
+      },
+      "Startup_Manager_Stop": {
+        "pattern": "Startup manager execute stop! Launcher class name: {0}"
+      },
+      "Startup_Manager_Restart": {
+        "pattern": "Startup manager execute restart! Launcher class name: {0}"
+      },
+      "Startup_Manager_Save_Config_Error": {
+        "pattern": "Startup manager save startup configure information error!"
+      },
+      "Configure_Manager_Initialized": {
+        "pattern": "Configuration Information Manager has completed initialization"
+      },
+      "Configure_Manager_Path_Null": {
+        "pattern": "The configuration information storage path is empty"
+      },
+      "Configure_Manager_Path_Not_Exists": {
+        "pattern": "Configuration information storage path: {0} does not exist or cannot be written."
+      },
+      "Configure_Manager_Override_Path": {
+        "pattern": "Overwrite existing configuration information, original configuration file path: {0}, new configuration file path: {1}"
+      },
+      "Configure_Manager_Scan_Error": {
+        "pattern": "An error occurred while scanning the configuration information storage path"
+      },
+      "Match_Signature_Failed": {
+        "pattern": "Match digital signature failed! Configure file name: {0}"
+      }
+    },
+    "zh-CN": {
+      "Startup_Manager_Update": {
+        "pattern": "启动管理器更新启动类型！启动器类名：{0}，启动类型：{1}"
+      },
+      "Startup_Manager_Remove": {
+        "pattern": "启动管理器删除注册的启动器！启动器类名：{0}"
+      },
+      "Startup_Manager_Start": {
+        "pattern": "启动管理器执行启动操作！启动器类名：{0}"
+      },
+      "Startup_Manager_Stop": {
+        "pattern": "启动管理器执行停止操作！启动器类名：{0}"
+      },
+      "Startup_Manager_Restart": {
+        "pattern": "启动管理器执行重启操作！启动器类名：{0}"
+      },
+      "Startup_Manager_Save_Config_Error": {
+        "pattern": "启动管理器保存启动配置信息出错！"
+      },
+      "Configure_Manager_Initialized": {
+        "pattern": "配置信息管理器已完成初始化"
+      },
+      "Configure_Manager_Path_Null": {
+        "pattern": "配置信息存储路径为空"
+      },
+      "Configure_Manager_Path_Not_Exists": {
+        "pattern": "配置信息存储路径：{0} 不存在或无法写入。"
+      },
+      "Configure_Manager_Override_Path": {
+        "pattern": "覆盖已存在的配置信息，原配置文件路径：{0}，新配置文件路径：{1}"
+      },
+      "Configure_Manager_Scan_Error": {
+        "pattern": "扫描配置信息存储路径时出错"
+      },
+      "Match_Signature_Failed": {
+        "pattern": "检查数字签名失败！配置文件名：{0}"
+      }
+    }
+  }
+}

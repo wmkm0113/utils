@@ -1,0 +1,157 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Mail_Subject": {
+        "pattern": "Test Subject"
+      },
+      "Mail_Content": {
+        "pattern": "Test Content"
+      },
+      "Mail_Generate_Config_Info": {
+        "pattern": "Generated e-mail configure information: {0}"
+      },
+      "Mail_Config_Exist": {
+        "pattern": "E-mail configure information existed: {0}"
+      },
+      "Mail_Config_Validate": {
+        "pattern": "E-mail configure information validate success: {0}"
+      },
+      "Mail_Config_Convert": {
+        "pattern": "E-mail configure information convert type success: {0}"
+      },
+      "Mail_Parse_Config_Info": {
+        "pattern": "Parse and verified e-mail configure information: {0}"
+      },
+      "Mail_Folder": {
+        "pattern": "Mail folder name: {0}"
+      },
+      "Mail_Count": {
+        "pattern": "Mail count: {0}"
+      },
+      "Mail_Sent_Result": {
+        "pattern": "Send test mail result: {0}"
+      },
+      "Mail_Info_UID": {
+        "pattern": "E-Mail UID: {0}"
+      },
+      "Mail_Info_Title": {
+        "pattern": "E-Mail subject: {0}"
+      },
+      "Mail_Info_Content": {
+        "pattern": "E-Mail content: {0}"
+      },
+      "Mail_Flag_Read": {
+        "pattern": "Set e-mail read status result: {0}"
+      },
+      "Mail_Flag_UnRead": {
+        "pattern": "Set e-mail unread status result: {0}"
+      },
+      "Mail_Flag_Reply": {
+        "pattern": "Set e-mail answer status result: {0}"
+      },
+      "Mail_Flag_Flag": {
+        "pattern": "Set e-mail flag status result: {0}"
+      },
+      "Mail_Flag_UnFlag": {
+        "pattern": "Set e-mail unflag status result: {0}"
+      },
+      "Mail_Flag_Delete": {
+        "pattern": "Set e-mail delete status result: {0}"
+      },
+      "Mail_Recovery": {
+        "pattern": "Recovery deleted e-mail UID: {0} result: {1}"
+      },
+      "Mail_Drop": {
+        "pattern": "Drop e-mail UID: {0} result: {1}"
+      },
+      "Inbox_Count": {
+        "pattern": "Inbox mail count: {0}"
+      },
+      "Spam_Count": {
+        "pattern": "Spam mail count: {0}"
+      },
+      "Drafts_Count": {
+        "pattern": "Drafts mail count: {0}"
+      },
+      "Sent_Count": {
+        "pattern": "Sent mail count: {0}"
+      }
+    },
+    "zh-CN": {
+      "Mail_Generate_Config_Info": {
+        "pattern": "生成的电子邮件配置信息：{0}"
+      },
+      "Mail_Config_Exist": {
+        "pattern": "电子邮件配置信息已存在：{0}"
+      },
+      "Mail_Config_Validate": {
+        "pattern": "电子邮件配置信息验证通过：{0}"
+      },
+      "Mail_Config_Convert": {
+        "pattern": "电子邮件配置信息类型转换成功：{0}"
+      },
+      "Mail_Parse_Config_Info": {
+        "pattern": "解析验证后的电子邮件配置信息：{0}"
+      },
+      "Mail_Folder": {
+        "pattern": "电子邮件目录：{0}"
+      },
+      "Mail_Count": {
+        "pattern": "电子邮件数：{0}"
+      },
+      "Mail_Sent_Result": {
+        "pattern": "测试邮件发送成功：{0}"
+      },
+      "Mail_Info_UID": {
+        "pattern": "电子邮件UID：{0}"
+      },
+      "Mail_Info_Title": {
+        "pattern": "电子邮件标题：{0}"
+      },
+      "Mail_Info_Content": {
+        "pattern": "电子邮件正文：{0}"
+      },
+      "Mail_Flag_Read": {
+        "pattern": "标记邮件状态已读成功：{0}"
+      },
+      "Mail_Flag_UnRead": {
+        "pattern": "标记邮件状态未读成功：{0}"
+      },
+      "Mail_Flag_Reply": {
+        "pattern": "标记邮件状态已回复成功：{0}"
+      },
+      "Mail_Flag_Flag": {
+        "pattern": "标记邮件状态旗标成功：{0}"
+      },
+      "Mail_Flag_UnFlag": {
+        "pattern": "标记邮件状态取消旗标成功：{0}"
+      },
+      "Mail_Flag_Delete": {
+        "pattern": "标记邮件状态删除成功：{0}"
+      },
+      "Mail_Recovery": {
+        "pattern": "恢复已删除邮件UID：{0} 成功：{1}"
+      },
+      "Mail_Drop": {
+        "pattern": "彻底删除邮件UID：{0} 成功：{1}"
+      },
+      "Inbox_Count": {
+        "pattern": "收件箱邮件数：{0}"
+      },
+      "Spam_Count": {
+        "pattern": "垃圾邮件数：{0}"
+      },
+      "Drafts_Count": {
+        "pattern": "草稿箱邮件数：{0}"
+      },
+      "Sent_Count": {
+        "pattern": "已发送邮件数：{0}"
+      },
+      "Trash": {
+        "pattern": "已删除邮件数：{0}"
+      }
+    }
+  }
+}

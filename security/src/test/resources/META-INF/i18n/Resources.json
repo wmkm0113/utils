@@ -1,0 +1,148 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "OTP_Random_Key": {
+        "pattern": "Generated random key: {0}"
+      },
+      "OTP_Random_Key_Length": {
+        "pattern": "Generated size: {0} random key: {1}"
+      },
+      "Generate_Result_HOTP": {
+        "pattern": "Generated HOTP code: {0}, using algorithm: {1}"
+      },
+      "Generate_Result_TOTP": {
+        "pattern": "Generated TOTP code: {0}, using algorithm: {1}"
+      },
+      "Generate_Result_Fix_Time": {
+        "pattern": "Calculated fix time: {0}, random key: {1}"
+      },
+      "Generate_Result_TOTP_Fix_Time": {
+        "pattern": "Generated TOTP code: {0}, using algorithm: {1}, fix time: {2}"
+      },
+      "Generate_Result_TOTP_Config": {
+        "pattern": "Generated TOTP code: {0}, using algorithm: {1}, fix time: {2}, cycle count: {3}"
+      },
+      "Crypto_Key_Length": {
+        "pattern": "{0} key: {1}"
+      },
+      "Encrypt_Result": {
+        "pattern": "{0}/{1}/{2} encrypt result: {3}"
+      },
+      "Decrypt_Result": {
+        "pattern": "{0}/{1}/{2} decrypt result: {3}"
+      },
+      "Signature_Result": {
+        "pattern": "Random string: {0} using {1} signature result: {2}"
+      },
+      "Verify_Result": {
+        "pattern": "{0} verify result: {1}"
+      },
+      "CRC_Result": {
+        "pattern": "CRC algorithm: {0}, result: {1}"
+      },
+      "Digits_Result": {
+        "pattern": "Digits algorithm: {0}, result: {1} {2}"
+      },
+      "Hmac_Result": {
+        "pattern": "Hmac algorithm: {0}, key: {1}, result: {2} {3}"
+      },
+      "SM2_Encrypt_Result": {
+        "pattern": "SM2 encrypt result: {0}, data type: {1}"
+      },
+      "SM2_Decrypt_Result": {
+        "pattern": "SM2 decrypt result: {0}, data type: {1}"
+      },
+      "Secure_Init_System_Result": {
+        "pattern": "System secure config result: {0}"
+      },
+      "Secure_Init_Config_Result": {
+        "pattern": "Initialize secure config result: {0}"
+      },
+      "Secure_Remove_Result": {
+        "pattern": "Remove secure config result: {0}"
+      },
+      "Secure_Encrypt_Result": {
+        "pattern": "Secure encrypt result: {0}"
+      },
+      "Secure_Decrypt_Result": {
+        "pattern": "Secure decrypt result: {0}"
+      },
+      "Secure_Register_Status": {
+        "pattern": "Secure config register status: {0}"
+      }
+    },
+    "zh-CN": {
+      "OTP_Random_Key": {
+        "pattern": "生成的随机密钥：{0}"
+      },
+      "OTP_Random_Key_Length": {
+        "pattern": "生成的长度为：{0} 的随机密钥：{1}"
+      },
+      "Generate_Result_HOTP": {
+        "pattern": "生成的HOTP随机码：{0}，使用算法：{1}"
+      },
+      "Generate_Result_TOTP": {
+        "pattern": "生成的TOTP随机码：{0}，使用算法：{1}"
+      },
+      "Generate_Result_Fix_Time": {
+        "pattern": "计算的时钟偏移：{0}，随机码：{1}"
+      },
+      "Generate_Result_TOTP_Fix_Time": {
+        "pattern": "生成的TOTP随机码：{0}，使用算法：{1}，时钟偏移：{2}"
+      },
+      "Generate_Result_TOTP_Config": {
+        "pattern": "生成的TOTP随机码：{0}，使用算法：{1}，时钟偏移：{2}，时间步长：{3}"
+      },
+      "Crypto_Key_Length": {
+        "pattern": "{0}密钥：{1}"
+      },
+      "Encrypt_Result": {
+        "pattern": "{0}/{1}/{2}加密结果：{3}"
+      },
+      "Decrypt_Result": {
+        "pattern": "{0}/{1}/{2}解密结果：{3}"
+      },
+      "Signature_Result": {
+        "pattern": "随机字符串：{0} 使用{1}签名结果：{2}"
+      },
+      "Verify_Result": {
+        "pattern": "{0}签名验证结果：{1}"
+      },
+      "CRC_Result": {
+        "pattern": "CRC算法：{0}，结果：{1}"
+      },
+      "Digits_Result": {
+        "pattern": "摘要算法：{0}，结果：{1}，{2}"
+      },
+      "Hmac_Result": {
+        "pattern": "摘要算法：{0}，密钥：{1}，结果：{2}，{3}"
+      },
+      "SM2_Encrypt_Result": {
+        "pattern": "SM2加密结果：{0}，数据格式：{1}"
+      },
+      "SM2_Decrypt_Result": {
+        "pattern": "SM2解密结果：{0}，数据格式：{1}"
+      },
+      "Secure_Init_System_Result": {
+        "pattern": "系统配置初始化成功：{0}"
+      },
+      "Secure_Init_Config_Result": {
+        "pattern": "安全配置初始化成功：{0}"
+      },
+      "Secure_Remove_Result": {
+        "pattern": "安全配置移除成功：{0}"
+      },
+      "Secure_Encrypt_Result": {
+        "pattern": "安全配置加密结果：{0}"
+      },
+      "Secure_Decrypt_Result": {
+        "pattern": "安全配置解密结果：{0}"
+      },
+      "Secure_Register_Status": {
+        "pattern": "安全配置注册状态：{0}"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Zip_Create_Success">Create Zip File Success!</entry>
+    <entry key="Zip_Entry_Path">Entry path: {0}</entry>
+    <entry key="Zip_Entry_Size">Entry size: {0}</entry>
+    <entry key="Zip_Read_Comment">Read comment: {0}</entry>
+    <entry key="Zip_Read_Path">Read file path: {0}</entry>
+</properties>

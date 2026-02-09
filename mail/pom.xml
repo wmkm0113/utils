@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.nervousync</groupId>
+        <artifactId>utils-parent</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>utils-mail</artifactId>
+    <packaging>jar</packaging>
+    <name>Nervousync Java Mail Utilities</name>
+    <properties>
+        <jakarta.mail.version>2.1.5</jakarta.mail.version>
+        <angus.mail.version>2.0.5</angus.mail.version>
+        <bcprov.version>1.83</bcprov.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Jakarta Mail Support -->
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+            <version>${jakarta.mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>angus-mail</artifactId>
+            <version>${angus.mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>gimap</artifactId>
+            <version>${angus.mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcjmail-jdk18on</artifactId>
+            <version>${bcprov.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk18on</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</project>

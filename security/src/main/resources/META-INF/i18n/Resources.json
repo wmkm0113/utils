@@ -1,0 +1,112 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "PKCS12_Generate_Error": {
+        "pattern": "An error occurs when generating certificate in PKCS12 format"
+      },
+      "Data_Is_Null_Ignore": {
+        "pattern": "Binary data is null, ignore and return null"
+      },
+      "Certificate_SN_Debug": {
+        "pattern": "Certificate SN: {0}"
+      },
+      "Certificate_Invalid_Error": {
+        "pattern": "Illegal certificate data"
+      },
+      "Data_Read_Key_Error": {
+        "pattern": "Error reading byte array of key"
+      },
+      "Data_Generate_Key_Error": {
+        "pattern": "An error occurs when generating key from byte array"
+      },
+      "Load_Key_Store_Error": {
+        "pattern": "An error occurs when loading certificate store data"
+      },
+      "Read_Certificate_Error": {
+        "pattern": "An error occurs when reading x509 certificate"
+      },
+      "Read_Private_Key_From_Store_Error": {
+        "pattern": "An error occurs when reading private key certificate from certificate store"
+      },
+      "Override_Factory_Config_Debug": {
+        "pattern": "Override factory configuration information"
+      },
+      "Security_Current_Config": {
+        "pattern": "Register secure config information: {0}"
+      },
+      "Security_Override_Config": {
+        "pattern": "Override secure config identify code: {0}"
+      },
+      "Encrypt_Data_Error": {
+        "pattern": "An error occurs when encrypting data"
+      },
+      "Decrypt_Data_Error": {
+        "pattern": "An error occurs when decrypting data"
+      },
+      "Secure_Name_Empty_Error": {
+        "pattern": "Secure name is empty"
+      },
+      "Key_Bytes_Empty_Error": {
+        "pattern": "Secure key data is empty"
+      },
+      "Init_Crypto_Error": {
+        "pattern": "An error occurs when initializing encryptor"
+      }
+    },
+    "zh-CN": {
+      "PKCS12_Generate_Error": {
+        "pattern": "生成PKCS12格式的证书出错"
+      },
+      "Data_Is_Null_Ignore": {
+        "pattern": "二进制数据为null，忽略操作返回null"
+      },
+      "Certificate_SN_Debug": {
+        "pattern": "证书编号：{0}"
+      },
+      "Certificate_Invalid_Error": {
+        "pattern": "证书数据非法"
+      },
+      "Data_Read_Key_Error": {
+        "pattern": "读取密钥的字节数组出错"
+      },
+      "Data_Generate_Key_Error": {
+        "pattern": "从字节数组生成密钥出错"
+      },
+      "Load_Key_Store_Error": {
+        "pattern": "加载证书库数据出错"
+      },
+      "Read_Certificate_Error": {
+        "pattern": "读取x509证书出错"
+      },
+      "Read_Private_Key_From_Store_Error": {
+        "pattern": "从证书库中读取私钥证书出错"
+      },
+      "Override_Factory_Config_Debug": {
+        "pattern": "覆写工厂配置信息"
+      },
+      "Security_Current_Config": {
+        "pattern": "注册的安全配置信息：{0}"
+      },
+      "Security_Override_Config": {
+        "pattern": "覆盖的安全配置信息识别代码：{0}"
+      },
+      "Encrypt_Data_Error": {
+        "pattern": "加密数据时出错"
+      },
+      "Decrypt_Data_Error": {
+        "pattern": "解密数据时出错"
+      },
+      "Secure_Name_Empty_Error": {
+        "pattern": "安全名称为空"
+      },
+      "Key_Bytes_Empty_Error": {
+        "pattern": "安全密钥数据为空"
+      },
+      "Init_Crypto_Error": {
+        "pattern": "初始化加密器出错"
+      }
+    }
+  }
+}

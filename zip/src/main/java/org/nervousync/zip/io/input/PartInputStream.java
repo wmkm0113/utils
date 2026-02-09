@@ -1,0 +1,241 @@
+/*
+ * Licensed to the Nervousync Studio (NSYC) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.nervousync.zip.io.input;
+
+import jakarta.annotation.Nonnull;
+import org.nervousync.commons.Globals;
+import org.nervousync.exceptions.zip.ZipException;
+import org.nervousync.io.StandardFile;
+import org.nervousync.zip.ZipFile;
+import org.nervousync.zip.crypto.Cryptor;
+import org.nervousync.zip.crypto.impl.aes.AESDecryptor;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * The type Part input stream.
+ *
+ * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
+ * @version $Revision: 1.0.0 $ $Date: Dec 2, 2017 10:30:23 $
+ */
+public class PartInputStream extends InputStream {
+
+	private final ZipFile zipFile;
+	private StandardFile input;
+	private int currentIndex;
+	private long readBytes;
+	private final long length;
+	private final Cryptor decryptor;
+	private final byte[] oneByteBuffer = new byte[1];
+	private final byte[] aesBlockBuffer = new byte[Globals.AES_BLOCK_SIZE];
+	private int aesBytesReturned = 0;
+	private final boolean isAESEncryptedFile;
+
+	/**
+	 * Instantiates a new Part input stream.
+	 *
+	 * @param zipFile            the zip file
+	 * @param currentIndex       the current index
+	 * @param length             the length
+	 * @param decryptor          the decryptor
+	 * @param isAESEncryptedFile is aes encrypted file
+	 */
+	protected PartInputStream(@Nonnull final ZipFile zipFile, final int currentIndex, @Nonnull final StandardFile input,
+	                          final long length, final Cryptor decryptor, final boolean isAESEncryptedFile) {
+		this.zipFile = zipFile;
+		this.currentIndex = currentIndex;
+		this.input = input;
+		this.readBytes = 0L;
+		this.length = length;
+		this.decryptor = decryptor;
+		this.isAESEncryptedFile = isAESEncryptedFile;
+	}
+
+	public static PartInputStream newInstance(@Nonnull final ZipFile zipFile, final int currentIndex,
+	                                          final long seekPosition, final long length, final Cryptor decryptor,
+	                                          final boolean isAESEncryptedFile)
+			throws IOException {
+		final StandardFile input = zipFile.openSplitFile(currentIndex);
+		input.seek(seekPosition);
+		return new PartInputStream(zipFile, currentIndex, input, length, decryptor, isAESEncryptedFile);
+	}
+
+	@Override
+	public int read() throws IOException {
+		if (this.readBytes >= this.length) {
+			return Globals.DEFAULT_VALUE_INT;
+		}
+
+		if (this.isAESEncryptedFile) {
+			if (this.aesBytesReturned == 0 || this.aesBytesReturned == 16) {
+				if (this.read(this.aesBlockBuffer) == Globals.DEFAULT_VALUE_INT) {
+					return Globals.DEFAULT_VALUE_INT;
+				}
+				this.aesBytesReturned = 0;
+			}
+			return (this.aesBlockBuffer[this.aesBytesReturned++] & 0xFF);
+		} else {
+			return this.read(this.oneByteBuffer, 0, 1) == Globals.DEFAULT_VALUE_INT ?
+					Globals.DEFAULT_VALUE_INT : (this.oneByteBuffer[0] & 0xFF);
+		}
+	}
+
+	@Override
+	public synchronized int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
+		try {
+			int length = len;
+			if (length > (this.length - this.readBytes)) {
+				length = (int) (this.length - this.readBytes);
+
+				if (length == 0) {
+					this.checkAndReadAESMacBytes();
+					return Globals.DEFAULT_VALUE_INT;
+				}
+			}
+
+			if (this.decryptor instanceof AESDecryptor) {
+				if ((this.readBytes + length) < this.length
+						&& (length % 16 != 0)) {
+					length -= (length % 16);
+				}
+			}
+
+			int count = this.input.read(b, off, length);
+			if ((count < length) && this.zipFile.isSplitArchive()) {
+				this.input.close();
+				this.currentIndex++;
+				this.input = this.zipFile.openSplitFile(this.currentIndex);
+
+				if (count < 0) {
+					count = 0;
+				}
+
+				int readCount = this.input.read(b, count, length - count);
+				if (readCount > 0) {
+					count += readCount;
+				}
+			}
+
+			if (count > 0) {
+				if (this.decryptor != null) {
+					try {
+						this.decryptor.process(b, off, count);
+					} catch (ZipException e) {
+						throw new IOException(e);
+					}
+				}
+
+				this.readBytes += count;
+			}
+
+			if (this.readBytes >= this.length) {
+				this.checkAndReadAESMacBytes();
+			}
+
+			return count;
+		} catch (ZipException e) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public int available() {
+		long amount = this.length - this.readBytes;
+		if (amount > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
+		return (int) amount;
+	}
+
+	@Override
+	public long skip(final long length) throws IOException {
+		if (length < 0L) {
+			throw new IllegalArgumentException();
+		}
+
+		long skipLength = length;
+		if (skipLength > (this.length - this.readBytes)) {
+			skipLength = this.length - this.readBytes;
+		}
+
+		this.readBytes += skipLength;
+		return skipLength;
+	}
+
+	/**
+	 * Seek.
+	 *
+	 * @param pos the pos
+	 * @throws IOException the io exception
+	 */
+	public void seek(final long pos) throws IOException {
+		this.input.seek(pos);
+	}
+
+	@Override
+	public void close() throws IOException {
+		this.input.close();
+	}
+
+	/**
+	 * Seek to end.
+	 *
+	 * @throws IOException the io exception
+	 */
+	protected void seekToEnd() throws IOException {
+		this.seek(this.length);
+	}
+
+	/**
+	 * Check and read aes mac bytes.
+	 *
+	 * @throws IOException the io exception
+	 */
+	protected void checkAndReadAESMacBytes() throws IOException, ZipException {
+		if (this.isAESEncryptedFile
+				&& (this.decryptor instanceof AESDecryptor)) {
+			if (((AESDecryptor) this.decryptor).getStoredMac() != null) {
+				//	Store mac already set
+				return;
+			}
+
+			byte[] storedMac = new byte[Globals.AES_AUTH_LENGTH];
+			int readLength = this.input.read(storedMac);
+
+			if (readLength != Globals.AES_AUTH_LENGTH) {
+				if (this.zipFile.isSplitArchive()) {
+					this.input.close();
+					this.currentIndex++;
+					this.input = this.zipFile.openSplitFile(this.currentIndex);
+					int newReadLength = this.input.read(storedMac,
+							readLength, Globals.AES_AUTH_LENGTH - readLength);
+
+					readLength += newReadLength;
+				} else {
+					throw new ZipException(0x0000001B0055L);
+				}
+			}
+
+			if (readLength != Globals.AES_AUTH_LENGTH) {
+				throw new ZipException(0x0000001B0055L);
+			}
+
+			((AESDecryptor) this.decryptor).setStoredMac(storedMac);
+		}
+	}
+}

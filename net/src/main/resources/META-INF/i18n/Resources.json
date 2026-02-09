@@ -1,0 +1,189 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "errors": {
+    "0x0000001A0003": "Unknown_Http_Method",
+    "0x0000001A0004": "Unknown_Path_Restful_Service_Method",
+    "0x000000010001": "Parse_Certificate_Error",
+    "0x000000160001": "Init_Trust_Manager_Certificate_Error",
+    "0x000000160002": "NotFound_X509TrustManager_Certificate_Error",
+    "0x0000000F0001": "Service_Config_Error",
+    "0x0000000F0002": "Service_Method_Error",
+    "0x0000000F0003": "Service_Invoke_Error",
+    "0x000000EE0001": "SNMP_Parameter_Invalid_Error"
+  },
+  "messages": {
+    "en-US": {
+      "Unknown_Http_Method": {
+        "pattern": "Unknown HTTP request method"
+      },
+      "Unknown_Path_Restful_Service_Method": {
+        "pattern": "Unknown Restful service request path"
+      },
+      "Parse_Certificate_Error": {
+        "pattern": "An exception occurred while parsing the certificate store"
+      },
+      "Init_Trust_Manager_Certificate_Error": {
+        "pattern": "An exception occurred while initializing the trust certificate manager"
+      },
+      "NotFound_X509TrustManager_Certificate_Error": {
+        "pattern": "No x509 trust certificate manager found"
+      },
+      "Service_Config_Error": {
+        "pattern": "Unknown parameter name or path parameter value is null! "
+      },
+      "Service_Method_Error": {
+        "pattern": "Method not supported! Method type: {0}"
+      },
+      "Service_Invoke_Error": {
+        "pattern": "Invoke service error! Error message: {0}"
+      },
+      "SNMP_Parameter_Invalid_Error": {
+        "pattern": "Invalid arguments for SNMP operator"
+      },
+      "Upload_File_Not_Found_Error": {
+        "pattern": "Uploaded file not found"
+      },
+      "Entity_List_Empty_Debug": {
+        "pattern": "The list of request parameters is empty"
+      },
+      "Write_Request_Data_Debug": {
+        "pattern": "Write request information: {0}"
+      },
+      "System_Certificate_Not_Found_Warn": {
+        "pattern": "System certificate store not found"
+      },
+      "Domain_Resolve_Request_Debug": {
+        "pattern": "An error occurs when resolving domain name: {0}"
+      },
+      "Read_Server_Certificate_Request_Error": {
+        "pattern": "An error occurs when reading server certificate information"
+      },
+      "Process_Data_Request_Error": {
+        "pattern": "An error occurs when processing request message"
+      },
+      "Process_Content_Type_Request_Error": {
+        "pattern": "An error occurs when processing \"Content-Type\" header message"
+      },
+      "Process_SSL_Certificate_Request_Error": {
+        "pattern": "An error occurs when processing SSL certificate"
+      },
+      "Send_Request_Error": {
+        "pattern": "An error occurs when sending request"
+      },
+      "Response_Message_Debug": {
+        "pattern": "Response code: {0}, error message: {1}"
+      },
+      "Init_SNMP_Error": {
+        "pattern": "An error occurs when initializing SNMP utilities"
+      },
+      "Add_Target_SNMP_Error": {
+        "pattern": "An error occurs when adding target monitoring host"
+      },
+      "Retrieve_Data_SNMP_Error": {
+        "pattern": "An error occurs when reading monitoring data information"
+      },
+      "Not_Match_Ext_Name_Files_Warn": {
+        "pattern": "Inconsistent file extensions"
+      },
+      "Size_Write_Files_Debug": {
+        "pattern": "Write file size: {0}"
+      },
+      "Merge_Files_Error": {
+        "pattern": "An error occurs when merging file data"
+      },
+      "Read_Block_Files_Debug": {
+        "pattern": "Current block index: {0}, read length: {1}"
+      },
+      "Invalid_Block_Segment_Error": {
+        "pattern": "Illegal split data block"
+      }
+    },
+    "zh-CN": {
+      "Unknown_Http_Method": {
+        "pattern": "未定义的HTTP请求方法"
+      },
+      "Unknown_Path_Restful_Service_Method": {
+        "pattern": "未知的Restful服务请求地址"
+      },
+      "Parse_Certificate_Error": {
+        "pattern": "解析证书库出现异常"
+      },
+      "Init_Trust_Manager_Certificate_Error": {
+        "pattern": "初始化信任证书管理器出现异常"
+      },
+      "NotFound_X509TrustManager_Certificate_Error": {
+        "pattern": "未找到x509信任证书管理器"
+      },
+      "Service_Config_Error": {
+        "pattern": "参数名未找到或者请求地址为空！"
+      },
+      "Service_Method_Error": {
+        "pattern": "不支持的请求类型！请求类型：{0}"
+      },
+      "Service_Invoke_Error": {
+        "pattern": "调用服务时出错！错误信息：{0}"
+      },
+      "SNMP_Parameter_Invalid_Error": {
+        "pattern": "SNMP操作器参数非法"
+      },
+      "Upload_File_Not_Found_Error": {
+        "pattern": "上传的文件未找到"
+      },
+      "Entity_List_Empty_Debug": {
+        "pattern": "请求参数列表为空"
+      },
+      "Write_Request_Data_Debug": {
+        "pattern": "写入请求信息：{0}"
+      },
+      "System_Certificate_Not_Found_Warn": {
+        "pattern": "系统证书库未找到"
+      },
+      "Domain_Resolve_Request_Debug": {
+        "pattern": "解析域名：{0} 出错"
+      },
+      "Read_Server_Certificate_Request_Error": {
+        "pattern": "读取服务器证书信息出错"
+      },
+      "Process_Data_Request_Error": {
+        "pattern": "处理提交信息出错"
+      },
+      "Process_Content_Type_Request_Error": {
+        "pattern": "处理数据类型信息出错"
+      },
+      "Process_SSL_Certificate_Request_Error": {
+        "pattern": "处理SSL证书出错"
+      },
+      "Send_Request_Error": {
+        "pattern": "发送请求出错"
+      },
+      "Response_Message_Debug": {
+        "pattern": "响应代码：{0}，错误信息：{1}"
+      },
+      "Init_SNMP_Error": {
+        "pattern": "初始化SNMP工具出错"
+      },
+      "Add_Target_SNMP_Error": {
+        "pattern": "添加目标监控主机出错"
+      },
+      "Retrieve_Data_SNMP_Error": {
+        "pattern": "读取监控数据信息出错"
+      },
+      "Not_Match_Ext_Name_Files_Warn": {
+        "pattern": "文件扩展名不一致"
+      },
+      "Size_Write_Files_Debug": {
+        "pattern": "写入文件大小：{0}"
+      },
+      "Merge_Files_Error": {
+        "pattern": "合并文件出错"
+      },
+      "Read_Block_Files_Debug": {
+        "pattern": "当前数据块索引：{0}，读取长度：{1}"
+      },
+      "Invalid_Block_Segment_Error": {
+        "pattern": "分割数据块非法"
+      }
+    }
+  }
+}

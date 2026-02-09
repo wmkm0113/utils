@@ -1,0 +1,40 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Zip_Create_Success": {
+        "pattern": "Create Zip File Success! "
+      },
+      "Zip_Entry_Path": {
+        "pattern": "Entry path: {0}"
+      },
+      "Zip_Entry_Size": {
+        "pattern": "Entry size: {0}"
+      },
+      "Zip_Read_Comment": {
+        "pattern": "Read comment: {0} "
+      },
+      "Zip_Read_Path": {
+        "pattern": "Read file path: {0}"
+      }
+    },
+    "zh-CN": {
+      "Zip_Create_Success": {
+        "pattern": "创建ZIP文件成功！"
+      },
+      "Zip_Entry_Path": {
+        "pattern": "压缩实体路径：{0}"
+      },
+      "Zip_Entry_Size": {
+        "pattern": "压缩实体大小：{0}"
+      },
+      "Zip_Read_Comment": {
+        "pattern": "读取的备注信息：{0} "
+      },
+      "Zip_Read_Path": {
+        "pattern": "读取文件路径：{0}"
+      }
+    }
+  }
+}

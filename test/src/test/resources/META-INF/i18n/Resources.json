@@ -1,0 +1,226 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "messages": {
+    "en-US": {
+      "Nano_Random": {
+        "pattern": "Generated NanoID: {0}"
+      },
+      "Nano_Reconfigure_Random": {
+        "pattern": "Generated reconfigured NanoID: {0}"
+      },
+      "Snowflake_Random": {
+        "pattern": "Generate snowflake ID: {0}"
+      },
+      "Snowflake_Reconfigure_Random": {
+        "pattern": "Generate reconfigured snowflake ID：{0}"
+      },
+      "CUID_Random": {
+        "pattern": "Secure, collision-resistant ids optimized for horizontal scaling and performance. Next generation UUIDs. Generated value: {1}, version: {0}"
+      },
+      "ULID_Random": {
+        "pattern": "Generate Universally Unique Lexicographically Sortable Identifier: {0}"
+      },
+      "ULID_Reconfigure_Random": {
+        "pattern": "Generate reconfigured Universally Unique Lexicographically Sortable Identifier：{0}"
+      },
+      "UUID_Random": {
+        "pattern": "UUID version {0}, generated ID: {1}"
+      },
+      "Office_Sheet_Exists": {
+        "pattern": "Data sheet: {0}, exists: {1}"
+      },
+      "Office_Excel_Rows_Count": {
+        "pattern": "Data sheet: {0}, rows count: {1}"
+      },
+      "Collection_Is_Empty": {
+        "pattern": "Check collection type: {0}, is empty : {1}"
+      },
+      "Collection_Length": {
+        "pattern": "Check collection type: {0}, length : {1}"
+      },
+      "Location_Calculate_Distance": {
+        "pattern": "Calculate location distance: {0} meters"
+      },
+      "Location_Convert_GCJ02": {
+        "pattern": "Convert location point to GCJ02, Longitude: {0}, Latitude: {1}"
+      },
+      "Location_Convert_BD09": {
+        "pattern": "Convert location point to BD09, Longitude: {0}, Latitude: {1}"
+      },
+      "Crypto_Not_Support": {
+        "pattern": "Not support crypto: {0}, algorithm config: {1}"
+      },
+      "Crypto_Key_Length": {
+        "pattern": "{0} key: {1}"
+      },
+      "Encrypt_Result": {
+        "pattern": "{0}/{1}/{2} encrypt result: {3}"
+      },
+      "Decrypt_Result": {
+        "pattern": "{0}/{1}/{2} decrypt result: {3}"
+      },
+      "Signature_Result": {
+        "pattern": "Random string: {0} using {1} signature result: {2}"
+      },
+      "Verify_Result": {
+        "pattern": "{0} verify result: {1}"
+      },
+      "CRC_Result": {
+        "pattern": "CRC algorithm: {0}, result: {1}"
+      },
+      "Digits_Result": {
+        "pattern": "Digits algorithm: {0}, result: {1} {2}"
+      },
+      "Hmac_Result": {
+        "pattern": "Hmac algorithm: {0}, key: {1}, result: {2} {3}"
+      },
+      "System_Info": {
+        "pattern": "Operate system: {0}, version: {1}, username: {2}, home directory: {3}, work folder: {4}, identified key: {5}"
+      },
+      "System_Java_Info": {
+        "pattern": "Java version: {0}, major version: {1}, Java home: {2}, tmp directory: {3}"
+      },
+      "System_Adaptor": {
+        "pattern": "Adaptor {0} {1} address: "
+      },
+      "System_Adaptor_IP_Info": {
+        "pattern": "IP address: {0}: site local: {1}，loop back: {2}, link local: {3}"
+      },
+      "Zip_Create_Success": {
+        "pattern": "Create Zip File Success! "
+      },
+      "Zip_Entry_Path": {
+        "pattern": "Entry path: {0}"
+      },
+      "Zip_Entry_Size": {
+        "pattern": "Entry size: {0}"
+      },
+      "Zip_Read_Comment": {
+        "pattern": "Read comment: {0} "
+      },
+      "Zip_Read_Path": {
+        "pattern": "Read file path: {0}"
+      },
+      "String_Encode": {
+        "pattern": "{0} encoding result: {1}"
+      },
+      "String_Decode": {
+        "pattern": "{0} decode verify result: {1}"
+      },
+      "Operate_System": {
+        "pattern": "Windows: {0}, Unix: {1}, Linux: {2}, MacOS: {3}, MacOSX: {4}, OS2: {5}, Solaris: {6}, SunOS: {7}, MPEiX: {8}, HPUX: {9}, AIX: {10}, OS390: {11}, FreeBSD: {12}, Irix: {13}, DigitalUnix: {14}, Netware: {15}, OSF1: {16}, OpenVMS: {17}"
+      }
+    },
+    "zh-CN": {
+      "Nano_Random": {
+        "pattern": "Nano生成随机ID：{0}"
+      },
+      "Nano_Reconfigure_Random": {
+        "pattern": "Nano重新配置后生成随机ID：{0}"
+      },
+      "Snowflake_Random": {
+        "pattern": "雪花算法生成随机ID：{0}"
+      },
+      "Snowflake_Reconfigure_Random": {
+        "pattern": "雪花算法重新配置后生成随机ID：{0}"
+      },
+      "CUID_Random": {
+        "pattern": "高性能、可预测且适用于分布式环境的唯一标识符生成随机ID：{1}，版本：{0}"
+      },
+      "ULID_Random": {
+        "pattern": "通用唯一字典排序标识符生成随机ID：{0}"
+      },
+      "ULID_Reconfigure_Random": {
+        "pattern": "通用唯一字典排序标识符重新配置后生成随机ID：{0}"
+      },
+      "UUID_Random": {
+        "pattern": "UUID版本：{0} 生成随机ID：{1}"
+      },
+      "Office_Sheet_Exists": {
+        "pattern": "数据表：{0}，存在：{1}"
+      },
+      "Office_Excel_Rows_Count": {
+        "pattern": "数据表：{0}，记录数：{1}"
+      },
+      "Collection_Is_Empty": {
+        "pattern": "检查集合类型：{0}，集合为空：{1}"
+      },
+      "Collection_Length": {
+        "pattern": "检查集合类型：{0}，集合长度：{1}"
+      },
+      "Location_Calculate_Distance": {
+        "pattern": "计算两地距离为：{0} 米"
+      },
+      "Location_Convert_GCJ02": {
+        "pattern": "转换坐标为GCJ02座标系，经度：{0}，纬度：{1}"
+      },
+      "Location_Convert_BD09": {
+        "pattern": "转换坐标为BD09座标系，经度：{0}，纬度：{1}"
+      },
+      "Crypto_Not_Support": {
+        "pattern": "不支持的加密方式：{0}，加密配置信息：{1}"
+      },
+      "Crypto_Key_Length": {
+        "pattern": "{0}密钥：{1}"
+      },
+      "Encrypt_Result": {
+        "pattern": "{0}/{1}/{2}加密结果：{3}"
+      },
+      "Decrypt_Result": {
+        "pattern": "{0}/{1}/{2}解密结果：{3}"
+      },
+      "Signature_Result": {
+        "pattern": "随机字符串：{0} 使用{1}签名结果：{2}"
+      },
+      "Verify_Result": {
+        "pattern": "{0}签名验证结果：{1}"
+      },
+      "CRC_Result": {
+        "pattern": "CRC算法：{0}，结果：{1}"
+      },
+      "Digits_Result": {
+        "pattern": "摘要算法：{0}，结果：{1}，{2}"
+      },
+      "Hmac_Result": {
+        "pattern": "摘要算法：{0}，密钥：{1}，结果：{2}，{3}"
+      },
+      "System_Info": {
+        "pattern": "操作系统：{0}，版本号：{1}，用户名：{2}，用户目录：{3}，工作目录：{4}，唯一识别代码：{5}"
+      },
+      "System_Java_Info": {
+        "pattern": "Java版本：{0}，主版本号：{1}，Java路径：{2}，临时目录：{3}"
+      },
+      "System_Adaptor": {
+        "pattern": "适配器{0}的{1}地址："
+      },
+      "System_Adaptor_IP_Info": {
+        "pattern": "IP地址：{0}，保留地址：{1}，回环地址：{2}，链路本地地址：{3}"
+      },
+      "Zip_Create_Success": {
+        "pattern": "创建ZIP文件成功！"
+      },
+      "Zip_Entry_Path": {
+        "pattern": "压缩实体路径：{0}"
+      },
+      "Zip_Entry_Size": {
+        "pattern": "压缩实体大小：{0}"
+      },
+      "Zip_Read_Comment": {
+        "pattern": "读取的备注信息：{0} "
+      },
+      "Zip_Read_Path": {
+        "pattern": "读取文件路径：{0}"
+      },
+      "String_Encode": {
+        "pattern": "{0}编码结果：{1}"
+      },
+      "String_Decode": {
+        "pattern": "{0}解码验证结果：{1}"
+      },
+      "Operate_System": {
+        "pattern": "Windows: {0}, Unix: {1}, Linux: {2}, MacOS: {3}, MacOSX: {4}, OS2: {5}, Solaris: {6}, SunOS: {7}, MPEiX: {8}, HPUX: {9}, AIX: {10}, OS390: {11}, FreeBSD: {12}, Irix: {13}, DigitalUnix: {14}, Netware: {15}, OSF1: {16}, OpenVMS: {17}"
+      }
+    }
+  }
+}
