@@ -51,7 +51,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "AES", cipherMode, padding,
                             new String(decryptProvider.finish(), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "AES128", "AES/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "AES128", "AES/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -67,7 +67,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "AES", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "AES192", "AES/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "AES192", "AES/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -83,7 +83,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "AES", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "AES256", "AES/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "AES256", "AES/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -104,7 +104,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "DES", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "DES", "DES/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "DES", "DES/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -125,7 +125,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "DESede", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "TripleDES", "DESede/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "TripleDES", "DESede/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -151,7 +151,7 @@ public final class CryptoTest extends BaseTest {
                 this.logger.info("Decrypt_Result", "RSA", "None", padding,
                         new String(decryptProvider.finish(), StandardCharsets.UTF_8));
             } catch (CryptoException e) {
-                this.logger.error("Crypto_Not_Support", "RSA", "RSA/None/" + padding);
+                this.logger.warn("Crypto_Not_Support", "RSA", "RSA/None/" + padding);
             }
         }
         String randomString = StringUtils.randomString(128);
@@ -178,7 +178,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "RC2", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "RC2", "RC2/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "RC2", "RC2/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -198,7 +198,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "RC5", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "RC5", "RC5/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "RC5", "RC5/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -219,7 +219,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "RC6", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "RC6", "RC6/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "RC6", "RC6/" + cipherMode + "/" + padding);
                 }
             }
         }
@@ -239,7 +239,7 @@ public final class CryptoTest extends BaseTest {
                     this.logger.info("Decrypt_Result", "Blowfish", cipherMode, padding,
                             new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
                 } catch (CryptoException e) {
-                    this.logger.error("Crypto_Not_Support", "Blowfish", "Blowfish/" + cipherMode + "/" + padding);
+                    this.logger.warn("Crypto_Not_Support", "Blowfish", "Blowfish/" + cipherMode + "/" + padding);
                 }
             }
         }
