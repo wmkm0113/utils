@@ -235,6 +235,21 @@ public final class RequestUtils {
 	 * <span class="zh-CN">读取的x509证书，如果出现异常则返回<code>null</code></span>
 	 */
 	public static Certificate serverCertificate(final String urlAddress) {
+		return serverCertificate(urlAddress, Globals.DEFAULT_VALUE_INT);
+	}
+
+	/**
+	 * <h3 class="en-US">Read server certificate by given url address</h3>
+	 * <h3 class="zh-CN">根据给定的url地址获取服务器证书</h3>
+	 *
+	 * @param urlAddress <span class="en-US">url address</span>
+	 *                   <span class="zh-CN">url地址</span>
+	 * @param timeout <span class="en-US">Connect timeout value (Unit: milliseconds)</span>
+	 *                   <span class="zh-CN">连接超时时间（单位：毫秒）</span>
+	 * @return <span class="en-US">Read x509 certificate, if an error occurs return <code>null</code></span>
+	 * <span class="zh-CN">读取的x509证书，如果出现异常则返回<code>null</code></span>
+	 */
+	public static Certificate serverCertificate(final String urlAddress, final int timeout) {
 		return Optional.ofNullable(urlAddress)
 				.filter(StringUtils::notBlank)
 				.map(url -> {
@@ -255,6 +270,7 @@ public final class RequestUtils {
 				.map(domainName -> {
 					try {
 						HttpsURLConnection httpsURLConnection = (HttpsURLConnection) new URL(urlAddress).openConnection();
+						httpsURLConnection.setConnectTimeout(timeout > 0 ? timeout : (Globals.DEFAULT_CONNECT_TIME_OUT * 1000));
 						httpsURLConnection.connect();
 						return Arrays.stream(httpsURLConnection.getServerCertificates())
 								.filter(serverCertificate ->
@@ -692,7 +708,9 @@ public final class RequestUtils {
 			requestUrl.append(':');
 			requestUrl.append(port);
 		}
-		requestUrl.append(request.getContextPath());
+		if (StringUtils.notBlank(request.getContextPath())) {
+			requestUrl.append(request.getContextPath());
+		}
 		return requestUrl.toString();
 	}
 

@@ -34,7 +34,7 @@ import java.util.Arrays;
 public final class CookieUtils {
 	/**
 	 * <h3 class="en-US">Private constructor for CookieUtils</h3>
-	 * <h3 class="zh-CN">Cookie工具集的私有构造方法</h3>
+	 * <h3 class="zh-CN">Cookie 工具集的私有构造方法</h3>
 	 */
 	private CookieUtils() {
 	}

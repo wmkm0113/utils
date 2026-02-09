@@ -68,6 +68,17 @@ public final class CipherConfig implements Serializable {
 	}
 
 	/**
+	 * <h3 class="en-US">Current cipher config is asymmetric</h3>
+	 * <h3 class="zh-CN">当前加密配置信息为非对称加密</h3>
+	 *
+	 * @return <span class="en-US"><code>true</code> asymmetric，<code>false</code> symmetric</span>
+	 * <span class="zh-CN"><code>true</code> 非对称加密，<code>false</code> 对称加密</span>
+	 */
+	public boolean isAsymmetric() {
+		return this.algorithm.startsWith("RSA") || this.algorithm.startsWith("SM2");
+	}
+
+	/**
 	 * <h3 class="en-US">Getter method for Cipher Algorithm</h3>
 	 * <h3 class="zh-CN">密码算法的Getter方法</h3>
 	 *

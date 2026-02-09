@@ -60,6 +60,6 @@ public abstract class AbstractBuilder<P extends ParentBuilder, T> extends Parent
 	}
 
 	@Override
-	public void confirm(final Object object) throws BuilderException {
+	protected void confirm(final Object object) throws BuilderException {
 	}
 }

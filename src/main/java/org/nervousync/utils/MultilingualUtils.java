@@ -98,7 +98,7 @@ public final class MultilingualUtils {
 	public static String toLanguageCode(@Nonnull final Locale locale) {
 		return Optional.of(locale.getCountry())
 				.filter(MultilingualUtils::notBlank)
-				.map(countryCode -> locale.getLanguage() + "-" + countryCode)
+				.map(countryCode -> locale.getLanguage() + "-" + countryCode.toUpperCase())
 				.orElse(locale.getLanguage());
 	}
 

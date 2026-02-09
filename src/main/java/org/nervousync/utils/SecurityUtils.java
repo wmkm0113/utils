@@ -1964,7 +1964,7 @@ public final class SecurityUtils {
 	 */
 	public static byte[] RC4Key() {
 		try {
-			return symmetricKey("RC4", 128, Globals.DEFAULT_VALUE_STRING);
+			return symmetricKey("RC4", 128, "SHA1PRNG");
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
@@ -2196,7 +2196,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static SecureAdapter RSAEncryptor(final String padding, final Key publicKey) throws CryptoException {
-		return new RSACryptoAdapterImpl(new CipherConfig("RSA", "ECB", padding),
+		return new RSACryptoAdapterImpl(new CipherConfig("RSA", "None", padding),
 				CryptoMode.ENCRYPT, new BaseCryptoAdapter.CipherKey(publicKey));
 	}
 
@@ -2236,7 +2236,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static SecureAdapter RSADecryptor(final String padding, final Key privateKey) throws CryptoException {
-		return new RSACryptoAdapterImpl(new CipherConfig("RSA", "ECB", padding),
+		return new RSACryptoAdapterImpl(new CipherConfig("RSA", "None", padding),
 				CryptoMode.DECRYPT, new BaseCryptoAdapter.CipherKey(privateKey));
 	}
 

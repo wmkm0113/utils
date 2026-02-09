@@ -193,7 +193,7 @@ public final class CryptoTest extends BaseTest {
         KeyPair keyPair = SecurityUtils.SM2KeyPair();
         long currentTime = DateTimeUtils.currentTimeMillis();
         byte[] pkcs5 = CertificateUtils.PKCS12(keyPair, IDUtils.snowflake(),
-                new Date(currentTime), new Date(currentTime + 30 * 24 * 60 * 60 * 1000L),
+                new Date(currentTime - 30 * 24 * 60 * 60 * 1000L), new Date(currentTime + 30 * 24 * 60 * 60 * 1000L),
                 "CERT", "CERT", "changeit", null, "SM3withSM2");
         this.logger.info("Certificate_Result", "SM2", StringUtils.base64Encode(pkcs5));
         X509Certificate x509Certificate =

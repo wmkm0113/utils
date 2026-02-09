@@ -201,6 +201,9 @@ public final class CollectionUtils {
 	 *                                  <span class="zh-CN">如果参数不是数组</span>
 	 */
 	public static Object[] toArray(final Object source) {
+		if (source instanceof Collection) {
+			return toArray((Collection<?>) source);
+		}
 		if (source instanceof Object[]) {
 			return (Object[]) source;
 		}

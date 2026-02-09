@@ -53,6 +53,11 @@ public final class Globals {
 	 */
 	public static final int DEFAULT_TIME_OUT = 0;
 	/**
+	 * <span class="en-US">Default value of connect timeout (Unit: seconds)</span>
+	 * <span class="zh-CN">默认连接超时时间（单位：秒）</span>
+	 */
+	public static final int DEFAULT_CONNECT_TIME_OUT = 5;
+	/**
 	 * <span class="en-US">Default value of primitive type int</span>
 	 * <span class="zh-CN">int基础类型的默认值</span>
 	 */
@@ -221,7 +226,7 @@ public final class Globals {
 	 * <span class="en-US">The constant value of default jar page separator</span>
 	 * <span class="zh-CN">Jar包内默认名称分隔符</span>
 	 */
-	public static final String DEFAULT_JAR_PAGE_SEPARATOR = "\\";
+	public static final String DEFAULT_JAR_PAGE_SEPARATOR = "/";
 	/**
 	 * <span class="en-US">The constant value of Content-Type: TEXT</span>
 	 * <span class="zh-CN">文本内容类型的定义字符串</span>

@@ -25,7 +25,11 @@ import org.nervousync.utils.SecurityUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.OAEPParameterSpec;
+import javax.crypto.spec.PSource;
 import java.security.Key;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
 
 /**
  * <h2 class="en-US">Abstract basic crypto adapter class</h2>
@@ -100,21 +104,60 @@ public abstract class BaseCryptoAdapter extends SecureAdapter {
 	 *                         <span class="zh-CN">当生成的加密解密密钥时出现异常</span>
 	 */
 	protected final Cipher generateCipher(final Key key, final int ivLength) throws CryptoException {
-		IvParameterSpec ivParameterSpec = null;
-		if (ivLength > 0) {
-			byte[] ivContent = new byte[ivLength];
-			System.arraycopy(SecurityUtils.SHA256(this.cipherKey.getKeyBytes()),
-					Globals.INITIALIZE_INT_VALUE, ivContent, Globals.INITIALIZE_INT_VALUE, ivContent.length);
-			ivParameterSpec = new IvParameterSpec(ivContent);
+		AlgorithmParameterSpec parameterSpec = null;
+		if (this.cipherConfig.isAsymmetric()) {
+			if (this.cipherConfig.getPadding().startsWith("OAEP")) {
+				MGF1ParameterSpec mgf1ParameterSpec = null;
+				switch (this.cipherConfig.getPadding()) {
+					case "OAEPWithSHA-1AndMGF1Padding":
+						mgf1ParameterSpec = MGF1ParameterSpec.SHA1;
+						break;
+					case "OAEPWithSHA-224AndMGF1Padding":
+						mgf1ParameterSpec = MGF1ParameterSpec.SHA224;
+						break;
+					case "OAEPWithSHA-256AndMGF1Padding":
+						mgf1ParameterSpec = MGF1ParameterSpec.SHA256;
+						break;
+					case "OAEPWithSHA-384AndMGF1Padding":
+						mgf1ParameterSpec = MGF1ParameterSpec.SHA384;
+						break;
+					case "OAEPWithSHA-512AndMGF1Padding":
+						mgf1ParameterSpec = MGF1ParameterSpec.SHA512;
+						break;
+					case "OAEPWithSHA3-224AndMGF1Padding":
+						mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-224");
+						break;
+					case "OAEPWithSHA3-256AndMGF1Padding":
+						mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-256");
+						break;
+					case "OAEPWithSHA3-384AndMGF1Padding":
+						mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-384");
+						break;
+					case "OAEPWithSHA3-512AndMGF1Padding":
+						mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-512");
+						break;
+				}
+				if (mgf1ParameterSpec != null) {
+					parameterSpec = new OAEPParameterSpec(mgf1ParameterSpec.getDigestAlgorithm(), "MGF1",
+							mgf1ParameterSpec, PSource.PSpecified.DEFAULT);
+				}
+			}
+		} else {
+			if (ivLength > 0) {
+				byte[] ivContent = new byte[ivLength];
+				System.arraycopy(SecurityUtils.SHA256(this.cipherKey.getKeyBytes()),
+						Globals.INITIALIZE_INT_VALUE, ivContent, Globals.INITIALIZE_INT_VALUE, ivContent.length);
+				parameterSpec = new IvParameterSpec(ivContent);
+			}
 		}
 		try {
 			Cipher cipherInstance = Cipher.getInstance(this.cipherConfig.toString(), "BC");
 			switch (this.cryptoMode) {
 				case ENCRYPT:
-					cipherInstance.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
+					cipherInstance.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
 					break;
 				case DECRYPT:
-					cipherInstance.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
+					cipherInstance.init(Cipher.DECRYPT_MODE, key, parameterSpec);
 					break;
 				default:
 					throw new CryptoException(0x000000150009L);

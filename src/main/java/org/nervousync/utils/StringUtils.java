@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
@@ -1604,7 +1603,8 @@ public final class StringUtils {
 		if (localeString == null) {
 			return null;
 		}
-		String[] parts = tokenizeToStringArray(localeString, "_", false, false);
+		String locale = StringUtils.replace(localeString, "-", "_");
+		String[] parts = tokenizeToStringArray(locale, "_", false, false);
 
 		if (parts == null) {
 			return null;
@@ -1616,9 +1616,9 @@ public final class StringUtils {
 		if (parts.length >= 2) {
 			// There is definitely a variant, and it is everything after the country
 			// code sans the separator between the country code and the variant.
-			int endIndexOfCountryCode = localeString.indexOf(country) + country.length();
+			int endIndexOfCountryCode = locale.indexOf(country) + country.length();
 			// Strip off any leading '_' and blank, what's left is the variant.
-			variant = trimLeadingWhitespace(localeString.substring(endIndexOfCountryCode));
+			variant = trimLeadingWhitespace(locale.substring(endIndexOfCountryCode));
 			if (variant.startsWith("_")) {
 				variant = trimLeadingCharacter(variant, '_');
 			}
