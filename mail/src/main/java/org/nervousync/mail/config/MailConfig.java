@@ -17,13 +17,15 @@
 package org.nervousync.mail.config;
 
 import jakarta.xml.bind.annotation.*;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.beans.Signature;
 import org.nervousync.annotations.configs.Password;
-import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.proxy.ProxyConfig;
+
+import java.io.Serializable;
 
 /**
  * <h2 class="en-US">Mail configure information define</h2>
@@ -33,10 +35,11 @@ import org.nervousync.proxy.ProxyConfig;
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2021 19:06:18 $
  */
 @SuppressWarnings("unused")
+@OutputConfig
 @Signature("signature")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class MailConfig extends BeanObject {
+public final class MailConfig implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
@@ -344,9 +347,10 @@ public final class MailConfig extends BeanObject {
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Jul 31, 2021 19:09:18 $
 	 */
+	@OutputConfig
 	@XmlType(name = "server_config", namespace = "https://nervousync.org/schemas/mail")
 	@XmlAccessorType(XmlAccessType.NONE)
-	public static final class ServerConfig extends BeanObject {
+	public static final class ServerConfig implements Serializable {
 		/**
 		 * <span class="en-US">Serial version UID</span>
 		 * <span class="zh-CN">序列化UID</span>

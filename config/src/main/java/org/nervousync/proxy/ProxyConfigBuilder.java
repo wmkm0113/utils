@@ -44,7 +44,7 @@ public final class ProxyConfigBuilder<P extends ParentBuilder> extends AbstractB
 	 */
 	private final ProxyConfig proxyConfig;
 	/**
-	 * <h2 class="en-US">Configure information modified flag</h2>
+	 * <h2 class="en-US">Configure the information modified flag</h2>
 	 * <h2 class="zh-CN">配置信息修改标记</h2>
 	 */
 	private boolean modified = Boolean.FALSE;
@@ -75,7 +75,7 @@ public final class ProxyConfigBuilder<P extends ParentBuilder> extends AbstractB
 	}
 
 	/**
-	 * <h3 class="en-US">Configure proxy type</h3>
+	 * <h3 class="en-US">Configure the proxy type</h3>
 	 * <h3 class="zh-CN">配置代理服务器类型</h3>
 	 *
 	 * @param proxyType <span class="en-US">Enumeration value of proxy server</span>
@@ -116,7 +116,7 @@ public final class ProxyConfigBuilder<P extends ParentBuilder> extends AbstractB
 	}
 
 	/**
-	 * <h3 class="en-US">Configure proxy servers authenticate information</h3>
+	 * <h3 class="en-US">Configure the authenticating information of proxy servers</h3>
 	 * <h3 class="zh-CN">配置代理服务器身份验证信息</h3>
 	 *
 	 * @param userName <span class="en-US">Authenticate username</span>

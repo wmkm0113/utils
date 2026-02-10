@@ -20,8 +20,10 @@ package org.nervousync.beans.security;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
-import org.nervousync.beans.core.BeanObject;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.security.factory.SecureFactory;
+
+import java.io.Serializable;
 
 /**
  * <h2 class="en-US">Abstract class of security configuration information</h2>
@@ -30,8 +32,9 @@ import org.nervousync.security.factory.SecureFactory;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Dec 12, 2020 22:10:21 $
  */
+@OutputConfig
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractConfig extends BeanObject {
+public abstract class AbstractConfig implements Serializable {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

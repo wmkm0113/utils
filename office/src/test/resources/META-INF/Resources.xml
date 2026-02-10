@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Office_Sheet_Exists">Data sheet: {0}, exists: {1}</entry>
+    <entry key="Office_Excel_Rows_Count">Data sheet: {0}, rows count: {1}</entry>
+</properties>

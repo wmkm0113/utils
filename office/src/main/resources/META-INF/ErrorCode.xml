@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="0x000000AE0001">Office_Ext_Name_Invalid</entry>
+    <entry key="0x000000AE0002">Office_Excel_File_Not_Exists</entry>
+</properties>

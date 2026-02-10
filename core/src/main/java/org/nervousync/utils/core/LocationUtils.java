@@ -24,7 +24,7 @@ import org.nervousync.exceptions.location.LocationConvertException;
  * <span class="en-US">
  * <span>Current utilities implements features:</span>
  *     <ul>Convert GeoPoint at WGS84(GPS)/GCJ02/BD09</ul>
- *     <ul>Calculate the distance of two given geography point. (Unit: Kilometers)</ul>
+ *     <ul>Calculate the distance of two given geography points. (Unit: Kilometers)</ul>
  * </span>
  * <h2 class="zh-CN">地理位置信息工具集</h2>
  * <span class="zh-CN">
@@ -56,7 +56,7 @@ public final class LocationUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Calculate the straight line distance of two given geography location. (Unit: Meters)</h3>
+	 * <h3 class="en-US">Calculate the straight line distance of two given geography locations. (Unit: Meters)</h3>
 	 * <h3 class="zh-CN">计算两个物理坐标之间的直线距离，单位：米</h3>
 	 *
 	 * @param beginPoint <span class="en-US">GroPoint instance of beginning geography location</span>
@@ -65,10 +65,10 @@ public final class LocationUtils {
 	 *                   <span class="zh-CN">终止位置坐标的GroPoint实例</span>
 	 * @return <span class="en-US">Calculated distance value</span>
 	 * <span class="zh-CN">计算完成的距离值</span>
-	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has error</span>
+	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has the error </span>
 	 *                                  <span class="zh-CN">当转换GeoPoint为GPS坐标时出现错误</span>
 	 */
-	public static double calcDistance(final GeoPoint beginPoint, final GeoPoint endPoint)
+	public static double distance(final GeoPoint beginPoint, final GeoPoint endPoint)
 			throws LocationConvertException {
 		GeoPoint beginGPSPoint = anyToGPS(beginPoint);
 		GeoPoint endGPSPoint = anyToGPS(endPoint);
@@ -79,14 +79,14 @@ public final class LocationUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert given GeoPoint instance to GPS GeoPoint instance</h3>
+	 * <h3 class="en-US">Convert the given GeoPoint instance to a GPS GeoPoint instance</h3>
 	 * <h3 class="zh-CN">转换给定的GeoPoint实例为GPS坐标GeoPoint实例</h3>
 	 *
 	 * @param currentPoint <span class="en-US">Given GroPoint instance</span>
 	 *                     <span class="zh-CN">给定的坐标的GroPoint实例</span>
 	 * @return <span class="en-US">Converted GeoPoint instance</span>
 	 * <span class="zh-CN">转换后的GeoPoint实例</span>
-	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has error</span>
+	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has the error </span>
 	 *                                  <span class="zh-CN">当转换GeoPoint为GPS坐标时出现错误</span>
 	 */
 	public static GeoPoint anyToGPS(final GeoPoint currentPoint) throws LocationConvertException {
@@ -107,14 +107,14 @@ public final class LocationUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert given GeoPoint instance to GCJ02 GeoPoint instance</h3>
+	 * <h3 class="en-US">Convert the given GeoPoint instance to a GCJ02 GeoPoint instance</h3>
 	 * <h3 class="zh-CN">转换给定的GeoPoint实例为GCJ02坐标GeoPoint实例</h3>
 	 *
 	 * @param currentPoint <span class="en-US">Given GroPoint instance</span>
 	 *                     <span class="zh-CN">给定的坐标的GroPoint实例</span>
 	 * @return <span class="en-US">Converted GeoPoint instance</span>
 	 * <span class="zh-CN">转换后的GeoPoint实例</span>
-	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has error</span>
+	 * @throws LocationConvertException <span class="en-US">If convert GeoPoint instance to GPS location has the error </span>
 	 *                                  <span class="zh-CN">当转换GeoPoint为GPS坐标时出现错误</span>
 	 */
 	public static GeoPoint anyToGCJ02(final GeoPoint currentPoint) throws LocationConvertException {
@@ -134,7 +134,7 @@ public final class LocationUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert given GeoPoint instance to BD09 GeoPoint instance</h3>
+	 * <h3 class="en-US">Convert the given GeoPoint instance to a BD09 GeoPoint instance</h3>
 	 * <h3 class="zh-CN">转换给定的GeoPoint实例为BD09坐标GeoPoint实例</h3>
 	 *
 	 * @param currentPoint <span class="en-US">Given GroPoint instance</span>

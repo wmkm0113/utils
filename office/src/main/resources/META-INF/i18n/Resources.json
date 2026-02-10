@@ -1,0 +1,32 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "errors": {
+    "0x000000AE0001": "Office_Ext_Name_Invalid",
+    "0x000000AE0002": "Office_Excel_File_Not_Exists"
+  },
+  "messages": {
+    "en-US": {
+      "Office_Ext_Name_Invalid": {
+        "pattern": "Unknown file ext name: {0}"
+      },
+      "Office_Excel_File_Not_Exists": {
+        "pattern": "Excel file not found, file location path: {0}"
+      },
+      "Office_Excel_File_Write_Error": {
+        "pattern": "Write excel file error, file location path: {0}"
+      }
+    },
+    "zh-CN": {
+      "Office_Ext_Name_Invalid": {
+        "pattern": "未知的文件扩展名：{0}"
+      },
+      "Office_Excel_File_Not_Exists": {
+        "pattern": "Excel文件未找到，文件位置：{0}"
+      },
+      "Office_Excel_File_Write_Error": {
+        "pattern": "保存Excel文件出错，文件地址：{0}"
+      }
+    }
+  }
+}

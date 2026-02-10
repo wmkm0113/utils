@@ -25,5 +25,5 @@ package org.nervousync.enumerations.beans;
  * @version $Revision: 1.0.0 $ $Date: Sep 28, 2009 14:32:00 $
  */
 public enum StringType {
-	JSON, YAML, XML, SIMPLE, SERIALIZABLE
+	JSON, YAML, XML, SIMPLE, SERIALIZABLE, UNKNOWN
 }

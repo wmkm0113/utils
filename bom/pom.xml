@@ -39,12 +39,22 @@
             </dependency>
             <dependency>
                 <groupId>org.nervousync</groupId>
+                <artifactId>utils-log4j</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nervousync</groupId>
                 <artifactId>utils-mail</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.nervousync</groupId>
                 <artifactId>utils-net</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nervousync</groupId>
+                <artifactId>utils-office</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

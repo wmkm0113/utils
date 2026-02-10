@@ -22,7 +22,6 @@ import org.nervousync.beans.security.FactoryConfig;
 import org.nervousync.beans.security.SecureConfig;
 import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
-import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.CryptoAdaptor;
 import org.nervousync.utils.cert.CertificateUtils;
@@ -109,13 +108,13 @@ public final class SecureFactory {
 		String factoryPath = SystemUtils.USER_HOME + DEFAULT_SECURE_FACTORY_CONFIG;
 		FactoryConfig factoryConfig = Optional.of(FileUtils.readFile(factoryPath))
 				.filter(StringUtils::notBlank)
-				.map(string -> BeanUtils.stringToObject(string, StringType.XML, Globals.DEFAULT_ENCODING, FactoryConfig.class))
+				.map(string -> BeanUtils.stringToObject(string, FactoryConfig.class))
 				.orElse(null);
 		if (factoryConfig == null) {
 			factoryConfig = new FactoryConfig();
 			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA1024);
 			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA1024)));
-			FileUtils.saveFile(factoryPath, factoryConfig.toXml());
+			FileUtils.saveFile(factoryPath, BeanUtils.objectToString(factoryConfig));
 		}
 		FACTORY_NODE = new SecureNode(factoryConfig);
 		initialize(Boolean.FALSE);
@@ -288,7 +287,7 @@ public final class SecureFactory {
 		if (StringUtils.isEmpty(fileContent)) {
 			return null;
 		}
-		return BeanUtils.stringToObject(fileContent, StringType.XML, Globals.DEFAULT_ENCODING, SecureSettings.class);
+		return BeanUtils.stringToObject(fileContent, SecureSettings.class);
 	}
 
 	/**
@@ -302,7 +301,7 @@ public final class SecureFactory {
 	 */
 	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
 		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
-		return FileUtils.saveFile(configPath, secureSettings.toXml());
+		return FileUtils.saveFile(configPath, BeanUtils.objectToString(secureSettings));
 	}
 
 	/**
@@ -314,7 +313,7 @@ public final class SecureFactory {
 	 */
 	private void register(@Nonnull final SecureConfig secureConfig) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Security_Current_Config", secureConfig.toXml());
+			LOGGER.debug("Security_Current_Config", BeanUtils.objectToString(secureConfig));
 		}
 		if (this.registeredNodes.containsKey(secureConfig.getSecureName())) {
 			LOGGER.warn("Security_Override_Config", secureConfig.getSecureName());

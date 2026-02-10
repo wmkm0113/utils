@@ -18,15 +18,9 @@
 package org.nervousync.beans.converter;
 
 import jakarta.annotation.Nonnull;
-import org.nervousync.annotations.beans.OutputConfig;
-import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
-import org.nervousync.utils.core.ClassUtils;
-import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -51,68 +45,10 @@ public interface BeanConverter {
 	 *
 	 * @param object       <span class="en-US">JavaBean object</span>
 	 *                     <span class="zh-CN">JavaBean实例对象</span>
-	 * @param stringType   <span class="en-US">Target string type</span>
-	 *                     <span class="zh-CN">目标字符串类型</span>
-	 * @param formatOutput <span class="en-US">format output string</span>
-	 *                     <span class="zh-CN">格式化输出字符串</span>
-	 * @param encoding     <span class="en-US">String charset encoding</span>
-	 *                     <span class="zh-CN">字符串的字符集编码</span>
 	 * @return <span class="en-US">the converted string</span>
 	 * <span class="zh-CN">转换后的字符串</span>
 	 */
-	String objectToString(final Object object, final StringType stringType, final boolean formatOutput,
-	                      final boolean outputFragment, final String encoding);
-
-	/**
-	 * <h3 class="en-US">Parse strings to target JavaBean instance. </h3>
-	 * <h3 class="zh-CN">解析字符串为目标 JavaBean 实例对象</h3>
-	 *
-	 * @param <T>         <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param string      <span class="en-US">The string will parse</span>
-	 *                    <span class="zh-CN">要解析的字符串</span>
-	 * @param stringType  <span class="en-US">The string type</span>
-	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding    <span class="en-US">String charset encoding</span>
-	 *                    <span class="zh-CN">字符串的字符集编码</span>
-	 * @param beanClass   <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
-	 *                    <span class="zh-CN">XML描述文件路径（可能为描述文件URI或本地文件路径）</span>
-	 * @return <span class="en-US">Converted object instance</span>
-	 * <span class="zh-CN">转换后的实例对象</span>
-	 */
-	default <T> T stringToObject(final String string, final StringType stringType, final String encoding,
-	                     final Class<T> beanClass, final String... schemaPaths) {
-		if (StringUtils.isEmpty(string)) {
-			LOGGER.error("Parse_Empty_String_Error");
-			return null;
-		}
-
-		String charsetEncoding =
-				Optional.ofNullable(beanClass.getAnnotation(OutputConfig.class))
-						.map(OutputConfig::encoding)
-						.orElse(encoding);
-		if (StringUtils.isEmpty(charsetEncoding)) {
-			charsetEncoding = Globals.DEFAULT_ENCODING;
-		}
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Parse_String_Debug", string, charsetEncoding, beanClass.getName());
-		}
-
-		if (StringType.SIMPLE.equals(stringType)) {
-			return ClassUtils.parseSimpleData(string, beanClass);
-		}
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(charsetEncoding))) {
-			return this.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
-		} catch (IOException e) {
-			LOGGER.error("Parse_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-		}
-		return null;
-	}
+	String objectToString(final Object object);
 
 	/**
 	 * <h3 class="en-US">Parse the input stream instance to target JavaBean instance.</h3>
@@ -124,8 +60,8 @@ public interface BeanConverter {
 	 *                    <span class="zh-CN">输入流对象实例</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding    <span class="en-US">String charset encoding</span>
-	 *                    <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding  <span class="en-US">String charset encoding</span>
+	 *                  <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
@@ -133,42 +69,8 @@ public interface BeanConverter {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	<T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType, final String encoding,
-	                     final Class<T> beanClass, final String... schemaPaths);
-
-	/**
-	 * <h3 class="en-US">Parse strings to target JavaBean instance list. </h3>
-	 * <h3 class="zh-CN">解析字符串为目标JavaBean实例对象列表</h3>
-	 *
-	 * @param <T>        <span class="en-US">target JavaBean class</span>
-	 *                   <span class="zh-CN">目标JavaBean类</span>
-	 * @param string     <span class="en-US">The string will parse</span>
-	 *                   <span class="zh-CN">要解析的字符串</span>
-	 * @param stringType <span class="en-US">The string type</span>
-	 *                   <span class="zh-CN">字符串类型</span>
-	 * @param encoding   <span class="en-US">String charset encoding</span>
-	 *                   <span class="zh-CN">字符串的字符集编码</span>
-	 * @param beanClass  <span class="en-US">target JavaBean class</span>
-	 *                   <span class="zh-CN">目标JavaBean类</span>
-	 * @return <span class="en-US">Converted object instance list</span>
-	 * <span class="zh-CN">转换后的实例对象列表</span>
-	 */
-	default <T> List<T> stringToList(final String string, final StringType stringType, final String encoding,
-	                         final Class<T> beanClass) {
-		if (StringUtils.isEmpty(string)) {
-			LOGGER.error("Parse_Empty_String_Error");
-			return null;
-		}
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
-			return this.streamToList(inputStream, stringType, encoding, beanClass);
-		} catch (Exception e) {
-			LOGGER.error("Parse_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return new ArrayList<>();
-		}
-	}
+	<T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
+	                     final String encoding, final Class<T> beanClass, final String... schemaPaths);
 
 	/**
 	 * <h3 class="en-US">Parse the input stream instance to target JavaBean instance list. </h3>
@@ -180,43 +82,27 @@ public interface BeanConverter {
 	 *                    <span class="zh-CN">输入流对象实例</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding    <span class="en-US">String charset encoding</span>
-	 *                    <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding  <span class="en-US">String charset encoding</span>
+	 *                  <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @return <span class="en-US">Converted object instance list</span>
 	 * <span class="zh-CN">转换后的实例对象列表</span>
 	 */
-	<T> List<T> streamToList(@Nonnull final InputStream inputStream, final StringType stringType, final String encoding,
-	                         final Class<T> beanClass);
+	<T> List<T> streamToList(@Nonnull final InputStream inputStream, final StringType stringType,
+	                         final String encoding, final Class<T> beanClass);
 
 	/**
-	 * <h3 class="en-US">Parse string to data map.</h3>
-	 * <h3 class="zh-CN">解析字符串为数据映射表</h3>
+	 * <h3 class="en-US">Verify that the digital signature is legitimate</h3>
+	 * <h3 class="zh-CN">验证数字签名是否合法</h3>
 	 *
-	 * @param string     <span class="en-US">The string will parse</span>
-	 *                   <span class="zh-CN">要解析的字符串</span>
-	 * @param stringType <span class="en-US">The string type</span>
-	 *                   <span class="zh-CN">字符串类型</span>
-	 * @param encoding    <span class="en-US">String charset encoding</span>
-	 *                    <span class="zh-CN">字符串的字符集编码</span>
-	 * @return <span class="en-US">Converted data map</span>
-	 * <span class="zh-CN">转换后的数据映射表</span>
+	 * @param object <span class="en-US">JavaBean instance object which need generate signature</span>
+	 *               <span class="zh-CN">需要生成数字签名的 JavaBean 实例对象</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
 	 */
-	default Map<String, Object> stringToMap(final String string, final StringType stringType, final String encoding) {
-		if (StringUtils.isEmpty(string)) {
-			LOGGER.error("Parse_Empty_String_Error");
-			return null;
-		}
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
-			return streamToMap(inputStream, stringType, encoding);
-		} catch (IOException e) {
-			LOGGER.error("Parse_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return new HashMap<>();
-		}
+	default boolean validate(final Object object) {
+		return Boolean.TRUE;
 	}
 
 	/**

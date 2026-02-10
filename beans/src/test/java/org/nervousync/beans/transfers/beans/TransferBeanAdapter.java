@@ -16,11 +16,7 @@
  */
 package org.nervousync.beans.transfers.beans;
 
-import jakarta.annotation.Nonnull;
-import org.nervousync.beans.core.BeanObject;
 import org.nervousync.beans.transfer.TransferAdapter;
-import org.nervousync.commons.Globals;
-import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.utils.core.BeanUtils;
 import org.nervousync.utils.core.ClassUtils;
 import org.nervousync.utils.core.StringUtils;
@@ -34,18 +30,13 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 25, 2023 11:27:18 $
  */
-public abstract class TransferBeanAdapter extends TransferAdapter {
+public final class TransferBeanAdapter extends TransferAdapter {
 
 	/**
 	 * <span class="en-US">Target class</span>
 	 * <span class="zh-CN">目标类</span>
 	 */
-	private final Class<? extends BeanObject> beanClass;
-	/**
-	 * <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
-	 * <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
-	 */
-	private final StringType stringType;
+	private final Class<?> beanClass;
 
 
 	/**
@@ -54,44 +45,26 @@ public abstract class TransferBeanAdapter extends TransferAdapter {
 	 *
 	 * @param className  <span class="en-US">Target class name string</span>
 	 *                   <span class="zh-CN">目标类名字符串</span>
-	 * @param stringType <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
-	 *                   <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
 	 * @throws IllegalArgumentException <span class="en-US">If target class is not the child class of org.nervousync.beans.core.BeanObject</span>
 	 *                                  <span class="zh-CN">如果目标类不是org.nervousync.beans.core.BeanObject的子类</span>
 	 */
-	@SuppressWarnings("unchecked")
-	protected TransferBeanAdapter(final String className, @Nonnull final StringType stringType)
+	public TransferBeanAdapter(final String className)
 			throws IllegalArgumentException {
-		this.beanClass = (Class<? extends BeanObject>) ClassUtils.forName(className);
-		if (!ClassUtils.isAssignable(BeanObject.class, this.beanClass)) {
-			throw new IllegalArgumentException("Argument className must extends org.nervousync.beans.core.BeanObject");
-		}
-		this.stringType = stringType;
+		this.beanClass = ClassUtils.forName(className);
 	}
 
 	@Override
-	public final String marshal(final Object object) {
-		return Optional.ofNullable(object)
-				.filter(obj -> obj instanceof BeanObject)
-				.map(obj -> (BeanObject) obj)
-				.map(beanObject -> {
-					switch (this.stringType) {
-						case JSON: return beanObject.toJson();
-						case YAML: return beanObject.toYaml();
-						case XML: return beanObject.toXml();
-						default: return beanObject.toString();
-					}
-				})
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public String marshal(final Object object) {
+		return BeanUtils.objectToString(object);
 	}
 
 	@Override
-	public final Object unmarshal(final Object string) {
+	public Object unmarshal(final Object string) {
 		return Optional.ofNullable(string)
 				.filter(obj -> obj instanceof String)
 				.map(obj -> (String) obj)
 				.filter(StringUtils::notBlank)
-				.map(str -> BeanUtils.stringToObject(str, this.stringType, Globals.DEFAULT_ENCODING, this.beanClass))
+				.map(str -> BeanUtils.stringToObject(str, this.beanClass))
 				.orElse(null);
 	}
 }

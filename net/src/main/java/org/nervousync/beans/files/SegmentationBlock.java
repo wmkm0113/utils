@@ -18,13 +18,14 @@ package org.nervousync.beans.files;
 
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.nervousync.beans.core.BeanObject;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.security.SecurityUtils;
 import org.nervousync.xml.adapters.CDataAdapter;
 import org.nervousync.xml.adapters.DateTimeAdapter;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -35,11 +36,11 @@ import java.util.Objects;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Oct 15, 2018 12:41:27 $
  */
-@SuppressWarnings("unused")
+@OutputConfig
 @XmlType(name = "segment_block", namespace = "https://nervousync.org/schemas/segment")
 @XmlRootElement(name = "segment_block", namespace = "https://nervousync.org/schemas/segment")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class SegmentationBlock extends BeanObject {
+public final class SegmentationBlock implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>

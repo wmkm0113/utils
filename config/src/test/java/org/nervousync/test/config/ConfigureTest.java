@@ -18,8 +18,8 @@
 package org.nervousync.test.config;
 
 import org.junit.jupiter.api.Test;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.configs.Password;
-import org.nervousync.beans.core.BeanObject;
 import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
 import org.nervousync.test.BaseTest;
@@ -48,30 +48,22 @@ public final class ConfigureTest extends BaseTest {
 	 *                  <span class="zh-CN">数据类</span>
 	 */
 	private void scanFields(final Class<?> beanClass) {
-		if (!ClassUtils.isAssignable(BeanObject.class, beanClass)) {
-			return;
-		}
 		Map<String, String> fieldMap = new HashMap<>();
 		ReflectionUtils.getAllDeclaredFields(beanClass)
 				.forEach(field -> {
 					Class<?> fieldType = field.getType();
 					if (fieldType.isArray()) {
-						Class<?> checkType = ClassUtils.componentType(fieldType);
-						if (ClassUtils.isAssignable(BeanObject.class, checkType)) {
-							this.scanFields(checkType);
-							fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
-						}
+						this.scanFields(ClassUtils.componentType(fieldType));
+						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
 					} else if (ClassUtils.isAssignable(Collection.class, fieldType)) {
 						Class<?> checkType = Optional.of((ParameterizedType) field.getGenericType())
 								.map(ParameterizedType::getActualTypeArguments)
 								.filter(actualTypeArguments -> actualTypeArguments.length > 0)
 								.map(actualTypeArguments -> (Class<?>) actualTypeArguments[0])
 								.orElse(null);
-						if (ClassUtils.isAssignable(BeanObject.class, checkType)) {
-							this.scanFields(checkType);
-							fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
-						}
-					} else if (ClassUtils.isAssignable(BeanObject.class, fieldType)) {
+						this.scanFields(checkType);
+						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
+					} else if (fieldType.isAnnotationPresent(OutputConfig.class)) {
 						this.scanFields(fieldType);
 						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
 					} else if (field.isAnnotationPresent(Password.class)) {

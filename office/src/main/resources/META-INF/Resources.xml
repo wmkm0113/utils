@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Office_Ext_Name_Invalid">Unknown file ext name: {0}</entry>
+    <entry key="Office_Excel_File_Not_Exists">Excel file wasn’t found, file location path: {0}</entry>
+    <entry key="Office_Excel_File_Write_Error">Write Excel file error, file location path: {0}</entry>
+</properties>

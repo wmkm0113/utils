@@ -18,6 +18,7 @@
 package org.nervousync.annotations.beans;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.beans.StringType;
 
 import java.lang.annotation.*;
 
@@ -35,6 +36,17 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface OutputConfig {
+
+	/**
+	 * <h3 class="en-US">Enumeration of String Type</h3>
+	 * <span class="en-US">Default is XML</span>
+	 * <h3 class="zh-CN">字符串类型的枚举类</h3>
+	 * <span class="zh-CN">默认值为 XML</span>
+	 *
+	 * @return <span class="en-US">Enumeration of String Type</span>
+	 * <span class="zh-CN">字符串类型的枚举类</span>
+	 */
+	StringType type() default StringType.XML;
 
 	/**
 	 * <h3 class="en-US">Format output string status</h3>

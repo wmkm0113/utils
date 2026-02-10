@@ -26,6 +26,7 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.converter.BeanConverter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
@@ -58,23 +59,23 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(DefaultBeanConverterImpl.class);
 
 	@Override
-	public String objectToString(final Object object, final StringType stringType, final boolean formatOutput,
-	                             final boolean outputFragment, final String encoding) {
-		switch (stringType) {
+	public String objectToString(final Object object) {
+		OutputConfig outputConfig = object.getClass().getAnnotation(OutputConfig.class);
+		switch (BeanUtils.type(object.getClass())) {
 			case XML:
 				if (!object.getClass().isAnnotationPresent(XmlRootElement.class)) {
 					return Globals.DEFAULT_VALUE_STRING;
 				}
 				StringWriter stringWriter = null;
 				try {
-					String characterEncoding = StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding;
+					String characterEncoding = outputConfig.encoding();
 					stringWriter = new StringWriter();
 					XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(stringWriter);
 					CDataStreamWriter streamWriter = new CDataStreamWriter(xmlWriter);
 
 					JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
 					Marshaller marshaller = jaxbContext.createMarshaller();
-					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formatOutput);
+					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, outputConfig.formatted());
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, characterEncoding);
 					marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 
@@ -83,7 +84,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					streamWriter.flush();
 					streamWriter.close();
 
-					if (formatOutput) {
+					if (outputConfig.formatted()) {
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.setOutputProperty(OutputKeys.ENCODING, characterEncoding);
 						transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -96,12 +97,11 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 						transformer.transform(new StreamSource(new StringReader(xml)), new StreamResult(stringWriter));
 					}
 
-					StringBuilder stringBuilder = new StringBuilder();
-					if (outputFragment) {
-						stringBuilder.append(StringUtils.replace(BeanUtils.FRAGMENT_TEMPLATE, "{}", characterEncoding));
-						if (formatOutput) {
-							stringBuilder.append(FileUtils.LF);
-						}
+					StringBuilder stringBuilder =
+							new StringBuilder()
+									.append(StringUtils.replace(BeanUtils.FRAGMENT_TEMPLATE, "{}", characterEncoding));
+					if (outputConfig.formatted()) {
+						stringBuilder.append(FileUtils.LF);
 					}
 					stringBuilder.append(stringWriter);
 					return stringBuilder.toString();
@@ -114,8 +114,8 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					IOUtils.closeStream(stringWriter);
 				}
 			case JSON:
-				JsonbConfig config = new JsonbConfig().withFormatting(formatOutput)
-						.withEncoding(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding);
+				JsonbConfig config = new JsonbConfig().withFormatting(outputConfig.formatted())
+						.withEncoding(outputConfig.encoding());
 				try (Jsonb jsonb = JsonbBuilder.create(config)) {
 					return jsonb.toJson(object);
 				} catch (Exception e) {
@@ -125,6 +125,8 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					}
 				}
 				break;
+			case SIMPLE:
+				return object.toString();
 			case SERIALIZABLE:
 				return StringUtils.base64Encode(ConvertUtils.toByteArray(object));
 			default:
@@ -135,7 +137,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 
 	@Override
 	public <T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
-	                            final String encoding, final Class<T> beanClass, final String... schemaPaths) {
+	                            final String encoding, @Nonnull final Class<T> beanClass, final String... schemaPaths) {
 		switch (stringType) {
 			case XML:
 				try {
@@ -161,7 +163,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 						.orElse(null);
 			case JSON:
 				JsonbConfig config = new JsonbConfig().withEncoding(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding);
-				try(Jsonb jsonb = JsonbBuilder.create(config)) {
+				try (Jsonb jsonb = JsonbBuilder.create(config)) {
 					return jsonb.fromJson(inputStream, beanClass);
 				} catch (Exception e) {
 					LOGGER.error("Parse_File_Error");
@@ -180,7 +182,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 	                                final String encoding, final Class<T> beanClass) {
 		if (StringType.JSON.equals(stringType)) {
 			JsonbConfig config = new JsonbConfig().withEncoding(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding);
-			try(Jsonb jsonb = JsonbBuilder.create(config)) {
+			try (Jsonb jsonb = JsonbBuilder.create(config)) {
 				return jsonb.fromJson(inputStream, beanClass.getGenericSuperclass());
 			} catch (Exception e) {
 				LOGGER.error("Parse_File_Error");
@@ -194,10 +196,11 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 	}
 
 	@Override
-	public Map<String, Object> streamToMap(@Nonnull final InputStream inputStream, final StringType stringType, final String encoding) {
+	public Map<String, Object> streamToMap(@Nonnull final InputStream inputStream, final StringType stringType,
+	                                       final String encoding) {
 		if (StringType.JSON.equals(stringType)) {
 			JsonbConfig config = new JsonbConfig().withEncoding(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding);
-			try(Jsonb jsonb = JsonbBuilder.create(config)) {
+			try (Jsonb jsonb = JsonbBuilder.create(config)) {
 				return jsonb.fromJson(inputStream, new HashMap<String, Object>() {
 					private static final long serialVersionUID = 2929260973754559724L;
 				}.getClass().getGenericSuperclass());

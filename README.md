@@ -1,8 +1,10 @@
-# Java Development Toolkit
+# Nervousync Utils
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-jdk11?color=green&label=Release)](https://mvnrepository.com/artifact/org.nervousync/utils-jdk11)
-![Maven Snapshot](https://img.shields.io/maven-metadata/v?label=Snaohot&metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fnervousync%2Futils-jdk11%2Fmaven-metadata.xml)
-[![License](https://img.shields.io/github/license/wmkm0113/utils-jdk11)](https://github.com/wmkm0113/utils-jdk11/blob/mainline/LICENSE)
+**Enterprise-Grade Java Utility Foundation Library**
+
+[![Maven Central](https://img.shields.io/maven-central/v/org.nervousync/utils-bom?color=green&label=Release)](https://mvnrepository.com/artifact/org.nervousync/utils-bom)
+![Maven Snapshot](https://img.shields.io/maven-metadata/v?label=Snapshot&metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Forg%2Fnervousync%2Futils-bom%2Fmaven-metadata.xml)
+[![License](https://img.shields.io/github/license/wmkm0113/utils)](https://github.com/wmkm0113/utils/blob/mainline/LICENSE)
 ![Language](https://img.shields.io/badge/language-Java-green)
 [![Twitter:wmkm0113](https://img.shields.io/twitter/follow/wmkm0113?label=Follow)](https://twitter.com/wmkm0113)
 
@@ -10,439 +12,412 @@ English
 [简体中文](README_zh_CN.md)
 [繁體中文](README_zh_TW.md)
 
-The Java development toolkit is designed to provide a toolkit with stable interfaces, simple integration, and reusable, while optimizing the reference of third-party class libraries. The toolkit contains many frequently used tool classes and functional modules, covering a wide range of application scenarios.
-The toolkit provides a set of concise and powerful APIs to help developers write Java code more efficiently, whether it is processing date and time, string operations, file operations or sending and processing of network requests, or sending emails or using SNMP Perform performance monitoring and unified configuration file management,
-Or one-time password support, X.509 certificate operation, task manager, etc., the toolkit provides a wealth of modules, functions and methods.
+---
 
 ## Table of contents
-* [JDK Version](#jdk-version)
-* [End of Life](#end-of-life)
-* [Usage](#usage)
-* [Basic Utilities](#basic-utilities)
-  + [JavaBean utilities](#javabean-utilities)
-  + [X.509 certificate utilities](#x509-certificate-utilities)
-  + [Collection utilities](#collection-utilities)
-  + [Data convert utilities](#data-convert-utilities)
-  + [Cookie utilities](#cookie-utilities)
-  + [Random ID generator utilities](#random-id-generator-utilities)
-  + [Image utilities](#image-utilities)
-  + [IP address convert utilities](#ip-address-convert-utilities)
-  + [Geographically coordinates utilities](#geographically-coordinates-utilities)
-  + [E-Mail utilities](#e-mail-utilities)
-  + [One-Time password utilities](#one-time-password-utilities)
-  + [Properties utilities](#properties-utilities)
-  + [Raw data operate utilities](#raw-data-operate-utilities)
-  + [Http/Https request utilities](#httphttps-request-utilities)
-  + [Data security utilities](#data-security-utilities)
-  + [WebService utilities](#webservice-utilities)
-  + [String operate utilities](#string-operate-utilities)
-  + [Data struct](#data-struct)
-* [Convert between JavaBean and XML/JSON/YAML string](#convert-between-javabean-and-xmljsonyaml-string)
-* [Secure factory](#secure-factory)
-* [Configure file manager](#configure-file-manager)
-* [Startup manager](#startup-manager)
-* [Internationalize(i18n) Support](#internationalizei18n-support)
-  + [Create i18n resource file (Required)](#1-create-i18n-resource-file-required)
-  + [Add internationalize support for anything (Required)](#2-add-internationalize-support-for-anything-required)
-  + [Add internationalize support for exceptions: (Optional)](#3-add-internationalize-support-for-exceptions-optional)
-  + [Add internationalize support for logger: (Optional)](#4-add-internationalize-support-for-logger-optional)
-  + [Merge resource files when packaging: (optional operation)](#5-merge-resource-files-when-packaging-optional-operation)
-* [Extension the file operate](#extension-the-file-operate)
-  + [Zip file operate](#zip-file-operate)
-  + [Random access file operates](#random-access-file-operates)
+* [Overview](#overview)
+* [JDK Version Compatibility](#JDK-Version-Compatibility)
+* [Design Philosophy](#Design-Philosophy)
+* [Modules](#Modules)
+* [Installation](#Installation)
+* [Quick Start](#Quick-Start)
+    + [JavaBean and the conversion between different data types](#JavaBean-and-the-conversion-between-different-data-types)
+    + [Random ID Generation](#Random-ID-Generation)
+    + [Geographic Information](#Geographic-Information)
+    + [Unified Configuration File Management](#Unified-Configuration-File-Management)
+    + [Internationalization Support](#Internationalization-Support)
+    + [OTP Generation and Validate](#OTP-Generation-and-Validate)
+* [Architecture Overview](#Architecture-Overview)
+* [Comparison](#Comparison)
+* [Suitable Scenarios](#Suitable-Scenarios)
+* [Versioning](#Versioning)
 * [Contributions and feedback](#contributions-and-feedback)
+* [License](#License)
 * [Donations](#donations)
+* [Final Note](#Final-Note)
 
-## JDK Version
+## Overview
+
+**Nervousync Utils** is an enterprise-oriented Java utility foundation designed to provide reusable infrastructure capabilities across backend systems.
+
+Unlike lightweight helper libraries, this project focuses on **capability-level abstractions** such as configuration management, internationalization, security utilities, HTTP communication, lifecycle management, and structured data transformation.
+
+It is framework-agnostic and can be integrated into:
+
+* Standalone Java applications
+* Microservices
+* Enterprise platform architectures
+* Modular backend systems
+
+---
+
+## JDK Version Compatibility
 **Compile:** OpenJDK 11   
-**Runtime：** OpenJDK 11+ or compatible version
+**Test：** OpenJDK 11/17/21  
+**Runtime：** OpenJDK 11+ or compatible version  
 **Jakarta EE Platform:** 10
 
-## End of Life
-**Features Freeze:** 31, Dec, 2026   
-**Secure Patch:** 31, Dec, 2029
+## Design Philosophy
+This project is built upon the following engineering principles:
 
-## Usage
-**Maven:**
+- Modular Design
+
+The project provides functional modules with different focuses, allowing users to choose according to their needs, minimizing external dependencies, and reducing the overall project burden and security risks.
+
+- Comprehensive Advanced Security Features
+
+The project provides support for a variety of the latest encryption algorithms, as well as complete OTP (supporting TOTP and HOTP) support.
+
+- Framework Independence
+
+It does not forcibly depend on any heavyweight frameworks.
+
+## Modules
+
+| Module         | Description                                                                                                                                                                           |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| utils-bom      | BOM module                                                                                                                                                                            |
+| utils-core     | Core module, basic tools                                                                                                                                                              |
+| utils-beans    | JavaBean conversion tool for different data formats (XML/JSON/YAML)                                                                                                                   |
+| utils-config   | Unified configuration file management, startup item management                                                                                                                        |
+| utils-i18n     | Internationalization engine (supports multiple languages, internationalization, and localization)                                                                                     |
+| utils-log4j    | Log configuration implemented using Log4j2                                                                                                                                            |
+| utils-mail     | Email tool                                                                                                                                                                            |
+| utils-net      | Network access tool (including network requests, network files, SNMP monitoring)                                                                                                      |
+| utils-office   | Excel file operation support                                                                                                                                                          |
+| utils-security | Security tools (including encryption, decryption, signing, verification, key management), OTP tool, security factory (for automatic encryption and decryption of configuration files) |
+| utils-zip      | Zip compressed file access support                                                                                                                                                    |
+| utils-all      | Contains all modules                                                                                                                                                                  |
+
+Each module can be used independently.
+
+## Installation
+
+**Maven：**
+### Direct reference
 ```
 <dependency>
     <groupId>org.nervousync</groupId>
-	<artifactId>utils-jdk11</artifactId>
+	<artifactId>${module_name}</artifactId>
     <version>${version}</version>
 </dependency>
 ```
-**Gradle:**
+### Use BOM management
 ```
-Manual: compileOnly group: 'org.nervousync', name: 'utils-jdk11', version: '${version}'
-Short: compileOnly 'org.nervousync:utils-jdk11:${version}'
+<!-- Import BOM -->
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-bom</artifactId>
+            <version>${version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+<!-- Dependencies do not need to have version numbers specified. -->
+<dependencies>
+    <dependency>
+        <groupId>org.nervousync</groupId>
+        <artifactId>${module_name}</artifactId>
+        <version>${version}</version>
+    </dependency>
+    ...
+</dependencies>
 ```
-**SBT:**
+**Gradle：**
+Gradle 5.0+ support import Maven BOM as the platform
+### Direct reference
 ```
-libraryDependencies += "org.nervousync" % "utils-jdk11" % "${version}" % "provided"
+implementation 'org.nervousync:${module_name}:${version}'
 ```
-**Ivy:**
+### Use BOM management
 ```
-<dependency org="org.nervousync" name="utils-jdk11" rev="${version}"/>
+// 导入 BOM，使用 platform
+implementation platform('org.nervousync:utils-bom:${version}')
+// 依赖项不需要写版本号
+implementation 'org.nervousync:${module_name}'
 ```
-
-## Basic Utilities
-### JavaBean utilities
-**Class name**: org.nervousync.utils.BeanUtils  
-* Copy object fields value from the source object to the target object, based field name
-* Copy object fields value from the source object array to the target object, based annotation: BeanProperty
-* Copy object fields value from the source object to the target object arrays, based annotation: BeanProperty
-
-### X.509 certificate utilities
-**Class name**: org.nervousync.utils.CertificateUtils  
-* Generate Keypair
-* Signature and generate X.509 certificate
-* Parse X.509 certificate from certificate file, PKCS12 file or binary data arrays
-* Validate X.509 certificate period and signature
-* Read PublicKey/PrivateKey from binary data arrays or PKCS12 file
-* Signature and generate PKCS12 file
-
-### Collection utilities
-**Class name**: org.nervousync.utils.CollectionUtils
-* Check collection is empty
-* Check collection contains target element
-* Check two collections contain the same element
-* Check collection contains unique element
-* Convert the object to an array list
-* Merge array to list
-* Merge properties to map
-* Find the first match element of collections
-
-### Data convert utilities
-**Class name**: org.nervousync.utils.ConvertUtils
-* Convert data bytes to hex string
-* Convert data bytes to string
-* Convert data bytes to Object
-* Convert any to data bytes
-* Convert properties to data map
-
-### Cookie utilities
-**Class name**: org.nervousync.utils.CookieUtils  
-Dependency required:
+**SBT：**
 ```
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-	<artifactId>jakarta.servlet-api</artifactId>
-    <version>5.0.0 or higher</version>
-</dependency>
+libraryDependencies += "org.nervousync" % "${module_name}" % "${version}" % "provided"
 ```
-* Setting cookie value
-* Read cookie value
-* Delete cookie value
-
-### Random ID generator utilities
-**Class name**: org.nervousync.utils.IDUtils  
-* ID generator utils, register generator implements class by Java SPI.
-* Embedded generator: UUID version 1 to version 5, Snowflake and NanoID.  
-**Customize generator:**   
-Generator class must implement interface org.nervousync.generator.IGenerator
-and create the file named: org.nervousync.generator.IGenerator save to META-INF/services
-
-### Image utilities
-**Class name**: org.nervousync.utils.ImageUtils  
-* Read image width (px), height (px), ratio (width/height). 
-* Image operator: cut, resize and add watermark, calculate hamming (dHash/pHash), calculate signature (dHash/pHash)
-
-### IP address convert utilities
-**Class name**: org.nervousync.utils.IPUtils  
-* Calculate IP range by given address and CIDR value
-* Convert between netmask address and CIDR value
-* Convert between IPv4 and IPv6
-* Convert between IP address and BigInteger(for support IPv6)
-* Expand the combo IPv6 address
-
-### Geographically coordinates utilities
-**Class name**: org.nervousync.utils.LocationUtils  
-* Convert GeoPoint at WGS84(GPS)/GCJ02/BD09
-* Calculate the distance of two given geography point. (Unit: Kilometers)
-
-### E-Mail utilities
-**Class name**: org.nervousync.utils.MailUtils  
-* Send/Receive email (Support protocols: IMAP/POP3/SMTP)
-* Count email in folder
-* List folder names
-* Download email attachment files automatically
-* Verify email signature
-* Add signature to email
-
-### One-Time password utilities
-**Class name**: org.nervousync.utils.OTPUtils  
-* Calculate OTP fixed time value
-* Generate random key
-* Generate TOTP/HOTP Code
-* Verify TOTP/HOTP Code
-
-### Properties utilities
-**Class name**: org.nervousync.utils.PropertiesUtils  
-* Read properties from string/file path/URL instance/input stream
-* Modify properties file
-* Storage properties instance to the target file path
-
-### Raw data operate utilities
-**Class name**: org.nervousync.utils.RawUtils  
-* Read boolean/short/int/long/String from binary data bytes
-* Write boolean/short/int/long/String into binary data bytes
-* Convert the char array to binary data bytes
-* Convert the bit array to byte
-
-### Http/Https request utilities
-**Class name**: org.nervousync.utils.RequestUtils
-* Parse http method string to HttpMethodOption
-* Resolve domain name to IP address
-* Retrieve and verify SSL certificate from server
-* Send request and parse response content to the target JavaBean or string
-* Convert data between query string and parameter map
-* Check user role code using <code>request.isUserInRole</code>
-* Support using proxy server to request target address
-* Support custom SSL certificate verify
-
-### Data security utilities
-**Class name**: org.nervousync.utils.SecurityUtils  
-* CRC polynomial:  CRC-16/ISO-IEC-14443-3-A,CRC-32/JAMCRC,CRC-4/INTERLAKEN,CRC-16/TELEDISK,CRC-32/MPEG-2,CRC-16/GSM,CRC-6/GSM,CRC-7/UMTS,CRC-32/BZIP2,CRC-8/I-CODE,CRC-16/IBM-SDLC,CRC-16/LJ1200,CRC-10/ATM,CRC-8/NRSC-5,CRC-5/USB,CRC-7/ROHC,CRC-12/UMTS,CRC-8/BLUETOOTH,CRC-14/GSM,CRC-8/SMBUS,CRC-8/TECH-3250,CRC-5/G-704,CRC-16/MODBUS,CRC-12/DECT,CRC-7/MMC,CRC-16/CMS,CRC-24/FLEXRAY-A,CRC-24/FLEXRAY-B,CRC-32/ISO-HDLC,CRC-21/CAN-FD,CRC-8/LTE,CRC-15/CAN,CRC-24/LTE-A,CRC-30/CDMA,CRC-3/GSM,CRC-24/LTE-B,CRC-24/OPENPGP,CRC-12/CDMA2000,CRC-16/MAXIM-DOW,CRC-16/XMODEM,CRC-6/G-704,CRC-24/OS-9,CRC-16/DNP,CRC-32/AIXM,CRC-10/CDMA2000,CRC-6/CDMA2000-A,CRC-6/CDMA2000-B,CRC-16/TMS37157,CRC-16/UMTS,CRC-32/XFER,CRC-8/ROHC,CRC-16/DECT-R,CRC-8/WCDMA,CRC-8/DVB-S2,CRC-15/MPT1327,CRC-16/DECT-X,CRC-6/DARC,CRC-16/DDS-110,CRC-32/ISCSI,CRC-16/USB,CRC-8/MIFARE-MAD,CRC-8/AUTOSAR,CRC-16/KERMIT,CRC-16/IBM-3740,CRC-4/G-704,CRC-16/RIELLO,CRC-16/EN-13757,CRC-16/NRSC-5,CRC-14/DARC,CRC-31/PHILIPS,CRC-5/EPC-C1G2,CRC-32/BASE91-D,CRC-16/ARC,CRC-16/MCRF4XX,CRC-16/T10-DIF,CRC-24/INTERLAKEN,CRC-3/ROHC,CRC-13/BBC,CRC-11/UMTS,CRC-16/SPI-FUJITSU,CRC-10/GSM,CRC-8/DARC,CRC-8/OPENSAFETY,CRC-12/GSM,CRC-32/CKSUM,CRC-16/PROFIBUS,CRC-8/GSM-B,CRC-8/GSM-A,CRC-8/SAE-J1850,CRC-8/CDMA2000,CRC-8/MAXIM-DOW,CRC-16/GENIBUS,CRC-8/I-432-1,CRC-17/CAN-FD,CRC-16/OPENSAFETY-B,CRC-32/CD-ROM-EDC,CRC-16/OPENSAFETY-A,CRC-32/AUTOSAR,CRC-16/CDMA2000,CRC-11/FLEXRAY,CRC-24/BLE  
-* Digest provider: MD5/HmacMD5/SHA1/HmacSHA1/SHA2/HmacSHA2/SHA3/HmacSHA3/SHAKE128/SHAKE256/SM3/HmacSM3  
-* Symmetric provider: Blowfish/DES/TripleDES/SM4/AES/RC2/RC4/RC5/RC6  
-* Asymmetric provider: RSA/SM2
-
-### WebService utilities
-**Class name**: org.nervousync.utils.ServiceUtils  
-* Generate SOAP Client instance
-* Generate Restful Client and process request
-
-### String operate utilities
-**Class name**: org.nervousync.utils.StringUtils  
-* Encode byte arrays using Base32/Base64
-* Decode Base32/Base64 string to byte arrays
-* Encode string to a Huffman tree
-* Trim given string
-* Match given string is MD5 value/UUID/phone number/e-mail address etc.
-* Check given string is empty/notNull/notEmpty/contains string etc.
-* Tokenize string by given delimiters
-* Substring given input string by rule
-* Validate given string is match code type
-
-### Data struct
-* Huffman Tree support
-* Multiway Tree support
-
-## Convert between JavaBean and XML/JSON/YAML string
-Any JavaBean class that extends org.nervousync.bean.core.BeanObject can easily convert between object instances and XML/JSON/YAML strings.
-Toolkit using JAXB to implement convert between JavaBean and XML string, using Jackson to implement convert between JavaBean and JSON/YAML string.   
-**1.Add parent class**   
-Developers modify the JavaBean that needs to be converted to XML/JSON/YAML strings so that the JavaBean extends the org.nervousync.bean.core.BeanObject abstract class.   
-**2.Add annotations**   
-Add corresponding annotations to the properties of the JavaBean. If you need to convert it to XML, please add the annotations required by JAXB (such as XmlRootElement/XmlElement), 
-if you need to convert it to JSON/YAML, please add the annotations required by Jackson annotations (such as JsonProperty), etc.   
-**3.Convert to XML/JSON/YAML**   
-Call the toXML method to convert the JavaBean instance object into an XML string.   
-
-| Parameter       | Data type | Notes                                                                              |
-|-----------------|-----------|------------------------------------------------------------------------------------|
-| outputFragment  | boolean   | Whether to output XML declaration string(`<?xml version="1.0" encoding="UTF-8"?>`) |
-| formattedOutput | boolean   | Whether to format the output XML string                                            |
-| encoding        | String    | The encoding set of the output string (Default: UTF-8)                             |
-Call the toJson method to convert the JavaBean instance object into a JSON string. Or call the toFormattedJson method to convert the JavaBean instance object into a formatted JSON string.   
-Call the toYaml method to convert the JavaBean instance object into an XML string. Or call the toFormattedYaml method to convert the JavaBean instance object into a formatted YAML string.   
-**4.Convert to JavaBean**   
-A string can be converted to a JavaBean instance object by calling the stringToObject static method of org.nervousync.utils.StringUtils.
-
-| Parameter   | Data type    | Notes                                              |
-|-------------|--------------|----------------------------------------------------|
-| string      | String       | String that needs to be converted to JavaBean      |
-| encoding    | String       | string encoding set (Default: UTF-8)               |
-| beanClass   | Class        | JavaBean class definition                          |
-| schemaPaths | String array | Array of XSD file paths for validating XML strings |
-
-By calling the fileToObject static method of org.nervousync.utils.StringUtils, the disk file can be converted into a JavaBean instance object. The data type in the file is determined according to the file extension.
-
-| Parameter   | Data type    | Notes                                                    |
-|-------------|--------------|----------------------------------------------------------|
-| filePath    | String       | File storage path that needs to be converted to JavaBean |
-| beanClass   | Class        | JavaBean class definition                                |
-| schemaPaths | String array | Array of XSD file paths for validating XML strings       |   
-**5.XSD documents**   
-To verify the legitimacy of XML files, the most common method is to use XSD documents to verify XML files. Program developers can store XSD documents into the program package, and through simple configuration, the system can find the XSD document.
-+ Add the XSD document to the package and record the storage path
-+ Create the nervousync.schemas file in the META-INF folder. The file format is: `namespace_uri`=`record the XSD document storage path`. If there are multiple XSD document definitions, each XSD mapping has a separate line.
-+ In the method converted to JavaBean, the parameter "schemaPaths" can be namespace_uri
-
-## Secure factory
-**Class name** org.nervousync.security.factory.SecureFactory   
-The toolkit provides a security factory class to help developers save different encryption and decryption configuration information, so that developers can perform convenient encryption and decryption operations on data.      
-**Secure factory initialize**   
-The security factory will automatically read the configuration file and register the security configuration information to the security factory.   
-**Add secure configure**   
-Call the registerConfig static method of SecureFactory to add new security configuration information.
-
-| Parameter       | Data type                             | Notes                                                         |
-|-----------------|---------------------------------------|---------------------------------------------------------------|
-| secureName      | String                                | Identification code of secure configure                       |
-| secureAlgorithm | Enumeration value of secure algorithm | Specify the algorithm type used for encryption and decryption |
-**Encrypt data**   
-Call the encrypt static method of SecureFactory to complete the data encryption operation and return the encrypted data.
-
-| Parameter   | Data type | Notes                                                                                                |
-|-------------|-----------|------------------------------------------------------------------------------------------------------|
-| secureName  | String    | Identification code of secure configure (If code is null or not found, using system default instead) |
-| dataContent | String    | Data that needs to be encrypted                                                                      |
-**Decrypt data**   
-Call the decrypt static method of SecureFactory to complete the data decryption operation and return the decrypted data.
-
-| Parameter   | Data type | Notes                                                                                                |
-|-------------|-----------|------------------------------------------------------------------------------------------------------|
-| secureName  | String    | Identification code of secure configure (If code is null or not found, using system default instead) |
-| dataContent | String    | Data that needs to be decrypted                                                                      |
-
-## Configure file manager
-**Class name** org.nervousync.configs.ConfigureManager  
-In the process of system development, we often encounter various configuration files. To uniformly manage the configuration files in the project, a unified manager of configuration files is provided in the development package.
-Developers can get the instance object of the configuration file manager by calling the getInstance static method of ConfigureManager to perform configuration file related operations.   
-**Manager initialize**   
-By calling the initialize static method of ConfigureManager to initialize the configuration file manager, developers can set the storage location of the configuration file by passing in the parameter "customPath".
-If the parameter "customPath" is null or an empty string, the profile manager will create a folder named ".configs" in the current user's working directory and use this folder as the default configuration file storage path.   
-**Read configure file**   
-Read the configuration file information by calling the readConfigure method of ConfigureManager, and the passed-in parameter is the JavaBean definition class of the configuration file. 
-If there are multiple configuration files of the same type, you can pass in a suffix parameter of type string to identify different configuration files.   
-**Save configure file**   
-Save the configuration file information by calling the saveConfigure method of ConfigureManager. The parameter passed in is the JavaBean instance object of the configuration file. 
-If there are multiple configuration files of the same type, you can pass in a suffix parameter of type string to identify different configuration files.   
-**Remove configure file**
-Remove configuration file information by calling the removeConfigure method of ConfigureManager. The passed-in parameter is the JavaBean definition class of the configuration file. 
-At the same time, a suffix parameter of type string needs to be passed in to remove a specific configuration file.
-**Notice:** If the passed parameter suffix is null or an empty string, all configuration files of the specified type will be removed.
-**Load configure file automatically**
-Let the class that needs to automatically load the configuration file inherit the org.nervousync.configs.AutoConfig abstract class, add an attribute of type configuration file class to the class, and add the org.nervousync.annotations.configs.Configure annotation to the attribute.
-If there are multiple configuration files of this type, you can specify which configuration file to use through the value attribute of the org.nervousync.annotations.configs.Configure annotation.   
-**Password protection of configuration files**   
-The configuration file always involves the saving of various passwords. To prevent passwords from being leaked through the configuration file, developers can add the org.nervousync.annotations.configs.Password annotation to the password attribute of the JavaBean definition class in the configuration file.
-Use the value attribute of the org.nervousync.annotations.configs.Password annotation to specify the encryption method to be used (implemented through the security factory). The system will automatically encrypt the plaintext password when it is stored on the disk, and can also automatically decrypt it when reading it from the disk.
-
-## Startup manager
-**Class name** org.nervousync.launcher.StartupManager   
-The toolkit provides a program startup manager that can be executed automatically or manually. The launcher uses Java's SPI mode to load all implementation classes of the org.nervousync.launcher.StartupLauncher interface.
-And execute the launcher based on the value attribute value of the org.nervousync.annotations.launcher.Launcher annotation added on the implementation class.   
-The value attribute value of the org.nervousync.annotations.launcher.Launcher annotation is the enumeration value of the launch type. The allowed value is AUTO/MANUAL/DISABLE.
-When program developers need to use the program startup manager, they need to explicitly call the initialize static method of org.nervousync.launcher.StartupManager. The toolkit will automatically scan and load all launchers, and after completing the loading, the automatic startup type is AUTO starter.
-The program startup manager will register a hook program in the system during initialization. When the main program exits normally, the destroy method of the program startup manager will be automatically executed to close all running launchers.   
-**Developer startup launcher**   
-When programmers need to add a launcher, they need to complete two steps:   
-1.Create a launcher implementation class, implement the org.nervousync.launcher.StartupLauncher interface, add the org.nervousync.annotations.launcher.Launcher annotation to the implementation class, and set the value attribute of the Launcher annotation.
-2.Create the META-INF/services/org.nervousync.launcher.StartupLauncher file and write the complete class name of the implementation class (package name + class name) in the file.    
-**Manage startup launcher**
-* By calling the registeredLaunchers method of StartupManager, you can collect the configuration information of all registered launchers.
-* The startup type of registered launcher can be modified by calling the config method of StartupManager.
-* By calling the start/stop/restart method of StartupManager, you can start/stop/restart the specified starter.
-
-## Internationalize(i18n) Support
-In the process of program development, we often encounter the need to transplant programs to different languages and regions. 
-This kind of program internationalization has become a trend. The development kit provides a set of simple and easy-to-use methods to complete the internationalization of programs, including, 
-But it is not limited to prompt information, error information, text information on various interfaces, etc.
-Completing the internationalization of a program requires at least two steps.
-### 1. Create i18n resource file (Required)
-Create nervousync.i18n file in META-INF
+**Ivy：**
 ```
-{
-    “groupId”: "{Your origanization id}",
-    "bundle": "{Your project code}",
-    "errors": [
-        {
-            "code": "{Error code, binary string must begin as '0d', octal string must begin as '0o', hexadecimal string must begin as '0x'}",
-            "key": "{Error message key}"
-        },
-        ...
-    ],
-    "languages": [
-        {
-            "code": "{Language code(Example: en-US)}",
-            "name": "{Language name(Example: English)}",
-            "messages": [
-                {
-                    "key": "{Message key}",
-                    "content": "{Message content in English}"
-                },
-                ...
-            ]
-        }，
-        {
-            "code": "{Language code(Example: zh-CN)}",
-            "name": "{Language name(Example: 简体中文)}",
-            "messages": [
-                {
-                    "key": "{Message key}",
-                    "content": "{Message content in Chinese}"
-                },
-                ...
-            ]
-        }
-    ]
+<dependency org="org.nervousync" name="${module_name}" rev="${version}"/>
+```
+---
+
+## Quick Start
+
+### JavaBean and the conversion between different data types
+
+`utils-core` (using jsonb) supports XML and JSON data formats, while `utils-beans` (using Jackson) supports XML, JSON, and YAML data formats.
+
+First, define a simple JavaBean and add the corresponding annotations:
+```java
+//  Use the `OutputConfig` annotation to declare the data format type
+@OutputConfig(type = StringType.JSON)
+@XmlRootElement(name = "user")
+public class User {
+    @XmlElement
+    private String name;
+    @XmlElement
+    private int age;
+    // getters and setters
 }
 ```
+With just one line of code, you can convert a JavaBean instance to its corresponding string:
+```java
+String string = BeanUtils.objectToString(user);
+```
 
-### 2. Add internationalize support for anything (Required)
-Using MultilingualUtils.findMessage(bundle, messageKey, collections) to retrieve the multilingual message which will output
+To convert a string to a JavaBean, you also only need one line of code:
+```java
+User user = BeanUtils.stringToObject(string, User.class);
+```
+### Random ID Generation
 
-| Parameter   | Data type    | Notes                          |
-|-------------|--------------|--------------------------------|
-| messageKey  | String       | Resource information key value |
-| collections | Object array | Mutable data array in content  |
+In daily development, there's often a need to generate random IDs. Now you only need to:
 
-If you need to complete the output of internationalization information in a web page, 
-you can use the i18n tag of the JSTL tag library "bean" included in the toolkit to complete the reading and output of internationalization information.
+```java
+UUID uuid = IDUtils.UUIDv4();
+ULID ulid = IDUtils.ULID();
+CUID cuid = IDUtils.CUID();
+long snowflake = IDUtils.snowflake();
+String nano = IDUtils.nano();
 
-### 3. Add internationalize support for exceptions: (Optional)
-Modify all Custom exception class, let custom exception extends org.nervousync.exceptions.AbstractException
-Please transfer the error code to the org.nervousync.exceptions.AbstractException at constructor of custom exception,
-The system will automatically read the error information in the resource file and realize the internationalization of exception prompt information.
+```
 
-**Example:** org.nervousync.exceptions.AbstractException
+### Geographic Information
 
-### 4. Add internationalize support for logger: (Optional)
-Using LoggerUtils.Logger instead all the logger instance, 
-logger instance was compatible with the Logger of slf4j, 
-logger instance will replace the log content to multilingual automatically
+Convert coordinate systems:
 
-**Example:** LoggerUtils.Logger instance in BeanUtils, CertificateUtils etc.
+```java
+GeoPoint gpsPoint = LocationUtils.anyToGPS(currentPoint);
+GeoPoint gcj02Point = LocationUtils.anyToGCJ02(currentPoint);
+GeoPoint bd09Point = LocationUtils.anyToBD09(currentPoint);
+```
 
-### 5. Merge resource files when packaging: (optional operation)
-In the multi-module development process, when you need to package and merge international resource files, you need to use the maven shade plug-in.
-Add transformer configuration using org.nervousync.shade.resource.I18nResourceTransformer
-And pass in the parameters "groupId" and "bundle", the resource converter will automatically merge the internationalized resource files and output them to the merged and packaged file.
+Calculate the distance between two coordinate points (unit: meters):
+```java
+double distance = LocationUtils.distance(beginPoint, endPoint);
+```
 
-## Extension the file operate
-### Zip file operate
-**Package**: org.nervousync.zip  
-Developers can use ZipFile to create the zip file, add files to the zip or extract files from zip.
-Supported split archive file, Chinese/Japanese/Korean comment and entry path, standard and AES encrypt/decrypt data.
+### Unified Configuration File Management
 
-More usages: See org.nervousync.test.zip.ZipTest
+This feature requires the `utils-config` module.
 
-### Random access file operates
-**Class name:** org.nervousync.commons.io.StandardFile   
-Provides a file object that can be read randomly and supports local file and NAS file operations of the Samba protocol.
+In daily development, we often encounter various configuration information. This project provides a unified interface for managing this configuration information.
+
+1. First, we need to define the JavaBean for the configuration file:
+```java
+/*  After adding the Signature annotation, the configuration file manager 
+    will generate a signature when saving configuration information and verify 
+    the signature when reading information, ensuring that the configuration file 
+    will not be modified without authorization.
+ */
+@Signature("signature")
+@XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
+@XmlAccessorType(XmlAccessType.NONE)
+//  OutputConfig must be specified and the data type and encoding set must be configured.
+@OutputConfig(type = StringType.XML, encoding = "UTF-8")
+public final class ProxyConfig implements Serializable {
+	
+	@XmlElement(name = "username")
+	private String userName;
+    /**
+    * After adding a password, the configuration file manager automatically encrypts/decrypts the information when saving and reading the configuration file to prevent the leakage of sensitive information.
+    */
+	@Password
+	@XmlElement(name = "password")
+	private String password;
+	@XmlElement
+	private String signature;
+	// getters and setters
+}
+```
+2. Save, read, configure information
+```java
+boolean result = ConfigureManager.getInstance().saveConfigure(proxyConfig);
+ProxyConfig proxyConfig = ConfigureManager.getInstance().readConfigure(ProxyConfig.class);
+```
+
+### Internationalization Support
+
+This feature requires the `utils-i18n` module.
+
+1. Define Resource File Information
+The storage path for multilingual resource files is META-INF/i18n/Resources.json within the JAR file. The specific format is as follows:
+
+```json
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "errors": {
+    "0x000000150001": "Length_Not_Enough_Crypto_Error",
+  },
+  "messages": {
+    "en-US": {
+      "Load_Schema_Mapping_Error": {
+        "pattern": "An error occurs when load schema mapping, file path: {0}"
+      }
+    },
+    "zh-CN": {
+      "Load_Schema_Mapping_Error": {
+        "pattern": "加载资源描述文件映射表出错，文件地址：{0}"
+      }
+    }
+  }
+}
+```
+2. Referencing Multilingual Information:
+
+```java
+// Use the groupId and bundle defined in the resource file to get the corresponding multilingual information agent
+MessageAgent agent = MultilingualUtils.newAgent("org.nervousync", "utils");
+String message = agent.getMessage("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+```
+
+3. Multilingual Logging
+
+```java
+LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
+logger.info("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+```
+
+Plurals expressions are supported in the resource file.
+
+### OTP Generation and Validate
+
+This feature requires the `utils-security` module.
+
+Generate OTP key:
+```java
+String secret = OTPUtils.generateRandomKey();
+```
+
+Calculate the time offset between TOTP users and the server:
+
+```java
+long fixedTime = OTPUtils.calculateFixedTime(secret, authCode);
+```
+
+Validate TOTP data
+```java
+boolean result = OTPUtils.validateTOTPCode(secret, authCode, fixedTime);
+```
+
+Users can choose different algorithms; the default is HMAC-SHA1. It supports both time-based standard one-time password algorithms (TOTP) and counter-based one-time password algorithms (HOTP).
+
+---
+
+## Architecture Overview
+
+```
+          +------------------+
+          |   utils-core     |
+          +------------------+
+             /     |     \
+            /      |      \
+           v       v       v
+  utils-config  utils-i18n  utils-security
+          \          |           /
+           \         |          /
+            v        v         v
+              utils-net   utils-launcher
+```
+
+* `core` provides shared abstractions
+* Feature modules build upon core
+* Modules are loosely coupled
+
+---
+
+## Comparison
+
+| Feature               | Nervousync | Apache Commons | Hutool  |
+|-----------------------|------------|----------------|---------|
+| Unified Configuration | ✔          | ✘              | Partial |
+| Built-in i18n Engine  | ✔          | ✘              | ✘       |
+| OTP Support           | ✔          | ✘              | ✔       |
+| Framework Agnostic    | ✔          | ✔              | ✔       |
+
+This project focuses on structured enterprise capabilities rather than general-purpose helpers.
+
+---
+
+## Suitable Scenarios
+
+* Enterprise backend systems
+* Modular platform architecture
+* Applications requiring secure configuration
+* Systems with internationalization requirements
+* Services requiring integrated security utilities
+
+Not intended for lightweight scripts or minimal utility needs.
+
+---
+
+## Versioning
+
+This project follows **Semantic Versioning**:
+
+* **MAJOR** – JDK changes
+* **MINOR** – Breaking API changes
+* **RELEASE** – Backward-compatible feature additions
+* **PATCH** – Bug fixes and minor improvements
+
+---
 
 ## Contributions and feedback
-Friends are welcome to translate the prompt information, error messages, 
-etc. in this document and project into more languages to help more users better understand and use this toolkit.   
-If you find problems during use or need to improve or add related functions, 
-please submit an issue to this project or send email to [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=bugs_and_features)   
-For better communication, please include the following information when submitting an issue or sending an email:
-1. The purpose is: discover bugs/function improvements/add new features   
-2. Please paste the following information (if it exists): incoming data, expected results, error stack information   
+
+Friends are welcome to translate the prompt information, error messages, etc. in this document and project into more languages to help more users better understand and use this toolkit.
+If you find problems during use or need to improve or add related functions, please submit an issue to this project or send email to [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=bugs_and_features)
+For better communication, please include the following information when submitting an issue or sending an email: 
+
+1. The purpose is: discovering bugs/function improvements/add new features
+2. Please paste the following information (if it exists): incoming data, expected results, error stack information
 3. Where do you think there may be a problem with the code (if provided, it can help us find and solve the problem as soon as possible)
 
 If you are submitting information about adding new features, please ensure that the features to be added are general needs, that is, the new features can help most users.
 
-If you need to add customized special requirements, I will charge a certain custom development fee.
-The specific fee amount will be assessed based on the workload of the customized special requirements.   
+We also welcome code contributions from everyone. Please follow the steps below:
+
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
+
+Please ensure:
+
+* Code follows the project structure
+* Public APIs are documented
+* Backward compatibility is considered
+
+If you need to add customized special requirements, I will charge a certain custom development fee. The specific fee amount will be assessed based on the workload of the customized special requirements.
 For customized special features, please send an email directly to [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=payment_features). At the same time, please try to indicate the budget amount of development cost you can afford in the email.
 
+---
+
+## License
+
+Licensed under the Apache License 2.0.
+See the `LICENSE` file for details.
+
+---
+
 ## Donations
+
 To support this project, you can make a donation to:
 
-* Bitcoin address: bc1ql7elx2j625x7f9tvax90v6zgwp55wy7uawtdtz
-* Ethereum address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
-* Solana address: GSwycoeVZHRW72TcvW38qLfqsWhFbwDbxamaEuwEwQjW
-* BNB address: 0xd88a49056E6ECE59e89c7e5724729A0FB0872986
+- Bitcoin address: bc1q3nfj9gafu3x25ea260g7cyhh5s9gnx347tznsf
+- Ethereum address: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
+- Solana address: 4Fvujk8DEkVAtYwzim1vrobNm4s72Ra6Xrsu83v2hqE2
+- BNB address: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
+
+## Final Note
+
+Nervousync Utils aims to provide a stable and reusable infrastructure foundation for enterprise Java systems.
+
+If your goal is to build maintainable backend platforms with explicit control over configuration, security, and lifecycle management, this project is designed to support that objective.

@@ -31,7 +31,7 @@ public final class LocationTest extends BaseTest {
 	@Test
 	@Order(10)
 	public void calculate() {
-		this.logger.info("Location_Calculate_Distance", LocationUtils.calcDistance(PEKING, CANTON));
+		this.logger.info("Location_Calculate_Distance", LocationUtils.distance(PEKING, CANTON));
 	}
 
 	@Test

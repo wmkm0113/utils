@@ -18,8 +18,6 @@
 package org.nervousync.configs;
 
 import org.nervousync.annotations.configs.Configuration;
-import org.nervousync.beans.core.BeanObject;
-import org.nervousync.utils.core.ClassUtils;
 import org.nervousync.utils.core.ReflectionUtils;
 
 import java.util.Optional;
@@ -33,16 +31,14 @@ import java.util.Optional;
  */
 public abstract class AutoConfig {
 
-	@SuppressWarnings("unchecked")
 	protected AutoConfig() {
 		Optional.ofNullable(ConfigureManager.getInstance())
 				.ifPresent(configureManager ->
 						ReflectionUtils.getAllDeclaredFields(this.getClass(), Boolean.TRUE)
 								.stream()
 								.filter(field -> field.isAnnotationPresent(Configuration.class))
-								.filter(field -> ClassUtils.isAssignable(BeanObject.class, field.getType()))
 								.forEach(field -> {
-									Class<? extends BeanObject> fieldType = (Class<? extends BeanObject>) field.getType();
+									Class<?> fieldType = field.getType();
 									Optional.ofNullable(field.getAnnotation(Configuration.class))
 											.map(Configuration::value)
 											.map(suffix -> configureManager.readConfigure(fieldType, suffix))

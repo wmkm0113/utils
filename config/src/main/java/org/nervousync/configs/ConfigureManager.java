@@ -20,7 +20,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.configs.Password;
-import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.security.factory.SecureFactory;
@@ -51,6 +50,11 @@ public final class ConfigureManager {
 	 */
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(ConfigureManager.class);
 	/**
+	 * <span class="en-US">Supported configure file data types</span>
+	 * <span class="zh-CN">支持的配置文件数据类型</span>
+	 */
+	private static final List<StringType> SUPPORTED_TYPES = List.of(StringType.XML, StringType.JSON, StringType.YAML);
+	/**
 	 * <span class="en-US">Singleton instance</span>
 	 * <span class="zh-CN">单一实例对象</span>
 	 */
@@ -60,11 +64,6 @@ public final class ConfigureManager {
 	 * <span class="zh-CN">配置信息存储路径</span>
 	 */
 	private final String basePath;
-	/**
-	 * <span class="en-US">Configuration information file format type</span>
-	 * <span class="zh-CN">配置信息文件格式</span>
-	 */
-	private final StringType stringType;
 	/**
 	 * <span class="en-US">Mapping table of scanned configuration file names and paths</span>
 	 * <span class="zh-CN">扫描到的配置文件名与路径的映射表</span>
@@ -94,14 +93,11 @@ public final class ConfigureManager {
 	 * <h3 class="en-US">Private constructor for Configuration Information Manager</h3>
 	 * <h3 class="zh-CN">配置信息管理器的私有构造方法</h3>
 	 *
-	 * @param basePath   <span class="en-US">Configuration information storage path</span>
-	 *                   <span class="zh-CN">配置信息存储路径</span>
-	 * @param stringType <span class="en-US">Configuration information file format type</span>
-	 *                   <span class="zh-CN">配置信息文件格式</span>
+	 * @param basePath <span class="en-US">Configuration information storage path</span>
+	 *                 <span class="zh-CN">配置信息存储路径</span>
 	 */
-	private ConfigureManager(final String basePath, final StringType stringType) {
+	private ConfigureManager(final String basePath) {
 		this.basePath = basePath;
-		this.stringType = stringType;
 		this.existsFiles = new Hashtable<>();
 		this.securityFieldsMap = new Hashtable<>();
 		this.scanFiles();
@@ -126,7 +122,7 @@ public final class ConfigureManager {
 	 * <h3 class="zh-CN">初始化配置信息管理器</h3>
 	 */
 	public static void initialize() {
-		initialize(Globals.DEFAULT_VALUE_STRING, StringType.XML);
+		initialize(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -137,30 +133,6 @@ public final class ConfigureManager {
 	 *                   <span class="zh-CN">配置信息存储路径</span>
 	 */
 	public static void initialize(final String customPath) {
-		initialize(customPath, StringType.XML);
-	}
-
-	/**
-	 * <h3 class="en-US">Initialize Configuration Information Manager</h3>
-	 * <h3 class="zh-CN">初始化配置信息管理器</h3>
-	 *
-	 * @param stringType <span class="en-US">Configuration information file format type</span>
-	 *                   <span class="zh-CN">配置信息文件格式</span>
-	 */
-	public static void initialize(@Nonnull final StringType stringType) {
-		initialize(Globals.DEFAULT_VALUE_STRING, stringType);
-	}
-
-	/**
-	 * <h3 class="en-US">Initialize Configuration Information Manager</h3>
-	 * <h3 class="zh-CN">初始化配置信息管理器</h3>
-	 *
-	 * @param customPath <span class="en-US">Configuration information storage path</span>
-	 *                   <span class="zh-CN">配置信息存储路径</span>
-	 * @param stringType <span class="en-US">Configuration information file format type</span>
-	 *                   <span class="zh-CN">配置信息文件格式</span>
-	 */
-	public static void initialize(final String customPath, @Nonnull final StringType stringType) {
 		boolean registerHook = Boolean.TRUE;
 		if (INSTANCE != null) {
 			destroy();
@@ -184,7 +156,7 @@ public final class ConfigureManager {
 			LOGGER.error("Configure_Manager_Path_Not_Exists", storagePath);
 			return;
 		}
-		INSTANCE = new ConfigureManager(storagePath, stringType);
+		INSTANCE = new ConfigureManager(storagePath);
 		if (registerHook) {
 			SystemUtils.registerShutdownHook(ConfigureManager::destroy);
 		}
@@ -232,7 +204,11 @@ public final class ConfigureManager {
 	 * <span class="zh-CN">检查结果</span>
 	 */
 	public boolean checkExists(@Nonnull final Class<?> targetClass, final String suffix) {
-		return this.existsFiles.containsKey(this.parseName(targetClass, this.stringType, suffix));
+		return Optional.of(stringType(targetClass))
+				.filter(SUPPORTED_TYPES::contains)
+				.map(stringType -> this.parseName(targetClass, stringType, suffix))
+				.map(this.existsFiles::containsKey)
+				.orElse(false);
 	}
 
 	/**
@@ -246,7 +222,7 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public <T extends BeanObject> T readConfigure(final Class<T> targetClass) {
+	public <T> T readConfigure(@Nonnull final Class<T> targetClass) {
 		return this.readConfigure(targetClass, Globals.DEFAULT_VALUE_STRING);
 	}
 
@@ -263,24 +239,12 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public <T extends BeanObject> T readConfigure(final Class<T> targetClass, final String suffix) {
-		if (targetClass == null) {
+	public <T> T readConfigure(@Nonnull final Class<T> targetClass, final String suffix) {
+		OutputConfig outputConfig = targetClass.getAnnotation(OutputConfig.class);
+		if (outputConfig == null) {
 			return null;
 		}
-
-		String schemaPath = Globals.DEFAULT_VALUE_STRING;
-		if (StringType.XML.equals(this.stringType)) {
-			schemaPath = Optional.ofNullable(targetClass.getAnnotation(XmlRootElement.class))
-					.filter(xmlRoot ->
-							!ObjectUtils.nullSafeEquals(Globals.DEFAULT_XML_ANNOTATION_VALUE, xmlRoot.namespace()))
-					.map(XmlRootElement::namespace)
-					.orElse(Globals.DEFAULT_VALUE_STRING);
-		}
-		return this.readConfigure(targetClass, suffix,
-				Optional.ofNullable(targetClass.getAnnotation(OutputConfig.class))
-						.map(OutputConfig::encoding)
-						.orElse(Globals.DEFAULT_ENCODING),
-				schemaPath);
+		return this.readConfigure(targetClass, suffix, outputConfig);
 	}
 
 	/**
@@ -292,7 +256,7 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Operate result</span>
 	 * <span class="zh-CN">操作结果</span>
 	 */
-	public boolean saveConfigure(@Nonnull final BeanObject object) {
+	public boolean saveConfigure(@Nonnull final Object object) {
 		return this.saveConfigure(object, Globals.DEFAULT_VALUE_STRING);
 	}
 
@@ -307,39 +271,26 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Operate result</span>
 	 * <span class="zh-CN">操作结果</span>
 	 */
-	public boolean saveConfigure(@Nonnull final BeanObject object, final String suffix) {
-		this.encryptFields(object);
-		String fileName = this.parseName(object.getClass(), this.stringType, suffix);
-		String filePath = this.existsFiles.getOrDefault(fileName, Globals.DEFAULT_VALUE_STRING);
-		if (StringUtils.isEmpty(filePath)) {
-			String extName = extName(this.stringType);
-			if (StringUtils.isEmpty(extName)) {
-				return Boolean.FALSE;
+	public boolean saveConfigure(@Nonnull final Object object, final String suffix) {
+		StringType stringType = stringType(object.getClass());
+		if (SUPPORTED_TYPES.contains(stringType)) {
+			this.encryptFields(object);
+			String fileName = this.parseName(object.getClass(), stringType, suffix);
+			String filePath = this.existsFiles.getOrDefault(fileName, Globals.DEFAULT_VALUE_STRING);
+			if (StringUtils.isEmpty(filePath)) {
+				String extName = extName(stringType);
+				if (StringUtils.isEmpty(extName)) {
+					return Boolean.FALSE;
+				}
+				filePath = this.basePath + Globals.DEFAULT_PAGE_SEPARATOR + fileName + extName;
 			}
-			filePath = this.basePath + Globals.DEFAULT_PAGE_SEPARATOR + fileName + extName;
-		}
 
-		String content;
-		switch (this.stringType) {
-			case XML:
-				content = object.toXml();
-				break;
-			case JSON:
-				content = object.toJson();
-				break;
-			case YAML:
-				content = object.toYaml();
-				break;
-			default:
-				content = object.toString();
-				break;
-		}
-
-		if (FileUtils.saveFile(filePath, content)) {
-			if (!this.existsFiles.containsKey(fileName)) {
-				this.existsFiles.put(fileName, filePath);
+			if (FileUtils.saveFile(filePath, BeanUtils.objectToString(object))) {
+				if (!this.existsFiles.containsKey(fileName)) {
+					this.existsFiles.put(fileName, filePath);
+				}
+				return Boolean.TRUE;
 			}
-			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
 	}
@@ -351,7 +302,7 @@ public final class ConfigureManager {
 	 * @param targetClass <span class="en-US">Configuration information JavaBean class</span>
 	 *                    <span class="zh-CN">配置信息JavaBean类</span>
 	 */
-	public void removeConfigure(final Class<?> targetClass) {
+	public void removeConfigure(@Nonnull final Class<?> targetClass) {
 		this.removeConfigure(targetClass, Globals.DEFAULT_VALUE_STRING);
 	}
 
@@ -366,18 +317,18 @@ public final class ConfigureManager {
 	 * @param suffix      <span class="en-US">Configuration file custom suffix</span>
 	 *                    <span class="zh-CN">配置文件自定义后缀</span>
 	 */
-	public void removeConfigure(final Class<?> targetClass, final String suffix) {
-		if (targetClass == null || !targetClass.isAnnotationPresent(OutputConfig.class)) {
-			return;
-		}
-		String fileName = this.parseName(targetClass, this.stringType, suffix);
-		if (StringUtils.notBlank(fileName)) {
-			Iterator<Map.Entry<String, String>> iterator = this.existsFiles.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Map.Entry<String, String> entry = iterator.next();
-				if (entry.getKey().equalsIgnoreCase(fileName) || entry.getKey().startsWith(fileName)) {
-					FileUtils.removeFile(entry.getValue());
-					iterator.remove();
+	public void removeConfigure(@Nonnull final Class<?> targetClass, final String suffix) {
+		StringType stringType = stringType(targetClass);
+		if (SUPPORTED_TYPES.contains(stringType)) {
+			String fileName = this.parseName(targetClass, stringType, suffix);
+			if (StringUtils.notBlank(fileName)) {
+				Iterator<Map.Entry<String, String>> iterator = this.existsFiles.entrySet().iterator();
+				while (iterator.hasNext()) {
+					Map.Entry<String, String> entry = iterator.next();
+					if (entry.getKey().equalsIgnoreCase(fileName) || entry.getKey().startsWith(fileName)) {
+						FileUtils.removeFile(entry.getValue());
+						iterator.remove();
+					}
 				}
 			}
 		}
@@ -396,12 +347,12 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Convert result</span>
 	 * <span class="zh-CN">转换结果</span>
 	 */
-	public boolean importConfigure(final Class<? extends BeanObject> targetClass, final String filePath,
+	public boolean importConfigure(final Class<?> targetClass, final String filePath,
 	                               final String suffix) {
 		StringType stringType = stringType(filePath);
 		return Optional.of(FileUtils.readFile(filePath))
 				.filter(StringUtils::notBlank)
-				.map(content -> BeanUtils.stringToObject(content, stringType, Globals.DEFAULT_ENCODING, targetClass))
+				.map(content -> BeanUtils.stringToObject(content, targetClass))
 				.map(configure -> {
 					this.encryptFields(configure);
 					return this.saveConfigure(configure, suffix);
@@ -413,41 +364,78 @@ public final class ConfigureManager {
 	 * <h3 class="en-US">Read configuration information and convert it into the instance object</h3>
 	 * <h3 class="zh-CN">读取配置信息并转换为实例对象</h3>
 	 *
-	 * @param targetClass <span class="en-US">Configuration information JavaBean class</span>
-	 *                    <span class="zh-CN">配置信息JavaBean类</span>
-	 * @param suffix      <span class="en-US">Configuration file custom suffix</span>
-	 *                    <span class="zh-CN">配置文件自定义后缀</span>
-	 * @param encoding    <span class="en-US">Charset encoding</span>
-	 *                    <span class="zh-CN">字符集编码</span>
-	 * @param schemaPath  <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
-	 *                    <span class="zh-CN">XML描述文件路径（可能为描述文件URI或本地文件路径）</span>
-	 * @param <T>         <span class="en-US">Configuration information JavaBean class</span>
-	 *                    <span class="zh-CN">配置信息JavaBean类</span>
+	 * @param targetClass  <span class="en-US">Configuration information JavaBean class</span>
+	 *                     <span class="zh-CN">配置信息JavaBean类</span>
+	 * @param suffix       <span class="en-US">Configuration file custom suffix</span>
+	 *                     <span class="zh-CN">配置文件自定义后缀</span>
+	 * @param outputConfig <span class="en-US">Annotation of data output configuration</span>
+	 *                     <span class="zh-CN">数据输出配置标注</span>
+	 * @param <T>          <span class="en-US">Configuration information JavaBean class</span>
+	 *                     <span class="zh-CN">配置信息JavaBean类</span>
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	private <T extends BeanObject> T readConfigure(@Nonnull final Class<T> targetClass, final String suffix,
-	                                               final String encoding, final String schemaPath) {
-		String fileName = this.parseName(targetClass, this.stringType, suffix);
-		return Optional.ofNullable(this.existsFiles.get(fileName))
-				.filter(StringUtils::notBlank)
-				.filter(checkType(this.stringType))
-				.map(filePath -> FileUtils.readFile(filePath, encoding))
-				.map(readData -> BeanUtils.stringToObject(readData, this.stringType, encoding, targetClass, schemaPath))
-				.map(readConfig -> {
-					this.decryptFields(readConfig);
-					if (readConfig.validate(this.stringType)) {
-						return readConfig;
-					} else {
-						LOGGER.error("Match_Signature_Failed", fileName);
-						return null;
-					}
-				})
-				.orElse(null);
+	private <T> T readConfigure(@Nonnull final Class<T> targetClass, final String suffix,
+	                            @Nonnull final OutputConfig outputConfig) {
+		if (SUPPORTED_TYPES.contains(outputConfig.type())) {
+			String fileName = this.parseName(targetClass, outputConfig.type(), suffix);
+			if (!this.existsFiles.containsKey(fileName)) {
+				return null;
+			}
+			return Optional.ofNullable(this.existsFiles.get(fileName))
+					.filter(StringUtils::notBlank)
+					.filter(checkType(outputConfig.type()))
+					.map(filePath -> FileUtils.readFile(filePath, outputConfig.encoding()))
+					.map(readData ->
+							BeanUtils.stringToObject(readData, targetClass, schemaPath(targetClass)))
+					.map(readConfig -> {
+						this.decryptFields(readConfig);
+						if (BeanUtils.validate(outputConfig.type())) {
+							return readConfig;
+						} else {
+							LOGGER.error("Match_Signature_Failed", fileName);
+							return null;
+						}
+					})
+					.orElse(null);
+		}
+		return null;
 	}
 
 	/**
-	 * <h3 class="en-US">Parse profile name based on given object class and custom suffix</h3>
+	 * <h3 class="en-US">Parse output string type based on the given object class</h3>
+	 * <h3 class="zh-CN">根据给定的对象类获取输出数据类型</h3>
+	 *
+	 * @param clazz <span class="en-US">Configuration information JavaBean class</span>
+	 *              <span class="zh-CN">配置信息实例类</span>
+	 * @return <span class="en-US">Output string type</span>
+	 * <span class="zh-CN">输出数据类型</span>
+	 */
+	private static StringType stringType(@Nonnull final Class<?> clazz) {
+		return Optional.ofNullable(clazz.getAnnotation(OutputConfig.class))
+				.map(OutputConfig::type)
+				.orElse(StringType.UNKNOWN);
+	}
+
+	/**
+	 * <h3 class="en-US">Parse XML schema path based on the given object class</h3>
+	 * <h3 class="zh-CN">根据给定的对象类获取 XML 描述文件路径</h3>
+	 *
+	 * @param clazz <span class="en-US">Configuration information JavaBean class</span>
+	 *              <span class="zh-CN">配置信息实例类</span>
+	 * @return <span class="en-US">XML schema path</span>
+	 * <span class="zh-CN">XML 描述文件路径</span>
+	 */
+	private static String schemaPath(@Nonnull final Class<?> clazz) {
+		return Optional.ofNullable(clazz.getAnnotation(XmlRootElement.class))
+				.filter(xmlRoot ->
+						!ObjectUtils.nullSafeEquals(Globals.DEFAULT_XML_ANNOTATION_VALUE, xmlRoot.namespace()))
+				.map(XmlRootElement::namespace)
+				.orElse(Globals.DEFAULT_VALUE_STRING);
+	}
+
+	/**
+	 * <h3 class="en-US">Parse profile name based on the given object class and custom suffix</h3>
 	 * <h3 class="zh-CN">根据给定的对象类和自定义后缀解析配置文件名称</h3>
 	 *
 	 * @param clazz  <span class="en-US">Configuration information JavaBean class</span>
@@ -521,7 +509,7 @@ public final class ConfigureManager {
 	 * @param beanObject <span class="en-US">Configuration information instance object</span>
 	 *                   <span class="zh-CN">配置信息实例对象</span>
 	 */
-	private void encryptFields(final BeanObject beanObject) {
+	private void encryptFields(final Object beanObject) {
 		this.scanFields(beanObject.getClass());
 		String className = ClassUtils.originalClassName(beanObject.getClass());
 		Optional.ofNullable(this.securityFieldsMap.get(className))
@@ -533,23 +521,19 @@ public final class ConfigureManager {
 							}
 							if (fieldValue instanceof List) {
 								((List<?>) fieldValue).replaceAll(item -> {
-									if (item instanceof BeanObject) {
-										this.encryptFields((BeanObject) item);
-									}
+									this.encryptFields(item);
 									return item;
 								});
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
 							} else if (fieldValue.getClass().isArray()) {
 								for (int i = 0; i < Array.getLength(fieldValue); i++) {
 									Object item = Array.get(fieldValue, i);
-									if (item instanceof BeanObject) {
-										this.encryptFields((BeanObject) item);
-									}
+									this.encryptFields(item);
 									Array.set(fieldValue, i, item);
 								}
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
-							} else if (fieldValue instanceof BeanObject) {
-								this.encryptFields((BeanObject) fieldValue);
+							} else if (fieldValue.getClass().isAnnotationPresent(OutputConfig.class)) {
+								this.encryptFields(fieldValue);
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
 							} else if (StringUtils.notBlank(secureName) && SecureFactory.registeredConfig(secureName)
 									&& fieldValue instanceof String) {
@@ -566,7 +550,7 @@ public final class ConfigureManager {
 	 * @param beanObject <span class="en-US">Configuration information instance object</span>
 	 *                   <span class="zh-CN">配置信息实例对象</span>
 	 */
-	private void decryptFields(final BeanObject beanObject) {
+	private void decryptFields(final Object beanObject) {
 		this.scanFields(beanObject.getClass());
 		String className = ClassUtils.originalClassName(beanObject.getClass());
 		Optional.ofNullable(this.securityFieldsMap.get(className))
@@ -578,23 +562,19 @@ public final class ConfigureManager {
 							}
 							if (fieldValue instanceof List) {
 								((List<?>) fieldValue).replaceAll(item -> {
-									if (item instanceof BeanObject) {
-										this.decryptFields((BeanObject) item);
-									}
+									this.decryptFields(item);
 									return item;
 								});
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
 							} else if (fieldValue.getClass().isArray()) {
 								for (int i = 0; i < Array.getLength(fieldValue); i++) {
 									Object item = Array.get(fieldValue, i);
-									if (item instanceof BeanObject) {
-										this.decryptFields((BeanObject) item);
-									}
+									this.decryptFields(item);
 									Array.set(fieldValue, i, item);
 								}
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
-							} else if (fieldValue instanceof BeanObject) {
-								this.decryptFields((BeanObject) fieldValue);
+							} else if (fieldValue.getClass().isAnnotationPresent(OutputConfig.class)) {
+								this.decryptFields(fieldValue);
 								ReflectionUtils.setField(fieldName, beanObject, fieldValue);
 							} else if (StringUtils.notBlank(secureName) && SecureFactory.registeredConfig(secureName)
 									&& fieldValue instanceof String) {
@@ -612,9 +592,6 @@ public final class ConfigureManager {
 	 *                  <span class="zh-CN">数据类</span>
 	 */
 	private void scanFields(final Class<?> beanClass) {
-		if (!ClassUtils.isAssignable(BeanObject.class, beanClass)) {
-			return;
-		}
 		String className = ClassUtils.originalClassName(beanClass);
 		if (this.securityFieldsMap.containsKey(className)) {
 			return;
@@ -625,21 +602,17 @@ public final class ConfigureManager {
 					Class<?> fieldType = field.getType();
 					if (fieldType.isArray()) {
 						Class<?> checkType = ClassUtils.componentType(fieldType);
-						if (ClassUtils.isAssignable(BeanObject.class, checkType)) {
-							this.scanFields(checkType);
-							fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
-						}
+						this.scanFields(checkType);
+						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
 					} else if (ClassUtils.isAssignable(Collection.class, fieldType)) {
 						Class<?> checkType = Optional.of((ParameterizedType) field.getGenericType())
 								.map(ParameterizedType::getActualTypeArguments)
 								.filter(actualTypeArguments -> actualTypeArguments.length > 0)
 								.map(actualTypeArguments -> (Class<?>) actualTypeArguments[0])
 								.orElse(null);
-						if (ClassUtils.isAssignable(BeanObject.class, checkType)) {
-							this.scanFields(checkType);
-							fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
-						}
-					} else if (ClassUtils.isAssignable(BeanObject.class, fieldType)) {
+						this.scanFields(checkType);
+						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
+					} else if (beanClass.isAnnotationPresent(OutputConfig.class)) {
 						this.scanFields(fieldType);
 						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
 					} else if (field.isAnnotationPresent(Password.class)) {

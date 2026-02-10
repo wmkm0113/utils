@@ -422,7 +422,7 @@ public final class IDUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Destroy all registered generator instances and clear map</h3>
+	 * <h3 class="en-US">Destroy all registered generator instances and clear the map</h3>
 	 * <h3 class="zh-CN">销毁所有已注册的生成器实例对象并清空映射表</h3>
 	 */
 	public static void destroy() {

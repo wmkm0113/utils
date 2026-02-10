@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.office.excel.impl;
+package org.nervousync.office.excel.core.impl;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;

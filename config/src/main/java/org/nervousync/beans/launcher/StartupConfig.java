@@ -21,9 +21,10 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
-import org.nervousync.beans.core.BeanObject;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.commons.Globals;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,10 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Feb 27, 2024 11:07:46 $
  */
+@OutputConfig
 @XmlType(name = "startup_config", namespace = "https://nervousync.org/schemas/startup")
 @XmlRootElement(name = "startup_config", namespace = "https://nervousync.org/schemas/startup")
-public final class StartupConfig extends BeanObject {
+public final class StartupConfig implements Serializable {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>

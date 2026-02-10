@@ -1,8 +1,8 @@
 package org.nervousync.test;
 
-import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.*;
 import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.logger.LogLevel;
 import org.nervousync.utils.logger.LoggerUtils;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -12,7 +12,7 @@ public abstract class BaseTest {
     protected transient final LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
 
     static {
-        LoggerUtils.initLoggerConfigure(Level.DEBUG);
+        LoggerUtils.initLoggerConfigure(LogLevel.DEBUG);
     }
 
     protected BaseTest() {

@@ -16,11 +16,12 @@
  */
 package org.nervousync.proxy;
 
+import java.io.Serializable;
 import java.net.Proxy.Type;
 
 import jakarta.xml.bind.annotation.*;
+import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.configs.Password;
-import org.nervousync.beans.core.BeanObject;
 import org.nervousync.commons.Globals;
 
 /**
@@ -30,10 +31,11 @@ import org.nervousync.commons.Globals;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2018 16:05:54 $
  */
+@OutputConfig
 @XmlType(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
 @XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class ProxyConfig extends BeanObject {
+public final class ProxyConfig implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
@@ -85,7 +87,7 @@ public final class ProxyConfig extends BeanObject {
 	}
 
 	/**
-	 * <h3 class="en-US">Static method for create redirect ProxyConfig instance</h3>
+	 * <h3 class="en-US">Static method for creation redirect ProxyConfig instance</h3>
 	 * <h3 class="zh-CN">静态方法用于创建无代理的代理服务器配置信息实例对象</h3>
 	 *
 	 * @return <span class="en-US">Generated ProxyConfig instance</span>

@@ -20,8 +20,7 @@ package org.nervousync.test.beans;
 import org.junit.jupiter.api.*;
 import org.nervousync.beans.transfers.basic.BigDecimalAdapter;
 import org.nervousync.beans.transfers.basic.BigIntegerAdapter;
-import org.nervousync.beans.transfers.beans.BeanObjectAdapter;
-import org.nervousync.beans.transfers.beans.XmlBeanAdapter;
+import org.nervousync.beans.transfers.beans.TransferBeanAdapter;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.ClassUtils;
 
@@ -32,8 +31,7 @@ public class BeanConverterTest extends BaseTest {
     public void testConverter() {
         printTypes(BigDecimalAdapter.class);
         printTypes(BigIntegerAdapter.class);
-        printTypes(XmlBeanAdapter.class);
-        printTypes(BeanObjectAdapter.class);
+        printTypes(TransferBeanAdapter.class);
     }
     
     private void printTypes(final Class<?> clazz) {

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.office.excel.impl;
+package org.nervousync.office.excel.core.impl;
 
 import org.apache.poi.ss.usermodel.*;
 import org.nervousync.commons.Globals;

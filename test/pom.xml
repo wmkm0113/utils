@@ -21,5 +21,9 @@
             <artifactId>utils-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.nervousync</groupId>
+            <artifactId>utils-log4j</artifactId>
+        </dependency>
     </dependencies>
 </project>

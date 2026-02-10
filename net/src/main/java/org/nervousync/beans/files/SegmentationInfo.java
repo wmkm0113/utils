@@ -17,8 +17,9 @@
 package org.nervousync.beans.files;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.beans.core.BeanObject;
+import org.nervousync.annotations.beans.OutputConfig;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,11 +29,11 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jun 9, 2015 09:43:23 $
  */
-@SuppressWarnings("unused")
+@OutputConfig
 @XmlType(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")
 @XmlRootElement(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")
 @XmlAccessorType(XmlAccessType.NONE)
-public final class SegmentationInfo extends BeanObject {
+public final class SegmentationInfo implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>

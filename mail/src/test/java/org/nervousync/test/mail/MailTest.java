@@ -6,7 +6,6 @@ import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
 import org.nervousync.configs.AutoConfig;
 import org.nervousync.configs.ConfigureManager;
-import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.exceptions.builder.BuilderException;
@@ -107,17 +106,16 @@ public final class MailTest extends BaseTest {
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
 				.signer(x509Certificate, keyPair.getPrivate())
 				.build();
-		String xmlContent = mailConfig.toXml();
+		String xmlContent = BeanUtils.objectToString(mailConfig);
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
-		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, StringType.XML, Globals.DEFAULT_ENCODING, MailConfig.class, "https://nervousync.org/schemas/mail");
-		this.logger.info("Mail_Config_Validate", parseConfig.validate(StringType.XML));
-		this.logger.info("Mail_Parse_Config_Info", parseConfig.toJson());
+		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, MailConfig.class, "https://nervousync.org/schemas/mail");
+		this.logger.info("Mail_Config_Validate", BeanUtils.validate(parseConfig));
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
 		Optional.ofNullable(CONFIGURE_MANAGER.readConfigure(MailConfig.class))
-				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", readConfig.toJson()));
+				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", BeanUtils.objectToString(readConfig)));
 
 		AutomaticConfig automaticConfig = new AutomaticConfig();
-		this.logger.info("Mail_Generate_Config_Info", automaticConfig.getMailConfig().toJson());
+		this.logger.info("Mail_Generate_Config_Info", BeanUtils.objectToString(automaticConfig.getMailConfig()));
 	}
 
 	@Test

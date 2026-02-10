@@ -561,12 +561,9 @@ public final class ServiceUtils {
 				this.headerMap.forEach(builder::header);
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Service request path: {}", servicePath);
-					LOGGER.debug("Request headers: {}",
-							BeanUtils.objectToString(this.headerMap, StringType.JSON, Boolean.TRUE, Boolean.TRUE, Globals.DEFAULT_ENCODING));
-					LOGGER.debug("Request parameters: {}",
-							BeanUtils.objectToString(queryParameters, StringType.JSON, Boolean.TRUE, Boolean.TRUE, Globals.DEFAULT_ENCODING));
-					LOGGER.debug("Request matrix parameters: {}",
-							BeanUtils.objectToString(matrixParameters, StringType.JSON, Boolean.TRUE, Boolean.TRUE, Globals.DEFAULT_ENCODING));
+					LOGGER.debug("Request headers: {}", BeanUtils.objectToString(this.headerMap));
+					LOGGER.debug("Request parameters: {}", BeanUtils.objectToString(queryParameters));
+					LOGGER.debug("Request matrix parameters: {}", BeanUtils.objectToString(matrixParameters));
 				}
 				return this.execute(methodOption, builder, form, method);
 			}
