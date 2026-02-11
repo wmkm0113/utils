@@ -51,3 +51,5 @@ Temporary Items
 /.idea/
 *.iml
 /src/test/resources/mail.xml
+/all/dependency-reduced-pom.xml
+/mail/src/test/resources/mail.xml

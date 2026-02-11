@@ -19,7 +19,7 @@ package org.nervousync.beans.image;
 import org.nervousync.commons.Globals;
 
 /**
- * <h2 class="en-US">Cut options of image cut operate</h2>
+ * <h2 class="en-US">Cut options for the image cut operate</h2>
  * <h2 class="zh-CN">用于图片剪切操作的剪切选项</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>

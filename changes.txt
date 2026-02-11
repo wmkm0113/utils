@@ -28,18 +28,18 @@ Nervousync Java Utils Package
 [Update] Update the Junit version to 5.12.1
 [Update] Update the slf4j version to 2.0.17
 [Update] Update the jackson version to 2.18.3
-[Update] Update the yaml version to 2.4
+[Update] Update the YAML version to 2.4
 [Update] Update the snmp4j version to 3.9.0
 [Fix] Match base64 string failed while using regex
 
 [08/25/2023]
 [Add] Add xsd mapping, users can add /META-INF/nervousync.schemas to mapping namespaceURI and xsd location file
 [Add] Add internationalize support
-[Add] StringUtils add string check method: isLuhn/isChnId/isChnSocialCredit/isMD5/isUUID/isXML/isPhoneNumber
+[Add] StringUtils add the string check method: isLuhn/isChnId/isChnSocialCredit/isMD5/isUUID/isXML/isPhoneNumber
 [Add] LoggerUtils program to initialize Log4j
 [Update] Update FileUtils.readFileBytes support resource path in jar/zip file
 [Update] Update FileUtils.loadFile support resource path in jar/zip file
-[Update] Update the bouncy-castle version to 1.76, jcifs version to 2.1.36, jaxb version to 4.0.3
+[Update] Update the bouncy-castle version to 1.76, JCIFS version to 2.1.36, jaxb version to 4.0.3
 [Update] Update XML Schema Define file
 [Update] Deprecated MD5 method
 [Update] ResponseInfo parseObject using content-type value to identify data type automatic
@@ -54,7 +54,7 @@ Nervousync Java Utils Package
 [03/06/2023]
 [Update] Rewrite BeanUtils.java
 [Update] Update slf4j version to 2.0.5
-[Update] Update Jackson version to 2.14.2
+[Update] Update the Jackson version to 2.14.2
 [Update] Update YAML version to 2.0
 [Update] Update snmp4j version to 3.7.4
 
@@ -66,28 +66,16 @@ Nervousync Java Utils Package
 [Remove] StringUtils messageKey/localeKey method
 
 [10/09/2022]
-[Update] Jakarta XML Binding version to 4.0.1
-[Update] Bcprov version to 1.72
-[Update] slf4j version to 2.0.3
-[Update] Jackson version to 2.14.0-rc1
-[Update] snmp4j version to 2.7.3
+[Update] The Jakarta XML Binding version to 4.0.1, the Bcprov version to 1.72, slf4j version to 2.0.3, Jackson version to 2.14.0-rc1, snmp4j version to 2.7.3
 
 [09/28/2022]
 [Remove] Remove cglib
-[Update] JUnit version to 5.9.0
-[Update] bcprov version to 1.71.1
-[Update] log4j version to 2.19.0
-[Update] slf4j version to 2.0.1
-[Update] jackson version to 2.13.4
-[Update] yaml version to 1.33
-[Update] jersey version to 3.0.8
-[Update] jcifs version to 2.1.32
+[Update] JUnit version to 5.9.0, bcprov version to 1.71.1, log4j version to 2.19.0, slf4j version to 2.0.1, Jackson version to 2.13.4, YAML version to 1.33, Jersey version to 3.0.8, JCIFS version to 2.1.32
 
 [06/28/2022]
 [Add] Add CacheUtils/CacheClient/CacheManager
 [Add] Add StartupManager/StartupLauncher
-[Update] JAXB version to 4.0.0
-[Update] JCIFS version to 2.1.31
+[Update] JAXB version to 4.0.0, JCIFS version to 2.1.31
 
 [06/14/2022]
 [Add] Mail config XML Schema Define files
@@ -116,7 +104,7 @@ Update snmp4j to 3.6.7
 Update jcifs to 2.1.29
 
 [07/09/2020]
-Add TOTP(Time-based One-time Password Algorithm) Utility
+Add TOTP (Time-based One-time Password Algorithm) Utility
 
 [04/10/2020]
 Add CRC Support for calculate CRC3 to CRC32

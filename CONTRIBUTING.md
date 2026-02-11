@@ -86,21 +86,19 @@ If a change cannot be reasonably tested, explain why in the PR.
 # 🔀 Pull Request Process
 
 1. Fork the repository
-2. Create a feature or fix branch:
-
-```
-git checkout -b feature/my-feature
-```
-
+2. Create a feature or fix a branch:
+    ```
+    git checkout -b feature/my-feature
+    ```
 3. Make your changes
 4. Ensure:
-+ Code builds successfully
-+ Tests pass
-+ Javadoc is updated
+   + Code builds successfully
+   + Tests pass
+   + Javadoc is updated
 5. Submit a pull request with:
-+ Clear description of changes
-+ Motivation and context
-+ Any breaking changes clearly noted
+   + Clear description of changes
+   + Motivation and context
+   + Any breaking changes are clearly noted
 
 Small, focused PRs are preferred over large ones.
 

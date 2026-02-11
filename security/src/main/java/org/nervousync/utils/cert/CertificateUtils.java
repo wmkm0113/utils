@@ -57,7 +57,7 @@ import java.util.*;
  * <span>Current utilities implements features:</span>
  *     <ul>Generate Keypair</ul>
  *     <ul>Signature and generate X.509 certificate</ul>
- *     <ul>Parse X.509 certificate from certificate file, PKCS12 file or binary data arrays</ul>
+ *     <ul>Parse X.509 certificate from certificate file, PKCS12 file, or binary data arrays</ul>
  *     <ul>Validate X.509 certificate period and signature</ul>
  *     <ul>Read PublicKey/PrivateKey from binary data arrays or PKCS12 file</ul>
  *     <ul>Signature and generate PKCS12 file</ul>
@@ -157,7 +157,7 @@ public final class CertificateUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read X.509 Certificate and verified by given public key</h3>
+	 * <h3 class="en-US">Read X.509 Certificate and verified by the given public key</h3>
 	 * <h3 class="zh-CN">读取X.509格式的证书并使用给定的公钥验证证书签名</h3>
 	 *
 	 * @param certBytes <span class="en-US">Certificate Data Bytes</span>
@@ -187,7 +187,7 @@ public final class CertificateUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read X.509 Certificate, verified by given public key and check certificate validity period</h3>
+	 * <h3 class="en-US">Read X.509 Certificate, verified by the given public key and check the certificate validity period</h3>
 	 * <h3 class="zh-CN">读取X.509格式的证书，使用给定的公钥验证证书签名并检查证书是否在有效期内</h3>
 	 *
 	 * @param certBytes     <span class="en-US">Certificate Data Bytes</span>
@@ -595,7 +595,7 @@ public final class CertificateUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Generate PKCS12 Data Bytes, include PrivateKey, PublicKey and generate signature</h3>
+	 * <h3 class="en-US">Generate PKCS12 Data Bytes, include PrivateKey, PublicKey, and generate signature</h3>
 	 * <h3 class="zh-CN">生成PKCS12格式的证书二进制数据，包含公钥、私钥及数字签名</h3>
 	 *
 	 * @param keyPair       <span class="en-US">Key pair</span>
@@ -702,7 +702,7 @@ public final class CertificateUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read PKCS12 KeyStore from input stream</h3>
+	 * <h3 class="en-US">Read PKCS12 KeyStore from the input stream</h3>
 	 * <h3 class="zh-CN">从输入流读取PKCS12格式的密钥库</h3>
 	 *
 	 * @param inputStream <span class="en-US">Input stream</span>
@@ -751,7 +751,7 @@ public final class CertificateUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read X.509 certificate from PKCS12 KeyStore</h3>
+	 * <h3 class="en-US">Read the X.509 certificate from PKCS12 KeyStore</h3>
 	 * <h3 class="zh-CN">从PKCS12格式的密钥库中读取X.509证书</h3>
 	 *
 	 * @param keyStore  <span class="en-US">PKCS12 KeyStore</span>

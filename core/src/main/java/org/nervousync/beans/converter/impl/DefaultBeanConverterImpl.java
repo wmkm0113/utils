@@ -31,7 +31,6 @@ import org.nervousync.beans.converter.BeanConverter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.utils.core.*;
-import org.nervousync.utils.logger.LoggerUtils;
 import org.nervousync.xml.writer.CDataStreamWriter;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -52,11 +51,6 @@ import java.util.*;
  * @version $Revision: 1.3.0 $ $Date: Jan 18, 2026 14:55:15 $
  */
 public final class DefaultBeanConverterImpl implements BeanConverter {
-	/**
-	 * <span class="en-US">Multilingual supported logger instance</span>
-	 * <span class="zh-CN">多语言支持的日志对象</span>
-	 */
-	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(DefaultBeanConverterImpl.class);
 
 	@Override
 	public String objectToString(final Object object) {

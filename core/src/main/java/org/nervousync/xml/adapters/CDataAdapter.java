@@ -21,7 +21,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.utils.core.StringUtils;
 
 /**
- * <h2 class="en-US">CData adapter</h2>
+ * <h2 class="en-US">Cdata adapter</h2>
  * <h2 class="zh-CN">CDATA数据转换器</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>

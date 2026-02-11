@@ -139,7 +139,7 @@
     <entry key="Methods_Retrieve_Reflection_Error">An error occurs when retrieving method information</entry>
     <entry key="Set_Value_Reflection_Error">An error occurs when setting field value, field name: {0}, value type: {1}</entry>
     <entry key="Detect_Charset_Error">Detect charset encoding error! String: {0}</entry>
-    <entry key="System_Information">Current operate system name: {0}, version: {1}, current user name: {2}, user home directory path: {3}, current user work directory path: {4}, JDK version: {5}, JDK major version: {6}, Java home directory: {7}, Java tmp directory path: {8}</entry>
+    <entry key="System_Information">Current operate system name: {0}, version: {1}, current username: {2}, user home directory path: {3}, current user work directory path: {4}, JDK version: {5}, JDK major version: {6}, Java home directory: {7}, Java tmp directory path: {8}</entry>
     <entry key="Retrieve_MAC_System_Error">An error occurred while reading the MAC address of the local network interface</entry>
     <entry key="Generate_Identified_ID_System_Error">Error in generating system unique identification ID</entry>
     <entry key="Retrieve_Network_Interface_System_Error">An error occurs when reading local network interface information</entry>

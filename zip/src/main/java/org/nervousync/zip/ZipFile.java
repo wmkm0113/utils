@@ -55,7 +55,7 @@ import java.util.*;
  *     <ul>Create a new zip file</ul>
  *     <ul>Read the zip file (support the split zip file)</ul>
  *     <ul>Append files to the current zip file</ul>
- *     <ul>Read zip entry from the current zip file</ul>
+ *     <ul>Read the zip entry from the current zip file</ul>
  *     <ul>Remove zip entry from the current zip file</ul>
  *     <ul>Extract zip entry to the target path</ul>
  * </span>
@@ -618,7 +618,7 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * <h3 class="en-US">Add folder to the current ZIP file</h3>
+	 * <h3 class="en-US">Add a folder to the current ZIP file</h3>
 	 * <h3 class="zh-CN">向当前ZIP文件中添加目录</h3>
 	 *
 	 * @param folderPath <span class="en-US">Folder path will add to the ZIP file</span>
@@ -631,7 +631,7 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * <h3 class="en-US">Add folder to the current ZIP file with zip options</h3>
+	 * <h3 class="en-US">Add a folder to the current ZIP file with zip options</h3>
 	 * <h3 class="zh-CN">使用给定的ZIP压缩属性向当前ZIP文件中添加目录</h3>
 	 *
 	 * @param folderPath <span class="en-US">Folder path will add to the ZIP file</span>
@@ -1155,7 +1155,7 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for the maximum length of split item</h3>
+	 * <h3 class="en-US">Setter method for the maximum length of a split item</h3>
 	 * <h3 class="zh-CN">分卷大小的Setter方法</h3>
 	 *
 	 * @param splitLength <span class="en-US">Maximum length of split item</span>
@@ -2004,7 +2004,7 @@ public final class ZipFile implements Cloneable {
 	}
 
 	/**
-	 * Open split file nervousync random access file.
+	 * Open a split file nervousync random access file.
 	 *
 	 * @param index the index
 	 * @return the nervousync random access file
@@ -2256,7 +2256,7 @@ public final class ZipFile implements Cloneable {
 
 			int firstByte = shortBuffer[0];
 
-			// Check if data descriptor exists for local file header
+			// Check if a data descriptor exists for the local file header
 			String binaryData = Integer.toBinaryString(firstByte);
 			if (binaryData.length() >= 4) {
 				localFileHeader.setDataDescriptorExists(binaryData.charAt(3) == '1');
@@ -2465,7 +2465,7 @@ public final class ZipFile implements Cloneable {
 			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
 			sizeOfFileHeader += 2;
 
-			// Compute offset bytes before extra field is written for Zip64
+			// Compute offset bytes before an extra field is written for Zip64
 			// compatibility
 			// NOTE: this data is not written now, but written at a later point
 			byte[] offsetLocalHeaderBytes = new byte[4];
@@ -2624,13 +2624,13 @@ public final class ZipFile implements Cloneable {
 
 			HeaderOperator.appendLongToArrayList(numEntriesOnThisDisk, headerBytesList);
 
-			// Total number of entries in central directory
+			// Total number of entries in the central directory
 			HeaderOperator.appendLongToArrayList(numEntries, headerBytesList);
 
-			// Size of central directory
+			// Size of the central directory
 			HeaderOperator.appendLongToArrayList(sizeOfCentralDirectory, headerBytesList);
 
-			// offset start of central directory with respect to the starting disk number
+			// offset the start of the central directory with respect to the starting disk number
 			HeaderOperator.appendLongToArrayList(offsetCentralDirectory, headerBytesList);
 		} catch (Exception e) {
 			if (e instanceof ZipException) {
@@ -2660,7 +2660,7 @@ public final class ZipFile implements Cloneable {
 					this.zip64EndCentralDirectoryLocator.getIndexOfZip64EndOfCentralDirectoryRecord());
 			HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
 
-			// relative offset of the zip64 end of central directory record
+			// relative offset of the zip64 end of the central directory record
 			RawUtils.writeLong(longBuffer, 0, ByteOrder.LITTLE_ENDIAN,
 					this.zip64EndCentralDirectoryLocator.getOffsetZip64EndOfCentralDirectoryRecord());
 			HeaderOperator.copyByteArrayToList(longBuffer, headerBytesList);
@@ -2717,11 +2717,11 @@ public final class ZipFile implements Cloneable {
 			RawUtils.writeShort(shortBuffer, 0, ByteOrder.LITTLE_ENDIAN, (short) numEntriesOnThisDisk);
 			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
 
-			// Total number of entries in central directory
+			// Total number of entries in the central directory
 			RawUtils.writeShort(shortBuffer, 0, ByteOrder.LITTLE_ENDIAN, (short) numEntries);
 			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
 
-			// Size of central directory
+			// Size of the central directory
 			RawUtils.writeInt(intBuffer, 0, ByteOrder.LITTLE_ENDIAN, sizeOfCentralDirectory);
 			HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
 
@@ -3139,7 +3139,7 @@ public final class ZipFile implements Cloneable {
 			}
 			this.zip64EndCentralDirectoryRecord.setSignature(signature);
 
-			// Read the size of zip64 end of central directory record
+			// Read the size of the zip64 end of the central directory record
 			System.arraycopy(readBuffer, 4, longBuffer, 0, 8);
 			this.zip64EndCentralDirectoryRecord.setRecordSize(RawUtils.readLong(longBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 
@@ -3155,7 +3155,7 @@ public final class ZipFile implements Cloneable {
 			System.arraycopy(readBuffer, 16, intBuffer, 0, 4);
 			this.zip64EndCentralDirectoryRecord.setIndex(RawUtils.readInt(intBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 
-			// Start of central directory
+			// Start of the central directory
 			System.arraycopy(readBuffer, 20, intBuffer, 0, 4);
 			this.zip64EndCentralDirectoryRecord
 					.setStartOfCentralDirectory(RawUtils.readInt(intBuffer, 0, ByteOrder.LITTLE_ENDIAN));
@@ -3175,7 +3175,7 @@ public final class ZipFile implements Cloneable {
 			this.zip64EndCentralDirectoryRecord
 					.setSizeOfCentralDirectory(RawUtils.readLong(longBuffer, 0, ByteOrder.LITTLE_ENDIAN));
 
-			// Offset start of central directory with respect to the starting
+			// Offset start of the central directory with respect to the starting
 			// disk number
 			System.arraycopy(readBuffer, 48, longBuffer, 0, 8);
 			this.zip64EndCentralDirectoryRecord

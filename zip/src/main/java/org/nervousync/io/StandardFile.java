@@ -78,7 +78,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	}
 
 	/**
-	 * <h3 class="en-US">Constructor for using NervousyncRandomAccessFile open local file with writable mode</h3>
+	 * <h3 class="en-US">Constructor for using NervousyncRandomAccessFile open a local file with writable mode</h3>
 	 * <h3 class="zh-CN">NervousyncRandomAccessFile的构造函数，用于打开本地文件</h3>
 	 *
 	 * @param filePath <span class="en-US">Current file path</span>
@@ -151,7 +151,7 @@ public class StandardFile implements DataInput, DataOutput, Closeable {
 	}
 
 	/**
-	 * <h3 class="en-US">Read current file total length</h3>
+	 * <h3 class="en-US">Read the current file total length</h3>
 	 * <h3 class="zh-CN">读取当前文件的数据长度</h3>
 	 *
 	 * @return <span class="en-US">Total length</span>

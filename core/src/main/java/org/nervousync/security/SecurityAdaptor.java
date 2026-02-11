@@ -37,34 +37,6 @@ import java.security.PublicKey;
 public interface SecurityAdaptor {
 
 	/**
-	 * <h3 class="en-US">Calculate digest value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的摘要值</h3>
-	 *
-	 * @param name   <span class="en-US">Digest algorithm name</span>
-	 *               <span class="zh-CN">摘要算法名</span>
-	 * @param source <span class="en-US">source object</span>
-	 *               <span class="zh-CN">原始数据对象</span>
-	 * @return <span class="en-US">Binary data bytes of calculate result</span>
-	 * <span class="zh-CN">计算结果的字节数组</span>
-	 */
-	byte[] digest(@Nonnull final String name, @Nonnull final Object source);
-
-	/**
-	 * <h3 class="en-US">Calculate Hash-based message authentication code value of the given source object</h3>
-	 * <h3 class="zh-CN">计算给定的原始数据对象的密钥散列消息认证码</h3>
-	 *
-	 * @param name     <span class="en-US">Digest algorithm name</span>
-	 *                 <span class="zh-CN">摘要算法名</span>
-	 * @param keyBytes <span class="en-US">Byte array of passcode</span>
-	 *                 <span class="zh-CN">密钥字节数组</span>
-	 * @param source   <span class="en-US">source object</span>
-	 *                 <span class="zh-CN">原始数据对象</span>
-	 * @return <span class="en-US">Binary data bytes of calculate result</span>
-	 * <span class="zh-CN">计算结果的字节数组</span>
-	 */
-	byte[] hmac(@Nonnull final String name, @Nonnull final byte[] keyBytes, @Nonnull final Object source);
-
-	/**
 	 * <h3 class="en-US">Initialize data operator instance object.</h3>
 	 * <h3 class="zh-CN">初始化数据操作器实例对象</h3>
 	 *
@@ -152,36 +124,6 @@ public interface SecurityAdaptor {
 	 */
 	CryptoAdaptor initCipher(@Nonnull final CipherConfig cipherConfig, @Nonnull final CryptoMode cryptoMode,
 	                         @Nonnull final CipherKey cipherKey);
-
-	/**
-	 * <h3 class="en-US">Encrypt the given data using the provided encryption algorithm configuration information, and then encode the encrypted result using the specified encoding type.</h3>
-	 * <h3 class="zh-CN">使用给定的加密算法配置信息加密给定数据，将加密结果使用给定编码类型进行编码</h3>
-	 *
-	 * @param cipherConfig <span class="en-US">Encrypt cipher config instance object</span>
-	 *                     <span class="zh-CN">加密算法配置信息</span>
-	 * @param keyBytes     <span class="en-US">Byte array of passcode</span>
-	 *                     <span class="zh-CN">密钥字节数组</span>
-	 * @param source       <span class="en-US">source object</span>
-	 *                     <span class="zh-CN">原始数据对象</span>
-	 * @return <span class="en-US">Encoded result value using given encode type</span>
-	 * <span class="zh-CN">使用给定编码类型进行编码的结果值</span>
-	 */
-	byte[] encrypt(@Nonnull final CipherConfig cipherConfig, @Nonnull final byte[] keyBytes, @Nonnull final Object source);
-
-	/**
-	 * <h3 class="en-US">Decrypt the given string data using the provided decryption algorithm configuration information</h3>
-	 * <h3 class="zh-CN">使用给定的加密算法配置信息解密给定字符串数据</h3>
-	 *
-	 * @param cipherConfig <span class="en-US">Encrypt cipher config instance object</span>
-	 *                     <span class="zh-CN">加密算法配置信息</span>
-	 * @param keyBytes     <span class="en-US">Byte array of passcode</span>
-	 *                     <span class="zh-CN">密钥字节数组</span>
-	 * @param source       <span class="en-US">source object</span>
-	 *                     <span class="zh-CN">原始数据对象</span>
-	 * @return <span class="en-US">The decrypted binary data</span>
-	 * <span class="zh-CN">解密后的二进制数据</span>
-	 */
-	byte[] decrypt(@Nonnull final CipherConfig cipherConfig, @Nonnull final byte[] keyBytes, @Nonnull final Object source);
 
 	/**
 	 * <h3 class="en-US">Generate PublicKey from key data bytes and given algorithm</h3>

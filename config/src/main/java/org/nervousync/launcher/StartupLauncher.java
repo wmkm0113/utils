@@ -21,9 +21,9 @@ package org.nervousync.launcher;
  * <span class="en-US">
  * Launcher class must implement the current interface and add annotation
  * org.nervousync.annotations.launcher.Launcher at launcher class.
- * StartupManager will load launcher instance by Java SPI, and invoke startup method at system start,
+ * StartupManager will load the launcher instance by Java SPI and invoke the startup method at system start,
  * invoke destroy method at system shutdown.
- * Users can add parameter value (type: int) at annotation org.nervousync.annotations.launcher.Launcher
+ * Users can add a parameter value (type: int) at annotation org.nervousync.annotations.launcher.Launcher
  * to move the sort of launcher executing, sort type: DESC
  * </span>
  * <h2 class="zh-CN">启动器接口</h2>

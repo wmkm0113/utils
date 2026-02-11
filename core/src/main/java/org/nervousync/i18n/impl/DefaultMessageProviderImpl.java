@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -130,11 +129,6 @@ public final class DefaultMessageProviderImpl implements MessageProvider {
 
 		@Override
 		public String findMessage(final String messageKey, final String languageCode, final Object... collections) {
-			return obtainFormatter(messageKey).format(collections);
-		}
-
-		@Override
-		public String findMessage(final String messageKey, final Locale locale, final Object... collections) {
 			return obtainFormatter(messageKey).format(collections);
 		}
 	}

@@ -22,6 +22,7 @@ import org.nervousync.beans.crypto.CRCConfig;
 import org.nervousync.beans.crypto.CipherConfig;
 import org.nervousync.beans.crypto.CipherKey;
 import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.crypto.CryptoMode;
 import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.utils.DataInvalidException;
@@ -48,7 +49,8 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.3 $ $Date: Jan 13, 2010 11:23:13 $
  */
-public class SecurityUtils {
+@SuppressWarnings("unused")
+public final class SecurityUtils {
 
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -373,8 +375,19 @@ public class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	public static byte[] CRC(final String algorithm, final Object source) {
-		return SecurityUtils.process(CRC(algorithm), source);
+	public static String CRC(final String algorithm, final Object source) {
+		CryptoAdaptor crcAdaptor = CRC(algorithm);
+		SecurityUtils.process(crcAdaptor, source);
+		long crc = RawUtils.readLong(crcAdaptor.finish(), ByteOrder.LITTLE_ENDIAN);
+		return Optional.ofNullable(SecurityUtils.crcConfig(algorithm))
+				.map(crcConfig -> {
+					StringBuilder stringBuilder = new StringBuilder(Long.toString(crc, 16));
+					while (stringBuilder.length() < crcConfig.getOutLength()) {
+						stringBuilder.insert(0, "0");
+					}
+					return "0x" + stringBuilder;
+				})
+				.orElseThrow(() -> new CryptoException(0x00000015000DL, algorithm));
 	}
 
 	/*
@@ -406,7 +419,7 @@ public class SecurityUtils {
 	 */
 	@Deprecated(since = "1.1.4")
 	public static byte[] MD5(final Object source) {
-		return SECURITY_ADAPTOR.digest("MD5", source);
+		return digest("MD5", source);
 	}
 
 	/**
@@ -477,7 +490,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacMD5(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacMD5", keyBytes, source);
+		return hmac("HmacMD5", keyBytes, source);
 	}
 
 	/**
@@ -520,7 +533,7 @@ public class SecurityUtils {
 	 */
 	@Deprecated
 	public static byte[] SHA1(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA1", source);
+		return digest("SHA1", source);
 	}
 
 	/**
@@ -564,7 +577,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA1(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA1", keyBytes, source);
+		return hmac("HmacSHA1", keyBytes, source);
 	}
 
 	/**
@@ -605,7 +618,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA224(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-224", source);
+		return digest("SHA-224", source);
 	}
 
 	/**
@@ -648,7 +661,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA224(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA224", keyBytes, source);
+		return hmac("HmacSHA224", keyBytes, source);
 	}
 
 	/**
@@ -689,7 +702,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA256(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-256", source);
+		return digest("SHA-256", source);
 	}
 
 	/**
@@ -732,7 +745,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA256(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA256", keyBytes, source);
+		return hmac("HmacSHA256", keyBytes, source);
 	}
 
 	/**
@@ -773,7 +786,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA384(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-384", source);
+		return digest("SHA-384", source);
 	}
 
 	/**
@@ -816,7 +829,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA384(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA384", keyBytes, source);
+		return hmac("HmacSHA384", keyBytes, source);
 	}
 
 	/**
@@ -857,7 +870,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA512(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-512", source);
+		return digest("SHA-512", source);
 	}
 
 	/**
@@ -900,7 +913,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA512(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA512", keyBytes, source);
+		return hmac("HmacSHA512", keyBytes, source);
 	}
 
 	/**
@@ -941,7 +954,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA512_224(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-512/224", source);
+		return digest("SHA-512/224", source);
 	}
 
 	/**
@@ -984,7 +997,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA512_224(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA512/224", keyBytes, source);
+		return hmac("HmacSHA512/224", keyBytes, source);
 	}
 
 	/**
@@ -1025,7 +1038,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA512_256(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA-512/256", source);
+		return digest("SHA-512/256", source);
 	}
 
 	/**
@@ -1068,7 +1081,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA512_256(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA512/256", keyBytes, source);
+		return hmac("HmacSHA512/256", keyBytes, source);
 	}
 
 	/**
@@ -1109,7 +1122,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA3_224(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA3-224", source);
+		return digest("SHA3-224", source);
 	}
 
 	/**
@@ -1152,7 +1165,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA3_224(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA3-224", keyBytes, source);
+		return hmac("HmacSHA3-224", keyBytes, source);
 	}
 
 	/**
@@ -1193,7 +1206,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA3_256(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA3-256", source);
+		return digest("SHA3-256", source);
 	}
 
 	/**
@@ -1236,7 +1249,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA3_256(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA3-256", keyBytes, source);
+		return hmac("HmacSHA3-256", keyBytes, source);
 	}
 
 	/**
@@ -1277,7 +1290,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA3_384(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA3-384", source);
+		return digest("SHA3-384", source);
 	}
 
 	/**
@@ -1320,7 +1333,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA3_384(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA3-384", keyBytes, source);
+		return hmac("HmacSHA3-384", keyBytes, source);
 	}
 
 	/**
@@ -1361,7 +1374,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHA3_512(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHA3-512", source);
+		return digest("SHA3-512", source);
 	}
 
 	/**
@@ -1404,7 +1417,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSHA3_512(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSHA3-512", keyBytes, source);
+		return hmac("HmacSHA3-512", keyBytes, source);
 	}
 
 	/**
@@ -1445,7 +1458,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHAKE128(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHAKE128", source);
+		return digest("SHAKE128", source);
 	}
 
 	/**
@@ -1484,7 +1497,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SHAKE256(final Object source) {
-		return SECURITY_ADAPTOR.digest("SHAKE256", source);
+		return digest("SHAKE256", source);
 	}
 
 	/**
@@ -1523,7 +1536,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SM3(final Object source) {
-		return SECURITY_ADAPTOR.digest("SM3", source);
+		return digest("SM3", source);
 	}
 
 	/**
@@ -1566,7 +1579,7 @@ public class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static byte[] HmacSM3(final byte[] keyBytes, final Object source) {
-		return SECURITY_ADAPTOR.hmac("HmacSM3", keyBytes, source);
+		return hmac("HmacSM3", keyBytes, source);
 	}
 
 	/**
@@ -1684,6 +1697,78 @@ public class SecurityUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Perform DES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] BlowfishEncrypt(final byte[] keyBytes, final Object source) {
+		return BlowfishEncrypt("CBC", "PKCS7Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] BlowfishEncrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                     final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("Blowfish", mode, padding),
+				new CipherKey("Blowfish", 56, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] BlowfishDecrypt(final byte[] keyBytes, final Object source) {
+		return BlowfishDecrypt("CBC", "PKCS7Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] BlowfishDecrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                     final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("Blowfish", mode, padding),
+				new CipherKey("Blowfish", 56, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
 	 * <h3 class="en-US">Initialize DES encryptor secure provider</h3>
 	 * <h3 class="zh-CN">初始化DES加密安全适配器实例对象</h3>
 	 *
@@ -1720,7 +1805,7 @@ public class SecurityUtils {
 	public static CryptoAdaptor DESEncryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
 		return SECURITY_ADAPTOR.encryptor(new CipherConfig("DES", mode, padding),
-				new CipherKey("DES", Globals.DEFAULT_VALUE_INT, keyBytes, Globals.DEFAULT_VALUE_STRING));
+				new CipherKey("DES", keyBytes));
 	}
 
 	/**
@@ -1760,7 +1845,7 @@ public class SecurityUtils {
 	public static CryptoAdaptor DESDecryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
 		return SECURITY_ADAPTOR.decryptor(new CipherConfig("DES", mode, padding),
-				new CipherKey("DES", Globals.DEFAULT_VALUE_INT, keyBytes, Globals.DEFAULT_VALUE_STRING));
+				new CipherKey("DES", keyBytes));
 	}
 
 	/**
@@ -1776,6 +1861,78 @@ public class SecurityUtils {
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] DESEncrypt(final byte[] keyBytes, final Object source) {
+		return DESEncrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] DESEncrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("DES", mode, padding),
+				new CipherKey("DES", keyBytes), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] DESDecrypt(final byte[] keyBytes, final Object source) {
+		return DESDecrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform DES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] DESDecrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("DES", mode, padding),
+				new CipherKey("DES", keyBytes), source);
 	}
 
 	/**
@@ -1815,7 +1972,7 @@ public class SecurityUtils {
 	public static CryptoAdaptor TripleDESEncryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
 		return SECURITY_ADAPTOR.encryptor(new CipherConfig("DESede", mode, padding),
-				new CipherKey("DESede", Globals.DEFAULT_VALUE_INT, keyBytes, Globals.DEFAULT_VALUE_STRING));
+				new CipherKey("DESede", keyBytes));
 	}
 
 	/**
@@ -1855,7 +2012,7 @@ public class SecurityUtils {
 	public static CryptoAdaptor TripleDESDecryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
 		return SECURITY_ADAPTOR.decryptor(new CipherConfig("DESede", mode, padding),
-				new CipherKey("DESede", Globals.DEFAULT_VALUE_INT, keyBytes, Globals.DEFAULT_VALUE_STRING));
+				new CipherKey("DESede", keyBytes));
 	}
 
 	/**
@@ -1871,6 +2028,78 @@ public class SecurityUtils {
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
+	}
+
+	/**
+	 * <h3 class="en-US">Perform the TripleDES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 TripleDES 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] TripleDESEncrypt(final byte[] keyBytes, final Object source) {
+		return TripleDESEncrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform the TripleDES encryption operation</h3>
+	 * <h3 class="zh-CN">执行 TripleDES 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] TripleDESEncrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                      final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("DESede", mode, padding),
+				new CipherKey("DESede", keyBytes), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform the TripleDES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 TripleDES 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] TripleDESDecrypt(final byte[] keyBytes, final Object source) {
+		return TripleDESDecrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform the TripleDES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 TripleDES 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] TripleDESDecrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                      final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("DESede", mode, padding),
+				new CipherKey("DESede", keyBytes), source);
 	}
 
 	/**
@@ -2034,6 +2263,112 @@ public class SecurityUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Perform SM4 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Encrypt(final byte[] keyBytes, final Object source) {
+		return SM4Encrypt(keyBytes, "SHA1PRNG", source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform SM4 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Encrypt(final byte[] keyBytes, final String randomAlgorithm, final Object source) {
+		return SM4Encrypt("CBC", "PKCS5Padding", keyBytes, randomAlgorithm, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform SM4 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Encrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final String randomAlgorithm, final Object source) {
+		return process(CryptoMode.ENCRYPT,
+				new CipherConfig("SM4", mode, padding),
+				new CipherKey("SM4", 128, keyBytes, randomAlgorithm, "BC"),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform SM4 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Decrypt(final byte[] keyBytes, final Object source) {
+		return SM4Decrypt(keyBytes, "SHA1PRNG", source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform SM4 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Decrypt(final byte[] keyBytes, final String randomAlgorithm, final Object source) {
+		return SM4Decrypt("CBC", "PKCS5Padding", keyBytes, randomAlgorithm, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform SM4 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 SM4 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] SM4Decrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final String randomAlgorithm, final Object source) {
+		return process(CryptoMode.DECRYPT,
+				new CipherConfig("SM4", mode, padding),
+				new CipherKey("SM4", 128, keyBytes, randomAlgorithm, "BC"),
+				source);
+	}
+
+	/**
 	 * <h3 class="en-US">Initialize RC2 encryptor secure provider</h3>
 	 * <h3 class="zh-CN">初始化RC2加密安全适配器实例对象</h3>
 	 *
@@ -2129,6 +2464,78 @@ public class SecurityUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Perform RC2 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC2 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC2Encrypt(final byte[] keyBytes, final Object source) {
+		return RC2Encrypt("CBC", "PKCS7Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC2 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC2 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC2Encrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("RC2", mode, padding),
+				new CipherKey("RC2", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC2 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC2 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC2Decrypt(final byte[] keyBytes, final Object source) {
+		return RC2Decrypt("CBC", "PKCS7Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC2 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC2 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC2Decrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("RC2", mode, padding),
+				new CipherKey("RC2", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
 	 * <h3 class="en-US">Initialize RC4 encryptor secure provider</h3>
 	 * <h3 class="zh-CN">初始化RC4加密安全适配器实例对象</h3>
 	 *
@@ -2209,6 +2616,76 @@ public class SecurityUtils {
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC4 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC4 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC4Encrypt(final byte[] keyBytes, final Object source) {
+		return RC4Encrypt(keyBytes, "SHA1PRNG", source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC4 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC4 加密操作</h3>
+	 *
+	 * @param keyBytes        <span class="en-US">key bytes</span>
+	 *                        <span class="zh-CN">密钥字节数组</span>
+	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
+	 *                        <span class="zh-CN">随机数算法</span>
+	 * @param source          <span class="en-US">source object</span>
+	 *                        <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC4Encrypt(final byte[] keyBytes, final String randomAlgorithm, final Object source) {
+		return process(CryptoMode.ENCRYPT,
+				new CipherConfig("RC4", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("RC4", 128, keyBytes, randomAlgorithm, "BC"),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC4 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC4 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC4Decrypt(final byte[] keyBytes, final Object source) {
+		return RC4Decrypt(keyBytes, "SHA1PRNG", source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC4 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC4 解密操作</h3>
+	 *
+	 * @param keyBytes        <span class="en-US">key bytes</span>
+	 *                        <span class="zh-CN">密钥字节数组</span>
+	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
+	 *                        <span class="zh-CN">随机数算法</span>
+	 * @param source          <span class="en-US">source object</span>
+	 *                        <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC4Decrypt(final byte[] keyBytes, final String randomAlgorithm, final Object source) {
+		return process(CryptoMode.DECRYPT,
+				new CipherConfig("RC4", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("RC4", 128, keyBytes, randomAlgorithm, "BC"),
+				source);
 	}
 
 	/**
@@ -2307,6 +2784,78 @@ public class SecurityUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Perform RC5 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC5 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC5Encrypt(final byte[] keyBytes, final Object source) {
+		return RC5Encrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC5 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC5 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC5Encrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("RC5", mode, padding),
+				new CipherKey("RC5", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC5 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC5 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC5Decrypt(final byte[] keyBytes, final Object source) {
+		return RC5Decrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC5 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC5 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC5Decrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("RC5", mode, padding),
+				new CipherKey("RC5", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
 	 * <h3 class="en-US">Initialize RC6 encryptor secure provider</h3>
 	 * <h3 class="zh-CN">初始化RC6加密安全适配器实例对象</h3>
 	 *
@@ -2399,6 +2948,314 @@ public class SecurityUtils {
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC6 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC6 加密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC6Encrypt(final byte[] keyBytes, final Object source) {
+		return RC6Encrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC6 encryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC6 加密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC6Encrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("RC6", mode, padding),
+				new CipherKey("RC6", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC6 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC6 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC6Decrypt(final byte[] keyBytes, final Object source) {
+		return RC6Decrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform RC6 decryption operation</h3>
+	 * <h3 class="zh-CN">执行 RC6 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] RC6Decrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("RC6", mode, padding),
+				new CipherKey("RC6", 128, keyBytes, Globals.DEFAULT_VALUE_STRING), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Initialize AES encryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化AES加密安全适配器实例对象</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @return <span class="en-US">Initialized secure provider instance</span>
+	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static CryptoAdaptor AESEncryptor(final byte[] keyBytes) throws CryptoException {
+		return AESEncryptor("CBC", "PKCS5Padding", keyBytes);
+	}
+
+	/**
+	 * <h3 class="en-US">Initialize AES encryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化AES加密安全适配器实例对象</h3>
+	 * <span>
+	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8", "CFB128", "OFB128"
+	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
+	 * </span>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @return <span class="en-US">Initialized secure provider instance</span>
+	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static CryptoAdaptor AESEncryptor(final String mode, final String padding, final byte[] keyBytes)
+			throws CryptoException {
+		return SECURITY_ADAPTOR.encryptor(new CipherConfig("AES", mode, padding),
+				new CipherKey("AES", keyBytes));
+	}
+
+	/**
+	 * <h3 class="en-US">Initialize AES decryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化AES解密安全适配器实例对象</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @return <span class="en-US">Initialized secure provider instance</span>
+	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static CryptoAdaptor AESDecryptor(final byte[] keyBytes) throws CryptoException {
+		return AESDecryptor("CBC", "PKCS5Padding", keyBytes);
+	}
+
+	/**
+	 * <h3 class="en-US">Initialize AES decryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化AES解密安全适配器实例对象</h3>
+	 * <span>
+	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8", "CFB128", "OFB128"
+	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
+	 * </span>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @return <span class="en-US">Initialized secure provider instance</span>
+	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static CryptoAdaptor AESDecryptor(final String mode, final String padding, final byte[] keyBytes)
+			throws CryptoException {
+		return SECURITY_ADAPTOR.decryptor(new CipherConfig("AES", mode, padding),
+				new CipherKey("AES", keyBytes));
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES128 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES128密钥字节数组</h3>
+	 *
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES128Key() {
+		return AES128Key("SHA1PRNG");
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES128 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES128密钥字节数组</h3>
+	 *
+	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
+	 *                        <span class="zh-CN">随机数算法</span>
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES128Key(final String randomAlgorithm) {
+		try {
+			return SECURITY_ADAPTOR.symmetricKey("AES", 128, randomAlgorithm);
+		} catch (CryptoException e) {
+			return new byte[0];
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES192 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES192密钥字节数组</h3>
+	 *
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES192Key() {
+		return AES192Key("SHA1PRNG");
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES192 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES192密钥字节数组</h3>
+	 *
+	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
+	 *                        <span class="zh-CN">随机数算法</span>
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES192Key(final String randomAlgorithm) {
+		try {
+			return SECURITY_ADAPTOR.symmetricKey("AES", 192, randomAlgorithm);
+		} catch (CryptoException e) {
+			return new byte[0];
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES256 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES256密钥字节数组</h3>
+	 *
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES256Key() {
+		return AES256Key("SHA1PRNG");
+	}
+
+	/**
+	 * <h3 class="en-US">Generate AES256 key bytes</h3>
+	 * <h3 class="zh-CN">生成AES256密钥字节数组</h3>
+	 *
+	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
+	 *                        <span class="zh-CN">随机数算法</span>
+	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
+	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 */
+	public static byte[] AES256Key(final String randomAlgorithm) {
+		try {
+			return SECURITY_ADAPTOR.symmetricKey("AES", 256, randomAlgorithm);
+		} catch (CryptoException e) {
+			return new byte[0];
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Perform AES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 AES 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] AESEncrypt(final byte[] keyBytes, final Object source) {
+		return AESEncrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform AES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 AES 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] AESEncrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.ENCRYPT, new CipherConfig("AES", mode, padding),
+				new CipherKey("AES", keyBytes), source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform AES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 AES 解密操作</h3>
+	 *
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] AESDecrypt(final byte[] keyBytes, final Object source) {
+		return AESDecrypt("CBC", "PKCS5Padding", keyBytes, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Perform AES decryption operation</h3>
+	 * <h3 class="zh-CN">执行 AES 解密操作</h3>
+	 *
+	 * @param mode     <span class="en-US">Cipher Mode</span>
+	 *                 <span class="zh-CN">分组密码模式</span>
+	 * @param padding  <span class="en-US">Padding Mode</span>
+	 *                 <span class="zh-CN">数据填充模式</span>
+	 * @param keyBytes <span class="en-US">key bytes</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	public static byte[] AESDecrypt(final String mode, final String padding, final byte[] keyBytes,
+	                                final Object source) {
+		return process(CryptoMode.DECRYPT, new CipherConfig("AES", mode, padding),
+				new CipherKey("AES", keyBytes), source);
 	}
 
 	/*
@@ -2591,6 +3448,186 @@ public class SecurityUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Encrypt the data using the given private key.</h3>
+	 * <h3 class="zh-CN">使用给定的私钥对数据进行加密操作</h3>
+	 *
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSAEncrypt(final Key publicKey, final Object source)
+			throws CryptoException {
+		return RSAEncrypt("PKCS1Padding", publicKey, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Encrypt the data using the given private key.</h3>
+	 * <h3 class="zh-CN">使用给定的私钥对数据进行加密操作</h3>
+	 * <span>
+	 * padding:  "NoPadding", "PKCS1Padding", "OAEPWithSHA-1AndMGF1Padding",
+	 * "OAEPWithSHA-224AndMGF1Padding", "OAEPWithSHA-256AndMGF1Padding",
+	 * "OAEPWithSHA-384AndMGF1Padding", "OAEPWithSHA-512AndMGF1Padding",
+	 * "OAEPWithSHA3-224AndMGF1Padding", "OAEPWithSHA3-256AndMGF1Padding",
+	 * "OAEPWithSHA3-384AndMGF1Padding", "OAEPWithSHA3-512AndMGF1Padding"
+	 * </span>
+	 *
+	 * @param padding   <span class="en-US">Padding Mode</span>
+	 *                  <span class="zh-CN">数据填充模式</span>
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSAEncrypt(final String padding, final Key publicKey, final Object source)
+			throws CryptoException {
+		return process(CryptoMode.ENCRYPT,
+				new CipherConfig("RSA", "None", padding),
+				new CipherKey("RSA", publicKey.getEncoded()),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Decrypt the data using the given private key.</h3>
+	 * <h3 class="zh-CN">使用给定的私钥对数据进行解密操作</h3>
+	 *
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSADecrypt(final Key privateKey, final Object source) throws CryptoException {
+		return RSADecrypt("PKCS1Padding", privateKey, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Decrypt the data using the given private key.</h3>
+	 * <h3 class="zh-CN">使用给定的私钥对数据进行解密操作</h3>
+	 * <span>
+	 * padding:  "NoPadding", "PKCS1Padding", "OAEPWithSHA-1AndMGF1Padding",
+	 * "OAEPWithSHA-224AndMGF1Padding", "OAEPWithSHA-256AndMGF1Padding",
+	 * "OAEPWithSHA-384AndMGF1Padding", "OAEPWithSHA-512AndMGF1Padding",
+	 * "OAEPWithSHA3-224AndMGF1Padding", "OAEPWithSHA3-256AndMGF1Padding",
+	 * "OAEPWithSHA3-384AndMGF1Padding", "OAEPWithSHA3-512AndMGF1Padding"
+	 * </span>
+	 *
+	 * @param padding    <span class="en-US">Padding Mode</span>
+	 *                   <span class="zh-CN">数据填充模式</span>
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSADecrypt(final String padding, final Key privateKey, final Object source)
+			throws CryptoException {
+		return process(CryptoMode.DECRYPT,
+				new CipherConfig("RSA", "None", padding),
+				new CipherKey("RSA", privateKey.getEncoded()),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Sign the data using the given RSA algorithm.</h3>
+	 * <h3 class="zh-CN">使用给定 RSA 算法对数据进行签名</h3>
+	 *
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSASign(final PrivateKey privateKey, final Object source) throws CryptoException {
+		return RSASign("SHA256withRSA", privateKey, source);
+	}
+
+	/**
+	 * <h3 class="en-US">Sign the data using the given RSA algorithm.</h3>
+	 * <h3 class="zh-CN">使用给定 RSA 算法对数据进行签名</h3>
+	 *
+	 * @param algorithm  <span class="en-US">Signature algorithm name</span>
+	 *                   <span class="zh-CN">签名算法名称</span>
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] RSASign(final String algorithm, final PrivateKey privateKey, final Object source)
+			throws CryptoException {
+		return process(CryptoMode.SIGNATURE,
+				new CipherConfig(algorithm, Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("RSA", privateKey.getEncoded()),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Verify RSA signature</h3>
+	 * <h3 class="zh-CN">验证 RSA 签名</h3>
+	 *
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
+	 * @param source    <span class="en-US">source object</span>
+	 *                  <span class="zh-CN">原始数据对象</span>
+	 * @param signature <span class="en-US">Signature data</span>
+	 *                  <span class="zh-CN">签名数据</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static boolean RSAVerify(final PublicKey publicKey, final Object source, final byte[] signature)
+			throws CryptoException {
+		return RSAVerify("SHA256withRSA", publicKey, source, signature);
+	}
+
+	/**
+	 * <h3 class="en-US">Verify RSA signature</h3>
+	 * <h3 class="zh-CN">验证 RSA 签名</h3>
+	 *
+	 * @param algorithm <span class="en-US">Signature algorithm name</span>
+	 *                  <span class="zh-CN">签名算法名称</span>
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
+	 * @param source    <span class="en-US">source object</span>
+	 *                  <span class="zh-CN">原始数据对象</span>
+	 * @param signature <span class="en-US">Signature data</span>
+	 *                  <span class="zh-CN">签名数据</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static boolean RSAVerify(final String algorithm, final PublicKey publicKey,
+	                                final Object source, final byte[] signature) throws CryptoException {
+		return verify(
+				new CipherConfig(algorithm, Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("RSA", publicKey.getEncoded()),
+				source, signature);
+	}
+
+	/**
 	 * <h3 class="en-US">Initialize SM2 encryptor secure provider</h3>
 	 * <h3 class="zh-CN">初始化SM2加密安全适配器实例对象</h3>
 	 *
@@ -2679,83 +3716,82 @@ public class SecurityUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Initialize AES encryptor secure provider</h3>
-	 * <h3 class="zh-CN">初始化AES加密安全适配器实例对象</h3>
+	 * <h3 class="en-US">Initialize SM2 encryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化SM2加密安全适配器实例对象</h3>
 	 *
-	 * @param keyBytes <span class="en-US">key bytes</span>
-	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
 	 * @return <span class="en-US">Initialized secure provider instance</span>
 	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	public static CryptoAdaptor AESEncryptor(final byte[] keyBytes) throws CryptoException {
-		return AESEncryptor("CBC", "PKCS5Padding", keyBytes);
+	public static byte[] SM2Encrypt(final PublicKey publicKey, final Object source) throws CryptoException {
+		return process(CryptoMode.ENCRYPT,
+				new CipherConfig("SM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("SM2", publicKey.getEncoded(), "BC"),
+				source);
 	}
 
 	/**
-	 * <h3 class="en-US">Initialize AES encryptor secure provider</h3>
-	 * <h3 class="zh-CN">初始化AES加密安全适配器实例对象</h3>
-	 * <span>
-	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8", "CFB128", "OFB128"
-	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
-	 * </span>
+	 * <h3 class="en-US">Initialize SM2 decryptor secure provider</h3>
+	 * <h3 class="zh-CN">初始化SM2解密安全适配器实例对象</h3>
 	 *
-	 * @param mode     <span class="en-US">Cipher Mode</span>
-	 *                 <span class="zh-CN">分组密码模式</span>
-	 * @param padding  <span class="en-US">Padding Mode</span>
-	 *                 <span class="zh-CN">数据填充模式</span>
-	 * @param keyBytes <span class="en-US">key bytes</span>
-	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
 	 * @return <span class="en-US">Initialized secure provider instance</span>
 	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	public static CryptoAdaptor AESEncryptor(final String mode, final String padding, final byte[] keyBytes)
+	public static byte[] SM2Decrypt(final PrivateKey privateKey, final Object source) throws CryptoException {
+		return process(CryptoMode.DECRYPT,
+				new CipherConfig("SM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("SM2", privateKey.getEncoded(), "BC"),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Sign the data using the SM3withSM2 algorithm.</h3>
+	 * <h3 class="zh-CN">使用 SM3withSM2 算法对数据进行签名</h3>
+	 *
+	 * @param privateKey <span class="en-US">Private Key instance</span>
+	 *                   <span class="zh-CN">私钥证书实例对象</span>
+	 * @param source     <span class="en-US">source object</span>
+	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static byte[] SM2Sign(final PrivateKey privateKey, final Object source) throws CryptoException {
+		return process(CryptoMode.SIGNATURE,
+				new CipherConfig("SM3withSM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("SM2", privateKey.getEncoded(), "BC"),
+				source);
+	}
+
+	/**
+	 * <h3 class="en-US">Verify SM2 signature</h3>
+	 * <h3 class="zh-CN">验证 SM2 签名</h3>
+	 *
+	 * @param publicKey <span class="en-US">Public Key instance</span>
+	 *                  <span class="zh-CN">公钥证书实例对象</span>
+	 * @param source    <span class="en-US">source object</span>
+	 *                  <span class="zh-CN">原始数据对象</span>
+	 * @param signature <span class="en-US">Signature data</span>
+	 *                  <span class="zh-CN">签名数据</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
+	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
+	 *                         <span class="zh-CN">如果算法未找到</span>
+	 */
+	public static boolean SM2Verify(final PublicKey publicKey, final Object source, final byte[] signature)
 			throws CryptoException {
-		return SECURITY_ADAPTOR.encryptor(new CipherConfig("AES", mode, padding),
-				new CipherKey("AES", keyBytes));
-	}
-
-	/**
-	 * <h3 class="en-US">Initialize AES decryptor secure provider</h3>
-	 * <h3 class="zh-CN">初始化AES解密安全适配器实例对象</h3>
-	 *
-	 * @param keyBytes <span class="en-US">key bytes</span>
-	 *                 <span class="zh-CN">密钥字节数组</span>
-	 * @return <span class="en-US">Initialized secure provider instance</span>
-	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
-	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
-	 *                         <span class="zh-CN">如果算法未找到</span>
-	 */
-	public static CryptoAdaptor AESDecryptor(final byte[] keyBytes) throws CryptoException {
-		return AESDecryptor("CBC", "PKCS5Padding", keyBytes);
-	}
-
-	/**
-	 * <h3 class="en-US">Initialize AES decryptor secure provider</h3>
-	 * <h3 class="zh-CN">初始化AES解密安全适配器实例对象</h3>
-	 * <span>
-	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8", "CFB128", "OFB128"
-	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
-	 * </span>
-	 *
-	 * @param mode     <span class="en-US">Cipher Mode</span>
-	 *                 <span class="zh-CN">分组密码模式</span>
-	 * @param padding  <span class="en-US">Padding Mode</span>
-	 *                 <span class="zh-CN">数据填充模式</span>
-	 * @param keyBytes <span class="en-US">key bytes</span>
-	 *                 <span class="zh-CN">密钥字节数组</span>
-	 * @return <span class="en-US">Initialized secure provider instance</span>
-	 * <span class="zh-CN">初始化的安全适配器实例对象</span>
-	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
-	 *                         <span class="zh-CN">如果算法未找到</span>
-	 */
-	public static CryptoAdaptor AESDecryptor(final String mode, final String padding, final byte[] keyBytes)
-			throws CryptoException {
-		return SECURITY_ADAPTOR.decryptor(new CipherConfig("AES", mode, padding),
-				new CipherKey("AES", keyBytes));
+		return verify(
+				new CipherConfig("SM3withSM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+				new CipherKey("SM2", publicKey.getEncoded(), "BC"),
+				source, signature);
 	}
 
 	/**
@@ -2787,92 +3823,98 @@ public class SecurityUtils {
 	public static PrivateKey privateKey(final String algorithm, final byte[] keyBytes) {
 		return SECURITY_ADAPTOR.privateKey(algorithm, keyBytes);
 	}
-	/*
-	 * Key generators
-	 */
 
 	/**
-	 * <h3 class="en-US">Generate AES128 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES128密钥字节数组</h3>
+	 * <h3 class="en-US">Calculate digest value of the given source object</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的摘要值</h3>
 	 *
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 * @param name   <span class="en-US">Digest algorithm name</span>
+	 *               <span class="zh-CN">摘要算法名</span>
+	 * @param source <span class="en-US">source object</span>
+	 *               <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
-	public static byte[] AES128Key() {
-		return AES128Key("SHA1PRNG");
+	private static byte[] digest(@Nonnull final String name, @Nonnull final Object source) {
+		CryptoAdaptor adaptor = SECURITY_ADAPTOR.initDigest(new CipherConfig(name), null);
+		process(adaptor, source);
+		return adaptor.finish();
 	}
 
 	/**
-	 * <h3 class="en-US">Generate AES128 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES128密钥字节数组</h3>
+	 * <h3 class="en-US">Calculate Hash-based message authentication code value of the given source object</h3>
+	 * <h3 class="zh-CN">计算给定的原始数据对象的密钥散列消息认证码</h3>
 	 *
-	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
-	 *                        <span class="zh-CN">随机数算法</span>
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 * @param name     <span class="en-US">Digest algorithm name</span>
+	 *                 <span class="zh-CN">摘要算法名</span>
+	 * @param keyBytes <span class="en-US">Byte array of passcode</span>
+	 *                 <span class="zh-CN">密钥字节数组</span>
+	 * @param source   <span class="en-US">source object</span>
+	 *                 <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
-	public static byte[] AES128Key(final String randomAlgorithm) {
-		try {
-			return SECURITY_ADAPTOR.symmetricKey("AES", 128, randomAlgorithm);
-		} catch (CryptoException e) {
-			return new byte[0];
+	private static byte[] hmac(@Nonnull final String name, @Nonnull final byte[] keyBytes, @Nonnull final Object source) {
+		CryptoAdaptor adaptor = SECURITY_ADAPTOR.initDigest(new CipherConfig(name), new CipherKey(name, keyBytes));
+		process(adaptor, source);
+		return adaptor.finish();
+	}
+
+	/**
+	 * <h3 class="en-US">Perform the specified operation on the given source object.</h3>
+	 * <h3 class="zh-CN">对给定的原始数据对象执行指定的操作</h3>
+	 *
+	 * @param cryptoMode   <span class="en-US">Enumeration value of data operate</span>
+	 *                     <span class="zh-CN">操作类型枚举值</span>
+	 * @param cipherConfig <span class="en-US">Signature verifier cipher config instance object</span>
+	 *                     <span class="zh-CN">签名验证算法配置信息</span>
+	 * @param cipherKey    <span class="en-US">Signature verifier cipher key instance object</span>
+	 *                     <span class="zh-CN">签名验证密钥实例对象</span>
+	 * @param source       <span class="en-US">source object</span>
+	 *                     <span class="zh-CN">原始数据对象</span>
+	 * @return <span class="en-US">Binary data bytes of calculate result</span>
+	 * <span class="zh-CN">计算结果的字节数组</span>
+	 */
+	private static byte[] process(@Nonnull final CryptoMode cryptoMode, @Nonnull final CipherConfig cipherConfig,
+	                              @Nonnull final CipherKey cipherKey, @Nonnull final Object source) {
+		CryptoAdaptor adaptor;
+		switch (cryptoMode) {
+			case ENCRYPT:
+				adaptor = SECURITY_ADAPTOR.encryptor(cipherConfig, cipherKey);
+				break;
+			case DECRYPT:
+				adaptor = SECURITY_ADAPTOR.decryptor(cipherConfig, cipherKey);
+				break;
+			case SIGNATURE:
+				adaptor = SECURITY_ADAPTOR.signer(cipherConfig, cipherKey);
+				break;
+			default:
+				throw new CryptoException(0x000000150003L);
 		}
+		process(adaptor, source);
+		return adaptor.finish();
 	}
 
 	/**
-	 * <h3 class="en-US">Generate AES192 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES192密钥字节数组</h3>
+	 * <h3 class="en-US">Verify the validity of the signature data.</h3>
+	 * <h3 class="zh-CN">验证签名数据是否有效</h3>
 	 *
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
+	 * @param cipherConfig <span class="en-US">Signature verifier cipher config instance object</span>
+	 *                     <span class="zh-CN">签名验证算法配置信息</span>
+	 * @param cipherKey    <span class="en-US">Signature verifier cipher key instance object</span>
+	 *                     <span class="zh-CN">签名验证密钥实例对象</span>
+	 * @param source       <span class="en-US">source object</span>
+	 *                     <span class="zh-CN">原始数据对象</span>
+	 * @param signature    <span class="en-US">Signature data</span>
+	 *                     <span class="zh-CN">签名数据</span>
+	 * @return <span class="en-US">Verify result</span>
+	 * <span class="zh-CN">验证结果</span>
 	 */
-	public static byte[] AES192Key() {
-		return AES192Key("SHA1PRNG");
-	}
-
-	/**
-	 * <h3 class="en-US">Generate AES192 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES192密钥字节数组</h3>
-	 *
-	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
-	 *                        <span class="zh-CN">随机数算法</span>
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
-	 */
-	public static byte[] AES192Key(final String randomAlgorithm) {
-		try {
-			return SECURITY_ADAPTOR.symmetricKey("AES", 192, randomAlgorithm);
-		} catch (CryptoException e) {
-			return new byte[0];
-		}
-	}
-
-	/**
-	 * <h3 class="en-US">Generate AES256 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES256密钥字节数组</h3>
-	 *
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
-	 */
-	public static byte[] AES256Key() {
-		return AES256Key("SHA1PRNG");
-	}
-
-	/**
-	 * <h3 class="en-US">Generate AES256 key bytes</h3>
-	 * <h3 class="zh-CN">生成AES256密钥字节数组</h3>
-	 *
-	 * @param randomAlgorithm <span class="en-US">Random algorithm</span>
-	 *                        <span class="zh-CN">随机数算法</span>
-	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
-	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
-	 */
-	public static byte[] AES256Key(final String randomAlgorithm) {
-		try {
-			return SECURITY_ADAPTOR.symmetricKey("AES", 256, randomAlgorithm);
-		} catch (CryptoException e) {
-			return new byte[0];
-		}
+	private static boolean verify(@Nonnull final CipherConfig cipherConfig, @Nonnull final CipherKey cipherKey,
+	                              @Nonnull final Object source, @Nonnull final byte[] signature) {
+		CryptoAdaptor verifierAdaptor = SECURITY_ADAPTOR.verifier(cipherConfig, cipherKey);
+		process(verifierAdaptor, source);
+		return verifierAdaptor.verify(signature);
 	}
 
 	/**
@@ -2883,10 +3925,8 @@ public class SecurityUtils {
 	 *                      <span class="zh-CN">数据操作器实例对象</span>
 	 * @param source        <span class="en-US">source object</span>
 	 *                      <span class="zh-CN">原始数据对象</span>
-	 * @return <span class="en-US">Binary data bytes of calculate result</span>
-	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
-	public static byte[] process(@Nonnull final CryptoAdaptor cryptoAdaptor, @Nonnull final Object source) {
+	private static void process(@Nonnull final CryptoAdaptor cryptoAdaptor, @Nonnull final Object source) {
 		if (source instanceof File) {
 			try (InputStream inputStream = new FileInputStream((File) source)) {
 				byte[] readBuffer = new byte[Globals.READ_FILE_BUFFER_SIZE];
@@ -2896,11 +3936,9 @@ public class SecurityUtils {
 				}
 			} catch (Exception e) {
 				LOGGER.error("Calculate_Digits_Security_Error", e);
-				return new byte[0];
 			}
-			return cryptoAdaptor.finish();
 		} else {
-			return cryptoAdaptor.finish(ConvertUtils.toByteArray(source));
+			cryptoAdaptor.append(ConvertUtils.toByteArray(source));
 		}
 	}
 }

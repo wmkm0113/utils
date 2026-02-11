@@ -213,74 +213,73 @@ double distance = LocationUtils.distance(beginPoint, endPoint);
 在日常開發的過程中，經常會遇到各種不同的配置信息，本項目提供了一個統一接口，用於管理這些配置信息。
 
 1. 首先需要定義設定檔的 JavaBean ：
-```java
-// 新增 Signature 註解後，設定檔管理員會在儲存設定資訊時產生簽名，並在讀取資訊時驗證簽名，保證設定檔不會有未經授權的修改
-@Signature("signature")
-@XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
-@XmlAccessorType(XmlAccessType.NONE)
-// 必須標註 OutputConfig，配置好資料類型和編碼集
-@OutputConfig(type = StringType.XML, encoding = "UTF-8")
-public final class ProxyConfig implements Serializable {
-
- @XmlElement(name = "username")
- private String userName;
- // 新增 Password 後，設定檔管理員在儲存和讀取設定檔時，自動對資訊進行加密/解密操作，防止敏感資訊洩露
- @Password
- @XmlElement(name = "password")
- private String password;
- @XmlElement
- private String signature;
- // getters and setters
-}
-```
+    ```java
+    // 新增 Signature 註解後，設定檔管理員會在儲存設定資訊時產生簽名，並在讀取資訊時驗證簽名，保證設定檔不會有未經授權的修改
+    @Signature("signature")
+    @XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
+    @XmlAccessorType(XmlAccessType.NONE)
+    // 必須標註 OutputConfig，配置好資料類型和編碼集
+    @OutputConfig(type = StringType.XML, encoding = "UTF-8")
+    public final class ProxyConfig implements Serializable {
+    
+     @XmlElement(name = "username")
+     private String userName;
+     // 新增 Password 後，設定檔管理員在儲存和讀取設定檔時，自動對資訊進行加密/解密操作，防止敏感資訊洩露
+     @Password
+     @XmlElement(name = "password")
+     private String password;
+     @XmlElement
+     private String signature;
+     // getters and setters
+    }
+    ```
 
 2. 儲存、讀取設定訊息
-```java
-boolean result = ConfigureManager.getInstance().saveConfigure(proxyConfig);
-ProxyConfig proxyConfig = ConfigureManager.getInstance().readConfigure(ProxyConfig.class);
-```
+    ```java
+    boolean result = ConfigureManager.getInstance().saveConfigure(proxyConfig);
+    ProxyConfig proxyConfig = ConfigureManager.getInstance().readConfigure(ProxyConfig.class);
+    ```
 
 ### 國際化的支持
 
 此功能需要`utils-i18n`模組
 
-1. 定義資源檔案訊息
-
+1. 定義資源檔案訊息   
 多語言的資源檔案儲存路徑為 jar 套件內的 META-INF/i18n/Resources.json，具體格式如下：
-```json
-{
- "groupId": "org.nervousync",
- "bundle": "utils",
- "errors": {
- "0x000000150001": "Length_Not_Enough_Crypto_Error",
- },
- "messages": {
- "en-US": {
- "Load_Schema_Mapping_Error": {
- "pattern": "An error occurs when load schema mapping, file path: {0}"
- }
- },
- "zh-CN": {
- "Load_Schema_Mapping_Error": {
- "pattern": "載入資源描述檔對應表出錯，檔案位址：{0}"
- }
- }
- }
-}
-```
+    ```json
+    {
+     "groupId": "org.nervousync",
+     "bundle": "utils",
+     "errors": {
+     "0x000000150001": "Length_Not_Enough_Crypto_Error",
+     },
+     "messages": {
+     "en-US": {
+     "Load_Schema_Mapping_Error": {
+     "pattern": "An error occurs when load schema mapping, file path: {0}"
+     }
+     },
+     "zh-CN": {
+     "Load_Schema_Mapping_Error": {
+     "pattern": "載入資源描述檔對應表出錯，檔案位址：{0}"
+     }
+     }
+     }
+    }
+    ```
 
 2. 引用多語言資訊：
-```java
-// 使用資源檔案中定義的 groupId 和 bundle 來取得對應的多語言資訊代理
-MessageAgent agent = MultilingualUtils.newAgent("org.nervousync", "utils");
-String message = agent.getMessage("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
-```
+    ```java
+    // 使用資源檔案中定義的 groupId 和 bundle 來取得對應的多語言資訊代理
+    MessageAgent agent = MultilingualUtils.newAgent("org.nervousync", "utils");
+    String message = agent.getMessage("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+    ```
 
 3. 多語言日誌
-```java
-LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
-logger.info("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
-```
+    ```java
+    LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
+    logger.info("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+    ```
 資源檔案中支援使用 Plurals 表達式
 
 ### OTP產生與驗證

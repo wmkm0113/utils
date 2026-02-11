@@ -542,7 +542,7 @@ public final class MailUtils {
 		/**
 		 * <h3 class="en-US">Recovery mails by given folder name and UID array</h3>
 		 * <h3 class="zh-CN">根据邮件唯一标识数组，将对应的邮件置从回收站转移到给定的文件夹</h3>
-		 * Set mails status as read by uid list
+		 * Set mails status as read by the uid list
 		 *
 		 * @param folderName <span class="en-US">folder name</span>
 		 *                   <span class="zh-CN">文件夹名称</span>

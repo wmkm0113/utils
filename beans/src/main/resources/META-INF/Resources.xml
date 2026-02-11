@@ -8,7 +8,7 @@
     <entry key="Parse_Empty_String_Error">Cannot parse empty string</entry>
     <entry key="Parse_String_Debug">Parse string: {0} use encoding: {1} to bean: {2}</entry>
     <entry key="Parse_String_Error">Error parsing empty string</entry>
-    <entry key="Not_Found_File_Error">Can not found file: {0}</entry>
+    <entry key="Not_Found_File_Error">Can not found the file: {0}</entry>
     <entry key="Parse_File_Error">Error parsing file</entry>
     <entry key="Convert_To_Data_Map_Error">An error occurred while converting a string to a data map</entry>
     <entry key="JavaBean_Property_Mapping_Existed_Warn">JavaBean property mapping existed! Bean class: {0}, field: {1}</entry>

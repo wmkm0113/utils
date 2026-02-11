@@ -15,9 +15,7 @@ public final class DigestTest extends BaseTest {
     @Order(0)
     public void CRC() throws CryptoException, DataInvalidException {
         for (String algorithm : SecurityUtils.registeredCRC()) {
-            CryptoAdaptor CryptoAdaptor = SecurityUtils.CRC(algorithm);
-            this.logger.info("CRC_Result", algorithm,
-                    SecurityUtils.CRCResult(algorithm, CryptoAdaptor.finish("123456")));
+            this.logger.info("CRC_Result", algorithm, SecurityUtils.CRC(algorithm, "123456"));
         }
     }
 

@@ -210,10 +210,5 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 			}
 			return LocaleUtils.isEmpty(message) ? MessageResource.identifyKey(messageKey, languageCode) : message;
 		}
-
-		@Override
-		public String findMessage(final String messageKey, final Locale locale, final Object... collections) {
-			return this.findMessage(messageKey, LocaleUtils.languageCode(locale), collections);
-		}
 	}
 }

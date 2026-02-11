@@ -485,7 +485,7 @@ public final class CodeOptions {
 		}
 
 		/**
-		 * <h3 class="en-US">Checking for given color code value is valid</h3>
+		 * <h3 class="en-US">Checking for the given color code value is valid</h3>
 		 * <h3 class="zh-CN">检查给定的颜色代码值是否有效</h3>
 		 *
 		 * @param codes <span class="en-US">Color code value array</span>

@@ -22,7 +22,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * <h2 class="en-US">Mark options of image mark operate</h2>
+ * <h2 class="en-US">Mark options for the image mark operate</h2>
  * <h2 class="zh-CN">用于图片水印操作的剪切选项</h2>
  *
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>

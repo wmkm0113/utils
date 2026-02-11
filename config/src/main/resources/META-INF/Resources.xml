@@ -19,7 +19,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="Startup_Manager_Update">Startup manager update startup type! Launcher class name: {0}, startup type: {1}</entry>
-    <entry key="Startup_Manager_Remove">Startup manager remove registered launcher! Launcher class name: {0}</entry>
+    <entry key="Startup_Manager_Remove">Startup manager removes registered launcher! Launcher class name: {0}</entry>
     <entry key="Startup_Manager_Start">Startup manager execute start! Launcher class name: {0}</entry>
     <entry key="Startup_Manager_Stop">Startup manager execute stop! Launcher class name: {0}</entry>
     <entry key="Startup_Manager_Restart">Startup manager execute restart! Launcher class name: {0}</entry>

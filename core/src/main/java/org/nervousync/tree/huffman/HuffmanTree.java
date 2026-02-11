@@ -70,7 +70,7 @@ public final class HuffmanTree {
 	 * <h3 class="en-US">Insert huffman node into the current huffman tree</h3>
 	 * <h3 class="zh-CN">插入一个霍夫曼节点到当前的霍夫曼树</h3>
 	 *
-	 * @param huffmanNode <span class="en-US">Huffman node who will insert into the current huffman tree</span>
+	 * @param huffmanNode <span class="en-US">Huffman node who will insert into the current Huffman tree</span>
 	 *                    <span class="zh-CN">即将插入当前霍夫曼树的霍夫曼节点</span>
 	 */
 	public void insertNode(final Node huffmanNode) {
@@ -122,7 +122,7 @@ public final class HuffmanTree {
 	 *                    <span class="zh-CN">编码映射表</span>
 	 * @param content     <span class="en-US">Content string</span>
 	 *                    <span class="zh-CN">内容字符串</span>
-	 * @return <span class="en-US">Generated huffman result string or zero length string if content string is empty</span>
+	 * @return <span class="en-US">Generated Huffman result string or zero length string if content string is empty</span>
 	 * <span class="zh-CN">生成的霍夫曼树编码字符串，当内容字符串为空字符串时返回长度为0的空字符串</span>
 	 */
 	public static String encodeString(final Hashtable<String, Object> codeMapping, final String content) {
@@ -138,7 +138,7 @@ public final class HuffmanTree {
 	 *
 	 * @param content <span class="en-US">Content string</span>
 	 *                <span class="zh-CN">内容字符串</span>
-	 * @return <span class="en-US">Generated huffman result instance or null if content string is empty</span>
+	 * @return <span class="en-US">Generated Huffman result instance or null if content string is empty</span>
 	 * <span class="zh-CN">生成的霍夫曼结果实例对象，当内容字符串为空字符串时返回null</span>
 	 */
 	public Result encodeString(final String content) {
@@ -162,7 +162,7 @@ public final class HuffmanTree {
 	 * <h3 class="en-US">Build code mapping table</h3>
 	 * <h3 class="zh-CN">构建编码映射表</h3>
 	 *
-	 * @param currentNode <span class="en-US">Current huffman node</span>
+	 * @param currentNode <span class="en-US">Current Huffman node</span>
 	 *                    <span class="zh-CN">当前霍夫曼节点</span>
 	 * @param currentCode <span class="en-US">Code symbol</span>
 	 *                    <span class="zh-CN">编码符号</span>

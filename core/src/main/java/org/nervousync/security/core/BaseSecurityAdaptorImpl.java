@@ -18,15 +18,10 @@
 package org.nervousync.security.core;
 
 import jakarta.annotation.Nonnull;
-import org.nervousync.beans.crypto.CipherConfig;
-import org.nervousync.beans.crypto.CipherKey;
-import org.nervousync.commons.Globals;
-import org.nervousync.enumerations.crypto.CryptoMode;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.SecurityAdaptor;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
-import org.nervousync.utils.security.SecurityUtils;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -55,36 +50,6 @@ public abstract class BaseSecurityAdaptorImpl implements SecurityAdaptor {
 
 	protected BaseSecurityAdaptorImpl(@Nonnull final String providerName) {
 		this.providerName = providerName;
-	}
-
-	@Override
-	public final byte[] digest(@Nonnull final String name, @Nonnull final Object source) {
-		return SecurityUtils.process(this.initDigest(new CipherConfig(name, Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
-						null),
-				source);
-	}
-
-	@Override
-	public final byte[] hmac(@Nonnull final String name, @Nonnull final byte[] keyBytes, @Nonnull final Object source) {
-		return SecurityUtils.process(this.initDigest(new CipherConfig(name, Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
-						new CipherKey(name, keyBytes)),
-				source);
-	}
-
-	@Override
-	public final byte[] encrypt(@Nonnull final CipherConfig cipherConfig,
-	                            @Nonnull final byte[] keyBytes, @Nonnull final Object source) {
-		return SecurityUtils.process(
-				this.initCipher(cipherConfig, CryptoMode.ENCRYPT, new CipherKey(cipherConfig.getAlgorithm(), keyBytes)),
-				source);
-	}
-
-	@Override
-	public final byte[] decrypt(@Nonnull final CipherConfig cipherConfig,
-	                            @Nonnull final byte[] keyBytes, @Nonnull final Object source) {
-		return SecurityUtils.process(
-				this.initCipher(cipherConfig, CryptoMode.DECRYPT, new CipherKey(cipherConfig.getAlgorithm(), keyBytes)),
-				source);
 	}
 
 	@Override

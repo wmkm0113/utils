@@ -63,7 +63,7 @@ public final class CRCDigestAdapterImpl extends CryptoAdaptor {
 	private long crc;
 
 	/**
-	 * <h3 class="en-US">Constructor for CRCDigestAdapterImpl</h3>
+	 * <h3 class="en-US">Constructor for CRC DigestAdapterImpl</h3>
 	 * <h3 class="zh-CN">CRC摘要算法适配器实现类类的构造方法</h3>
 	 *
 	 * @param crcConfig <span class="en-US">CRC configure</span>

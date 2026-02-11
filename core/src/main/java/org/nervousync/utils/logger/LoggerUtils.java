@@ -52,8 +52,16 @@ import java.util.*;
 @SuppressWarnings("unused")
 public final class LoggerUtils {
 
-	private static final LogConfigurator LOG_CONFIGURATOR =
-			ServiceLoader.load(LogConfigurator.class).findFirst().orElse(null);
+	/**
+	 * <span class="en-US">Log configurator instance object</span>
+	 * <span class="zh-CN">日志配置器实例对象</span>
+	 */
+	private static final LogConfigurator LOG_CONFIGURATOR;
+
+	static {
+		//  Using ServiceLoader to load LogConfigurator
+		LOG_CONFIGURATOR = ServiceLoader.load(LogConfigurator.class).findFirst().orElse(null);
+	}
 
 	/**
 	 * <h3 class="en-US">Private constructor for LoggerUtils</h3>
@@ -228,7 +236,7 @@ public final class LoggerUtils {
 		 * <h3 class="zh-CN">输出Trace信息</h3>
 		 *
 		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
+		 *                <span class="zh-CN">信息识别键值</span>
 		 */
 		public void trace(final String message) {
 			this.trace(message, new Object[0]);
@@ -238,7 +246,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output trace message</h3>
 		 * <h3 class="zh-CN">输出Trace信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param collections <span class="en-US">given parameters of information formatter</span>
 		 *                    <span class="zh-CN">用于资源信息格式化的参数</span>
@@ -251,10 +259,10 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output trace message</h3>
 		 * <h3 class="zh-CN">输出Trace信息</h3>
 		 *
-		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
-		 * @param throwable  <span class="en-US">Throwable exception instance</span>
-		 *                   <span class="zh-CN">抛出的异常实例对象</span>
+		 * @param message   <span class="en-US">Message identify key</span>
+		 *                  <span class="zh-CN">信息识别键值</span>
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
 		 */
 		public void trace(final String message, final Throwable throwable) {
 			this.trace(message, throwable, new Object[0]);
@@ -264,7 +272,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output trace message</h3>
 		 * <h3 class="zh-CN">输出Trace信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param throwable   <span class="en-US">Throwable exception instance</span>
 		 *                    <span class="zh-CN">抛出的异常实例对象</span>
@@ -291,7 +299,7 @@ public final class LoggerUtils {
 		 * <h3 class="zh-CN">输出Debug信息</h3>
 		 *
 		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
+		 *                <span class="zh-CN">信息识别键值</span>
 		 */
 		public void debug(final String message) {
 			this.debug(message, new Object[0]);
@@ -301,7 +309,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output debug message</h3>
 		 * <h3 class="zh-CN">输出Debug信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param collections <span class="en-US">given parameters of information formatter</span>
 		 *                    <span class="zh-CN">用于资源信息格式化的参数</span>
@@ -314,10 +322,10 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output debug message</h3>
 		 * <h3 class="zh-CN">输出Debug信息</h3>
 		 *
-		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
-		 * @param throwable  <span class="en-US">Throwable exception instance</span>
-		 *                   <span class="zh-CN">抛出的异常实例对象</span>
+		 * @param message   <span class="en-US">Message identify key</span>
+		 *                  <span class="zh-CN">信息识别键值</span>
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
 		 */
 		public void debug(final String message, final Throwable throwable) {
 			this.debug(message, throwable, new Object[0]);
@@ -327,7 +335,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output debug message</h3>
 		 * <h3 class="zh-CN">输出Debug信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param throwable   <span class="en-US">Throwable exception instance</span>
 		 *                    <span class="zh-CN">抛出的异常实例对象</span>
@@ -354,7 +362,7 @@ public final class LoggerUtils {
 		 * <h3 class="zh-CN">输出Info信息</h3>
 		 *
 		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
+		 *                <span class="zh-CN">信息识别键值</span>
 		 */
 		public void info(final String message) {
 			this.info(message, new Object[0]);
@@ -364,7 +372,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output info message</h3>
 		 * <h3 class="zh-CN">输出Info信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param collections <span class="en-US">given parameters of information formatter</span>
 		 *                    <span class="zh-CN">用于资源信息格式化的参数</span>
@@ -377,10 +385,10 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output info message</h3>
 		 * <h3 class="zh-CN">输出Info信息</h3>
 		 *
-		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
-		 * @param throwable  <span class="en-US">Throwable exception instance</span>
-		 *                   <span class="zh-CN">抛出的异常实例对象</span>
+		 * @param message   <span class="en-US">Message identify key</span>
+		 *                  <span class="zh-CN">信息识别键值</span>
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
 		 */
 		public void info(final String message, final Throwable throwable) {
 			this.info(message, throwable, new Object[0]);
@@ -390,7 +398,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output info message</h3>
 		 * <h3 class="zh-CN">输出Info信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param throwable   <span class="en-US">Throwable exception instance</span>
 		 *                    <span class="zh-CN">抛出的异常实例对象</span>
@@ -417,7 +425,7 @@ public final class LoggerUtils {
 		 * <h3 class="zh-CN">输出Warn信息</h3>
 		 *
 		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
+		 *                <span class="zh-CN">信息识别键值</span>
 		 */
 		public void warn(final String message) {
 			this.warn(message, new Object[0]);
@@ -427,7 +435,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output warns message</h3>
 		 * <h3 class="zh-CN">输出Warn信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param collections <span class="en-US">given parameters of information formatter</span>
 		 *                    <span class="zh-CN">用于资源信息格式化的参数</span>
@@ -440,10 +448,10 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output warns message</h3>
 		 * <h3 class="zh-CN">输出Warn信息</h3>
 		 *
-		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
-		 * @param throwable  <span class="en-US">Throwable exception instance</span>
-		 *                   <span class="zh-CN">抛出的异常实例对象</span>
+		 * @param message   <span class="en-US">Message identify key</span>
+		 *                  <span class="zh-CN">信息识别键值</span>
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
 		 */
 		public void warn(final String message, final Throwable throwable) {
 			this.warn(message, throwable, new Object[0]);
@@ -453,7 +461,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output warns message</h3>
 		 * <h3 class="zh-CN">输出Warn信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param throwable   <span class="en-US">Throwable exception instance</span>
 		 *                    <span class="zh-CN">抛出的异常实例对象</span>
@@ -480,7 +488,7 @@ public final class LoggerUtils {
 		 * <h3 class="zh-CN">输出Error信息</h3>
 		 *
 		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
+		 *                <span class="zh-CN">信息识别键值</span>
 		 */
 		public void error(final String message) {
 			this.error(message, new Object[0]);
@@ -490,7 +498,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output error message</h3>
 		 * <h3 class="zh-CN">输出Error信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param collections <span class="en-US">given parameters of information formatter</span>
 		 *                    <span class="zh-CN">用于资源信息格式化的参数</span>
@@ -503,10 +511,10 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output error message</h3>
 		 * <h3 class="zh-CN">输出Error信息</h3>
 		 *
-		 * @param message <span class="en-US">Message identify key</span>
-		 *                   <span class="zh-CN">信息识别键值</span>
-		 * @param throwable  <span class="en-US">Throwable exception instance</span>
-		 *                   <span class="zh-CN">抛出的异常实例对象</span>
+		 * @param message   <span class="en-US">Message identify key</span>
+		 *                  <span class="zh-CN">信息识别键值</span>
+		 * @param throwable <span class="en-US">Throwable exception instance</span>
+		 *                  <span class="zh-CN">抛出的异常实例对象</span>
 		 */
 		public void error(final String message, final Throwable throwable) {
 			this.error(message, throwable, new Object[0]);
@@ -516,7 +524,7 @@ public final class LoggerUtils {
 		 * <h3 class="en-US">Output error message</h3>
 		 * <h3 class="zh-CN">输出Error信息</h3>
 		 *
-		 * @param message  <span class="en-US">Message identify key</span>
+		 * @param message     <span class="en-US">Message identify key</span>
 		 *                    <span class="zh-CN">信息识别键值</span>
 		 * @param throwable   <span class="en-US">Throwable exception instance</span>
 		 *                    <span class="zh-CN">抛出的异常实例对象</span>

@@ -62,7 +62,7 @@ This project is built upon the following engineering principles:
 
 - Modular Design
 
-The project provides functional modules with different focuses, allowing users to choose according to their needs, minimizing external dependencies, and reducing the overall project burden and security risks.
+The project provides functional modules with different focuses, allowing users to choose, according to their needs, minimizing external dependencies, and reducing the overall project burden and security risks.
 
 - Comprehensive Advanced Security Features
 
@@ -212,37 +212,37 @@ This feature requires the `utils-config` module.
 In daily development, we often encounter various configuration information. This project provides a unified interface for managing this configuration information.
 
 1. First, we need to define the JavaBean for the configuration file:
-```java
-/*  After adding the Signature annotation, the configuration file manager 
-    will generate a signature when saving configuration information and verify 
-    the signature when reading information, ensuring that the configuration file 
-    will not be modified without authorization.
- */
-@Signature("signature")
-@XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
-@XmlAccessorType(XmlAccessType.NONE)
-//  OutputConfig must be specified and the data type and encoding set must be configured.
-@OutputConfig(type = StringType.XML, encoding = "UTF-8")
-public final class ProxyConfig implements Serializable {
-	
-	@XmlElement(name = "username")
-	private String userName;
-    /**
-    * After adding a password, the configuration file manager automatically encrypts/decrypts the information when saving and reading the configuration file to prevent the leakage of sensitive information.
-    */
-	@Password
-	@XmlElement(name = "password")
-	private String password;
-	@XmlElement
-	private String signature;
-	// getters and setters
-}
-```
+    ```java
+    /*  After adding the Signature annotation, the configuration file manager 
+        will generate a signature when saving configuration information and verify 
+        the signature when reading information, ensuring that the configuration file 
+        will not be modified without authorization.
+     */
+    @Signature("signature")
+    @XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
+    @XmlAccessorType(XmlAccessType.NONE)
+    //  OutputConfig must be specified and the data type and encoding set must be configured.
+    @OutputConfig(type = StringType.XML, encoding = "UTF-8")
+    public final class ProxyConfig implements Serializable {
+        
+        @XmlElement(name = "username")
+        private String userName;
+        /**
+        * After adding a password, the configuration file manager automatically encrypts/decrypts the information when saving and reading the configuration file to prevent the leakage of sensitive information.
+        */
+        @Password
+        @XmlElement(name = "password")
+        private String password;
+        @XmlElement
+        private String signature;
+        // getters and setters
+    }
+    ```
 2. Save, read, configure information
-```java
-boolean result = ConfigureManager.getInstance().saveConfigure(proxyConfig);
-ProxyConfig proxyConfig = ConfigureManager.getInstance().readConfigure(ProxyConfig.class);
-```
+    ```java
+    boolean result = ConfigureManager.getInstance().saveConfigure(proxyConfig);
+    ProxyConfig proxyConfig = ConfigureManager.getInstance().readConfigure(ProxyConfig.class);
+    ```
 
 ### Internationalization Support
 
@@ -251,43 +251,43 @@ This feature requires the `utils-i18n` module.
 1. Define Resource File Information
 The storage path for multilingual resource files is META-INF/i18n/Resources.json within the JAR file. The specific format is as follows:
 
-```json
-{
-  "groupId": "org.nervousync",
-  "bundle": "utils",
-  "errors": {
-    "0x000000150001": "Length_Not_Enough_Crypto_Error",
-  },
-  "messages": {
-    "en-US": {
-      "Load_Schema_Mapping_Error": {
-        "pattern": "An error occurs when load schema mapping, file path: {0}"
-      }
-    },
-    "zh-CN": {
-      "Load_Schema_Mapping_Error": {
-        "pattern": "加载资源描述文件映射表出错，文件地址：{0}"
+    ```json
+    {
+      "groupId": "org.nervousync",
+      "bundle": "utils",
+      "errors": {
+        "0x000000150001": "Length_Not_Enough_Crypto_Error",
+      },
+      "messages": {
+        "en-US": {
+          "Load_Schema_Mapping_Error": {
+            "pattern": "An error occurs when load schema mapping, file path: {0}"
+          }
+        },
+        "zh-CN": {
+          "Load_Schema_Mapping_Error": {
+            "pattern": "加载资源描述文件映射表出错，文件地址：{0}"
+          }
+        }
       }
     }
-  }
-}
-```
+    ```
 2. Referencing Multilingual Information:
 
-```java
-// Use the groupId and bundle defined in the resource file to get the corresponding multilingual information agent
-MessageAgent agent = MultilingualUtils.newAgent("org.nervousync", "utils");
-String message = agent.getMessage("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
-```
+    ```java
+    // Use the groupId and bundle defined in the resource file to get the corresponding multilingual information agent
+    MessageAgent agent = MultilingualUtils.newAgent("org.nervousync", "utils");
+    String message = agent.getMessage("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+    ```
 
 3. Multilingual Logging
 
-```java
-LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
-logger.info("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
-```
+    ```java
+    LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
+    logger.info("Load_Schema_Mapping_Error", "/opt/schemas/file.xsd");
+    ```
 
-Plurals expressions are supported in the resource file.
+Plural expressions are supported in the resource file.
 
 ### OTP Generation and Validate
 
@@ -374,7 +374,7 @@ This project follows **Semantic Versioning**:
 ## Contributions and feedback
 
 Friends are welcome to translate the prompt information, error messages, etc. in this document and project into more languages to help more users better understand and use this toolkit.
-If you find problems during use or need to improve or add related functions, please submit an issue to this project or send email to [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=bugs_and_features)
+If you find problems during use or need to improve or add related functions, please submit an issue to this project or email [wmkm0113\@gmail.com](mailto:wmkm0113@gmail.com?subject=bugs_and_features)
 For better communication, please include the following information when submitting an issue or sending an email: 
 
 1. The purpose is: discovering bugs/function improvements/add new features
@@ -420,4 +420,4 @@ To support this project, you can make a donation to:
 
 Nervousync Utils aims to provide a stable and reusable infrastructure foundation for enterprise Java systems.
 
-If your goal is to build maintainable backend platforms with explicit control over configuration, security, and lifecycle management, this project is designed to support that objective.
+If your goal is to build maintainable backend platforms with explicit control over configuration, security, and lifecycle management, this project is designed to support that goal.

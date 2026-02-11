@@ -207,7 +207,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	/**
 	 * Gets offset start cen dir wrt start disk no.
 	 *
-	 * @return the offsetStartCenDirWRTStartDiskNo
+	 * @return the offset Start Central Directory WRT Start Disk No.
 	 */
 	public long getOffsetStartCenDirWRTStartDiskNo() {
 		return this.offsetStartCenDirWRTStartDiskNo;
@@ -216,7 +216,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	/**
 	 * Sets offset start cen dir wrt start disk no.
 	 *
-	 * @param offsetStartCenDirWRTStartDiskNo the offsetStartCenDirWRTStartDiskNo to set
+	 * @param offsetStartCenDirWRTStartDiskNo the offset Start Central Directory WRT Start Disk No. to set
 	 */
 	public void setOffsetStartCenDirWRTStartDiskNo(final long offsetStartCenDirWRTStartDiskNo) {
 		this.offsetStartCenDirWRTStartDiskNo = offsetStartCenDirWRTStartDiskNo;

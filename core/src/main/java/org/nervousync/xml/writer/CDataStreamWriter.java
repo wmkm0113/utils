@@ -269,7 +269,7 @@ public final class CDataStreamWriter implements XMLStreamWriter {
 	/**
 	 * Writes a CData section
 	 *
-	 * @param data the data contained in the CData Section, may not be null
+	 * @param data the data contained in the Cdata section may not be null
 	 * @throws XMLStreamException XMLStreamException
 	 */
 	@Override

@@ -29,6 +29,7 @@ import java.util.Locale;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:39:41 $
  */
+@SuppressWarnings("unused")
 public abstract class MessageAgent {
 
 
@@ -105,5 +106,7 @@ public abstract class MessageAgent {
 	 * @return <span class="en-US">Formatted resource information or joined string by character '/' if not found</span>
 	 * <span class="zh-CN">格式化的资源信息，如果未找到则返回使用 '/' 拼接的字符串</span>
 	 */
-	public abstract String findMessage(final String messageKey, final Locale locale, final Object... collections);
+	public final String findMessage(final String messageKey, final Locale locale, final Object... collections) {
+		return this.findMessage(messageKey, LocaleUtils.languageCode(locale), collections);
+	}
 }

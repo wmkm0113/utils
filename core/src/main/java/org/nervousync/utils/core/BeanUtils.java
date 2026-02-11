@@ -51,9 +51,9 @@ import java.util.*;
  * <h2 class="en-US">JavaBean Utilities</h2>
  * <span class="en-US">
  * <span>Current utilities implements features:</span>
- *     <ul>Copy object fields value from source object to target object-based field name</ul>
+ *     <ul>Copy object fields value from the source object to a target of object-based field name</ul>
  *     <ul>Copy object fields value from the source object array to target object-based annotation: BeanProperty</ul>
- *     <ul>Copy object fields value from source object to target object arrays based annotation: BeanProperty</ul>
+ *     <ul>Copy object fields value from the source object to target object arrays based annotation: BeanProperty</ul>
  * </span>
  * <h2 class="zh-CN">JavaBean工具集</h2>
  * <span class="zh-CN">
@@ -66,6 +66,7 @@ import java.util.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jun 25, 2015 14:55:15 $
  */
+@SuppressWarnings("unused")
 public final class BeanUtils {
 
 	/**
@@ -146,7 +147,7 @@ public final class BeanUtils {
 
 	/**
 	 * <h3 class="en-US">Copy the map values into the target JavaBean instance</h3>
-	 * <p class="en-US">Data mapping to JavaBean field identified by map key</p>
+	 * <p class="en-US">Data mapping to JavaBean field identified by the map key</p>
 	 * <h3 class="zh-CN">复制Map中的值到目标JavaBean实例</h3>
 	 * <p class="zh-CN">数据使用Map的键值映射到JavaBean属性</p>
 	 *
@@ -431,7 +432,7 @@ public final class BeanUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse the input stream instance to data map.</h3>
+	 * <h3 class="en-US">Parse the input stream instance to the data map.</h3>
 	 * <h3 class="zh-CN">解析输入流对象实例为数据映射表</h3>
 	 *
 	 * @param inputStream <span class="en-US">Input stream instance</span>
@@ -544,7 +545,7 @@ public final class BeanUtils {
 		private final List<FieldMapping> fieldMappings;
 
 		/**
-		 * <h3 class="en-US">Constructor for parse given JavaBean class instance and generate BeanMapping instance</h3>
+		 * <h3 class="en-US">Constructor for parse the given JavaBean class instance and generate BeanMapping instance</h3>
 		 * <h3 class="zh-CN">构造方法用于解析给定的JavaBean类对象，并生成BeanMapping对象</h3>
 		 *
 		 * @param beanClass <span class="en-US">Given JavaBean class instance</span>
@@ -620,7 +621,7 @@ public final class BeanUtils {
 		private final List<PropertyMapping> propertyMappings;
 
 		/**
-		 * <h3 class="en-US">Constructor for parse given JavaBean field instance and generate FieldMapping instance</h3>
+		 * <h3 class="en-US">Constructor for parse the given JavaBean field instance and generate FieldMapping instance</h3>
 		 * <h3 class="zh-CN">构造方法用于解析给定的JavaBean属性对象，并生成FieldMapping对象</h3>
 		 *
 		 * @param field <span class="en-US">JavaBean field instance</span>
@@ -714,7 +715,7 @@ public final class BeanUtils {
 		}
 
 		/**
-		 * <h3 class="en-US">Register BeanProperty annotation who was annotated at field</h3>
+		 * <h3 class="en-US">Register BeanProperty annotation who was annotated at the field</h3>
 		 * <h3 class="zh-CN">注册注解在属性上的BeanProperty注解</h3>
 		 *
 		 * @param beanProperty <span class="en-US">Annotation instance of BeanProperty</span>

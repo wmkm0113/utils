@@ -472,7 +472,7 @@ public final class StringUtils {
 	 *                    <span class="zh-CN">编码映射表</span>
 	 * @param content     <span class="en-US">Content string</span>
 	 *                    <span class="zh-CN">内容字符串</span>
-	 * @return <span class="en-US">Generated huffman result string or zero length string if content string is empty</span>
+	 * @return <span class="en-US">Generated Huffman result string or zero length string if content string is empty</span>
 	 * <span class="zh-CN">生成的霍夫曼树编码字符串，当内容字符串为空字符串时返回长度为0的空字符串</span>
 	 */
 	public static String encodeWithHuffman(final Hashtable<String, Object> codeMapping, final String content) {
@@ -485,7 +485,7 @@ public final class StringUtils {
 	 *
 	 * @param content <span class="en-US">Content string</span>
 	 *                <span class="zh-CN">内容字符串</span>
-	 * @return <span class="en-US">Generated huffman result instance or null if content string is empty</span>
+	 * @return <span class="en-US">Generated Huffman result instance or null if content string is empty</span>
 	 * <span class="zh-CN">生成的霍夫曼结果实例对象，当内容字符串为空字符串时返回null</span>
 	 */
 	public static HuffmanTree.Result encodeWithHuffman(final String content) {
@@ -2396,7 +2396,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given character is english character</h3>
+	 * <h3 class="en-US">Check given character is English character</h3>
 	 * <h3 class="zh-CN">检查给定字符是否为英文字母</h3>
 	 *
 	 * @param letter <span class="en-US">will check for character</span>

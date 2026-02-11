@@ -65,8 +65,8 @@ public enum DataType {
 	 */
 	OBJECT,
 	/**
-     * <span class="en-US">CData String</span>
-     * <span class="zh-CN">CData文本</span>
+     * <span class="en-US">Cdata String</span>
+     * <span class="zh-CN">Cdata文本</span>
 	 */
 	CDATA
 }
