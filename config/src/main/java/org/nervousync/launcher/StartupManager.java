@@ -109,7 +109,7 @@ public final class StartupManager {
 		if (StartupManager.INSTANCE == null) {
 			StartupManager.INSTANCE =
 					Optional.ofNullable(ConfigureManager.getInstance())
-							.map(configureManager -> configureManager.readConfigure(StartupConfig.class))
+							.flatMap(configureManager -> configureManager.readConfigure(StartupConfig.class))
 							.map(StartupManager::new)
 							.orElse(null);
 			SystemUtils.registerShutdownHook(StartupManager::shutdown);
@@ -117,7 +117,7 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Get instance of startup manager</h3>
+	 * <h3 class="en-US">Get the instance of startup manager</h3>
 	 * <h3 class="zh-CN">获取启动管理器实例对象</h3>
 	 *
 	 * @return <span class="en-US">Startup manager instance</span>
@@ -142,7 +142,7 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Destroy instance of startup manager</h3>
+	 * <h3 class="en-US">Destroy the instance of the startup manager</h3>
 	 * <h3 class="zh-CN">销毁当前启动器的实例对象</h3>
 	 */
 	private static void shutdown() {
@@ -153,7 +153,7 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Update startup type by the given class name of the startup launcher</h3>
+	 * <h3 class="en-US">Update the startup type by the given class name of the startup launcher</h3>
 	 * <h3 class="zh-CN">修改启动器的启动类型</h3>
 	 *
 	 * @param className   <span class="en-US">Launcher class name</span>
@@ -194,7 +194,7 @@ public final class StartupManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Remove registered startup launcher</h3>
+	 * <h3 class="en-US">Remove a registered startup launcher</h3>
 	 * <h3 class="zh-CN">删除注册的启动器</h3>
 	 *
 	 * @param className   <span class="en-US">Launcher class name</span>

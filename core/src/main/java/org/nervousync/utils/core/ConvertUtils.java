@@ -16,6 +16,7 @@
  */
 package org.nervousync.utils.core;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.logger.LoggerUtils;
 import org.nervousync.utils.properties.PropertiesUtils;
@@ -213,7 +214,7 @@ public final class ConvertUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static Object toObject(final byte[] dataBytes) {
+	public static Object toObject(@Nonnull final byte[] dataBytes) {
 		if (dataBytes.length == 0) {
 			return null;
 		}

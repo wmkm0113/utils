@@ -22,6 +22,7 @@ import org.nervousync.beans.security.FactoryConfig;
 import org.nervousync.beans.security.SecureConfig;
 import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.CryptoAdaptor;
 import org.nervousync.utils.cert.CertificateUtils;
@@ -40,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * <h2 class="en-US">Secure factory instance</h2>
  * <p class="en-US">
- * Running in singleton mode. Using for protect password in any configuring files.
+ * Running in singleton mode. Using for protection password in any configuring files.
  * Supported algorithm: RSA1024/RSA2048/SM2/AES128/AES192/AES256/DES/3DES/SM4
  * </p>
  * <h2 class="zh-CN">安全配置信息定义</h2>
@@ -108,13 +109,13 @@ public final class SecureFactory {
 		String factoryPath = SystemUtils.USER_HOME + DEFAULT_SECURE_FACTORY_CONFIG;
 		FactoryConfig factoryConfig = Optional.of(FileUtils.readFile(factoryPath))
 				.filter(StringUtils::notBlank)
-				.map(string -> BeanUtils.stringToObject(string, FactoryConfig.class))
+				.map(string -> BeanUtils.stringToObject(string, StringType.XML, FactoryConfig.class))
 				.orElse(null);
 		if (factoryConfig == null) {
 			factoryConfig = new FactoryConfig();
-			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA1024);
-			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA1024)));
-			FileUtils.saveFile(factoryPath, BeanUtils.objectToString(factoryConfig));
+			factoryConfig.setSecureAlgorithm(SecureAlgorithm.RSA2048);
+			factoryConfig.setSecureKey(StringUtils.base64Encode(generate(SecureAlgorithm.RSA2048)));
+			FileUtils.saveFile(factoryPath, BeanUtils.objectToString(factoryConfig, StringType.XML));
 		}
 		FACTORY_NODE = new SecureNode(factoryConfig);
 		initialize(Boolean.FALSE);
@@ -179,7 +180,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Generate and register secure configure information using given secure algorithm</h3>
+	 * <h3 class="en-US">Generate and register secure configure information using the given secure algorithm</h3>
 	 * <h3 class="zh-CN">使用给定的安全算法生成并注册安全配置信息</h3>
 	 *
 	 * @param secureAlgorithm <span class="en-US">Secure algorithm</span>
@@ -201,7 +202,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Generate and register secure configure information using given secure algorithm</h3>
+	 * <h3 class="en-US">Generate and register secure configure information using the given secure algorithm</h3>
 	 * <h3 class="zh-CN">使用给定的安全算法生成并注册安全配置信息</h3>
 	 *
 	 * @param secureName      <span class="en-US">Secure name</span>
@@ -226,7 +227,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given secure name was registered</h3>
+	 * <h3 class="en-US">Check the given secure name was registered</h3>
 	 * <h3 class="zh-CN">检查给定的安全名称注册状态</h3>
 	 *
 	 * @param secureName <span class="en-US">Secure name</span>
@@ -287,7 +288,7 @@ public final class SecureFactory {
 		if (StringUtils.isEmpty(fileContent)) {
 			return null;
 		}
-		return BeanUtils.stringToObject(fileContent, SecureSettings.class);
+		return BeanUtils.stringToObject(fileContent, StringType.XML, SecureSettings.class);
 	}
 
 	/**
@@ -301,7 +302,7 @@ public final class SecureFactory {
 	 */
 	private static boolean saveConfigure(@Nonnull final SecureSettings secureSettings) {
 		String configPath = SystemUtils.USER_HOME + DEFAULT_SECURE_SETTINGS_CONFIG;
-		return FileUtils.saveFile(configPath, BeanUtils.objectToString(secureSettings));
+		return FileUtils.saveFile(configPath, BeanUtils.objectToString(secureSettings, StringType.XML));
 	}
 
 	/**
@@ -313,7 +314,7 @@ public final class SecureFactory {
 	 */
 	private void register(@Nonnull final SecureConfig secureConfig) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Security_Current_Config", BeanUtils.objectToString(secureConfig));
+			LOGGER.debug("Security_Current_Config", BeanUtils.objectToString(secureConfig, StringType.XML));
 		}
 		if (this.registeredNodes.containsKey(secureConfig.getSecureName())) {
 			LOGGER.warn("Security_Override_Config", secureConfig.getSecureName());
@@ -359,7 +360,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Process data content using given secure name</h3>
+	 * <h3 class="en-US">Process data content using the given secure name</h3>
 	 * <h3 class="zh-CN">使用给定的安全名称处理信息</h3>
 	 *
 	 * @param secureName  <span class="en-US">Secure name</span>
@@ -377,7 +378,7 @@ public final class SecureFactory {
 		}
 		String secName = StringUtils.isEmpty(secureName) ? SYSTEM_SECURE_NAME : secureName;
 		return Optional.ofNullable(this.registeredNodes.get(secName))
-				.map(secureNode -> secureNode.initCryptor(encrypt))
+				.flatMap(secureNode -> secureNode.initCryptor(encrypt))
 				.map(secureAdapter -> {
 					String returnValue;
 					try {
@@ -399,7 +400,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Generate and register secure configure information using given secure algorithm and secure key data bytes</h3>
+	 * <h3 class="en-US">Generate and register secure configure information using the given secure algorithm and secure key data bytes</h3>
 	 * <h3 class="zh-CN">使用给定的安全算法、安全密钥字节数组生成并注册安全配置信息</h3>
 	 *
 	 * @param secureName <span class="en-US">Secure name</span>
@@ -440,7 +441,7 @@ public final class SecureFactory {
 	private static byte[] initKey(@Nonnull final byte[] dataBytes, final boolean encrypt) {
 		return Optional.ofNullable(FACTORY_NODE)
 				.filter(SecureNode::isInitialized)
-				.map(factoryNode -> factoryNode.initCryptor(encrypt))
+				.flatMap(factoryNode -> factoryNode.initCryptor(encrypt))
 				.map(secureAdapter -> {
 					try {
 						return secureAdapter.finish(dataBytes);
@@ -453,7 +454,7 @@ public final class SecureFactory {
 	}
 
 	/**
-	 * <h3 class="en-US">Generate secure key by given secure algorithm</h3>
+	 * <h3 class="en-US">Generate a secure key by the given secure algorithm</h3>
 	 * <h3 class="zh-CN">使用给定的安全算法生成安全密钥</h3>
 	 *
 	 * @param secureAlgorithm <span class="en-US">Secure algorithm</span>
@@ -463,8 +464,6 @@ public final class SecureFactory {
 	 */
 	private static byte[] generate(final SecureAlgorithm secureAlgorithm) {
 		switch (secureAlgorithm) {
-			case RSA1024:
-				return convertKeyPair(SecurityUtils.RSAKeyPair(1024), "SHA256withRSA");
 			case RSA2048:
 				return convertKeyPair(SecurityUtils.RSAKeyPair(2048), "SHA256withRSA");
 			case SM2:
@@ -475,8 +474,6 @@ public final class SecureFactory {
 				return SecurityUtils.AES192Key();
 			case AES256:
 				return SecurityUtils.AES256Key();
-			case DES:
-				return SecurityUtils.DESKey();
 			case TRIPLE_DES:
 				return SecurityUtils.TripleDESKey();
 			case SM4:
@@ -550,7 +547,6 @@ public final class SecureFactory {
 					SecureFactory.initKey(StringUtils.base64Decode(secureConfig.getSecureKey()), Boolean.FALSE);
 			this.secureAlgorithm = secureConfig.getSecureAlgorithm();
 			switch (this.secureAlgorithm) {
-				case RSA1024:
 				case RSA2048:
 				case SM2:
 					this.keyBytes = keyBytes;
@@ -572,7 +568,6 @@ public final class SecureFactory {
 				case AES128:
 				case AES192:
 				case AES256:
-				case DES:
 				case TRIPLE_DES:
 				case SM4:
 					this.initialized = Boolean.TRUE;
@@ -598,12 +593,11 @@ public final class SecureFactory {
 		 * @return <span class="en-US">Initialized adapter instance</span>
 		 * <span class="zh-CN">初始化的适配器实例对象</span>
 		 */
-		private CryptoAdaptor initCryptor(final boolean encrypt) {
+		private Optional<CryptoAdaptor> initCryptor(final boolean encrypt) {
 			CryptoAdaptor secureAdapter = null;
 			if (this.initialized) {
 				try {
 					switch (this.secureAlgorithm) {
-						case RSA1024:
 						case RSA2048:
 							secureAdapter = encrypt ? SecurityUtils.RSAEncryptor(this.publicKey)
 									: SecurityUtils.RSADecryptor(this.privateKey);
@@ -618,13 +612,12 @@ public final class SecureFactory {
 							secureAdapter = encrypt ? SecurityUtils.AESEncryptor(this.keyBytes)
 									: SecurityUtils.AESDecryptor(this.keyBytes);
 							break;
+						case RC5:
+							secureAdapter = encrypt ? SecurityUtils.RC5Encryptor(this.keyBytes)
+									: SecurityUtils.RC5Decryptor(this.keyBytes);
 						case RC6:
 							secureAdapter = encrypt ? SecurityUtils.RC6Encryptor(this.keyBytes)
 									: SecurityUtils.RC6Decryptor(this.keyBytes);
-							break;
-						case DES:
-							secureAdapter = encrypt ? SecurityUtils.DESEncryptor(this.keyBytes)
-									: SecurityUtils.DESDecryptor(this.keyBytes);
 							break;
 						case TRIPLE_DES:
 							secureAdapter = encrypt ? SecurityUtils.TripleDESEncryptor(this.keyBytes)
@@ -644,7 +637,7 @@ public final class SecureFactory {
 					}
 				}
 			}
-			return secureAdapter;
+			return Optional.ofNullable(secureAdapter);
 		}
 
 		/**
@@ -667,6 +660,6 @@ public final class SecureFactory {
 	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2012 12:37:28 $
 	 */
 	public enum SecureAlgorithm {
-		RSA1024, RSA2048, SM2, AES128, AES192, AES256, DES, TRIPLE_DES, SM4, RC6
+		RSA2048, SM2, AES128, AES192, AES256, TRIPLE_DES, SM4, RC5, RC6
 	}
 }

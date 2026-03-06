@@ -16,7 +16,10 @@
  */
 package org.nervousync.beans.transfers.beans;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.beans.transfer.TransferAdapter;
+import org.nervousync.commons.Globals;
+import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.utils.core.BeanUtils;
 import org.nervousync.utils.core.ClassUtils;
 import org.nervousync.utils.core.StringUtils;
@@ -30,14 +33,18 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 25, 2023 11:27:18 $
  */
-public final class TransferBeanAdapter extends TransferAdapter {
+public abstract class TransferBeanAdapter extends TransferAdapter {
 
 	/**
 	 * <span class="en-US">Target class</span>
 	 * <span class="zh-CN">目标类</span>
 	 */
 	private final Class<?> beanClass;
-
+	/**
+	 * <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
+	 * <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
+	 */
+	private final StringType stringType;
 
 	/**
 	 * <h3 class="en-US">Constructor method for JavaBean convert adapter</h3>
@@ -45,26 +52,29 @@ public final class TransferBeanAdapter extends TransferAdapter {
 	 *
 	 * @param className  <span class="en-US">Target class name string</span>
 	 *                   <span class="zh-CN">目标类名字符串</span>
+	 * @param stringType <span class="en-US">The expected data type. If empty, the default type of OutputConfig is used.</span>
+	 *                   <span class="zh-CN">预期的数据类型，如果为空则使用OutputConfig的默认类型</span>
 	 * @throws IllegalArgumentException <span class="en-US">If target class is not the child class of org.nervousync.beans.core.BeanObject</span>
 	 *                                  <span class="zh-CN">如果目标类不是org.nervousync.beans.core.BeanObject的子类</span>
 	 */
-	public TransferBeanAdapter(final String className)
+	protected TransferBeanAdapter(final String className, @Nonnull final StringType stringType)
 			throws IllegalArgumentException {
 		this.beanClass = ClassUtils.forName(className);
+		this.stringType = stringType;
 	}
 
 	@Override
-	public String marshal(final Object object) {
-		return BeanUtils.objectToString(object);
+	public final String marshal(final Object object) {
+		return BeanUtils.objectToString(object, this.stringType);
 	}
 
 	@Override
-	public Object unmarshal(final Object string) {
+	public final Object unmarshal(final Object string) {
 		return Optional.ofNullable(string)
 				.filter(obj -> obj instanceof String)
 				.map(obj -> (String) obj)
 				.filter(StringUtils::notBlank)
-				.map(str -> BeanUtils.stringToObject(str, this.beanClass))
+				.map(str -> BeanUtils.stringToObject(str, this.stringType, Globals.DEFAULT_ENCODING, this.beanClass))
 				.orElse(null);
 	}
 }

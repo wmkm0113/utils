@@ -78,32 +78,29 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 	private static final BeanConverter DEFAULT_BEAN_CONVERTER = new DefaultBeanConverterImpl();
 
 	@Override
-	public String objectToString(@Nonnull final Object object) {
-		return Optional.ofNullable(object.getClass().getAnnotation(OutputConfig.class))
-				.map(outputConfig -> {
-					signature(object);
-					try {
-						switch (outputConfig.type()) {
-							case JSON:
-								return outputConfig.formatted()
-										? JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
-										: JSON_MAPPER.writeValueAsString(object);
-							case YAML:
-								return outputConfig.formatted()
-										? YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
-										: YAML_MAPPER.writeValueAsString(object);
-							default:
-								return DEFAULT_BEAN_CONVERTER.objectToString(object);
-						}
-					} catch (JsonProcessingException e) {
-						LOGGER.error("Convert_String_Error");
-						if (LOGGER.isDebugEnabled()) {
-							LOGGER.debug("Stack_Message_Error", e);
-						}
-					}
-					return Globals.DEFAULT_VALUE_STRING;
-				})
-				.orElse(Globals.DEFAULT_VALUE_STRING);
+	public String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                             final String encoding, final boolean formatted) {
+		signature(object);
+		try {
+			switch (stringType) {
+				case JSON:
+					return formatted
+							? JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+							: JSON_MAPPER.writeValueAsString(object);
+				case YAML:
+					return formatted
+							? YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+							: YAML_MAPPER.writeValueAsString(object);
+				default:
+					return DEFAULT_BEAN_CONVERTER.objectToString(object, stringType, encoding, formatted);
+			}
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Convert_String_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+			return Globals.DEFAULT_VALUE_STRING;
+		}
 	}
 
 	@Override
@@ -122,7 +119,11 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 					readObject = DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
 					break;
 			}
-		} catch (IOException ignore) {
+		} catch (IOException e) {
+			LOGGER.error("Convert_Object_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
 			return null;
 		}
 		return validate(readObject) ? readObject : null;
@@ -135,14 +136,18 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 			switch (stringType) {
 				case JSON:
 					return JSON_MAPPER.readValue(inputStream,
-							new ObjectMapper().getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+							JSON_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
 				case YAML:
 					return YAML_MAPPER.readValue(inputStream,
-							new ObjectMapper().getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+							YAML_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
 				default:
 					return DEFAULT_BEAN_CONVERTER.streamToList(inputStream, stringType, encoding, beanClass);
 			}
-		} catch (IOException ignore) {
+		} catch (IOException e) {
+			LOGGER.error("Convert_List_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
 			return Collections.emptyList();
 		}
 	}
@@ -283,7 +288,7 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 									Optional.ofNullable(ReflectionUtils.getFieldValue(field, object))
 											.map(fieldValue -> {
 												if (fieldValue.getClass().isAnnotationPresent(OutputConfig.class)) {
-													return fieldsMap(fieldValue);
+													return SecurityUtils.SHA256(fieldsMap(fieldValue), EncodeType.HEX);
 												} else {
 													return StringUtils.base64Encode(ConvertUtils.toByteArray(fieldValue));
 												}

@@ -65,7 +65,7 @@ public final class ClassUtils {
 	private static final String BYTEBUDDY_CLASS_SEPARATOR = "$ByteBuddy";
 	/**
 	 * <span class="en-US">The ".class" file suffix</span>
-	 * <span class="zh-CN">“.class”文件后缀</span>
+	 * <span class="zh-CN">“.class” 文件后缀</span>
 	 */
 	public static final String CLASS_FILE_SUFFIX = ".class";
 	/**
@@ -623,7 +623,8 @@ public final class ClassUtils {
 		if (checkType == null) {
 			throw new IllegalArgumentException("Check type must not be null");
 		}
-		return (targetType.isAssignableFrom(checkType) || targetType.equals(PRIMITIVE_WRAPPER_TYPE_MAP.get(checkType)));
+		return (ObjectUtils.nullSafeEquals(targetType, checkType) || targetType.isAssignableFrom(checkType)
+				|| targetType.equals(PRIMITIVE_WRAPPER_TYPE_MAP.get(checkType)));
 	}
 
 	/**

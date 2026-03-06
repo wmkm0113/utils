@@ -229,7 +229,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read server certificate by given url address</h3>
+	 * <h3 class="en-US">Read the server certificate by the given url address</h3>
 	 * <h3 class="zh-CN">根据给定的url地址获取服务器证书</h3>
 	 *
 	 * @param urlAddress <span class="en-US">url address</span>
@@ -242,7 +242,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read server certificate by given url address</h3>
+	 * <h3 class="en-US">Read the server certificate by the given url address</h3>
 	 * <h3 class="zh-CN">根据给定的url地址获取服务器证书</h3>
 	 *
 	 * @param urlAddress <span class="en-US">url address</span>
@@ -276,7 +276,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read content length from given request url address</h3>
+	 * <h3 class="en-US">Read content length from the given request url address</h3>
 	 * <h3 class="zh-CN">从给定的URL请求地址获取响应数据长度</h3>
 	 *
 	 * @param requestUrl <span class="en-US">Request url address</span>
@@ -298,13 +298,11 @@ public final class RequestUtils {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 			return Globals.DEFAULT_VALUE_INT;
-		} finally {
-			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
 		}
 	}
 
 	/**
-	 * <h3 class="en-US">Send request and parse response data to given target class instance</h3>
+	 * <h3 class="en-US">Send request and parse response data to the given target class instance</h3>
 	 * <h3 class="zh-CN">发送请求并解析返回数据为给定的目标类型</h3>
 	 *
 	 * @param <T>         <span class="en-US">target type class</span>
@@ -347,8 +345,6 @@ public final class RequestUtils {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 			return null;
-		} finally {
-			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
 		}
 	}
 
@@ -404,8 +400,6 @@ public final class RequestUtils {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
-		} finally {
-			System.clearProperty("jdk.internal.httpclient.disableHostnameVerification");
 		}
 	}
 
@@ -1101,7 +1095,7 @@ public final class RequestUtils {
 			requestBuilder.setHeader("Cookie", cookie);
 		}
 
-		Optional.ofNullable(requestInfo.getProxyInfo())
+		Optional.ofNullable(requestInfo.getProxyConfig())
 				.filter(proxyConfig -> StringUtils.notBlank(proxyConfig.getUserName()))
 				.ifPresent(proxyConfig -> {
 					String authentication = proxyConfig.getUserName() + ":";
@@ -1131,15 +1125,17 @@ public final class RequestUtils {
 			clientBuilder.connectTimeout(Duration.ofSeconds(requestInfo.getConnectTimeOut()));
 		}
 
-		if (requestInfo.getProxyInfo() != null) {
-			RequestInfo.ProxyConfig proxyConfig = requestInfo.getProxyInfo();
-			clientBuilder.proxy(ProxySelector.of(new InetSocketAddress(proxyConfig.getProxyAddress(), proxyConfig.getProxyPort())));
-		}
-		if (requestInfo.getTrustCertInfos() != null && !requestInfo.getTrustCertInfos().isEmpty()) {
+		Optional.ofNullable(requestInfo.getProxyConfig())
+				.map(proxyConfig -> new InetSocketAddress(proxyConfig.getProxyAddress(), proxyConfig.getProxyPort()))
+				.map(ProxySelector::of)
+				.ifPresent(clientBuilder::proxy);
+
+		if (requestInfo.getTrustCertStores() != null && !requestInfo.getTrustCertStores().isEmpty()) {
 			try {
 				SSLContext sslContext = SSLContext.getInstance("TLS");
 				GeneX509TrustManager x509TrustManager =
-						GeneX509TrustManager.newInstance(requestInfo.getPassPhrase(), requestInfo.getTrustCertInfos());
+						GeneX509TrustManager.newInstance(requestInfo.getPassPhrase(),
+								requestInfo.getTrustCertStores(), requestInfo.getTrustCertList());
 				sslContext.init(new KeyManager[0], new TrustManager[]{x509TrustManager}, new SecureRandom());
 				clientBuilder.sslContext(sslContext);
 			} catch (Exception e) {
@@ -1192,9 +1188,10 @@ public final class RequestUtils {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		for (CookieEntity cookieInfo : cookieList) {
-			if ((!requestUrl.startsWith(Globals.SECURE_HTTP_PROTOCOL)
-					&& cookieInfo.isSecure()) || (cookieInfo.getExpires() > DateTimeUtils.currentUTCTimeMillis())
-					|| cookieInfo.getMaxAge() == Globals.DEFAULT_VALUE_LONG || cookieInfo.getMaxAge() == 0L) {
+			if ((!requestUrl.startsWith(Globals.SECURE_HTTP_PROTOCOL) && cookieInfo.isSecure())
+					|| cookieInfo.getExpires() < DateTimeUtils.currentUTCTimeMillis()
+					|| cookieInfo.getMaxAge() == Globals.DEFAULT_VALUE_LONG
+					|| cookieInfo.getMaxAge() == 0L) {
 				continue;
 			}
 

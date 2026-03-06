@@ -17,9 +17,11 @@
 
 package org.nervousync.configs;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.configs.Configuration;
 import org.nervousync.utils.core.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
@@ -37,13 +39,13 @@ public abstract class AutoConfig {
 						ReflectionUtils.getAllDeclaredFields(this.getClass(), Boolean.TRUE)
 								.stream()
 								.filter(field -> field.isAnnotationPresent(Configuration.class))
-								.forEach(field -> {
-									Class<?> fieldType = field.getType();
-									Optional.ofNullable(field.getAnnotation(Configuration.class))
-											.map(Configuration::value)
-											.map(suffix -> configureManager.readConfigure(fieldType, suffix))
-											.ifPresent(configure ->
-													ReflectionUtils.setField(field, this, configure));
-								}));
+								.forEach(field -> this.readConfig(configureManager, field)));
+	}
+
+	private void readConfig(@Nonnull final ConfigureManager configureManager, @Nonnull final Field field) {
+		Optional.ofNullable(field.getAnnotation(Configuration.class))
+				.map(Configuration::value)
+				.flatMap(suffix -> configureManager.readConfigure(field.getType(), suffix))
+				.ifPresent(configure -> ReflectionUtils.setField(field, this, configure));
 	}
 }

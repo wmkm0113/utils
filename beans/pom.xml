@@ -5,14 +5,13 @@
     <parent>
         <groupId>org.nervousync</groupId>
         <artifactId>utils-parent</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.0.1</version>
     </parent>
     <artifactId>utils-beans</artifactId>
     <packaging>jar</packaging>
     <name>Nervousync Java Beans Utilities</name>
     <properties>
-        <jcifs.version>2.1.40</jcifs.version>
-        <yaml.version>2.5</yaml.version>
+        <yaml.version>2.6</yaml.version>
         <jaxb.version>4.0.6</jaxb.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
     </properties>
@@ -36,16 +35,22 @@
             <artifactId>maven-shade-plugin</artifactId>
             <version>3.6.1</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
         </dependency>
         <!-- JSON Support -->
-        <dependency>
-            <groupId>jakarta.json.bind</groupId>
-            <artifactId>jakarta.json.bind-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

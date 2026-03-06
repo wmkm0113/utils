@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.nervousync</groupId>
         <artifactId>utils-parent</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.0.1</version>
     </parent>
     <artifactId>utils-i18n</artifactId>
-    <name>Nervousync Java Internationalization Utilities</name>
     <packaging>jar</packaging>
+    <name>Nervousync Java Internationalization Utilities</name>
     <properties>
         <icu4j.version>78.2</icu4j.version>
     </properties>
@@ -39,6 +39,16 @@
             <artifactId>maven-shade-plugin</artifactId>
             <version>3.6.1</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>
@@ -50,10 +60,6 @@
             <scope>test</scope>
         </dependency>
         <!-- JSON Support -->
-        <dependency>
-            <groupId>jakarta.json.bind</groupId>
-            <artifactId>jakarta.json.bind-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

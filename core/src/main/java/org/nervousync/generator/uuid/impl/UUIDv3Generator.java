@@ -19,8 +19,8 @@ package org.nervousync.generator.uuid.impl;
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.generator.uuid.UUIDGenerator;
-import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.core.RawUtils;
+import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.security.SecurityUtils;
 
 import java.util.UUID;
@@ -32,7 +32,6 @@ import java.util.UUID;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 06, 2022 12:55:12 $
  */
-@Deprecated(since = "1.2.4")
 @Provider(name = IDUtils.UUIDv3, titleKey = "version3.uuid.id.generator.name")
 public final class UUIDv3Generator extends UUIDGenerator {
 

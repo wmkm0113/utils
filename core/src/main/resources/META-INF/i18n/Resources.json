@@ -196,6 +196,9 @@
       "Data_Size_Unknown_Raw_Error": {
         "pattern": "Unknown data size"
       },
+      "Names_Generator_Registered_ID_Info": {
+        "pattern": "Registered key generator code: {0}"
+      },
       "Not_Supported_Encryption_Mode_Zip_Error": {
         "pattern": "Unsupported encryption mode"
       },
@@ -752,6 +755,9 @@
       },
       "Data_Size_Unknown_Raw_Error": {
         "pattern": "未知的数据长度"
+      },
+      "Names_Generator_Registered_ID_Info": {
+        "pattern": "已注册的密钥生成器代码：{0}"
       },
       "Not_Supported_Encryption_Mode_Zip_Error": {
         "pattern": "不支持的加密方式"

@@ -5,7 +5,7 @@ org.nervousync.generator.cuid.impl.CUIDv2Generator
 org.nervousync.generator.ulid.ULIDGenerator
 org.nervousync.generator.uuid.impl.UUIDv1Generator
 org.nervousync.generator.uuid.impl.UUIDv2Generator
-org.nervousync.generator.uuid.impl.UUIDv4Generator
-org.nervousync.generator.uuid.impl.UUIDv6Generator
 org.nervousync.generator.uuid.impl.UUIDv3Generator
+org.nervousync.generator.uuid.impl.UUIDv4Generator
 org.nervousync.generator.uuid.impl.UUIDv5Generator
+org.nervousync.generator.uuid.impl.UUIDv6Generator

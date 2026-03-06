@@ -17,11 +17,13 @@
 package org.nervousync.beans.request;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Proxy;
 import java.util.*;
 
+import org.nervousync.beans.cert.CertStore;
 import org.nervousync.beans.cert.TrustCert;
 import org.nervousync.beans.cookie.CookieEntity;
 import org.nervousync.beans.header.SimpleHeader;
@@ -66,9 +68,14 @@ public final class RequestInfo {
 	 * <span class="zh-CN">发送加密请求时信任的证书列表</span>
 	 * <p class="en-US">默认为空列表，代表使用JDK默认的证书库</p>
 	 *
-	 * @see TrustCert
+	 * @see CertStore
 	 */
-	private final List<TrustCert> trustTrustCerts;
+	private final List<CertStore> trustCertStores;
+	/**
+	 * <span class="en-US">Trust certificate list</span>
+	 * <span class="zh-CN">信任证书列表</span>
+	 */
+	private final List<TrustCert> trustCertList;
 	/**
 	 * <span class="en-US">Pass phrase for system certificate library</span>
 	 * <span class="zh-CN">系统信任证书库读取密钥</span>
@@ -156,14 +163,16 @@ public final class RequestInfo {
 	 *                       <span class="zh-CN">发送请求的Cookie信息列表</span>
 	 */
 	private RequestInfo(final HttpMethodOption methodOption, final ProxyConfig proxyConfig,
-	                    final List<TrustCert> trustTrustCerts, final String passPhrase, final String userAgent,
+	                    final List<CertStore> trustCertStores, final List<TrustCert> trustCertList,
+	                    final String passPhrase, final String userAgent,
 	                    final String requestUrl, final String charset, final String contentType,
 	                    final int connectTimeOut, final int requestTimeOut, final byte[] postData,
 	                    final List<SimpleHeader> headers, final Map<String, String[]> parameters,
 	                    final Map<String, File> uploadParams, final List<CookieEntity> cookieList) {
 		this.methodOption = methodOption;
 		this.proxyConfig = proxyConfig;
-		this.trustTrustCerts = trustTrustCerts;
+		this.trustCertStores = trustCertStores;
+		this.trustCertList = trustCertList;
 		this.passPhrase = passPhrase;
 		this.userAgent = userAgent;
 		this.requestUrl = requestUrl;
@@ -216,7 +225,7 @@ public final class RequestInfo {
 	 * <h3 class="en-US">Getter method for proxy config</h3>
 	 * <h3 class="zh-CN">代理服务器设置的Getter方法</h3>
 	 */
-	public ProxyConfig getProxyInfo() {
+	public ProxyConfig getProxyConfig() {
 		return this.proxyConfig;
 	}
 
@@ -224,8 +233,19 @@ public final class RequestInfo {
 	 * <h3 class="en-US">Getter method for the trusted certificate list</h3>
 	 * <h3 class="zh-CN">信任证书列表的Getter方法</h3>
 	 */
-	public List<TrustCert> getTrustCertInfos() {
-		return this.trustTrustCerts;
+	public List<CertStore> getTrustCertStores() {
+		return this.trustCertStores;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the trust certificate list</h3>
+	 * <h3 class="zh-CN">信任证书列表的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Trust certificate list</span>
+	 * <span class="zh-CN">信任证书列表</span>
+	 */
+	public List<TrustCert> getTrustCertList() {
+		return this.trustCertList;
 	}
 
 	/**
@@ -369,9 +389,14 @@ public final class RequestInfo {
 		 * <span class="zh-CN">发送加密请求时信任的证书列表</span>
 		 * <p class="en-US">默认为空列表，代表使用JDK默认的证书库</p>
 		 *
-		 * @see TrustCert
+		 * @see CertStore
 		 */
-		private final List<TrustCert> trustTrustCerts = new ArrayList<>();
+		private final List<CertStore> trustCertStores = new ArrayList<>();
+		/**
+		 * <span class="en-US">Trust certificate list</span>
+		 * <span class="zh-CN">信任证书列表</span>
+		 */
+		private final List<TrustCert> trustCertList = new ArrayList<>();
 		/**
 		 * <span class="en-US">Pass phrase for system certificate library</span>
 		 * <span class="zh-CN">系统信任证书库读取密钥</span>
@@ -445,8 +470,8 @@ public final class RequestInfo {
 		 * <span class="zh-CN">RequestInfo实例对象</span>
 		 */
 		public RequestInfo build() {
-			return new RequestInfo(this.methodOption, this.proxyConfig, this.trustTrustCerts, this.passPhrase,
-					this.userAgent, this.requestUrl, this.charset, this.contentType, this.connectTimeOut,
+			return new RequestInfo(this.methodOption, this.proxyConfig, this.trustCertStores, this.trustCertList,
+					this.passPhrase, this.userAgent, this.requestUrl, this.charset, this.contentType, this.connectTimeOut,
 					this.requestTimeOut, this.postData, this.headers, this.parameters, this.uploadParams, this.cookieList);
 		}
 
@@ -484,19 +509,41 @@ public final class RequestInfo {
 		 * <h3 class="en-US">Add the trusted certificate library</h3>
 		 * <h3 class="zh-CN">添加信任证书库</h3>
 		 *
-		 * @param certContent  <span class="en-US">Trust certificate data bytes</span>
-		 *                     <span class="zh-CN">信任证书二进制字节数组</span>
-		 * @param certPassword <span class="en-US">Password of trust certificate</span>
-		 *                     <span class="zh-CN">读取证书的密钥</span>
+		 * @param certContent <span class="en-US">Certificate library data bytes</span>
+		 *                    <span class="zh-CN">证书库二进制字节数组</span>
+		 * @param certAlias   <span class="en-US">Certificate alias name</span>
+		 *                    <span class="zh-CN">证书别名</span>
 		 * @return <span class="en-US">Current RequestBuilder instance</span>
 		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
 		 */
-		public RequestBuilder addTrustCertificate(final byte[] certContent, final String certPassword) {
-			Optional.of(TrustCert.newInstance(certContent, certPassword))
-					.filter(trustCert ->
-							this.trustTrustCerts.stream().noneMatch(existCert ->
-									existCert.getSha256().equals(trustCert.getSha256())))
-					.ifPresent(this.trustTrustCerts::add);
+		public RequestBuilder addTrustCertificate(final byte[] certContent, final String certAlias) {
+			Optional.of(TrustCert.newInstance(certContent, certAlias))
+					.filter(certStore ->
+							this.trustCertList.stream().noneMatch(existCert ->
+									existCert.getSha256().equals(certStore.getSha256())))
+					.ifPresent(this.trustCertList::add);
+			return this;
+		}
+
+		/**
+		 * <h3 class="en-US">Add the trusted certificate library</h3>
+		 * <h3 class="zh-CN">添加信任证书库</h3>
+		 *
+		 * @param storePath     <span class="en-US">Certificate library file path</span>
+		 *                      <span class="zh-CN">证书库文件所在位置</span>
+		 * @param storePassword <span class="en-US">Certificate library password for read</span>
+		 *                      <span class="zh-CN">读取证书的密码</span>
+		 * @return <span class="en-US">Current RequestBuilder instance</span>
+		 * <span class="zh-CN">当前RequestBuilder实例对象</span>
+		 * @throws FileNotFoundException <span class="en-US">Certificate library file not found</span>
+		 *                               <span class="zh-CN">证书库文件未找到</span>
+		 */
+		public RequestBuilder addTrustStore(final String storePath, final String storePassword) throws FileNotFoundException {
+			Optional.of(CertStore.newInstance(storePath, storePassword))
+					.filter(certStore ->
+							this.trustCertStores.stream().noneMatch(existCert ->
+									existCert.getSha256().equals(certStore.getSha256())))
+					.ifPresent(this.trustCertStores::add);
 			return this;
 		}
 
@@ -904,6 +951,7 @@ public final class RequestInfo {
 			this.password = password;
 		}
 	}
+
 	/**
 	 * <h2 class="en-US">Abstract proxy configure builder for Generics Type</h2>
 	 * <p class="en-US">

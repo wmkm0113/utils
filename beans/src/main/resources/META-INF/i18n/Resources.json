@@ -15,6 +15,12 @@
       "Convert_String_Error": {
         "pattern": "An error occurred while converting the instance object to a string"
       },
+      "Convert_Object_Error": {
+        "pattern": "An error occurred while converting the string to instance object"
+      },
+      "Convert_List_Error": {
+        "pattern": "An error occurred while converting the string to object list"
+      },
       "Parse_Empty_String_Error": {
         "pattern": "Cannot parse empty string"
       },
@@ -52,6 +58,12 @@
       },
       "Convert_String_Error": {
         "pattern": "转换实例对象为字符串时出现错误"
+      },
+      "Convert_Object_Error": {
+        "pattern": "转换字符串为实例对象时出现错误"
+      },
+      "Convert_List_Error": {
+        "pattern": "转换字符串为实例对象列表时出现错误"
       },
       "Parse_Empty_String_Error": {
         "pattern": "无法解析空字符串"

@@ -6,6 +6,7 @@ import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
 import org.nervousync.configs.AutoConfig;
 import org.nervousync.configs.ConfigureManager;
+import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.exceptions.builder.BuilderException;
@@ -21,11 +22,12 @@ import org.nervousync.utils.core.FileUtils;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.i18n.MultilingualUtils;
 import org.nervousync.utils.id.IDUtils;
+import org.nervousync.utils.mail.MailClient;
 import org.nervousync.utils.mail.MailUtils;
 import org.nervousync.utils.properties.PropertiesUtils;
 import org.nervousync.utils.security.SecurityUtils;
 
-import java.net.Proxy;
+//import java.net.Proxy;
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -106,16 +108,20 @@ public final class MailTest extends BaseTest {
 				.storagePath(PROPERTIES.getProperty("config.storagePath"))
 				.signer(x509Certificate, keyPair.getPrivate())
 				.build();
-		String xmlContent = BeanUtils.objectToString(mailConfig);
+		String xmlContent = BeanUtils.objectToString(mailConfig, StringType.XML);
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
-		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, MailConfig.class, "https://nervousync.org/schemas/mail");
+		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, StringType.XML, MailConfig.class,
+				"https://nervousync.org/schemas/proxy", "https://nervousync.org/schemas/mail");
 		this.logger.info("Mail_Config_Validate", BeanUtils.validate(parseConfig));
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
-		Optional.ofNullable(CONFIGURE_MANAGER.readConfigure(MailConfig.class))
-				.ifPresent(readConfig -> this.logger.info("Mail_Parse_Config_Info", BeanUtils.objectToString(readConfig)));
+		CONFIGURE_MANAGER.readConfigure(MailConfig.class)
+				.ifPresent(readConfig ->
+						this.logger.info("Mail_Parse_Config_Info",
+								BeanUtils.objectToString(readConfig, StringType.JSON)));
 
 		AutomaticConfig automaticConfig = new AutomaticConfig();
-		this.logger.info("Mail_Generate_Config_Info", BeanUtils.objectToString(automaticConfig.getMailConfig()));
+		this.logger.info("Mail_Generate_Config_Info",
+				BeanUtils.objectToString(automaticConfig.getMailConfig(), StringType.JSON));
 	}
 
 	@Test
@@ -125,9 +131,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					mailAgent.folderList().forEach(folderName -> this.logger.info("Mail_Folder", folderName));
 				});
@@ -140,9 +146,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
 				.ifPresent(mailConfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailConfig);
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					MailObject mailObject = new MailObject();
 					Optional.ofNullable(PROPERTIES.getProperty("mail.sender")).ifPresent(mailObject::setSendAddress);
@@ -174,9 +180,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
@@ -205,9 +211,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
@@ -239,9 +245,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_TRASH)
 							.stream()
@@ -262,9 +268,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					mailAgent.mailUids(Globals.DEFAULT_EMAIL_FOLDER_INBOX)
 							.stream()
@@ -292,9 +298,9 @@ public final class MailTest extends BaseTest {
 			return;
 		}
 		Optional.ofNullable(CONFIGURE_MANAGER)
-				.map(manager -> manager.readConfigure(MailConfig.class))
-				.ifPresent(mailCOnfig -> {
-					MailUtils.Agent mailAgent = MailUtils.mailAgent(mailCOnfig);
+				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+				.ifPresent(mailConfig -> {
+					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);
 					this.logger.info("Inbox_Count", mailAgent.mailCount(Globals.DEFAULT_EMAIL_FOLDER_INBOX));
 					this.logger.info("Spam_Count: {}", mailAgent.mailCount(Globals.DEFAULT_EMAIL_FOLDER_SPAM));

@@ -115,7 +115,7 @@ public final class ServiceUtils {
 	 *                               <span class="zh-CN">如果没有指定协议，或者发现未知协议，或者spec为空。</span>
 	 */
 	public static <T> T SOAPClient(final String serviceLocation, final Class<T> serviceInterface,
-	                               final Map<String, String> configMap) throws MalformedURLException {
+	                               final Map<String, Object> configMap) throws MalformedURLException {
 		return SOAPClient(serviceLocation, serviceInterface, null, configMap);
 	}
 
@@ -162,7 +162,7 @@ public final class ServiceUtils {
 	 *                               <span class="zh-CN">如果没有指定服务地址、协议，或者发现未知协议，或者spec为空。</span>
 	 */
 	public static <T> T SOAPClient(final String serviceLocation, final Class<T> serviceInterface,
-	                               final HandlerResolver handlerResolver, final Map<String, String> configMap)
+	                               final HandlerResolver handlerResolver, final Map<String, Object> configMap)
 			throws MalformedURLException {
 		if (StringUtils.isEmpty(serviceLocation)
 				|| !serviceInterface.isAnnotationPresent(WebServiceClient.class)) {
@@ -262,7 +262,7 @@ public final class ServiceUtils {
 	 *                               <span class="zh-CN">如果没有指定服务地址。</span>
 	 */
 	public static <T> T RestfulClient(final String targetAddress, final Class<T> serviceInterface,
-	                                  final Map<String, String> headerMap) throws MalformedURLException {
+	                                  final Map<String, Object> headerMap) throws MalformedURLException {
 		return RestfulClient(targetAddress, null, serviceInterface, headerMap);
 	}
 
@@ -286,7 +286,7 @@ public final class ServiceUtils {
 	 *                               <span class="zh-CN">如果没有指定服务地址。</span>
 	 */
 	public static <T> T RestfulClient(final String targetAddress, final ClientBuilder clientBuilder,
-	                                  final Class<T> serviceInterface, final Map<String, String> headerMap)
+	                                  final Class<T> serviceInterface, final Map<String, Object> headerMap)
 			throws MalformedURLException {
 		if (StringUtils.isEmpty(targetAddress)) {
 			throw new MalformedURLException("Service location is empty");
@@ -339,7 +339,7 @@ public final class ServiceUtils {
 		 * <span class="en-US">Request header information map</span>
 		 * <span class="zh-CN">请求头部信息映射</span>
 		 */
-		private final Map<String, String> headerMap;
+		private final Map<String, Object> headerMap;
 
 		/**
 		 * <h3 class="en-US">Constructor for RestfulInterceptor</h3>
@@ -353,7 +353,7 @@ public final class ServiceUtils {
 		 *                      <span class="zh-CN">请求头部信息映射</span>
 		 */
 		RestfulInterceptor(final String requestPath, final ClientBuilder clientBuilder,
-		                   final Map<String, String> headerMap) {
+		                   final Map<String, Object> headerMap) {
 			this.requestPath = requestPath;
 			this.clientBuilder = (clientBuilder == null) ? ClientBuilder.newBuilder() : clientBuilder;
 			this.headerMap = new HashMap<>();
@@ -561,16 +561,19 @@ public final class ServiceUtils {
 				this.headerMap.forEach(builder::header);
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Service request path: {}", servicePath);
-					LOGGER.debug("Request headers: {}", BeanUtils.objectToString(this.headerMap));
-					LOGGER.debug("Request parameters: {}", BeanUtils.objectToString(queryParameters));
-					LOGGER.debug("Request matrix parameters: {}", BeanUtils.objectToString(matrixParameters));
+					LOGGER.debug("Request headers: {}",
+							BeanUtils.objectToString(this.headerMap, StringType.JSON));
+					LOGGER.debug("Request parameters: {}",
+							BeanUtils.objectToString(queryParameters, StringType.JSON));
+					LOGGER.debug("Request matrix parameters: {}",
+							BeanUtils.objectToString(matrixParameters, StringType.JSON));
 				}
 				return this.execute(methodOption, builder, form, method);
 			}
 		}
 
 		/**
-		 * <h3 class="en-US">Send request and initialize response instance</h3>
+		 * <h3 class="en-US">Send a request and initialize the response instance</h3>
 		 * <h3 class="zh-CN">发送请求并初始化响应实例对象</h3>
 		 *
 		 * @param methodOption <span class="en-US">HTTP method option Enumerations</span>

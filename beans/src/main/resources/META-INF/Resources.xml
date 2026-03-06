@@ -5,6 +5,8 @@
     <entry key="Register_Bean_Config_Count_Debug">Registered bean config count: {0}</entry>
     <entry key="Data_Map_Debug">Data Map: {0}</entry>
     <entry key="Convert_String_Error">An error occurred while converting the instance object to a string</entry>
+    <entry key="Convert_Object_Error">An error occurred while converting the string to instance object</entry>
+    <entry key="Convert_List_Error">An error occurred while converting the string to object list</entry>
     <entry key="Parse_Empty_String_Error">Cannot parse empty string</entry>
     <entry key="Parse_String_Debug">Parse string: {0} use encoding: {1} to bean: {2}</entry>
     <entry key="Parse_String_Error">Error parsing empty string</entry>

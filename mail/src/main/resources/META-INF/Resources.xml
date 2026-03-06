@@ -21,7 +21,12 @@
     <entry key="Send_Mail_Error">An error occurs when sending email</entry>
     <entry key="Folders_Mail_Error">An error occurs when reading email folder</entry>
     <entry key="Receive_Mail_Error">An error occurs when receiving email</entry>
+    <entry key="Initialize_Client_Error">Initialize mail client error!</entry>
     <entry key="Set_Status_Mail_Error">An error occurs when setting email status</entry>
     <entry key="Verify_Signature_Mail_Error">An error occurs when validating email digital signature</entry>
     <entry key="Attachment_Receive_Mail_Error">An error occurs when receiving email attachment information</entry>
+    <entry key="EMail_Address_Not_Valid">E-mail address is not valid</entry>
+    <entry key="Receive_Protocol_Unknown">Unknown receive protocol</entry>
+    <entry key="Send_Config_Error">An error occurs when sending email configure</entry>
+    <entry key="Receive_Config_Error">An error occurs when receiving email configure</entry>
 </properties>

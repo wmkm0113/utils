@@ -26,7 +26,6 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.converter.BeanConverter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
@@ -53,23 +52,23 @@ import java.util.*;
 public final class DefaultBeanConverterImpl implements BeanConverter {
 
 	@Override
-	public String objectToString(final Object object) {
-		OutputConfig outputConfig = object.getClass().getAnnotation(OutputConfig.class);
-		switch (BeanUtils.type(object.getClass())) {
+	public String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                             final String encoding, final boolean formatted) {
+		String characterEncoding = StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding;
+		switch (stringType) {
 			case XML:
 				if (!object.getClass().isAnnotationPresent(XmlRootElement.class)) {
 					return Globals.DEFAULT_VALUE_STRING;
 				}
 				StringWriter stringWriter = null;
 				try {
-					String characterEncoding = outputConfig.encoding();
 					stringWriter = new StringWriter();
 					XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(stringWriter);
 					CDataStreamWriter streamWriter = new CDataStreamWriter(xmlWriter);
 
 					JAXBContext jaxbContext = JAXBContext.newInstance(object.getClass());
 					Marshaller marshaller = jaxbContext.createMarshaller();
-					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, outputConfig.formatted());
+					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formatted);
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, characterEncoding);
 					marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 
@@ -78,7 +77,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					streamWriter.flush();
 					streamWriter.close();
 
-					if (outputConfig.formatted()) {
+					if (formatted) {
 						Transformer transformer = TransformerFactory.newInstance().newTransformer();
 						transformer.setOutputProperty(OutputKeys.ENCODING, characterEncoding);
 						transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -92,9 +91,8 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					}
 
 					StringBuilder stringBuilder =
-							new StringBuilder()
-									.append(StringUtils.replace(BeanUtils.FRAGMENT_TEMPLATE, "{}", characterEncoding));
-					if (outputConfig.formatted()) {
+							new StringBuilder(StringUtils.replace(BeanUtils.FRAGMENT_TEMPLATE, "{}", characterEncoding));
+					if (formatted) {
 						stringBuilder.append(FileUtils.LF);
 					}
 					stringBuilder.append(stringWriter);
@@ -108,8 +106,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 					IOUtils.closeStream(stringWriter);
 				}
 			case JSON:
-				JsonbConfig config = new JsonbConfig().withFormatting(outputConfig.formatted())
-						.withEncoding(outputConfig.encoding());
+				JsonbConfig config = new JsonbConfig().withFormatting(formatted).withEncoding(characterEncoding);
 				try (Jsonb jsonb = JsonbBuilder.create(config)) {
 					return jsonb.toJson(object);
 				} catch (Exception e) {

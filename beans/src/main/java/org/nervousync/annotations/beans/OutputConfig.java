@@ -49,17 +49,6 @@ public @interface OutputConfig {
 	StringType type() default StringType.XML;
 
 	/**
-	 * <h3 class="en-US">Format output string status</h3>
-	 * <span class="en-US"><code>true</code> for format output string, e.g.: add break line, add indent etc., <code>false</code> for output string in one line</span>
-	 * <h3 class="en-US">格式化输出字符串状态</h3>
-	 * <span class="en-US"><code>true</code>格式化输出的字符串，添加换行及缩进等。<code>false</code>在同一行输出所有数据</span>
-	 *
-	 * @return <span class="en-US">Formatted status</span>
-	 * <span class="zh-CN">格式化输出状态</span>
-	 */
-	boolean formatted() default true;
-
-	/**
 	 * <h3 class="en-US">Output string encoding</h3>
 	 * <span class="en-US">Default is UTF-8</span>
 	 * <h3 class="zh-CN">输出字符串编码集</h3>

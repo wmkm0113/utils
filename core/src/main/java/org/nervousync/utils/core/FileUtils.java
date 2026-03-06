@@ -104,8 +104,15 @@ public final class FileUtils {
 	 * <h2 class="en-US">Compress file operator utilities</h2>
 	 * <h2 class="zh-CN">压缩文件操作工具</h2>
 	 */
-	private static final CompressOperator COMPRESS_OPERATOR =
-			ServiceLoader.load(CompressOperator.class).findFirst().orElse(new DefaultCompressOperatorImpl());
+	private static final CompressOperator COMPRESS_OPERATOR;
+
+	static {
+		CompressOperator compressOperator = ServiceLoader.load(CompressOperator.class).findFirst().orElse(null);
+		if (compressOperator == null) {
+			compressOperator = new DefaultCompressOperatorImpl();
+		}
+		COMPRESS_OPERATOR = compressOperator;
+	}
 
 	/**
 	 * <h3 class="en-US">Private constructor for BeanUtils</h3>
@@ -310,12 +317,12 @@ public final class FileUtils {
 						try (JarFile jarFile = new JarFile(getFile(targetPath.getFilePath()))) {
 							JarEntry jarEntry = jarFile.getJarEntry(targetPath.getEntryPath());
 							if (jarEntry != null) {
-								inputStream = jarFile.getInputStream(jarEntry);
+								inputStream = new ByteArrayInputStream(IOUtils.readBytes(jarFile.getInputStream(jarEntry)));
 							}
 						}
 						break;
 					case Globals.URL_PROTOCOL_ZIP:
-						inputStream = COMPRESS_OPERATOR.entryInputStream(targetPath);
+						inputStream = new ByteArrayInputStream(COMPRESS_OPERATOR.entryBytes(targetPath));
 						break;
 				}
 			} catch (ZipException e) {

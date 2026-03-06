@@ -51,21 +51,16 @@ public final class GeneratorTest extends BaseTest {
 		this.logger.info("UUID_Random", 2, IDUtils.UUIDv2());
 		IDUtils.UUIDv2Config(null, UUIDIdentifier.RANDOM, UUIDLocalDomain.GROUP);
 		this.logger.info("UUID_Random", 2, IDUtils.UUIDv2());
-
+		//  Version 3
+		this.logger.info("UUID_Random", 3, IDUtils.UUIDv3("TestVersion3".getBytes()));
 		//  Version 4
 		this.logger.info("UUID_Random", 4, IDUtils.UUIDv4());
+		//  Version 5
+		this.logger.info("UUID_Random", 5, IDUtils.UUIDv5("TestVersion5".getBytes()));
 		//  Version 6
 		for (int i = 0; i < 10; i++) {
 			this.logger.info("UUID_Random", 6, IDUtils.UUIDv6());
 		}
-	}
-
-	@Test
-	@Order(25)
-	@Deprecated(since = "1.2.4")
-	public void deprecatedUUID() {
-		this.logger.info("UUID_Random", 3, IDUtils.UUIDv3("TestVersion3".getBytes()));
-		this.logger.info("UUID_Random", 5, IDUtils.UUIDv5("TestVersion5".getBytes()));
 	}
 
 	@Test

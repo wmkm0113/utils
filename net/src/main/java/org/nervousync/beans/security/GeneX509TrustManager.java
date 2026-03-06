@@ -16,6 +16,7 @@
  */
 package org.nervousync.beans.security;
 
+import org.nervousync.beans.cert.CertStore;
 import org.nervousync.beans.cert.TrustCert;
 import org.nervousync.exceptions.cert.CertInfoException;
 import org.nervousync.utils.core.FileUtils;
@@ -28,9 +29,11 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import java.io.ByteArrayInputStream;
 import java.security.KeyStore;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.*;
 
 /**
  * <h2 class="en-US">X509 trust manager</h2>
@@ -59,6 +62,11 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 * <span class="en-US">Trust certificate library list</span>
 	 * <span class="zh-CN">信任证书库列表</span>
 	 */
+	private final List<CertStore> certStoreList;
+	/**
+	 * <span class="en-US">Trust certificate list</span>
+	 * <span class="zh-CN">信任证书列表</span>
+	 */
 	private final List<TrustCert> trustCertList;
 	/**
 	 * <span class="en-US">Trust manager instance</span>
@@ -72,13 +80,15 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 *
 	 * @param passPhrase    <span class="en-US">Password of read certificate from library</span>
 	 *                      <span class="zh-CN">读取证书的密码</span>
-	 * @param trustCertList <span class="en-US">Trust certificate library list</span>
+	 * @param certStoreList <span class="en-US">Trust certificate library list</span>
 	 *                      <span class="zh-CN">信任证书库列表</span>
 	 * @throws CertInfoException <span class="en-US">If not found X509TrustManager instance</span>
 	 *                           <span class="zh-CN">当没有找到X509TrustManager实例对象时</span>
 	 */
-	private GeneX509TrustManager(final String passPhrase, final List<TrustCert> trustCertList) throws CertInfoException {
+	private GeneX509TrustManager(final String passPhrase, final List<CertStore> certStoreList,
+	                             final List<TrustCert> trustCertList) throws CertInfoException {
 		this.passPhrase = StringUtils.notBlank(passPhrase) ? passPhrase : DEFAULT_PASSPHRASE;
+		this.certStoreList = certStoreList;
 		this.trustCertList = trustCertList;
 		this.initManager();
 	}
@@ -90,20 +100,20 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 *
 	 * @param passPhrase    <span class="en-US">Password of read certificate from library</span>
 	 *                      <span class="zh-CN">读取证书的密码</span>
-	 * @param trustCertList <span class="en-US">Trust certificate library list</span>
+	 * @param certStoreList <span class="en-US">Trust certificate library list</span>
 	 *                      <span class="zh-CN">信任证书库列表</span>
 	 * @return <span class="en-US">Generated GeneX509TrustManager instance</span>
 	 * <span class="zh-CN">生成的GeneX509TrustManager实例对象</span>
 	 * @throws CertInfoException <span class="en-US">If not found X509TrustManager instance</span>
 	 *                           <span class="zh-CN">当没有找到X509TrustManager实例对象时</span>
 	 */
-	public static GeneX509TrustManager newInstance(final String passPhrase, final List<TrustCert> trustCertList)
-			throws CertInfoException {
-		return new GeneX509TrustManager(passPhrase, trustCertList);
+	public static GeneX509TrustManager newInstance(final String passPhrase, final List<CertStore> certStoreList,
+	                                               final List<TrustCert> trustCertList) throws CertInfoException {
+		return new GeneX509TrustManager(passPhrase, certStoreList, trustCertList);
 	}
 
 	/**
-	 * <h3 class="en-US">Check client certificate is trusted</h3>
+	 * <h3 class="en-US">Check the client certificate is trusted</h3>
 	 * <h3 class="zh-CN">检查客户端证书信任状态</h3>
 	 *
 	 * @param x509certificates <span class="en-US">the peer certificate chain</span>
@@ -120,7 +130,7 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	}
 
 	/**
-	 * <h3 class="en-US">Check server certificate is trusted</h3>
+	 * <h3 class="en-US">Check the server certificate is trusted</h3>
 	 * <h3 class="zh-CN">检查客户端证书信任状态</h3>
 	 *
 	 * @param x509certificates <span class="en-US">the peer certificate chain</span>
@@ -139,7 +149,7 @@ public final class GeneX509TrustManager implements X509TrustManager {
 	 * <h3 class="en-US">Retrieve the accepted issuers certificate array</h3>
 	 * <h3 class="zh-CN">读取信任签发者的证书数组</h3>
 	 *
-	 * @return    <span class="en-US">Return an array of certificate authority certificates which are trusted for authenticating peers.</span>
+	 * @return <span class="en-US">Return an array of certificate authority certificates which are trusted for authenticating peers.</span>
 	 * <span class="zh-CN">返回一组受信任的证书颁发机构证书，可用于对对等方进行身份验证。</span>
 	 */
 	@Override
@@ -159,12 +169,23 @@ public final class GeneX509TrustManager implements X509TrustManager {
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			if (!FileUtils.isExists(SystemUtils.systemCertPath())) {
 				this.logger.warn("System_Certificate_Not_Found_Warn");
+				//  Load empty keystore
+				keyStore.load(null, new char[0]);
 			} else {
 				keyStore.load(FileUtils.loadFile(SystemUtils.systemCertPath()), this.passPhrase.toCharArray());
 			}
+			for (CertStore certStore : this.certStoreList) {
+				for (Map.Entry<String, Certificate> entry : this.readCertificates(certStore).entrySet()) {
+					keyStore.setCertificateEntry(entry.getKey(), entry.getValue());
+				}
+			}
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 			for (TrustCert trustCert : this.trustCertList) {
-				keyStore.load(new ByteArrayInputStream(trustCert.getCertContent()),
-						trustCert.getCertPassword().toCharArray());
+				Certificate certificate =
+						certificateFactory.generateCertificate(new ByteArrayInputStream(trustCert.getCertContent()));
+				if (certificate != null) {
+					keyStore.setCertificateEntry(trustCert.getCertAlias(), certificate);
+				}
 			}
 			TrustManagerFactory trustManagerFactory =
 					TrustManagerFactory.getInstance("SunX509", "SunJSSE");
@@ -176,9 +197,40 @@ public final class GeneX509TrustManager implements X509TrustManager {
 				}
 			}
 		} catch (Exception e) {
+			if (e instanceof CertInfoException) {
+				throw (CertInfoException) e;
+			}
 			throw new CertInfoException(0x000000160001L, e);
 		}
 
 		throw new CertInfoException(0x000000160002L);
+	}
+
+	/**
+	 * <h3 class="en-US">Read all certificate and alias mapping tables in the trusted certificate store.</h3>
+	 * <h3 class="zh-CN">读取信任证书库中的所有证书和别名映射表</h3>
+	 *
+	 * @param certStore <span class="en-US">Certificate store instance object</span>
+	 *                  <span class="zh-CN">证书库信息</span>
+	 * @return <span class="en-US">Mapping table between certificate aliases and certificate instance objects</span>
+	 * <span class="zh-CN">证书别名和证书实例对象的映射表</span>
+	 * @throws CertInfoException <span class="en-US">If not found X509TrustManager instance</span>
+	 *                           <span class="zh-CN">当没有找到X509TrustManager实例对象时</span>
+	 */
+	private Hashtable<String, Certificate> readCertificates(final CertStore certStore) throws CertInfoException {
+		Hashtable<String, Certificate> certificates = new Hashtable<>();
+		try {
+			KeyStore keyStore = KeyStore.getInstance("JKS");
+			keyStore.load(FileUtils.loadFile(certStore.getStorePath()), this.passPhrase.toCharArray());
+			Enumeration<String> enumeration = keyStore.aliases();
+			while (enumeration.hasMoreElements()) {
+				String alias = enumeration.nextElement();
+				Optional.ofNullable(keyStore.getCertificate(alias))
+						.ifPresent(certificate -> certificates.put(alias, certificate));
+			}
+		} catch (Exception e) {
+			throw new CertInfoException(0x000000160001L, e);
+		}
+		return certificates;
 	}
 }

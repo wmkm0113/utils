@@ -20,7 +20,6 @@ public final class DigestTest extends BaseTest {
     }
 
     @Test
-    @Deprecated
     @Order(10)
     public void MD5() throws CryptoException {
         CryptoAdaptor secureAdapter = SecurityUtils.MD5();
@@ -33,7 +32,6 @@ public final class DigestTest extends BaseTest {
     }
 
     @Test
-    @Deprecated
     @Order(20)
     public void SHA1() throws CryptoException {
         CryptoAdaptor secureAdapter = SecurityUtils.SHA1();

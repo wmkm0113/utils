@@ -222,7 +222,7 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public <T> T readConfigure(@Nonnull final Class<T> targetClass) {
+	public <T> Optional<T> readConfigure(@Nonnull final Class<T> targetClass) {
 		return this.readConfigure(targetClass, Globals.DEFAULT_VALUE_STRING);
 	}
 
@@ -239,12 +239,9 @@ public final class ConfigureManager {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public <T> T readConfigure(@Nonnull final Class<T> targetClass, final String suffix) {
-		OutputConfig outputConfig = targetClass.getAnnotation(OutputConfig.class);
-		if (outputConfig == null) {
-			return null;
-		}
-		return this.readConfigure(targetClass, suffix, outputConfig);
+	public <T> Optional<T> readConfigure(@Nonnull final Class<T> targetClass, final String suffix) {
+		return Optional.ofNullable(targetClass.getAnnotation(OutputConfig.class))
+				.map(outputConfig -> this.readConfigure(targetClass, suffix, outputConfig));
 	}
 
 	/**
@@ -285,7 +282,7 @@ public final class ConfigureManager {
 				filePath = this.basePath + Globals.DEFAULT_PAGE_SEPARATOR + fileName + extName;
 			}
 
-			if (FileUtils.saveFile(filePath, BeanUtils.objectToString(object))) {
+			if (FileUtils.saveFile(filePath, BeanUtils.objectToString(object, stringType))) {
 				if (!this.existsFiles.containsKey(fileName)) {
 					this.existsFiles.put(fileName, filePath);
 				}
@@ -352,7 +349,7 @@ public final class ConfigureManager {
 		StringType stringType = stringType(filePath);
 		return Optional.of(FileUtils.readFile(filePath))
 				.filter(StringUtils::notBlank)
-				.map(content -> BeanUtils.stringToObject(content, targetClass))
+				.map(content -> BeanUtils.stringToObject(content, stringType, targetClass))
 				.map(configure -> {
 					this.encryptFields(configure);
 					return this.saveConfigure(configure, suffix);
@@ -387,7 +384,7 @@ public final class ConfigureManager {
 					.filter(checkType(outputConfig.type()))
 					.map(filePath -> FileUtils.readFile(filePath, outputConfig.encoding()))
 					.map(readData ->
-							BeanUtils.stringToObject(readData, targetClass, schemaPath(targetClass)))
+							BeanUtils.stringToObject(readData, outputConfig.type(), targetClass, schemaPath(targetClass)))
 					.map(readConfig -> {
 						this.decryptFields(readConfig);
 						if (BeanUtils.validate(outputConfig.type())) {

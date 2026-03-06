@@ -58,8 +58,11 @@ public final class SecurityUtils {
 	 */
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(SecurityUtils.class);
 
-	private static final SecurityAdaptor SECURITY_ADAPTOR =
-			ServiceLoader.load(SecurityAdaptor.class).findFirst().orElse(new DefaultSecurityAdaptorImpl());
+	/**
+	 * <span class="en-US">Security adaptor instance object</span>
+	 * <span class="zh-CN">安全适配器实例对象</span>
+	 */
+	private static final SecurityAdaptor SECURITY_ADAPTOR;
 
 	/**
 	 * <span class="en-US">Registered CRC configure information</span>
@@ -68,6 +71,7 @@ public final class SecurityUtils {
 	private static final Map<String, CRCConfig> REGISTERED_CRC_CONFIG = new HashMap<>();
 
 	static {
+		SECURITY_ADAPTOR = ServiceLoader.load(SecurityAdaptor.class).findFirst().orElse(new DefaultSecurityAdaptorImpl());
 		registerConfig("CRC-3/GSM",
 				CRCConfig.newInstance(3, 0x3, 0x0, 0x7, Boolean.FALSE, Boolean.FALSE));
 		registerConfig("CRC-3/ROHC",
@@ -403,7 +407,6 @@ public final class SecurityUtils {
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	@Deprecated(since = "1.1.4")
 	public static CryptoAdaptor MD5() throws CryptoException {
 		return SECURITY_ADAPTOR.initDigest(new CipherConfig("MD5"), null);
 	}
@@ -417,36 +420,8 @@ public final class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	@Deprecated(since = "1.1.4")
 	public static byte[] MD5(final Object source) {
 		return digest("MD5", source);
-	}
-
-	/**
-	 * <h3 class="en-US">Convert the binary data using the given encoding type.</h3>
-	 * <h3 class="zh-CN">使用给定的编码类型对二进制数据进行转换</h3>
-	 *
-	 * @param dataBytes  <span class="en-US">Binary data array</span>
-	 *                   <span class="zh-CN">二进制数据</span>
-	 * @param encodeType <span class="en-US">String encoding type</span>
-	 *                   <span class="zh-CN">字符串的编码类型</span>
-	 * @return <span class="en-US">Converted string</span>
-	 * <span class="zh-CN">转换后的字符串</span>
-	 */
-	private static String encode(@Nonnull final byte[] dataBytes, @Nonnull final EncodeType encodeType) {
-		if (dataBytes.length == 0) {
-			return Globals.DEFAULT_VALUE_STRING;
-		}
-		switch (encodeType) {
-			case BASE32:
-				return StringUtils.base32Encode(dataBytes);
-			case BASE64:
-				return StringUtils.base64Encode(dataBytes);
-			case HEX:
-				return ConvertUtils.bytesToHex(dataBytes);
-			default:
-				return Globals.DEFAULT_VALUE_STRING;
-		}
 	}
 
 	/**
@@ -458,9 +433,8 @@ public final class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	@Deprecated(since = "1.1.4")
 	public static String MD5(final Object source, @Nonnull final EncodeType encodeType) {
-		return encode(MD5(source), encodeType);
+		return SecurityUtils.encode(MD5(source), encodeType);
 	}
 
 	/**
@@ -505,7 +479,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static String HmacMD5(final byte[] keyBytes, final Object source, @Nonnull final EncodeType encodeType) {
-		return encode(HmacMD5(keyBytes, source), encodeType);
+		return SecurityUtils.encode(HmacMD5(keyBytes, source), encodeType);
 	}
 
 	/**
@@ -517,7 +491,6 @@ public final class SecurityUtils {
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
-	@Deprecated
 	public static CryptoAdaptor SHA1() throws CryptoException {
 		return SECURITY_ADAPTOR.initDigest(new CipherConfig("SHA1"), null);
 	}
@@ -531,7 +504,6 @@ public final class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	@Deprecated
 	public static byte[] SHA1(final Object source) {
 		return digest("SHA1", source);
 	}
@@ -545,9 +517,8 @@ public final class SecurityUtils {
 	 * @return <span class="en-US">Calculate result or zero-length arrays if processes have error</span>
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
-	@Deprecated
 	public static String SHA1(final Object source, @Nonnull final EncodeType encodeType) {
-		return encode(SHA1(source), encodeType);
+		return SecurityUtils.encode(SHA1(source), encodeType);
 	}
 
 	/**
@@ -592,7 +563,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果，如果出现错误则返回长度为0的字节数组</span>
 	 */
 	public static String HmacSHA1(final byte[] keyBytes, final Object source, @Nonnull final EncodeType encodeType) {
-		return encode(HmacSHA1(keyBytes, source), encodeType);
+		return SecurityUtils.encode(HmacSHA1(keyBytes, source), encodeType);
 	}
 
 	/**
@@ -1697,8 +1668,8 @@ public final class SecurityUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Perform DES encryption operation</h3>
-	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 * <h3 class="en-US">Perform the Blowfish encryption operation</h3>
+	 * <h3 class="zh-CN">执行 Blowfish 加密操作</h3>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -1712,8 +1683,8 @@ public final class SecurityUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Perform DES encryption operation</h3>
-	 * <h3 class="zh-CN">执行 DES 加密操作</h3>
+	 * <h3 class="en-US">Perform the Blowfish encryption operation</h3>
+	 * <h3 class="zh-CN">执行 Blowfish 加密操作</h3>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -1733,8 +1704,8 @@ public final class SecurityUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Perform DES decryption operation</h3>
-	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 * <h3 class="en-US">Perform the Blowfish decryption operation</h3>
+	 * <h3 class="zh-CN">执行 Blowfish 解密操作</h3>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -1748,8 +1719,8 @@ public final class SecurityUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Perform DES decryption operation</h3>
-	 * <h3 class="zh-CN">执行 DES 解密操作</h3>
+	 * <h3 class="en-US">Perform the Blowfish decryption operation</h3>
+	 * <h3 class="zh-CN">执行 Blowfish 解密操作</h3>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -1937,7 +1908,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize TripleDES encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">初始化3DES加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -1952,7 +1925,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize TripleDES encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">初始化3DES加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -1977,7 +1952,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize TripleDES decryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">初始化3DES解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -1992,7 +1969,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize TripleDES decryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">初始化3DES解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -2017,7 +1996,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Generate TripleDES key bytes</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">生成3DES密钥字节数组</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
@@ -2032,7 +2013,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform the TripleDES encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">执行 TripleDES 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2047,7 +2030,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform the TripleDES encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">执行 TripleDES 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -2068,7 +2053,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform the TripleDES decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">执行 TripleDES 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2083,7 +2070,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform the TripleDES decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES or SM4 instead</span>
 	 * <h3 class="zh-CN">执行 TripleDES 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 或 SM4 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -2690,7 +2679,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC5 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC5加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2705,7 +2696,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC5 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC5加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -2730,7 +2723,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC5 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC5解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2745,7 +2740,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC5 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC5解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -2770,7 +2767,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Generate RC5 key bytes</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">生成RC5密钥字节数组</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
@@ -2785,7 +2784,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC5 encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC5 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2800,7 +2801,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC5 encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC5 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -2821,7 +2824,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC5 decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC5 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2836,7 +2841,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC5 decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC5 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -2857,7 +2864,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC6 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC6加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2872,7 +2881,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC6 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC6加密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -2897,7 +2908,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC6 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC6解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2912,7 +2925,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Initialize RC6 encryptor secure provider</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">初始化RC6解密安全适配器实例对象</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 * <span>
 	 * mode: "ECB", "CBC", "CTR", "CTS", "CFB", "OFB", "CFB8", "OFB8"
 	 * padding: "PKCS5Padding", "PKCS7Padding", "ISO10126Padding", "X9.23Padding"
@@ -2937,7 +2952,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Generate RC6 key bytes</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">生成RC6密钥字节数组</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @return <span class="en-US">Generated key bytes or zero length byte array if process error</span>
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
@@ -2952,7 +2969,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC6 encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC6 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -2967,7 +2986,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC6 encryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC6 加密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -2988,7 +3009,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC6 decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC6 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param keyBytes <span class="en-US">key bytes</span>
 	 *                 <span class="zh-CN">密钥字节数组</span>
@@ -3003,7 +3026,9 @@ public final class SecurityUtils {
 
 	/**
 	 * <h3 class="en-US">Perform RC6 decryption operation</h3>
+	 * <span class="en-US">Since 1.4.0, using AES instead</span>
 	 * <h3 class="zh-CN">执行 RC6 解密操作</h3>
+	 * <span class="zh-CN">从 1.4.0 版本开始废弃，使用 AES 代替</span>
 	 *
 	 * @param mode     <span class="en-US">Cipher Mode</span>
 	 *                 <span class="zh-CN">分组密码模式</span>
@@ -3416,7 +3441,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥对</span>
 	 */
 	public static KeyPair RSAKeyPair() {
-		return RSAKeyPair(1024, "SHA1PRNG");
+		return RSAKeyPair(2048);
 	}
 
 	/**
@@ -3429,7 +3454,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥对</span>
 	 */
 	public static KeyPair RSAKeyPair(final int keySize) {
-		return RSAKeyPair(keySize, "SHA1PRNG");
+		return RSAKeyPair(keySize, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -3453,8 +3478,8 @@ public final class SecurityUtils {
 	 *
 	 * @param publicKey <span class="en-US">Public Key instance</span>
 	 *                  <span class="zh-CN">公钥证书实例对象</span>
-	 * @param source     <span class="en-US">source object</span>
-	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @param source    <span class="en-US">source object</span>
+	 *                  <span class="zh-CN">原始数据对象</span>
 	 * @return <span class="en-US">Binary data bytes of calculate result</span>
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
@@ -3480,8 +3505,8 @@ public final class SecurityUtils {
 	 *                  <span class="zh-CN">数据填充模式</span>
 	 * @param publicKey <span class="en-US">Public Key instance</span>
 	 *                  <span class="zh-CN">公钥证书实例对象</span>
-	 * @param source     <span class="en-US">source object</span>
-	 *                   <span class="zh-CN">原始数据对象</span>
+	 * @param source    <span class="en-US">source object</span>
+	 *                  <span class="zh-CN">原始数据对象</span>
 	 * @return <span class="en-US">Binary data bytes of calculate result</span>
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 * @throws CryptoException <span class="en-US">If algorithm didn't find</span>
@@ -3858,6 +3883,33 @@ public final class SecurityUtils {
 		CryptoAdaptor adaptor = SECURITY_ADAPTOR.initDigest(new CipherConfig(name), new CipherKey(name, keyBytes));
 		process(adaptor, source);
 		return adaptor.finish();
+	}
+
+	/**
+	 * <h3 class="en-US">Convert the binary data using the given encoding type.</h3>
+	 * <h3 class="zh-CN">使用给定的编码类型对二进制数据进行转换</h3>
+	 *
+	 * @param dataBytes  <span class="en-US">Binary data array</span>
+	 *                   <span class="zh-CN">二进制数据</span>
+	 * @param encodeType <span class="en-US">String encoding type</span>
+	 *                   <span class="zh-CN">字符串的编码类型</span>
+	 * @return <span class="en-US">Converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	private static String encode(@Nonnull final byte[] dataBytes, @Nonnull final EncodeType encodeType) {
+		if (dataBytes.length == 0) {
+			return Globals.DEFAULT_VALUE_STRING;
+		}
+		switch (encodeType) {
+			case BASE32:
+				return StringUtils.base32Encode(dataBytes);
+			case BASE64:
+				return StringUtils.base64Encode(dataBytes);
+			case HEX:
+				return ConvertUtils.bytesToHex(dataBytes);
+			default:
+				return Globals.DEFAULT_VALUE_STRING;
+		}
 	}
 
 	/**

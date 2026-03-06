@@ -19,6 +19,8 @@ package org.nervousync.utils.core;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.logger.LoggerUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Optional;
@@ -198,6 +200,31 @@ public final class ObjectUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T[] newArray(final Class<T> clazz, final int length) {
 		return (T[]) Array.newInstance(clazz, length < 0 ? Globals.INITIALIZE_INT_VALUE : length);
+	}
+
+	/**
+	 * <h3 class="en-US">Clone current object</h3>
+	 * <h3 class="zh-CN">复制当前对象</h3>
+	 *
+	 * @param object <span class="en-US">Object instance which will clone</span>
+	 *               <span class="zh-CN">需要克隆的对象</span>
+	 * @return <span class="en-US">Clone object</span>
+	 * <span class="zh-CN">克隆的对象</span>
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T deepClone(final T object) {
+		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+			objectOutputStream.writeObject(object);
+			objectOutputStream.flush();
+			return (T) ConvertUtils.toObject(outputStream.toByteArray());
+		} catch (Exception e) {
+			LOGGER.error("Convert_Object_To_Array_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+			return null;
+		}
 	}
 
 	/**

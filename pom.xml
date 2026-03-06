@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.nervousync</groupId>
     <artifactId>utils-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.0.1</version>
     <packaging>pom</packaging>
     <name>Nervousync Java Utility Collections</name>
     <url>https://nervousync.org/projects/utils/index.shtml</url>
@@ -86,7 +86,8 @@
         <slf4j.version>2.0.17</slf4j.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.activation.version>2.1.4</jakarta.activation.version>
-        <jackson.version>2.21.0</jackson.version>
+        <jakarta.json.bind.version>3.0.1</jakarta.json.bind.version>
+        <jackson.version>2.21.1</jackson.version>
         <junit.jupiter.version>5.14.2</junit.jupiter.version>
         <bcprov.version>1.83</bcprov.version>
     </properties>
@@ -96,6 +97,13 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-bom</artifactId>
                 <version>${slf4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -179,27 +187,7 @@
             <dependency>
                 <groupId>jakarta.json.bind</groupId>
                 <artifactId>jakarta.json.bind-api</artifactId>
-                <version>3.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>2.21</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jakarta.json.bind.version}</version>
             </dependency>
             <!-- Security Support -->
             <dependency>

@@ -42,8 +42,15 @@ public final class MultilingualUtils {
 	 * <span class="en-US">Internationalization provider instance object</span>
 	 * <span class="zh-CN">国际化适配器实例对象</span>
 	 */
-	private static final MessageProvider I18N_PROVIDER =
-			ServiceLoader.load(MessageProvider.class).findFirst().orElse(new DefaultMessageProviderImpl());
+	private static final MessageProvider I18N_PROVIDER;
+
+	static {
+		MessageProvider messageProvider = ServiceLoader.load(MessageProvider.class).findFirst().orElse(null);
+		if (messageProvider == null) {
+			messageProvider = new DefaultMessageProviderImpl();
+		}
+		I18N_PROVIDER = messageProvider;
+	}
 	/**
 	 * <h3 class="en-US">Private constructor for MultilingualUtils</h3>
 	 * <h3 class="zh-CN">国际化工具集的私有构造方法</h3>

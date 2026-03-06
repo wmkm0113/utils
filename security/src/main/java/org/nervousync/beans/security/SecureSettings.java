@@ -18,7 +18,6 @@
 package org.nervousync.beans.security;
 
 import jakarta.xml.bind.annotation.*;
-import org.nervousync.annotations.beans.OutputConfig;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Dec 12, 2020 23:15:46 $
  */
-@OutputConfig
 @XmlRootElement(name = "secure_settings", namespace = "https://nervousync.org/schemas/secure")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class SecureSettings implements Serializable {

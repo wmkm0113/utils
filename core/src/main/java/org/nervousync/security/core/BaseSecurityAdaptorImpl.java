@@ -132,7 +132,7 @@ public abstract class BaseSecurityAdaptorImpl implements SecurityAdaptor {
 			SecureRandom secureRandom;
 			if (StringUtils.isEmpty(randomAlgorithm)) {
 				this.logger.warn("Random_Algorithm_Default_Warn");
-				secureRandom = SecureRandom.getInstance("SHA1PRNG");
+				secureRandom = new SecureRandom();
 			} else {
 				secureRandom = SecureRandom.getInstance(randomAlgorithm);
 			}

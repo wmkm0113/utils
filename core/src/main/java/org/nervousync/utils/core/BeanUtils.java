@@ -19,7 +19,6 @@ package org.nervousync.utils.core;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.beans.BeanProperty;
-import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.beans.config.TransferConfig;
 import org.nervousync.beans.converter.BeanConverter;
 import org.nervousync.beans.converter.impl.DefaultBeanConverterImpl;
@@ -39,10 +38,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.*;
@@ -98,8 +94,7 @@ public final class BeanUtils {
 	 * <span class="en-US">JavaBean converter implement class instance object</span>
 	 * <span class="zh-CN">JavaBean 转换适配器实现类实例对象</span>
 	 */
-	private static final BeanConverter BEAN_CONVERTER =
-			ServiceLoader.load(BeanConverter.class).findFirst().orElse(new DefaultBeanConverterImpl());
+	private static final BeanConverter BEAN_CONVERTER;
 
 	static {
 		try {
@@ -112,6 +107,11 @@ public final class BeanUtils {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 		}
+		BeanConverter beanConverter = ServiceLoader.load(BeanConverter.class).findFirst().orElse(null);
+		if (beanConverter == null) {
+			beanConverter = new DefaultBeanConverterImpl();
+		}
+		BEAN_CONVERTER = beanConverter;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public final class BeanUtils {
 	 */
 	public static void copyData(final Map<String, Object> originalMap, final Object targetObject) {
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Data_Map_Debug", BeanUtils.objectToString(originalMap));
+			LOGGER.debug("Data_Map_Debug", BeanUtils.objectToString(originalMap, StringType.JSON));
 		}
 		checkRegister(targetObject.getClass());
 		Optional.ofNullable(BEAN_CONFIG_MAP.get(ClassUtils.originalClassName(targetObject.getClass())))
@@ -206,41 +206,18 @@ public final class BeanUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Get the charset encoding</h3>
-	 * <h3 class="zh-CN">获取编码集</h3>
+	 * <h3 class="en-US">Convenience method to return a JavaBean object as a string. </h3>
+	 * <h3 class="zh-CN">将 JavaBean 实例对象转换为字符串</h3>
 	 *
-	 * @param beanClass   <span class="en-US">target JavaBean class</span>
-	 *                    <span class="zh-CN">目标JavaBean类</span>
-	 * @return <span class="en-US">Converted object instance</span>
-	 * <span class="zh-CN">转换后的实例对象</span>
+	 * @param object     <span class="en-US">JavaBean object</span>
+	 *                   <span class="zh-CN">JavaBean实例对象</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @return <span class="en-US">the converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
 	 */
-	public static String encoding(@Nonnull final Class<?> beanClass) {
-		return Optional.ofNullable(beanClass.getAnnotation(OutputConfig.class))
-				.map(OutputConfig::encoding)
-				.orElse(Globals.DEFAULT_ENCODING);
-	}
-
-	/**
-	 * <h3 class="en-US">Get the output data type of the given type</h3>
-	 * <h3 class="zh-CN">获取给定类型的输出数据类型</h3>
-	 *
-	 * @param clazz <span class="en-US">Given class instance</span>
-	 *              <span class="zh-CN">给定的类对象</span>
-	 * @return <span class="en-US">Output data type</span>
-	 * <span class="zh-CN">输出数据类型</span>
-	 */
-	public static StringType type(@Nonnull final Class<?> clazz) {
-		return Optional.ofNullable(clazz.getAnnotation(OutputConfig.class))
-				.map(OutputConfig::type)
-				.orElseGet(() -> {
-					if (ClassUtils.simpleDataType(clazz)) {
-						return StringType.SIMPLE;
-					}
-					if (ClassUtils.isAssignable(Map.class, clazz) || ClassUtils.isAssignable(Collection.class, clazz)) {
-						return StringType.JSON;
-					}
-					return StringType.SERIALIZABLE;
-				});
+	public static String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType) {
+		return objectToString(object, stringType, Globals.DEFAULT_ENCODING);
 	}
 
 	/**
@@ -249,11 +226,54 @@ public final class BeanUtils {
 	 *
 	 * @param object     <span class="en-US">JavaBean object</span>
 	 *                   <span class="zh-CN">JavaBean实例对象</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @param formatted  <span class="en-US">Formatted status</span>
+	 *                   <span class="zh-CN">格式化输出状态</span>
 	 * @return <span class="en-US">the converted string</span>
 	 * <span class="zh-CN">转换后的字符串</span>
 	 */
-	public static String objectToString(final Object object) {
-		return BEAN_CONVERTER.objectToString(object);
+	public static String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                                    final boolean formatted) {
+		return objectToString(object, stringType, Globals.DEFAULT_ENCODING, formatted);
+	}
+
+	/**
+	 * <h3 class="en-US">Convenience method to return a JavaBean object as a string. </h3>
+	 * <h3 class="zh-CN">将 JavaBean 实例对象转换为字符串</h3>
+	 *
+	 * @param object     <span class="en-US">JavaBean object</span>
+	 *                   <span class="zh-CN">JavaBean实例对象</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @param encoding   <span class="en-US">String charset encoding</span>
+	 *                   <span class="zh-CN">字符串的字符集编码</span>
+	 * @return <span class="en-US">the converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	public static String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                                    final String encoding) {
+		return objectToString(object, stringType, encoding, Boolean.TRUE);
+	}
+
+	/**
+	 * <h3 class="en-US">Convenience method to return a JavaBean object as a string. </h3>
+	 * <h3 class="zh-CN">将 JavaBean 实例对象转换为字符串</h3>
+	 *
+	 * @param object     <span class="en-US">JavaBean object</span>
+	 *                   <span class="zh-CN">JavaBean实例对象</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @param encoding   <span class="en-US">String charset encoding</span>
+	 *                   <span class="zh-CN">字符串的字符集编码</span>
+	 * @param formatted  <span class="en-US">Formatted status</span>
+	 *                   <span class="zh-CN">格式化输出状态</span>
+	 * @return <span class="en-US">the converted string</span>
+	 * <span class="zh-CN">转换后的字符串</span>
+	 */
+	public static String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                                    final String encoding, final boolean formatted) {
+		return BEAN_CONVERTER.objectToString(object, stringType, encoding, formatted);
 	}
 
 	/**
@@ -271,21 +291,9 @@ public final class BeanUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static <T> T stringToObject(final String string, final Class<T> beanClass, final String... schemaPaths) {
-		if (StringUtils.isEmpty(string)) {
-			LOGGER.error("Parse_Empty_String_Error");
-			return null;
-		}
-		String encoding = encoding(beanClass);
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(encoding))) {
-			return streamToObject(inputStream, type(beanClass), encoding, beanClass, schemaPaths);
-		} catch (IOException e) {
-			LOGGER.error("Parse_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-		}
-		return null;
+	public static <T> T stringToObject(final String string, final StringType stringType,
+	                                   final Class<T> beanClass, final String... schemaPaths) {
+		return stringToObject(string, stringType, Globals.DEFAULT_ENCODING, beanClass, schemaPaths);
 	}
 
 	/**
@@ -314,7 +322,7 @@ public final class BeanUtils {
 			return null;
 		}
 
-		String charsetEncoding = StringUtils.isEmpty(encoding) ? encoding(beanClass) : encoding;
+		String charsetEncoding = StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding;
 		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(charsetEncoding))) {
 			return streamToObject(inputStream, stringType, charsetEncoding, beanClass, schemaPaths);
 		} catch (IOException e) {
@@ -373,7 +381,9 @@ public final class BeanUtils {
 			LOGGER.warn("Parse_Empty_String_Error");
 			return Collections.emptyList();
 		}
-		try (InputStream inputStream = new ByteArrayInputStream(string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
+		try (InputStream inputStream =
+				     new ByteArrayInputStream(
+							 string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
 			return streamToList(inputStream, stringType, encoding, beanClass);
 		} catch (Exception e) {
 			LOGGER.error("Parse_String_Error");
@@ -497,13 +507,18 @@ public final class BeanUtils {
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 			for (int i = 0; i < schemaPaths.length; i++) {
 				String locationPath = SCHEMA_MAPPING.getOrDefault(schemaPaths[i], schemaPaths[i]);
-				InputStream in = FileUtils.loadFile(locationPath);
-				Document document = docBuilder.parse(in);
-				sources[i] = new DOMSource(document, locationPath);
-				IOUtils.closeStream(in);
+				try (InputStream in = FileUtils.loadFile(locationPath)) {
+					Document document = docBuilder.parse(in);
+					sources[i] = new DOMSource(document, locationPath);
+				} catch (IOException | SAXException e) {
+					LOGGER.error("Load_Schemas_Error");
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Stack_Message_Error", e);
+					}
+				}
 			}
 			return schemaFactory.newSchema(sources);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
+		} catch (ParserConfigurationException | SAXException e) {
 			LOGGER.error("Load_Schemas_Error");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Stack_Message_Error", e);

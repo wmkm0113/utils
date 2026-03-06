@@ -1,8 +1,29 @@
 {
   "groupId": "org.nervousync",
   "bundle": "utils",
+  "errors": {
+    "0x0000000E0001": "EMail_Address_Not_Valid",
+    "0x0000000E0002": "Receive_Protocol_Unknown",
+    "0x0000000E0003": "Send_Config_Error",
+    "0x0000000E0004": "Receive_Config_Error"
+  },
   "messages": {
     "en-US": {
+      "EMail_Address_Not_Valid": {
+        "pattern": "E-mail address is not valid"
+      },
+      "Receive_Protocol_Unknown": {
+        "pattern": "Unknown receive protocol"
+      },
+      "Send_Config_Error": {
+        "pattern": "An error occurs when sending email configure"
+      },
+      "Receive_Config_Error": {
+        "pattern": "An error occurs when receiving email configure"
+      },
+      "Initialize_Client_Error": {
+        "pattern": "Initialize mail client error! "
+      },
       "Folders_Mail_Error": {
         "pattern": "An error occurs when reading email folder"
       },
@@ -23,6 +44,21 @@
       }
     },
     "zh-CN": {
+      "EMail_Address_Not_Valid": {
+        "pattern": "不是有效的电子邮件地址"
+      },
+      "Receive_Protocol_Unknown": {
+        "pattern": "未知的邮件协议"
+      },
+      "Send_Config_Error": {
+        "pattern": "发送邮件服务器配置信息出错"
+      },
+      "Receive_Config_Error": {
+        "pattern": "接收邮件服务器配置信息出错"
+      },
+      "Initialize_Client_Error": {
+        "pattern": "初始化电子邮件客户端出错"
+      },
       "Folders_Mail_Error": {
         "pattern": "读取电子邮箱文件夹出错"
       },

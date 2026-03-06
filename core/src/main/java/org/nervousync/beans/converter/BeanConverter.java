@@ -43,12 +43,19 @@ public interface BeanConverter {
 	 * <h3 class="en-US">Convenience method to return a JavaBean object as a string. </h3>
 	 * <h3 class="zh-CN">将 JavaBean 实例对象转换为字符串</h3>
 	 *
-	 * @param object       <span class="en-US">JavaBean object</span>
-	 *                     <span class="zh-CN">JavaBean实例对象</span>
+	 * @param object     <span class="en-US">JavaBean object</span>
+	 *                   <span class="zh-CN">JavaBean实例对象</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @param encoding   <span class="en-US">String charset encoding</span>
+	 *                   <span class="zh-CN">字符串的字符集编码</span>
+	 * @param formatted  <span class="en-US">Formatted status</span>
+	 *                   <span class="zh-CN">格式化输出状态</span>
 	 * @return <span class="en-US">the converted string</span>
 	 * <span class="zh-CN">转换后的字符串</span>
 	 */
-	String objectToString(final Object object);
+	String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
+	                      final String encoding, final boolean formatted);
 
 	/**
 	 * <h3 class="en-US">Parse the input stream instance to target JavaBean instance.</h3>
@@ -60,8 +67,8 @@ public interface BeanConverter {
 	 *                    <span class="zh-CN">输入流对象实例</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding  <span class="en-US">String charset encoding</span>
-	 *                  <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding    <span class="en-US">String charset encoding</span>
+	 *                    <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
@@ -82,8 +89,8 @@ public interface BeanConverter {
 	 *                    <span class="zh-CN">输入流对象实例</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding  <span class="en-US">String charset encoding</span>
-	 *                  <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding    <span class="en-US">String charset encoding</span>
+	 *                    <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @return <span class="en-US">Converted object instance list</span>
