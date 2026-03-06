@@ -97,7 +97,11 @@ public abstract class BaseSecurityAdaptorImpl implements SecurityAdaptor {
 			switch (algorithm.toUpperCase()) {
 				case "AES":
 				case "RC4":
-					keyGenerator.init(keySize, SecureRandom.getInstance(randomAlgorithm));
+					SecureRandom secureRandom =
+							StringUtils.isEmpty(randomAlgorithm)
+									? new SecureRandom()
+									: SecureRandom.getInstance(randomAlgorithm);
+					keyGenerator.init(keySize, secureRandom);
 					break;
 				case "SM4":
 				case "RC2":

@@ -2103,7 +2103,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM4Encryptor(final byte[] keyBytes) throws CryptoException {
-		return SM4Encryptor("CBC", "PKCS5Padding", keyBytes, Globals.DEFAULT_VALUE_STRING);
+		return SM4Encryptor("CBC", "PKCS5Padding", keyBytes, "SHA1PRNG");
 	}
 
 	/**
@@ -2127,7 +2127,7 @@ public final class SecurityUtils {
 	 */
 	public static CryptoAdaptor SM4Encryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
-		return SM4Encryptor(mode, padding, keyBytes, Globals.DEFAULT_VALUE_STRING);
+		return SM4Encryptor(mode, padding, keyBytes, "SHA1PRNG");
 	}
 
 	/**
@@ -2169,7 +2169,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM4Decryptor(final byte[] keyBytes) throws CryptoException {
-		return SM4Decryptor("CBC", "PKCS5Padding", keyBytes, Globals.DEFAULT_VALUE_STRING);
+		return SM4Decryptor("CBC", "PKCS5Padding", keyBytes, "SHA1PRNG");
 	}
 
 	/**
@@ -2193,7 +2193,7 @@ public final class SecurityUtils {
 	 */
 	public static CryptoAdaptor SM4Decryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
-		return SM4Decryptor(mode, padding, keyBytes, Globals.DEFAULT_VALUE_STRING);
+		return SM4Decryptor(mode, padding, keyBytes, "SHA1PRNG");
 	}
 
 	/**
