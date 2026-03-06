@@ -192,7 +192,10 @@ public final class CipherKey {
 			case "SM4":
 				try {
 					KeyGenerator keyGenerator = KeyGenerator.getInstance(this.algorithm, this.provider);
-					SecureRandom secureRandom = SecureRandom.getInstance(this.randomAlgorithm);
+					SecureRandom secureRandom =
+							StringUtils.isEmpty(this.randomAlgorithm)
+									? new SecureRandom()
+									: SecureRandom.getInstance(this.randomAlgorithm);
 					secureRandom.setSeed(this.keyBytes);
 					keyGenerator.init(this.keySize, secureRandom);
 					return keyGenerator.generateKey();

@@ -2103,7 +2103,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM4Encryptor(final byte[] keyBytes) throws CryptoException {
-		return SM4Encryptor("CBC", "PKCS5Padding", keyBytes, "SHA1PRNG");
+		return SM4Encryptor("CBC", "PKCS5Padding", keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2127,7 +2127,7 @@ public final class SecurityUtils {
 	 */
 	public static CryptoAdaptor SM4Encryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
-		return SM4Encryptor(mode, padding, keyBytes, "SHA1PRNG");
+		return SM4Encryptor(mode, padding, keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2169,7 +2169,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM4Decryptor(final byte[] keyBytes) throws CryptoException {
-		return SM4Decryptor("CBC", "PKCS5Padding", keyBytes, "SHA1PRNG");
+		return SM4Decryptor("CBC", "PKCS5Padding", keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2193,7 +2193,7 @@ public final class SecurityUtils {
 	 */
 	public static CryptoAdaptor SM4Decryptor(final String mode, final String padding, final byte[] keyBytes)
 			throws CryptoException {
-		return SM4Decryptor(mode, padding, keyBytes, "SHA1PRNG");
+		return SM4Decryptor(mode, padding, keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2231,7 +2231,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
 	 */
 	public static byte[] SM4Key() {
-		return SM4Key("SHA1PRNG");
+		return SM4Key(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2263,7 +2263,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
 	public static byte[] SM4Encrypt(final byte[] keyBytes, final Object source) {
-		return SM4Encrypt(keyBytes, "SHA1PRNG", source);
+		return SM4Encrypt(keyBytes, Globals.DEFAULT_VALUE_STRING, source);
 	}
 
 	/**
@@ -2316,7 +2316,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
 	public static byte[] SM4Decrypt(final byte[] keyBytes, final Object source) {
-		return SM4Decrypt(keyBytes, "SHA1PRNG", source);
+		return SM4Decrypt(keyBytes, Globals.DEFAULT_VALUE_STRING, source);
 	}
 
 	/**
@@ -2536,7 +2536,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor RC4Encryptor(final byte[] keyBytes) throws CryptoException {
-		return RC4Encryptor(keyBytes, "SHA1PRNG");
+		return RC4Encryptor(keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2570,7 +2570,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor RC4Decryptor(final byte[] keyBytes) throws CryptoException {
-		return RC4Decryptor(keyBytes, "SHA1PRNG");
+		return RC4Decryptor(keyBytes, Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -2601,7 +2601,7 @@ public final class SecurityUtils {
 	 */
 	public static byte[] RC4Key() {
 		try {
-			return SECURITY_ADAPTOR.symmetricKey("RC4", 128, "SHA1PRNG");
+			return SECURITY_ADAPTOR.symmetricKey("RC4", 128, Globals.DEFAULT_VALUE_STRING);
 		} catch (CryptoException e) {
 			return new byte[0];
 		}
@@ -2619,7 +2619,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
 	public static byte[] RC4Encrypt(final byte[] keyBytes, final Object source) {
-		return RC4Encrypt(keyBytes, "SHA1PRNG", source);
+		return RC4Encrypt(keyBytes, Globals.DEFAULT_VALUE_STRING, source);
 	}
 
 	/**
@@ -2654,7 +2654,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">计算结果的字节数组</span>
 	 */
 	public static byte[] RC4Decrypt(final byte[] keyBytes, final Object source) {
-		return RC4Decrypt(keyBytes, "SHA1PRNG", source);
+		return RC4Decrypt(keyBytes, Globals.DEFAULT_VALUE_STRING, source);
 	}
 
 	/**
@@ -3135,7 +3135,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
 	 */
 	public static byte[] AES128Key() {
-		return AES128Key("SHA1PRNG");
+		return AES128Key(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -3163,7 +3163,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
 	 */
 	public static byte[] AES192Key() {
-		return AES192Key("SHA1PRNG");
+		return AES192Key(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -3191,7 +3191,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥字节数组，如果出现异常则返回长度为0的字节数组</span>
 	 */
 	public static byte[] AES256Key() {
-		return AES256Key("SHA1PRNG");
+		return AES256Key(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -3724,7 +3724,7 @@ public final class SecurityUtils {
 	 * <span class="zh-CN">生成的密钥对</span>
 	 */
 	public static KeyPair SM2KeyPair() {
-		return SM2KeyPair("SHA1PRNG");
+		return SM2KeyPair(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**

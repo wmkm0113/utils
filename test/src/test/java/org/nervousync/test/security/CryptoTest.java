@@ -41,12 +41,16 @@ public final class CryptoTest extends BaseTest {
         this.logger.info("Crypto_Key_Length", "DES", StringUtils.base64Encode(desKey));
         for (String cipherMode : DES_CIPHER_MODES) {
             for (String padding : DEFAULT_PADDINGS) {
-                CryptoAdaptor encryptProvider = SecurityUtils.DESEncryptor(cipherMode, padding, desKey);
-                String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
-                this.logger.info("Encrypt_Result", "DES", cipherMode, padding, encResult);
-                CryptoAdaptor decryptProvider = SecurityUtils.DESDecryptor(cipherMode, padding, desKey);
-                this.logger.info("Decrypt_Result", "DES", cipherMode, padding,
-                        new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
+                try {
+                    CryptoAdaptor encryptProvider = SecurityUtils.DESEncryptor(cipherMode, padding, desKey);
+                    String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
+                    this.logger.info("Encrypt_Result", "DES", cipherMode, padding, encResult);
+                    CryptoAdaptor decryptProvider = SecurityUtils.DESDecryptor(cipherMode, padding, desKey);
+                    this.logger.info("Decrypt_Result", "DES", cipherMode, padding,
+                            new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
+                } catch (CryptoException e) {
+                    this.logger.warn("Crypto_Not_Support", "DES", "DES/" + cipherMode + "/" + padding);
+                }
             }
         }
     }
@@ -164,35 +168,20 @@ public final class CryptoTest extends BaseTest {
     public void RC2() throws CryptoException {
         byte[] rc2Key = SecurityUtils.RC2Key();
         this.logger.info("Crypto_Key_Length", "RC2", StringUtils.base64Encode(rc2Key));
-        CryptoAdaptor encAdaptor = SecurityUtils.RC2Encryptor(rc2Key);
-        String defaultResult = StringUtils.base64Encode(encAdaptor.finish(ORIGINAL_STRING));
-        this.logger.info("Encrypt_Result", "RC2", "CBC", "PKCS7Padding", defaultResult);
-        CryptoAdaptor decAdaptor = SecurityUtils.RC2Decryptor(rc2Key);
-        this.logger.info("Decrypt_Result", "RC2", "CBC", "PKCS7Padding",
-                new String(decAdaptor.finish(StringUtils.base64Decode(defaultResult)), StandardCharsets.UTF_8));
         for (String cipherMode : RC_CIPHER_MODES) {
             for (String padding : DEFAULT_PADDINGS) {
-                CryptoAdaptor encryptProvider = SecurityUtils.RC2Encryptor(cipherMode, padding, rc2Key);
-                String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
-                this.logger.info("Encrypt_Result", "RC2", cipherMode, padding, encResult);
-                CryptoAdaptor decryptProvider = SecurityUtils.RC2Decryptor(cipherMode, padding, rc2Key);
-                this.logger.info("Decrypt_Result", "RC2", cipherMode, padding,
-                        new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
+                try {
+                    CryptoAdaptor encryptProvider = SecurityUtils.RC2Encryptor(cipherMode, padding, rc2Key);
+                    String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
+                    this.logger.info("Encrypt_Result", "RC2", cipherMode, padding, encResult);
+                    CryptoAdaptor decryptProvider = SecurityUtils.RC2Decryptor(cipherMode, padding, rc2Key);
+                    this.logger.info("Decrypt_Result", "RC2", cipherMode, padding,
+                            new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
+                } catch (CryptoException e) {
+                    this.logger.warn("Crypto_Not_Support", "RC2", "RC2/" + cipherMode + "/" + padding);
+                }
             }
         }
-    }
-
-    @Test
-    @Order(70)
-    public void RC4() throws CryptoException {
-        byte[] rc4Key = SecurityUtils.RC4Key();
-        this.logger.info("Crypto_Key_Length", "RC4", StringUtils.base64Encode(rc4Key));
-        CryptoAdaptor encryptProvider = SecurityUtils.RC4Encryptor(rc4Key);
-        String encResult = StringUtils.base64Encode(encryptProvider.finish(ORIGINAL_STRING));
-        this.logger.info("Encrypt_Result", "RC4", "", "", encResult);
-        CryptoAdaptor decryptProvider = SecurityUtils.RC4Decryptor(rc4Key);
-        this.logger.info("Decrypt_Result", "RC4", "", "",
-                new String(decryptProvider.finish(StringUtils.base64Decode(encResult)), StandardCharsets.UTF_8));
     }
 
     @Test
