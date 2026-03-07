@@ -327,7 +327,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve content size of given file instance</h3>
+	 * <h3 class="en-US">Retrieve the content size of the given file instance</h3>
 	 * <h3 class="zh-CN">读取给定文件实例对象的文件大小</h3>
 	 *
 	 * @param fileObject <span class="en-US">the file object</span>
@@ -784,7 +784,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move directory from samba folder to target folder</h3>
+	 * <h3 class="en-US">Move directory from the samba folder to the target folder</h3>
 	 * <h3 class="zh-CN">从原samba文件夹地址移动到目标文件夹地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original folder path</span>
@@ -802,7 +802,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move directory from samba folder to target folder</h3>
+	 * <h3 class="en-US">Move directory from the samba folder to the target folder</h3>
 	 * <h3 class="zh-CN">从原samba文件夹地址移动到目标文件夹地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original folder path</span>
@@ -822,7 +822,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move directory from folder to target samba folder</h3>
+	 * <h3 class="en-US">Move directory from the folder to the target samba folder</h3>
 	 * <h3 class="zh-CN">从原文件夹地址移动到目标samba文件夹地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original folder path</span>
@@ -839,7 +839,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move directory from folder to target samba folder</h3>
+	 * <h3 class="en-US">Move directory from the folder to the target samba folder</h3>
 	 * <h3 class="zh-CN">从原文件夹地址移动到目标samba文件夹地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original folder path</span>
@@ -859,7 +859,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move directory from samba folder to target samba folder</h3>
+	 * <h3 class="en-US">Move directory from the samba folder to the target samba folder</h3>
 	 * <h3 class="zh-CN">从原samba文件夹地址移动到目标samba文件夹地址</h3>
 	 *
 	 * @param originalFolder <span class="en-US">the folder instance</span>
@@ -949,7 +949,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy a file from base path to the target path</h3>
+	 * <h3 class="en-US">Copy a file from the base path to the target path</h3>
 	 * <h3 class="zh-CN">从原文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath <span class="en-US">Original path</span>
@@ -964,7 +964,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy a file from base path to the target path</h3>
+	 * <h3 class="en-US">Copy a file from the base path to the target path</h3>
 	 * <h3 class="zh-CN">从原文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath <span class="en-US">Original path</span>
@@ -981,7 +981,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy file from base path to target samba path</h3>
+	 * <h3 class="en-US">Copy file from the base path to the target samba path</h3>
 	 * <h3 class="zh-CN">从原文件地址复制到目标samba文件地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original path</span>
@@ -998,7 +998,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy file from base path to target samba path</h3>
+	 * <h3 class="en-US">Copy file from the base path to the target samba path</h3>
 	 * <h3 class="zh-CN">从原文件地址复制到目标samba文件地址</h3>
 	 *
 	 * @param originalPath  <span class="en-US">Original path</span>
@@ -1018,7 +1018,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy files from samba path to the target path</h3>
+	 * <h3 class="en-US">Copy files from the samba path to the target path</h3>
 	 * <h3 class="zh-CN">从原samba文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original path</span>
@@ -1035,7 +1035,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy files from samba path to the target path</h3>
+	 * <h3 class="en-US">Copy files from the samba path to the target path</h3>
 	 * <h3 class="zh-CN">从原samba文件地址复制到目标文件地址</h3>
 	 *
 	 * @param originalPath    <span class="en-US">Original path</span>
@@ -1107,7 +1107,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Remove target directory</h3>
+	 * <h3 class="en-US">Remove the target directory</h3>
 	 * <h3 class="zh-CN">删除目标文件夹</h3>
 	 *
 	 * @param directoryPath <span class="en-US">target directory path</span>
@@ -1120,7 +1120,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Remove target directory</h3>
+	 * <h3 class="en-US">Remove the target directory</h3>
 	 * <h3 class="zh-CN">删除目标文件夹</h3>
 	 *
 	 * @param directoryPath <span class="en-US">target directory path</span>
@@ -1139,7 +1139,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Calculate CRC value of the given file path</h3>
+	 * <h3 class="en-US">Calculate the CRC value of the given file path</h3>
 	 * <h3 class="zh-CN">计算目标文件的CRC值</h3>
 	 *
 	 * @param filePath <span class="en-US">file path</span>
@@ -1418,7 +1418,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Write segment block data and save to random access file instance</h3>
+	 * <h3 class="en-US">Write segment block data and save to the random access file instance</h3>
 	 * <h3 class="zh-CN">将分块数据写入目标文件</h3>
 	 *
 	 * @param randomAccessFile  <span class="en-US">target file path</span>
@@ -1494,7 +1494,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Segment file data by given target path</h3>
+	 * <h3 class="en-US">Segment file data by the given target path</h3>
 	 * <h3 class="zh-CN">将目标路径的文件分割处理</h3>
 	 *
 	 * @param filePath  <span class="en-US">target file path</span>
@@ -1509,7 +1509,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Segment file data by given target path</h3>
+	 * <h3 class="en-US">Segment file data by the given target path</h3>
 	 * <h3 class="zh-CN">将目标路径的文件分割处理</h3>
 	 *
 	 * @param filePath  <span class="en-US">target file path</span>
@@ -1660,7 +1660,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move a file from base samba path to the target samba path</h3>
+	 * <h3 class="en-US">Move a file from the base samba path to the target samba path</h3>
 	 * <h3 class="zh-CN">从原samba文件地址移动到目标samba文件地址</h3>
 	 *
 	 * @param originalFile <span class="en-US">Original file instance</span>
@@ -1731,7 +1731,7 @@ public final class EnhanceFileUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Move a file from base path to the target path</h3>
+	 * <h3 class="en-US">Move a file from the base path to the target path</h3>
 	 * <h3 class="zh-CN">从原文件地址移动到目标文件地址</h3>
 	 *
 	 * @param originalDirectory <span class="en-US">Original folder instance</span>

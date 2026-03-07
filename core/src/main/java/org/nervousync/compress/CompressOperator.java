@@ -29,6 +29,7 @@ import java.io.InputStream;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 31, 2023 16:27:08 $
  */
+@SuppressWarnings("unused")
 public interface CompressOperator {
 
 	/**

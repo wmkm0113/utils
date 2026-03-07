@@ -1,6 +1,6 @@
 # Contributing to utils-jdk11
 
-First of all, thank you for considering contributing to utils-jdk11 🎉  
+First, thank you for considering contributing to utils-jdk11 🎉  
 Any kind of contribution — bug reports, feature requests, documentation improvements, or code — is welcome.
 
 This document explains how to contribute effectively and safely.
@@ -29,7 +29,7 @@ Please keep these principles in mind when contributing.
 
 + Highly project-specific logic
 + Breaking API changes without discussion
-+ Duplicate utilities already well-covered by JDK or widely adopted libraries
++ Duplicate utilities are already well-covered by JDK or widely adopted libraries
 + Silent behavior changes without documentation
 
 If you’re unsure whether something fits, open an issue first.
@@ -46,7 +46,7 @@ If you’re unsure whether something fits, open an issue first.
 + Library version
 + Java version (JDK 11+)
 + Minimal reproducible example
-+ Expected vs actual behavior
++ Expected vs. actual behavior
 + Stack trace (if applicable)
 
 # 📐 Code Style & Guidelines

@@ -33,6 +33,7 @@ import java.io.Serializable;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Feb 27, 2024 11:07:46 $
  */
+@SuppressWarnings("unused")
 @OutputConfig
 @XmlType(name = "launcher_config", namespace = "https://nervousync.org/schemas/startup")
 @XmlRootElement(name = "launcher_config", namespace = "https://nervousync.org/schemas/startup")

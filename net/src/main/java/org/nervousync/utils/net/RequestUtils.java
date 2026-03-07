@@ -59,7 +59,7 @@ import java.util.function.Function;
  * <span>Current utilities implements features:</span>
  *     <ul>Parse http method string to HttpMethodOption</ul>
  *     <ul>Resolve domain name to IP address</ul>
- *     <ul>Retrieve and verify SSL certificate from server</ul>
+ *     <ul>Retrieve and verify SSL certificate from the server</ul>
  *     <ul>Send request and parse response content to the target JavaBean or string</ul>
  *     <ul>Convert data between query string and parameter map</ul>
  *     <ul>Check user role code using <code>request.isUserInRole</code></ul>
@@ -202,7 +202,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Resolve given domain name and return ip address string</h3>
+	 * <h3 class="en-US">Resolve the given domain name and return ip address string</h3>
 	 * <h3 class="zh-CN">解析给定的域名并返回IP地址字符串</h3>
 	 *
 	 * @param domainName <span class="en-US">Will resolve for Domain name</span>
@@ -678,7 +678,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read request attribute values from session and save to request</h3>
+	 * <h3 class="en-US">Read request attribute values from the session and save to request</h3>
 	 * <h3 class="zh-CN">从session中读取保存的参数信息并保存到请求中</h3>
 	 *
 	 * @param request <span class="en-US">Request instance</span>
@@ -779,7 +779,7 @@ public final class RequestUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve client IP address from given request instance</h3>
+	 * <h3 class="en-US">Retrieve the client IP address from the given request instance</h3>
 	 * <h3 class="zh-CN">从请求实例对象中获取客户端IP地址</h3>
 	 *
 	 * @param request <span class="en-US">Request instance</span>

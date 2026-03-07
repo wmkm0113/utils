@@ -678,6 +678,7 @@ public final class Log4jConfiguratorImpl implements LogConfigurator {
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Sep 15, 2018 17:55:19 $
 	 */
+	@SuppressWarnings("unused")
 	private static final class ComponentConfigure {
 		/**
 		 * <span class="en-US">Component plugin name</span>

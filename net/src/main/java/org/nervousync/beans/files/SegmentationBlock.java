@@ -36,6 +36,7 @@ import java.util.Objects;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $Date: Oct 15, 2018 12:41:27 $
  */
+@SuppressWarnings("unused")
 @OutputConfig
 @XmlType(name = "segment_block", namespace = "https://nervousync.org/schemas/segment")
 @XmlRootElement(name = "segment_block", namespace = "https://nervousync.org/schemas/segment")

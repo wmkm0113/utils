@@ -51,6 +51,11 @@ public final class UserModelReaderImpl extends AbstractExcelReader {
 	 * <span class="zh-CN">Excel文档实例对象</span>
 	 */
 	private final Workbook workbook;
+	/**
+	 * <span class="en-US">Close input stream flag</span>
+	 * <span class="zh-CN">关闭输入流标记</span>
+	 */
+	private final boolean closeStream;
 
 	/**
 	 * <h3 class="en-US">Constructor method for user model reader</h3>
@@ -62,8 +67,35 @@ public final class UserModelReaderImpl extends AbstractExcelReader {
 	 *                     <span class="zh-CN">如果文件不存在或读取出错</span>
 	 */
 	public UserModelReaderImpl(final String filePath) throws IOException {
-		this.inputStream = FileUtils.getURL(filePath).openStream();
+		this(FileUtils.getURL(filePath).openStream(), Boolean.TRUE);
+	}
+
+	/**
+	 * <h3 class="en-US">Constructor method for user model reader</h3>
+	 * <h3 class="zh-CN">读取器构造方法</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @throws IOException <span class="en-US">If the file does not exist or a reading error occurs</span>
+	 *                     <span class="zh-CN">如果文件不存在或读取出错</span>
+	 */
+	public UserModelReaderImpl(final InputStream inputStream) throws IOException {
+		this(inputStream, Boolean.FALSE);
+	}
+
+	/**
+	 * <h3 class="en-US">Constructor method for user model reader</h3>
+	 * <h3 class="zh-CN">读取器构造方法</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @throws IOException <span class="en-US">If the file does not exist or a reading error occurs</span>
+	 *                     <span class="zh-CN">如果文件不存在或读取出错</span>
+	 */
+	private UserModelReaderImpl(final InputStream inputStream, final boolean closeStream) throws IOException {
+		this.inputStream = inputStream;
 		this.workbook = WorkbookFactory.create(this.inputStream);
+		this.closeStream = closeStream;
 		this.parseSheetNames();
 	}
 
@@ -143,7 +175,9 @@ public final class UserModelReaderImpl extends AbstractExcelReader {
 	@Override
 	public void close() throws IOException {
 		this.workbook.close();
-		this.inputStream.close();
+		if (this.closeStream) {
+			this.inputStream.close();
+		}
 	}
 
 	private static final class MergeData {

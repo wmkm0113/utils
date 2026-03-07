@@ -59,6 +59,7 @@ import java.util.Map;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Nov 13, 2023 15:13:37 $
  */
+@SuppressWarnings("unused")
 public final class OfficeUtils {
 
 	/**
@@ -211,6 +212,156 @@ public final class OfficeUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Get the maximum number of records in all data sheets</h3>
+	 * <h3 class="zh-CN">获取所有数据表的最大记录数</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @return <span class="en-US">Mapping table between data table name and maximum number of sheets</span>
+	 * <span class="zh-CN">数据表名与最大记录数的映射表</span>
+	 */
+	public static Map<String, Integer> excelRowsCount(final String extName, final InputStream inputStream) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.maxRows();
+		} catch (Exception e) {
+			return new HashMap<>();
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Get the maximum number of records based on the given data file path and sheet name</h3>
+	 * <h3 class="zh-CN">根据给定的文件地址和数据表名称获取最大记录数</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @param sheetName <span class="en-US">Data sheet name</span>
+	 *                  <span class="zh-CN">数据表名称</span>
+	 * @return <span class="en-US">Maximum number of records read</span>
+	 * <span class="zh-CN">读取的最大记录数</span>
+	 */
+	public static int excelRowsCount(final String extName, final InputStream inputStream, final String sheetName) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.maxRow(sheetName);
+		} catch (Exception e) {
+			return Globals.DEFAULT_VALUE_INT;
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Checks whether the given data sheet name exists in the given data file path</h3>
+	 * <h3 class="zh-CN">检查给定的文件地址中数据表名是否存在</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @param sheetNames <span class="en-US">Data sheet names to check</span>
+	 *                   <span class="zh-CN">要检查的数据表名称</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean sheetExists(final String extName, final InputStream inputStream, final String... sheetNames) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.checkExists(sheetNames);
+		} catch (Exception e) {
+			return Boolean.FALSE;
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Read data from all data sheets based on the given file path</h3>
+	 * <h3 class="zh-CN">根据给定的文件地址读取所有数据表中的数据</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @return <span class="en-US">Mapping table of read data sheet name and data list</span>
+	 * <span class="zh-CN">读取的数据表名和数据列表的映射表</span>
+	 */
+	public static Map<String, List<List<String>>> readExcel(final InputStream inputStream, final String extName) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.read();
+		} catch (Exception e) {
+			return new HashMap<>();
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Read data from all data sheets based on the given file path, starting and ending row numbers</h3>
+	 * <h3 class="zh-CN">根据给定的文件地址、起始、终止行号读取所有数据表中的数据</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @param beginRow <span class="en-US">Begin row number</span>
+	 *                 <span class="zh-CN">起始行号</span>
+	 * @param endRow   <span class="en-US">End row number</span>
+	 *                 <span class="zh-CN">终止行号</span>
+	 * @return <span class="en-US">Mapping table of read data sheet name and data list</span>
+	 * <span class="zh-CN">读取的数据表名和数据列表的映射表</span>
+	 */
+	public static Map<String, List<List<String>>> readExcel(final InputStream inputStream, final String extName, final int beginRow, final int endRow) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.read(beginRow, endRow);
+		} catch (Exception e) {
+			return new HashMap<>();
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Read data based on the given file path, data sheet name</h3>
+	 * <h3 class="zh-CN">根据给定的文件地址、数据表名称读取数据</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @param sheetName <span class="en-US">Data sheet name</span>
+	 *                  <span class="zh-CN">数据表名称</span>
+	 * @return <span class="en-US">Read data list</span>
+	 * <span class="zh-CN">读取的数据列表</span>
+	 */
+	public static List<List<String>> readExcel(final InputStream inputStream, final String extName, final String sheetName) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.read(sheetName);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Read data based on the given file path, data sheet name, starting and ending row numbers</h3>
+	 * <h3 class="zh-CN">根据给定的文件地址、数据表名称和起始、终止行号读取数据</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @param sheetName <span class="en-US">Data sheet name</span>
+	 *                  <span class="zh-CN">数据表名称</span>
+	 * @param beginRow  <span class="en-US">Begin row number</span>
+	 *                  <span class="zh-CN">起始行号</span>
+	 * @param endRow    <span class="en-US">End row number</span>
+	 *                  <span class="zh-CN">终止行号</span>
+	 * @return <span class="en-US">Read data list</span>
+	 * <span class="zh-CN">读取的数据列表</span>
+	 */
+	public static List<List<String>> readExcel(final InputStream inputStream, final String extName, final String sheetName,
+	                                           final int beginRow, final int endRow) {
+		try (ExcelReader excelReader = newReader(inputStream, extName)) {
+			return excelReader.read(sheetName, beginRow, endRow);
+		} catch (Exception e) {
+			return new ArrayList<>();
+		}
+	}
+
+	/**
 	 * <h3 class="en-US">Generate an Excel workbook writer instance object based on the given file address</h3>
 	 * <h3 class="zh-CN">根据给定文件地址生成Excel工作簿写入器实例对象</h3>
 	 *
@@ -277,6 +428,35 @@ public final class OfficeUtils {
 				return new SXSSFWorkbook(DEFAULT_ROW_ACCESS_WINDOW_SIZE);
 			default:
 				throw new DataInvalidException(0x000000AE0001L, fileExtName);
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Generate an Excel workbook reader instance object based on the given file input stream</h3>
+	 * <h3 class="zh-CN">根据给定文件输入流生成Excel工作簿读取器实例对象</h3>
+	 *
+	 * @param inputStream <span class="en-US">Excel file input stream</span>
+	 *                    <span class="zh-CN">Excel文件的输入流</span>
+	 * @param extName <span class="en-US">File extension name</span>
+	 *                    <span class="zh-CN">文件扩展名</span>
+	 * @return <span class="en-US">Excel reader instance object</span>
+	 * <span class="zh-CN">Excel读取器实例对象</span>
+	 * @throws IOException            <span class="en-US">If an exception occurs while reading the file</span>
+	 *                                <span class="zh-CN">如果读取文件时出现异常</span>
+	 * @throws InvalidFormatException <span class="en-US">If the file format is incorrect</span>
+	 *                                <span class="zh-CN">如果文件格式不正确</span>
+	 * @throws DataInvalidException   <span class="en-US">If the file format is incorrect</span>
+	 *                                <span class="zh-CN">如果文件格式不正确</span>
+	 */
+	private static ExcelReader newReader(final InputStream inputStream, final String extName)
+			throws IOException, InvalidFormatException, DataInvalidException{
+		switch (extName) {
+			case EXCEL_FILE_EXT_NAME_2003:
+				return new UserModelReaderImpl(inputStream);
+			case EXCEL_FILE_EXT_NAME_2007:
+				return new EventModelReaderImpl(inputStream);
+			default:
+				throw new DataInvalidException(0x000000AE0001L, extName);
 		}
 	}
 

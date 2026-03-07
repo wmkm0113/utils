@@ -205,7 +205,7 @@ public final class ZipOptions implements Cloneable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the folder, file name and comment charset encoding</h3>
+	 * <h3 class="en-US">Getter method for the folder, file name, and comment charset encoding</h3>
 	 * <h3 class="zh-CN">目录名、文件名、备注信息的字符集编码的Getter方法</h3>
 	 *
 	 * @return <span class="en-US">Folder, file name and comment charset encoding</span>

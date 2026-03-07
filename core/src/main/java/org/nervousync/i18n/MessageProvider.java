@@ -28,6 +28,7 @@ import java.net.URL;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jul 19, 2023 16:39:41 $
  */
+@SuppressWarnings("unused")
 public interface MessageProvider {
 
 	/**

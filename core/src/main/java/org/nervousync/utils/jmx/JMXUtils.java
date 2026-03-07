@@ -34,6 +34,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.4 $ $Date: Jan 13, 2010 16:26:58 $
  */
+@SuppressWarnings("unused")
 public final class JMXUtils {
 
 	/**

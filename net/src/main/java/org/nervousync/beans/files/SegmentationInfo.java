@@ -29,6 +29,7 @@ import java.util.List;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jun 9, 2015 09:43:23 $
  */
+@SuppressWarnings("unused")
 @OutputConfig
 @XmlType(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")
 @XmlRootElement(name = "segment_info", namespace = "https://nervousync.org/schemas/segment")

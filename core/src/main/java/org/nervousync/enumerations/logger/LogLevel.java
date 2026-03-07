@@ -24,6 +24,7 @@ package org.nervousync.enumerations.logger;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Feb 10, 2026 11:52:05 $
  */
+@SuppressWarnings("unused")
 public enum LogLevel {
 
 	/**

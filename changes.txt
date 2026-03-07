@@ -149,7 +149,7 @@ Update jackson to 2.9.9
 Update jcifs to 2.1.2
 
 [03/21/2019]
-Add method to check String include emoji code
+Add a method to check String include emoji code
 
 [03/05/2019]
 Update jackson to 2.9.7

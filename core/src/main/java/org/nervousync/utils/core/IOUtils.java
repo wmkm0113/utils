@@ -31,6 +31,7 @@ import java.util.Optional;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.2.0 $ $Date: Jun 3, 2015 11:20:20 $
  */
+@SuppressWarnings("unused")
 public final class IOUtils {
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
@@ -46,7 +47,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read data bytes from given input stream instance</h3>
+	 * <h3 class="en-US">Read data bytes from the given input stream instance</h3>
 	 * <h3 class="en-US">从给定的输入流实例对象中读取字节数组</h3>
 	 *
 	 * @param inputStream <span class="en-US">input stream instance</span>
@@ -59,7 +60,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read data bytes from given input stream instance</h3>
+	 * <h3 class="en-US">Read data bytes from the given input stream instance</h3>
 	 * <h3 class="en-US">从给定的输入流实例对象中读取字节数组</h3>
 	 *
 	 * @param inputStream <span class="en-US">input stream instance</span>
@@ -115,7 +116,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read data bytes from given input stream instance use default charset: UTF-8</h3>
+	 * <h3 class="en-US">Read data bytes from the given input stream instance use default charset: UTF-8</h3>
 	 * <h3 class="en-US">使用UTF-8编码从给定的输入流实例对象中读取字节数组</h3>
 	 *
 	 * @param inputStream <span class="en-US">input stream instance</span>
@@ -128,7 +129,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read string from given input stream instance</h3>
+	 * <h3 class="en-US">Read string from the given input stream instance</h3>
 	 * <h3 class="en-US">从给定的输入流实例对象中读取字符串</h3>
 	 *
 	 * @param inputStream <span class="en-US">input stream instance</span>
@@ -198,7 +199,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy data bytes from given input stream instance to output stream instance</h3>
+	 * <h3 class="en-US">Copy data bytes from the given input stream instance to the output stream instance</h3>
 	 * <h3 class="en-US">从给定的输入流实例对象中复制数据到给定的输出流实例对象中</h3>
 	 *
 	 * @param inputStream          <span class="en-US">input stream instance</span>
@@ -218,7 +219,7 @@ public final class IOUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Copy data bytes from given input stream instance to output stream instance using given buffer</h3>
+	 * <h3 class="en-US">Copy data bytes from the given input stream instance to the output stream instance using the given buffer</h3>
 	 * <h3 class="en-US">使用给定的缓冲区从给定的输入流实例对象中复制数据到给定的输出流实例对象中</h3>
 	 *
 	 * @param inputStream          <span class="en-US">input stream instance</span>

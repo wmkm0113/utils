@@ -39,6 +39,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,22 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 	 */
 	public EventModelReaderImpl(final String filePath) throws InvalidFormatException {
 		this.opcPackage = OPCPackage.open(filePath, PackageAccess.READ);
+		this.parseSheetNames();
+	}
+
+	/**
+	 * <h3 class="en-US">Constructor method for event model reader</h3>
+	 * <h3 class="zh-CN">读取器构造方法</h3>
+	 *
+	 * @param inputStream <span class="en-US">File input stream instance object</span>
+	 *                    <span class="zh-CN">文件输入流实例对象</span>
+	 * @throws IOException            <span class="en-US">If an error occurs when read input stream</span>
+	 *                                <span class="zh-CN">如果输入流出现异常</span>
+	 * @throws InvalidFormatException <span class="en-US">If the file is not in XLSX format</span>
+	 *                                <span class="zh-CN">如果文件不是XLSX格式</span>
+	 */
+	public EventModelReaderImpl(final InputStream inputStream) throws IOException, InvalidFormatException {
+		this.opcPackage = OPCPackage.open(inputStream);
 		this.parseSheetNames();
 	}
 

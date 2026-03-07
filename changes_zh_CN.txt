@@ -104,7 +104,7 @@ Nervousync Java 工具包
 [更新] Bcprov artifactId从bcprov-jdk15on更改为bcprov-jdk18on且版本更新为1.71
 [更新] Jackson版本为2.13.3
 [更新] Snmp4j版本为3.7.0
-[修复] 合并loadSMBFile到loadFile方法中，用户可以统一使用loadFile方法打开本地文件和SMB远程文件
+[修复] 合并 loadSMBFile 到 loadFile 方法中，用户可以统一使用loadFile方法打开本地文件和SMB远程文件
 [修复] MailUtils的recoverMails方法无效的问题
 
 [05/03/2022]
