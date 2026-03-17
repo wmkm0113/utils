@@ -2,9 +2,9 @@ name: CI Build & Test
 
 on: 
   push: 
-    branches: [ "mainline", "develop" ]
+    branches: ["mainline", "develop"]
   pull_request:
-    branches: [ "mainline", "develop" ]
+    branches: ["mainline", "develop"]
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: ${{ matrix.java }}
+          java-version: ${{matrix.java}}
           cache: maven
 
       - name: Build & Test

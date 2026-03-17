@@ -28,7 +28,7 @@
         <jakarta.webservice.version>3.1.0</jakarta.webservice.version>
         <jakarta.xml.webservice.version>4.0.2</jakarta.xml.webservice.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
-        <snmp4j.version>3.9.6</snmp4j.version>
+        <snmp4j.version>3.9.7</snmp4j.version>
         <bcprov.version>1.83</bcprov.version>
     </properties>
     <dependencies>
@@ -488,7 +488,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.6.2</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.nervousync</groupId>

@@ -1,6 +1,10 @@
 {
   "groupId": "org.nervousync",
   "bundle": "utils",
+  "alias": {
+    "en": "en-US",
+    "zh": "zh-CN"
+  },
   "errors": {
     "0x000000150001": "Length_Not_Enough_Crypto_Error",
     "0x000000150002": "Append_Data_Crypto_Error",

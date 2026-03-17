@@ -49,6 +49,12 @@ public final class BundleResource implements Serializable {
 	 */
 	private String bundle;
 	/**
+	 * <span class="en-US">Language code alias mapping</span>
+	 * <span class="zh-CN">语言代码别名映射表</span>
+	 */
+	@JsonProperty("alias")
+	private Map<String, String> aliasLocale;
+	/**
 	 * <span class="en-US">Error codes and message key mapping table</span>
 	 * <span class="zh-CN">错误代码与信息识别代码的映射表</span>
 	 */
@@ -68,6 +74,7 @@ public final class BundleResource implements Serializable {
 	public BundleResource() {
 		this.groupId = Globals.DEFAULT_VALUE_STRING;
 		this.bundle = Globals.DEFAULT_VALUE_STRING;
+		this.aliasLocale = new HashMap<>();
 		this.errorCodes = new HashMap<>();
 		this.bundleMessages = new HashMap<>();
 	}
@@ -114,6 +121,28 @@ public final class BundleResource implements Serializable {
 	 */
 	public void setBundle(final String bundle) {
 		this.bundle = bundle;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the language code alias mapping</h3>
+	 * <h3 class="zh-CN">语言代码别名映射表的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Language code alias mapping</span>
+	 * <span class="zh-CN">语言代码别名映射表</span>
+	 */
+	public Map<String, String> getAliasLocale() {
+		return this.aliasLocale;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the language code alias mapping</h3>
+	 * <h3 class="zh-CN">语言代码别名映射表的 Setter 方法</h3>
+	 *
+	 * @param aliasLocale <span class="en-US">Language code alias mapping</span>
+	 *                    <span class="zh-CN">语言代码别名映射表</span>
+	 */
+	public void setAliasLocale(final Map<String, String> aliasLocale) {
+		this.aliasLocale = aliasLocale;
 	}
 
 	/**

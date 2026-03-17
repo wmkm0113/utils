@@ -235,10 +235,10 @@ public final class SecureFactory {
 	 * @return the boolean
 	 */
 	public static boolean registeredConfig(final String secureName) {
-		if (INSTANCE == null || StringUtils.isEmpty(secureName)) {
+		if (INSTANCE == null) {
 			return Boolean.FALSE;
 		}
-		return INSTANCE.registeredNodes.containsKey(secureName);
+		return INSTANCE.registeredNodes.containsKey(StringUtils.isEmpty(secureName) ? SYSTEM_SECURE_NAME : secureName);
 	}
 
 	/**
@@ -254,7 +254,9 @@ public final class SecureFactory {
 	 */
 	public static String encrypt(final String secureName, final String dataContent) {
 		return Optional.ofNullable(INSTANCE)
-				.map(secureFactory -> secureFactory.processData(secureName, dataContent, Boolean.TRUE))
+				.map(secureFactory ->
+						secureFactory.processData(StringUtils.isEmpty(secureName) ? SYSTEM_SECURE_NAME : secureName,
+								dataContent, Boolean.TRUE))
 				.orElse(dataContent);
 	}
 
@@ -271,7 +273,9 @@ public final class SecureFactory {
 	 */
 	public static String decrypt(final String secureName, final String dataContent) {
 		return Optional.ofNullable(INSTANCE)
-				.map(secureFactory -> secureFactory.processData(secureName, dataContent, Boolean.FALSE))
+				.map(secureFactory ->
+						secureFactory.processData(StringUtils.isEmpty(secureName) ? SYSTEM_SECURE_NAME : secureName,
+								dataContent, Boolean.FALSE))
 				.orElse(dataContent);
 	}
 
@@ -313,9 +317,6 @@ public final class SecureFactory {
 	 *                     <span class="zh-CN">安全配置信息</span>
 	 */
 	private void register(@Nonnull final SecureConfig secureConfig) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Security_Current_Config", BeanUtils.objectToString(secureConfig, StringType.XML));
-		}
 		if (this.registeredNodes.containsKey(secureConfig.getSecureName())) {
 			LOGGER.warn("Security_Override_Config", secureConfig.getSecureName());
 		}
@@ -376,8 +377,7 @@ public final class SecureFactory {
 		if (StringUtils.isEmpty(secureName) || StringUtils.isEmpty(dataContent)) {
 			return dataContent;
 		}
-		String secName = StringUtils.isEmpty(secureName) ? SYSTEM_SECURE_NAME : secureName;
-		return Optional.ofNullable(this.registeredNodes.get(secName))
+		return Optional.ofNullable(this.registeredNodes.get(secureName))
 				.flatMap(secureNode -> secureNode.initCryptor(encrypt))
 				.map(secureAdapter -> {
 					String returnValue;
@@ -387,9 +387,9 @@ public final class SecureFactory {
 						byte[] resultBytes = secureAdapter.finish(dataBytes);
 						returnValue =
 								encrypt ? StringUtils.base64Encode(resultBytes) : ConvertUtils.toString(resultBytes);
-					} catch (CryptoException e) {
-						LOGGER.error(encrypt ? "Encrypt_Data_Error" : "Decrypt_Data_Error");
+					} catch (Exception e) {
 						if (LOGGER.isDebugEnabled()) {
+							LOGGER.error(encrypt ? "Encrypt_Data_Error" : "Decrypt_Data_Error");
 							LOGGER.debug("Stack_Message_Error", e);
 						}
 						returnValue = dataContent;

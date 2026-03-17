@@ -23,6 +23,8 @@ import org.nervousync.commons.Globals;
 import org.nervousync.i18n.MessageAgent;
 import org.nervousync.i18n.MessageProvider;
 import org.nervousync.utils.i18n.LocaleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +43,12 @@ import java.util.Properties;
  */
 @Provider(name = "defaultI18NProvider", titleKey = "default.i18n.provider.title", descriptionKey = "default.i18n.provider.description")
 public final class DefaultMessageProviderImpl implements MessageProvider {
+
+	/**
+	 * <span class="en-US">Logger instance</span>
+	 * <span class="zh-CN">日志实例</span>
+	 */
+	private final static Logger LOGGER = LoggerFactory.getLogger(DefaultMessageProviderImpl.class);
 
 	/**
 	 * <span class="en-US">Cached resource formatter map</span>
@@ -79,7 +87,8 @@ public final class DefaultMessageProviderImpl implements MessageProvider {
 			DefaultMessageAgentImpl.class.getClassLoader().getResources(MESSAGE_RESOURCE_PATH)
 					.asIterator()
 					.forEachRemaining(this::registerBundle);
-		} catch (IOException ignore) {
+		} catch (IOException e) {
+			LOGGER.error("Load internationalization resource error!", e);
 		}
 	}
 

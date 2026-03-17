@@ -60,7 +60,15 @@ public final class LoggerUtils {
 
 	static {
 		//  Using ServiceLoader to load LogConfigurator
-		LOG_CONFIGURATOR = ServiceLoader.load(LogConfigurator.class).findFirst().orElse(null);
+		Iterator<LogConfigurator> iterator = ServiceLoader.load(LogConfigurator.class).iterator();
+		LogConfigurator logConfigurator = null;
+		while (iterator.hasNext()) {
+			logConfigurator = iterator.next();
+			if (logConfigurator != null) {
+				break;
+			}
+		}
+		LOG_CONFIGURATOR = logConfigurator;
 	}
 
 	/**

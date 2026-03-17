@@ -33,6 +33,7 @@ import java.lang.annotation.*;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Sep 25, 2022 14:28:27 $
  */
+@Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})

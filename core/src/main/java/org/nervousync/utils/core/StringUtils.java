@@ -46,10 +46,10 @@ import java.util.regex.Pattern;
  *     <ul>Encode string to a Huffman tree</ul>
  *     <ul>Trim given string</ul>
  *     <ul>Match given string is MD5 value/UUID/phone number/e-mail address etc.</ul>
- *     <ul>Check given string is empty/notNull/notEmpty/contains string etc.</ul>
+ *     <ul>Check the given string is empty/notNull/notEmpty/contains string etc.</ul>
  *     <ul>Tokenize string by given delimiters</ul>
  *     <ul>Substring given input string by rule</ul>
- *     <ul>Validate given string is match code type</ul>
+ *     <ul>Validate the given string is the match code type</ul>
  * </span>
  * <h2 class="zh-CN">字符串工具集</h2>
  * <span class="zh-CN">
@@ -270,7 +270,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Decode given Base32 string to byte arrays</h3>
+	 * <h3 class="en-US">Decode the given Base32 string to byte arrays</h3>
 	 * <span class="en-US">
 	 * Will return a zero-length array for given base64 string is <code>null</code> or string length is 0.
 	 * </span>
@@ -292,7 +292,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Decode given Base32 string to byte arrays</h3>
+	 * <h3 class="en-US">Decode the given Base32 string to byte arrays</h3>
 	 * <span class="en-US">
 	 * Will return a zero-length array for given base64 string is <code>null</code> or string length is 0.
 	 * </span>
@@ -415,7 +415,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Decode given Base64 string to byte arrays</h3>
+	 * <h3 class="en-US">Decode the given Base64 string to byte arrays</h3>
 	 * <span class="en-US">
 	 * Will return a zero-length array for given base64 string is <code>null</code> or string length is 0.
 	 * </span>
@@ -433,7 +433,7 @@ public final class StringUtils {
 	 * <span class="zh-CN">解码后的二进制字节数组</span>
 	 */
 	public static byte[] base64Decode(final String string) {
-		if (StringUtils.isEmpty(string) || !StringUtils.matches(string, RegexGlobals.BASE64)) {
+		if (StringUtils.isEmpty(string)) {
 			return new byte[0];
 		}
 		String origString = string;
@@ -465,7 +465,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Encoding given string to Huffman Tree string using given code mapping</h3>
+	 * <h3 class="en-US">Encoding the given string to Huffman Tree string using given code mapping</h3>
 	 * <h3 class="zh-CN">使用给定的编码映射表将给定的字符串编码为霍夫曼树结果字符串</h3>
 	 *
 	 * @param codeMapping <span class="en-US">Code mapping table</span>
@@ -509,7 +509,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is MD5 value</h3>
+	 * <h3 class="en-US">Check that the given string is a MD5 value</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合MD5结果字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -523,7 +523,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is UUID value</h3>
+	 * <h3 class="en-US">Check that the given string is a UUID value</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合UUID结果字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -536,7 +536,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is XML string</h3>
+	 * <h3 class="en-US">Check that the given string is an XML string</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合XML字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -575,7 +575,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is China ID Code string</h3>
+	 * <h3 class="en-US">Check that the given string is a China ID Code string</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合中国身份证号字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -588,7 +588,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is phone number string</h3>
+	 * <h3 class="en-US">Check that the given string is a phone number string</h3>
 	 * <span class="en-US">Support country code start with 00 or +</span>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合电话号码字符串格式</h3>
 	 * <span class="zh-CN">支持国家代码以00或+开头</span>
@@ -603,7 +603,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is SSN string</h3>
+	 * <h3 class="en-US">Check that the given string is a SSN string</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合美国社会安全码字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -631,7 +631,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is EIN string</h3>
+	 * <h3 class="en-US">Check that the given string is an EIN string</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合美国雇主身份识别码字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -645,7 +645,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check that the given string is E-Mail string</h3>
+	 * <h3 class="en-US">Check that the given string is an E-Mail string</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否符合电子邮件字符串格式</h3>
 	 *
 	 * @param string <span class="en-US">The given string will check</span>
@@ -785,7 +785,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">returns the length of the string by detect encoding</h3>
+	 * <h3 class="en-US">returns the length of the string by detected encoding</h3>
 	 * <span class="en-US">
 	 * returns the length of the string by wrapping it in a byte buffer with
 	 * the appropriate charset of the input string and returns the limit of the
@@ -946,7 +946,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Trim leading blank from the given String.</h3>
+	 * <h3 class="en-US">Trim leading blankly from the given String.</h3>
 	 * <h3 class="zh-CN">修剪给定字符串中的前导空白。</h3>
 	 *
 	 * @param str <span class="en-US">the String to check</span>
@@ -1087,7 +1087,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given string contains emoji information.</h3>
+	 * <h3 class="en-US">Check the given string contains emoji information.</h3>
 	 * <h3 class="zh-CN">检查给定字符串是否包含表情符号信息。</h3>
 	 *
 	 * @param str <span class="en-US">the String to check</span>
@@ -1154,7 +1154,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Count the occurrences of the substring in search string.</h3>
+	 * <h3 class="en-US">Count the occurrences of the substring in a search string.</h3>
 	 * <h3 class="zh-CN">计算搜索字符串中子字符串的出现次数。</h3>
 	 *
 	 * @param str <span class="en-US">string to search in. Return 0 if this is null.</span>
@@ -1232,7 +1232,7 @@ public final class StringUtils {
 	 *
 	 * @param inString      <span class="en-US">String to examine</span>
 	 *                      <span class="zh-CN">要检查的字符串</span>
-	 * @param charsToDelete <span class="en-US">a set of characters to delete. E.g. "az\n" will delete 'a's, 'z's and new lines.</span>
+	 * @param charsToDelete <span class="en-US">a set of characters to delete. E.g. "az\n" will delete 'a's, 'z's, and new lines.</span>
 	 *                      <span class="zh-CN">要删除的一组字符。例如。 "az\n" 将删除 'a'、'z' 和换行符。</span>
 	 * @return <span class="en-US">String with the deleted</span>
 	 * <span class="zh-CN">删除后的字符串</span>
@@ -1465,7 +1465,7 @@ public final class StringUtils {
 				}
 			}
 		}
-		// Remaining top paths need to be retained.
+		// The remaining top paths need to be retained.
 		for (int i = 0; i < tops; i++) {
 			pathElements.add(0, TOP_PATH);
 		}
@@ -1716,7 +1716,7 @@ public final class StringUtils {
 	 * @param delimiter <span class="en-US">to split the string up with</span>
 	 *                  <span class="zh-CN">分割字符串</span>
 	 * @return <span class="en-US">
-	 * a two element array with index 0 being before the delimiter,
+	 * a two-element array with index 0 being before the delimiter,
 	 * and index 1 being after the delimiter (neither element includes the delimiter);
 	 * or <code>null</code> if the delimiter wasn't found in the given input String
 	 * </span>
@@ -1920,7 +1920,7 @@ public final class StringUtils {
 	 *                  <span class="zh-CN">输入字符串</span>
 	 * @param delimiter <span class="en-US">
 	 *                  the delimiter between elements (this is a single delimiter,
-	 *                  rather than a bunch individual delimiter characters)
+	 *                  rather than a bunch of individual delimiter characters)
 	 *                  </span>
 	 *                  <span class="zh-CN">元素之间的分隔符（这是单个分隔符，而不是一堆单独的分隔符）</span>
 	 * @return <span class="en-US">an array of the tokens in the list</span>
@@ -1947,12 +1947,12 @@ public final class StringUtils {
 	 *                      <span class="zh-CN">输入字符串</span>
 	 * @param delimiter     <span class="en-US">
 	 *                      the delimiter between elements (this is a single delimiter,
-	 *                      rather than a bunch individual delimiter characters)
+	 *                      rather than a bunch of individual delimiter characters)
 	 *                      </span>
 	 *                      <span class="zh-CN">元素之间的分隔符（这是单个分隔符，而不是一堆单独的分隔符）</span>
 	 * @param charsToDelete <span class="en-US">
 	 *                      a set of characters to delete. Useful for deleting unwanted line breaks:
-	 *                      e.g. "\r\n\f" will delete all new lines, line feeds in a String.
+	 *                      e.g., "\r\n\f" will delete all new lines, line feeds in a String.
 	 *                      </span>
 	 *                      <span class="zh-CN">
 	 *                      要删除的一组字符。对于删除不需要的换行符很有用：例如“\r\n\f” 将删除字符串中的所有新行、换行符。
@@ -1981,7 +1981,7 @@ public final class StringUtils {
 				pos = delPos + delimiter.length();
 			}
 			if (!str.isEmpty() && pos <= str.length()) {
-				// Add rest of String, but not in case of empty input.
+				// Add the rest of String, but not in case of empty input.
 				result.add(deleteAny(str.substring(pos), charsToDelete));
 			}
 		}
@@ -2018,7 +2018,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g. CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
+	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g., CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
 	 * <h3 class="zh-CN">将集合用分隔连接（例如 CSV）字符串返回的便捷方法。例如。常用于 <code>toString()</code> 实现。</h3>
 	 *
 	 * @param coll <span class="en-US">the Collection to display</span>
@@ -2031,7 +2031,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g. CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
+	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g., CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
 	 * <h3 class="zh-CN">将集合用分隔连接（例如 CSV）字符串返回的便捷方法。例如。常用于 <code>toString()</code> 实现。</h3>
 	 *
 	 * @param coll      <span class="en-US">the Collection to display</span>
@@ -2046,7 +2046,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g. CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
+	 * <h3 class="en-US">Convenience method to return a Collection as a delimited (e.g., CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
 	 * <h3 class="zh-CN">将集合用分隔连接（例如 CSV）字符串返回的便捷方法。例如。常用于 <code>toString()</code> 实现。</h3>
 	 *
 	 * @param coll      <span class="en-US">the Collection to display</span>
@@ -2077,7 +2077,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check the given string contains search string, ignore case</h3>
+	 * <h3 class="en-US">Check the given string contains search string, ignore cases</h3>
 	 * <h3 class="zh-CN">检查给定的字符串是否包含搜索字符串，忽略大小写</h3>
 	 *
 	 * @param string <span class="en-US">The given string</span>
@@ -2102,7 +2102,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convenience method to return an Object array as a delimited (e.g. CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
+	 * <h3 class="en-US">Convenience method to return an Object array as a delimited (e.g., CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
 	 * <h3 class="zh-CN">将对象数组用分隔连接（例如 CSV）字符串返回的便捷方法。例如。常用于 <code>toString()</code> 实现。</h3>
 	 *
 	 * @param arr <span class="en-US">the String array to display</span>
@@ -2115,7 +2115,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convenience method to return an Object array as a delimited (e.g. CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
+	 * <h3 class="en-US">Convenience method to return an Object array as a delimited (e.g., CSV) String. E.g., useful for <code>toString()</code> implementations.</h3>
 	 * <h3 class="zh-CN">将对象数组用分隔连接（例如 CSV）字符串返回的便捷方法。例如。常用于 <code>toString()</code> 实现。</h3>
 	 *
 	 * @param arr       <span class="en-US">the String array to display</span>
@@ -2140,7 +2140,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Replace converted character with special XML character in string.</h3>
+	 * <h3 class="en-US">Replace a converted character with a special XML character in string.</h3>
 	 * <h3 class="zh-CN">替换转义字符串为XML特殊字符</h3>
 	 *
 	 * @param sourceString <span class="en-US">The string will process</span>
@@ -2167,7 +2167,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Replace special HTML character with converted character in string.</h3>
+	 * <h3 class="en-US">Replace a special HTML character with a converted character in string.</h3>
 	 * <h3 class="zh-CN">替换HTML特殊字符为转义字符串</h3>
 	 *
 	 * @param sourceString <span class="en-US">The string will process</span>
@@ -2233,7 +2233,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Replace the template string using matched value from input string by regex</h3>
+	 * <h3 class="en-US">Replace the template string using the matched value from the input string by regex</h3>
 	 * <h3 class="zh-CN">使用正则表达式从输入字符串中提取数据并替换模板字符串中对应的值</h3>
 	 *
 	 * @param str      <span class="en-US">input string</span>
@@ -2250,7 +2250,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Replace the template string using matched value from input string by regex</h3>
+	 * <h3 class="en-US">Replace the template string using the matched value from the input string by regex</h3>
 	 * <h3 class="zh-CN">使用正则表达式从输入字符串中提取数据并替换模板字符串中对应的值</h3>
 	 *
 	 * @param str             <span class="en-US">input string</span>
@@ -2383,7 +2383,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given character is space</h3>
+	 * <h3 class="en-US">Check the given character is space</h3>
 	 * <h3 class="zh-CN">检查给定字符是否为空格</h3>
 	 *
 	 * @param letter <span class="en-US">will check for character</span>
@@ -2396,7 +2396,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given character is English character</h3>
+	 * <h3 class="en-US">Check the given character is an English character</h3>
 	 * <h3 class="zh-CN">检查给定字符是否为英文字母</h3>
 	 *
 	 * @param letter <span class="en-US">will check for character</span>
@@ -2409,7 +2409,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given character is number</h3>
+	 * <h3 class="en-US">Check the given character is number</h3>
 	 * <h3 class="zh-CN">检查给定字符是否为数字</h3>
 	 *
 	 * @param letter <span class="en-US">will check for character</span>
@@ -2422,7 +2422,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given character is Chinese/Japanese/Korean</h3>
+	 * <h3 class="en-US">Check the given character is Chinese/Japanese/Korean</h3>
 	 * <h3 class="zh-CN">检查给定字符是否为中文/日文/韩文</h3>
 	 *
 	 * @param letter <span class="en-US">will check for character</span>
@@ -2451,7 +2451,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given code string is valid of the given code type</h3>
+	 * <h3 class="en-US">Check the given code string is valid of the given code type</h3>
 	 * <h3 class="zh-CN">检查给定代码字符穿是否符合指定代码类型的算法</h3>
 	 *
 	 * @param code     <span class="en-US">will check for code</span>
@@ -2558,7 +2558,7 @@ public final class StringUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">change the first letter to the given capitalize</h3>
+	 * <h3 class="en-US">change the first letter to the given capitalizing</h3>
 	 * <h3 class="zh-CN">转换字符串的第一个字符为大/小写</h3>
 	 *
 	 * @param str        <span class="en-US">the String to capitalize, maybe <code>null</code></span>

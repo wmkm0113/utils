@@ -81,7 +81,8 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 			ClassUtils.getDefaultClassLoader().getResources(InternationalizationGlobals.BUNDLE_RESOURCE_PATH)
 					.asIterator()
 					.forEachRemaining(this::registerBundle);
-		} catch (IOException ignore) {
+		} catch (IOException e) {
+			LOGGER.error("Load internationalization resource error!", e);
 		}
 	}
 
@@ -100,12 +101,13 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 		try (InputStream inputStream = url.openStream()) {
 			BundleResource bundleResource = InternationalizationGlobals.readResource(inputStream);
 			if (bundleResource == null) {
-				throw new IOException("Load bundle resource error! ");
+				LOGGER.error("Load bundle resource error! Resource path: {}", url.getPath());
+				return;
 			}
 			String bundleKey = this.bundleKey(bundleResource.getGroupId(), bundleResource.getBundle());
 			MessageResource messageResource =
 					this.registeredResources.getOrDefault(bundleKey, new MessageResource());
-			messageResource.updateResource(bundleResource.getErrorCodes(), bundleResource.getBundleMessages());
+			messageResource.updateResource(bundleResource);
 			this.registeredResources.put(bundleKey, messageResource);
 			String basePath = url.getPath().substring(0, url.getPath().length() - InternationalizationGlobals.BUNDLE_RESOURCE_PATH.length());
 			if (basePath.startsWith(Globals.FILE_URL_PREFIX)) {
@@ -119,7 +121,7 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 				LOGGER.debug("Group ID: {}, bundle: {}", bundleResource.getGroupId(), bundleResource.getBundle());
 			}
 		} catch (IOException e) {
-			LOGGER.error("Register resource error! Path: {}", url.getPath());
+			LOGGER.error("Register resource error! Resource path: {}", url.getPath());
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug(Globals.DEFAULT_VALUE_STRING, e);
 			}
@@ -134,6 +136,15 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 		}
 	}
 
+	/**
+	 * <h3 class="en-US">Generate multilingual message agent instance object</h3>
+	 * <h3 class="zh-CN">生成国际化信息代理实例对象</h3>
+	 *
+	 * @param bundleKey <span class="en-US">Resource identify key</span>
+	 *                  <span class="zh-CN">资源唯一识别码</span>
+	 * @return <span class="en-US">Multilingual message agent instance object</span>
+	 * <span class="zh-CN">国际化信息代理实例对象</span>
+	 */
 	private MessageAgent newAgent(final String bundleKey) {
 		if (LocaleUtils.isEmpty(bundleKey) || DEFAULT_BUNDLE_KEY.equalsIgnoreCase(bundleKey)) {
 			return new EnhanceMessageAgentImpl(null, this.registeredResources.get(DEFAULT_BUNDLE_KEY));
@@ -150,6 +161,8 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 	 *                <span class="zh-CN">资源的组ID</span>
 	 * @param bundle  <span class="en-US">Resource bundle</span>
 	 *                <span class="zh-CN">资源的标识</span>
+	 * @return <span class="en-US">Resource identify key</span>
+	 * <span class="zh-CN">资源唯一识别码</span>
 	 */
 	private String bundleKey(final String groupId, final String bundle) {
 		if (LocaleUtils.isEmpty(groupId) || LocaleUtils.isEmpty(bundle)) {

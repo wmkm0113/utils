@@ -609,7 +609,7 @@ public final class ConfigureManager {
 								.orElse(null);
 						this.scanFields(checkType);
 						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
-					} else if (beanClass.isAnnotationPresent(OutputConfig.class)) {
+					} else if (field.getType().isAnnotationPresent(OutputConfig.class)) {
 						this.scanFields(fieldType);
 						fieldMap.put(field.getName(), Globals.DEFAULT_VALUE_STRING);
 					} else if (field.isAnnotationPresent(Password.class)) {

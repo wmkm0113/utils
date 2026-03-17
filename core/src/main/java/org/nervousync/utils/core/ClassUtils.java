@@ -25,6 +25,7 @@ import org.nervousync.enumerations.beans.DataType;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -50,7 +51,7 @@ public final class ClassUtils {
 	private static final String INTERNAL_ARRAY_PREFIX = "[L";
 	/**
 	 * <span class="en-US">The inner class separator character '$'</span>
-	 * <span class="zh-CN">内部类分隔符'$'</span>
+	 * <span class="zh-CN">内部类分隔符 '$'</span>
 	 */
 	private static final char INNER_CLASS_SEPARATOR = '$';
 	/**
@@ -70,7 +71,7 @@ public final class ClassUtils {
 	public static final String CLASS_FILE_SUFFIX = ".class";
 	/**
 	 * <span class="en-US">
-	 * Map with the primitive wrapper type as a key and corresponding primitive type as value,
+	 * Map with the primitive wrapper type as a key and corresponding primitive type as a value,
 	 * for example, Integer.class -> int.class.
 	 * </span>
 	 * <span class="zh-CN">以原始包装类型作为键并以相应的原始类型作为值进行映射，例如：Integer.class -> int.class</span>
@@ -78,10 +79,10 @@ public final class ClassUtils {
 	private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_TYPE_MAP = new HashMap<>(8);
 	/**
 	 * <span class="en-US">
-	 * Map with primitive type name as a key and corresponding primitive type as value,
+	 * Map with a primitive type name as a key and corresponding primitive type as a value,
 	 * for example, "int" -> "int.class".
 	 * </span>
-	 * <span class="zh-CN">以原始类型名称作为键，以相应的原始类型作为值的映射，例如：“int”->“int.class”。</span>
+	 * <span class="zh-CN">以原始类型名称作为键，以相应的原始类型作为值的映射，例如：“int” -> “int.class”。</span>
 	 */
 	private static final Map<Object, Object> PRIMITIVE_TYPE_NAME_MAP = new HashMap<>(16);
 	/**
@@ -126,7 +127,7 @@ public final class ClassUtils {
 	 * <h3 class="en-US">Return the default ClassLoader to use</h3>
 	 * <span class="en-US">
 	 * Typically the thread context ClassLoader, if available;
-	 * the ClassLoader that loaded the ClassUtils class will be used as fallback.
+	 * the ClassLoader that loaded the ClassUtils class will be used as a fallback.
 	 * Call this method if you intend to use the thread context ClassLoader
 	 * in a scenario where you absolutely need a non-null ClassLoader reference:
 	 * for example, for class path resource loading (but not necessarily for
@@ -248,8 +249,8 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse the original class name of given class instance</h3>
-	 * <p class="en-US">Unwrap the class name if class was enhancer by cglib/bytebuddy or class name if class not enhanced</p>
+	 * <h3 class="en-US">Parse the original class name of a given class instance</h3>
+	 * <p class="en-US">Unwrap the class name if the class was enhancer by cglib/bytebuddy or class name if class not enhanced</p>
 	 * <h3 class="zh-CN">解析给定类对象的原始类名</h3>
 	 * <p class="zh-CN">如果给定的类是经过cglib/bytebuddy增强过，则解析原始类名，如果给定的类没有增强，则返回类名</p>
 	 *
@@ -758,7 +759,7 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check given field name was exists field in target class</h3>
+	 * <h3 class="en-US">Check a given field name was there exists field in target class</h3>
 	 * <h3 class="zh-CN">检查给定的字段名称是否存在于目标类中</h3>
 	 *
 	 * @param clazz <span class="en-US">Target class instance</span>
@@ -793,7 +794,7 @@ public final class ClassUtils {
 
 	/**
 	 * <h3 class="en-US">Return all interfaces that the given class implements as arrays, including ones implemented by superclasses.</h3>
-	 * <span class="en-US">If the class itself is an interface, it gets returned as sole interface.</span>
+	 * <span class="en-US">If the class itself is an interface, it gets returned as the sole interface.</span>
 	 * <h3 class="zh-CN">返回给定类作为数组实现的所有接口，包括由超类实现的接口。</h3>
 	 * <span class="zh-CN">如果类本身是一个接口，它将作为唯一接口返回。</span>
 	 *
@@ -808,7 +809,7 @@ public final class ClassUtils {
 
 	/**
 	 * <h3 class="en-US">Return all interfaces that the given class implements as arrays, including ones implemented by superclasses.</h3>
-	 * <span class="en-US">If the class itself is an interface, it gets returned as sole interface.</span>
+	 * <span class="en-US">If the class itself is an interface, it gets returned as the sole interface.</span>
 	 * <h3 class="zh-CN">返回给定类作为数组实现的所有接口，包括由超类实现的接口。</h3>
 	 * <span class="zh-CN">如果类本身是一个接口，它将作为唯一接口返回。</span>
 	 *
@@ -866,7 +867,7 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse component type from given class.</h3>
+	 * <h3 class="en-US">Parse component type from a given class.</h3>
 	 * <h3 class="zh-CN">从给定类中解析组件类型。</h3>
 	 *
 	 * @param clazz <span class="en-US">Class instance</span>
@@ -900,7 +901,7 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check type class is simple data class, e.g., Number (include int, Integer, long, Long...), String, boolean and Date</h3>
+	 * <h3 class="en-US">Check type class is a simple data class, e.g., Number (include int, Integer, long, Long...), String, boolean, and Date</h3>
 	 * <h3 class="zh-CN">检查类型类是简单的数据类，例如Number（包括 int、Integer、long、Long...）、String、布尔值和日期时间</h3>
 	 *
 	 * @param typeClass <span class="en-US">Will check for type class</span>
@@ -913,7 +914,7 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve simple data type enumeration value of the given data type class.</h3>
+	 * <h3 class="en-US">Retrieve a simple data type enumeration value of the given data type class.</h3>
 	 * <h3 class="zh-CN">检索给定数据类型类的简单数据类型枚举值。</h3>
 	 *
 	 * @param clazz <span class="en-US">data type class</span>
@@ -932,8 +933,14 @@ public final class ClassUtils {
 			return DataType.BINARY;
 		} else if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
 			return DataType.BOOLEAN;
-		} else if (clazz.equals(Date.class)) {
+		} else if (clazz.equals(YearMonth.class)) {
+			return DataType.MONTH;
+		} else if (clazz.equals(LocalDate.class)) {
 			return DataType.DATE;
+		} else if (clazz.equals(LocalTime.class)) {
+			return DataType.TIME;
+		} else if (clazz.equals(Date.class) || clazz.equals(LocalDateTime.class)) {
+			return DataType.DATE_TIME;
 		} else if (clazz.equals(Integer.class) || clazz.equals(int.class)
 				|| clazz.equals(Float.class) || clazz.equals(float.class)
 				|| clazz.equals(Double.class) || clazz.equals(double.class)
@@ -954,7 +961,7 @@ public final class ClassUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse simple data value to target class instance.</h3>
+	 * <h3 class="en-US">Parse a simple data value to a target class instance.</h3>
 	 * <h3 class="zh-CN">解析简单数据类型值为目标类实例对象。</h3>
 	 *
 	 * @param <T>       <span class="en-US">Target type class</span>
@@ -977,8 +984,20 @@ public final class ClassUtils {
 			case BOOLEAN:
 				paramObj = Boolean.valueOf(dataValue);
 				break;
+			case MONTH:
+				paramObj = DateTimeUtils.parseISO8601Month(dataValue);
+				break;
 			case DATE:
-				paramObj = DateTimeUtils.parseSiteMapDate(dataValue);
+				paramObj = DateTimeUtils.parseISO8601Date(dataValue);
+				break;
+			case TIME:
+				paramObj = DateTimeUtils.parseISO8601Time(dataValue);
+				break;
+			case DATE_TIME:
+				LocalDateTime localDateTime = DateTimeUtils.parseISO8601DateTime(dataValue);
+				paramObj = Date.class.equals(typeClass)
+						? Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+						: localDateTime;
 				break;
 			case ENUM:
 				paramObj = ReflectionUtils.parseEnum(typeClass, dataValue);

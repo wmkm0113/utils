@@ -24,6 +24,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -64,6 +66,10 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 	private static final ObjectMapper JSON_MAPPER =
 			JsonMapper.builder().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 					.addModule(new JavaTimeModule())
+					//  Convert long value to string, resolve the js number precision lost
+					.addModule(new SimpleModule()
+							.addSerializer(Long.class, ToStringSerializer.instance)
+							.addSerializer(Long.TYPE, ToStringSerializer.instance))
 					.build();
 	/**
 	 * <span class="en-US">YAML object mapper instance</span>

@@ -1103,7 +1103,7 @@ public final class RequestUtils {
 						authentication += proxyConfig.getPassword();
 					}
 					requestBuilder.setHeader("Proxy-Authorization",
-							StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
+							"Basic " + StringUtils.base64Encode(authentication.getBytes(Charset.forName(Globals.DEFAULT_ENCODING))));
 				});
 		return requestBuilder.build();
 	}

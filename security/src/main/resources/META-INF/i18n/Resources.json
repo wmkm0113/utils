@@ -33,9 +33,6 @@
       "Override_Factory_Config_Debug": {
         "pattern": "Override factory configuration information"
       },
-      "Security_Current_Config": {
-        "pattern": "Register secure config information: {0}"
-      },
       "Security_Override_Config": {
         "pattern": "Override secure config identify code: {0}"
       },
@@ -85,9 +82,6 @@
       },
       "Override_Factory_Config_Debug": {
         "pattern": "覆写工厂配置信息"
-      },
-      "Security_Current_Config": {
-        "pattern": "注册的安全配置信息：{0}"
       },
       "Security_Override_Config": {
         "pattern": "覆盖的安全配置信息识别代码：{0}"

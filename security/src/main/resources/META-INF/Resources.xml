@@ -28,7 +28,6 @@
     <entry key="Read_Certificate_Error">An error occurs when reading x509 certificate</entry>
     <entry key="Read_Private_Key_From_Store_Error">An error occurs when reading private key certificate from certificate store</entry>
     <entry key="Override_Factory_Config_Debug">Override factory configuration information</entry>
-    <entry key="Security_Current_Config">Register secure config information: {0}</entry>
     <entry key="Security_Override_Config">Override secure config identify code: {0}</entry>
     <entry key="Encrypt_Data_Error">An error occurs when encrypting data</entry>
     <entry key="Decrypt_Data_Error">An error occurs when decrypting data</entry>

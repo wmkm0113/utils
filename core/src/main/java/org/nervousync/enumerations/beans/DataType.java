@@ -35,10 +35,25 @@ public enum DataType {
 	 */
 	BOOLEAN,
 	/**
-     * <span class="en-US">DateTime Data</span>
-     * <span class="zh-CN">日期时间</span>
+	 * <span class="en-US">Year-month Data</span>
+	 * <span class="zh-CN">年度月份数据</span>
+	 */
+	MONTH,
+	/**
+     * <span class="en-US">Date Data</span>
+     * <span class="zh-CN">日期数据</span>
 	 */
 	DATE,
+	/**
+	 * <span class="en-US">Time Data</span>
+	 * <span class="zh-CN">时间时间</span>
+	 */
+	TIME,
+	/**
+	 * <span class="en-US">DateTime Data</span>
+	 * <span class="zh-CN">日期时间</span>
+	 */
+	DATE_TIME,
 	/**
      * <span class="en-US">Enumeration Data</span>
      * <span class="zh-CN">枚举值</span>

@@ -47,6 +47,21 @@ public final class DateTimeUtils {
 	 */
 	public static final String DEFAULT_DATE_PATTERN = "yyyy/MM/dd";
 	/**
+	 * <span class="en-US">Static value for date format yyyy-MM</span>
+	 * <span class="zh-CN">日期格式 yyyy-MM 的静态值</span>
+	 */
+	public static final String DEFAULT_MONTH_PATTERN_ISO8601 = "yyyy-MM";
+	/**
+	 * <span class="en-US">Static value for date format yyyy-MM-dd</span>
+	 * <span class="zh-CN">日期格式 yyyy-MM-dd 的静态值</span>
+	 */
+	public static final String DEFAULT_DATE_PATTERN_ISO8601 = "yyyy-MM-dd";
+	/**
+	 * <span class="en-US">Static value for date format HH:mm:ss</span>
+	 * <span class="zh-CN">日期格式 HH:mm:ss 的静态值</span>
+	 */
+	public static final String DEFAULT_TIME_PATTERN_ISO8601 = "HH:mm:ss";
+	/**
 	 * <span class="en-US">Static value for date format yyyy-MM-dd'T'HH:mm:ss</span>
 	 * <span class="zh-CN">日期格式 yyyy-MM-dd'T'HH:mm:ss 的静态值</span>
 	 */
@@ -114,16 +129,57 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parses given string according to <code>java.util.Date</code> with ISO8601 format</h3>
-	 * <h3 class="zh-CN">使用ISO8601标准解析给定日期字符串为日期实例对象</h3>
+	 * <h3 class="en-US">Parses given string according to <code>java.time.YearMonth</code> with ISO8601 format</h3>
+	 * <h3 class="zh-CN">使用ISO8601标准解析给定字符串为年月实例对象</h3>
 	 *
-	 * @param string <span class="en-US">formatted date time string</span>
-	 *               <span class="zh-CN">格式化的日期时间字符串</span>
-	 * @return <span class="en-US">date instance</span>
+	 * @param string <span class="en-US">formatted string</span>
+	 *               <span class="zh-CN">格式化的字符串</span>
+	 * @return <span class="en-US">YearMonth instance</span>
+	 * <span class="zh-CN">年月实例对象</span>
+	 */
+	public static YearMonth parseISO8601Month(final String string) {
+		return YearMonth.parse(string, DateTimeFormatter.ofPattern(DEFAULT_MONTH_PATTERN_ISO8601));
+	}
+
+	/**
+	 * <h3 class="en-US">Parses given string according to <code>java.time.LocalTime</code> with ISO8601 format</h3>
+	 * <h3 class="zh-CN">使用ISO8601标准解析给定字符串为时间实例对象</h3>
+	 *
+	 * @param string <span class="en-US">formatted string</span>
+	 *               <span class="zh-CN">格式化的字符串</span>
+	 * @return <span class="en-US">LocalTime instance</span>
+	 * <span class="zh-CN">时间实例对象</span>
+	 */
+	public static LocalTime parseISO8601Time(final String string) {
+		return LocalTime.parse(
+				StringUtils.tokenizeToStringArray(string, ":").length == 2 ? string + ":00" : string,
+				DateTimeFormatter.ofPattern(DEFAULT_TIME_PATTERN_ISO8601));
+	}
+
+	/**
+	 * <h3 class="en-US">Parses given string according to <code>java.time.LocalDate</code> with ISO8601 format</h3>
+	 * <h3 class="zh-CN">使用ISO8601标准解析给定字符串为日期实例对象</h3>
+	 *
+	 * @param string <span class="en-US">formatted string</span>
+	 *               <span class="zh-CN">格式化的字符串</span>
+	 * @return <span class="en-US">LocalDate instance</span>
 	 * <span class="zh-CN">日期实例对象</span>
 	 */
-	public static Date parseSiteMapDate(final String string) {
-		return parseDate(string, DEFAULT_DATETIME_PATTERN_ISO8601 + DateTimeUtils.systemTimeZone());
+	public static LocalDate parseISO8601Date(final String string) {
+		return LocalDate.parse(string, DateTimeFormatter.ofPattern(DEFAULT_DATE_PATTERN_ISO8601));
+	}
+
+	/**
+	 * <h3 class="en-US">Parses given string according to <code>java.time.LocalDateTime</code> with ISO8601 format</h3>
+	 * <h3 class="zh-CN">使用ISO8601标准解析给定字符串为日期时间实例对象</h3>
+	 *
+	 * @param string <span class="en-US">formatted string</span>
+	 *               <span class="zh-CN">格式化的字符串</span>
+	 * @return <span class="en-US">LocalDateTime instance</span>
+	 * <span class="zh-CN">日期时间实例对象</span>
+	 */
+	public static LocalDateTime parseISO8601DateTime(final String string) {
+		return LocalDateTime.parse(string, DateTimeFormatter.ofPattern(DEFAULT_DATETIME_PATTERN_ISO8601));
 	}
 
 	/**
@@ -265,7 +321,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Format and calculate date according to int with "yyyyMMdd" format by given expire time</h3>
+	 * <h3 class="en-US">Format and calculate the date according to int with "yyyyMMdd" format by given expire time</h3>
 	 * <h3 class="zh-CN">使用"yyyyMMdd"格式化并计算过期日期时间为数字</h3>
 	 *
 	 * @param expireTime <span class="en-US">Expire time milliseconds</span>
@@ -293,7 +349,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Format and calculate date according to int with "yyyyMMdd" format by given month count</h3>
+	 * <h3 class="en-US">Format and calculate the date according to int with "yyyyMMdd" format by given month count</h3>
 	 * <h3 class="zh-CN">使用"yyyyMMdd"格式化并计算过期日期时间为数字</h3>
 	 *
 	 * @param monthCount <span class="en-US">Expire month count</span>
@@ -352,7 +408,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read current month number</h3>
+	 * <h3 class="en-US">Read the current month number</h3>
 	 * <h3 class="zh-CN">读取当前月份</h3>
 	 *
 	 * @return <span class="en-US">Current month</span>
@@ -363,7 +419,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Read current-day number</h3>
+	 * <h3 class="en-US">Read the current-day number</h3>
 	 * <h3 class="zh-CN">读取当前日期</h3>
 	 *
 	 * @return <span class="en-US">Current day</span>
@@ -395,42 +451,8 @@ public final class DateTimeUtils {
 		return Calendar.getInstance().get(Calendar.MINUTE);
 	}
 
-	@MagicConstant(intValues = {Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH, Calendar.APRIL,
-			Calendar.MAY, Calendar.JUNE, Calendar.JULY, Calendar.AUGUST,
-			Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER})
-	private static int calendarMonth(final int month) throws DataInvalidException {
-		switch (month) {
-			case 1:
-				return Calendar.JANUARY;
-			case 2:
-				return Calendar.FEBRUARY;
-			case 3:
-				return Calendar.MARCH;
-			case 4:
-				return Calendar.APRIL;
-			case 5:
-				return Calendar.MAY;
-			case 6:
-				return Calendar.JUNE;
-			case 7:
-				return Calendar.JULY;
-			case 8:
-				return Calendar.AUGUST;
-			case 9:
-				return Calendar.SEPTEMBER;
-			case 10:
-				return Calendar.OCTOBER;
-			case 11:
-				return Calendar.NOVEMBER;
-			case 12:
-				return Calendar.DECEMBER;
-			default:
-				throw new DataInvalidException(0x000000FF0001L);
-		}
-	}
-
 	/**
-	 * <h3 class="en-US">Calculate day count of given year and month</h3>
+	 * <h3 class="en-US">Calculate day count of the given year and month</h3>
 	 * <h3 class="zh-CN">计算给定的年份和月份有多少天</h3>
 	 *
 	 * @param year  <span class="en-US">Given year</span>
@@ -500,7 +522,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve current time in milliseconds.</h3>
+	 * <h3 class="en-US">Retrieve the current time in milliseconds.</h3>
 	 * <h3 class="zh-CN">读取当前时间与1970-01-01差值的毫秒数</h3>
 	 *
 	 * @return <span class="en-US">Read value</span>
@@ -511,7 +533,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve current UTC time in milliseconds.</h3>
+	 * <h3 class="en-US">Retrieve the current UTC time in milliseconds.</h3>
 	 * <h3 class="zh-CN">读取当前UTC时间与1970-01-01差值的毫秒数</h3>
 	 *
 	 * @return <span class="en-US">Read value</span>
@@ -522,7 +544,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Formats given date according to string with given DateTimeFormatter instance</h3>
+	 * <h3 class="en-US">Formats given date according to string with the given DateTimeFormatter instance</h3>
 	 * <h3 class="zh-CN">使用给定的日期时间格式化实例对象将给定的日期实例对象转换为字符串</h3>
 	 *
 	 * @param date              <span class="en-US">date instance</span>
@@ -537,7 +559,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Formats given date according and time zone to string with given DateTimeFormatter instance</h3>
+	 * <h3 class="en-US">Formats given date according and time zone to string with the given DateTimeFormatter instance</h3>
 	 * <h3 class="zh-CN">使用给定的日期时间格式化实例对象和时区将给定的日期实例对象转换为字符串</h3>
 	 *
 	 * @param date              <span class="en-US">date instance</span>
@@ -588,7 +610,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse given string according to date with given locale instance and date style code</h3>
+	 * <h3 class="en-US">Parse the given string according to date with the given locale instance and date style code</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象和日期风格代码将给定的字符串转换为日期实例对象</h3>
 	 *
 	 * @param string    <span class="en-US">formatted date time string</span>
@@ -657,7 +679,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse given string according to date with given locale instance and time style code</h3>
+	 * <h3 class="en-US">Parse the given string according to date with the given locale instance and time style code</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象和日期风格代码将给定的字符串转换为日期实例对象</h3>
 	 *
 	 * @param string    <span class="en-US">formatted date time string</span>
@@ -693,7 +715,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Formats given date according to string with given locale instance, date style code and time style code</h3>
+	 * <h3 class="en-US">Formats given date according to string with the given locale instance, date style code, and time style code</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象、日期风格代码和时间风格代码将给定的日期实例对象转换为字符串</h3>
 	 *
 	 * @param date      <span class="en-US">date instance</span>
@@ -740,7 +762,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse given string according to date with given locale instance, date style code and time style code</h3>
+	 * <h3 class="en-US">Parse the given string according to date with the given locale instance, date style code and time style code</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象、日期风格代码和时间风格代码将给定的字符串转换为日期实例对象</h3>
 	 *
 	 * @param string    <span class="en-US">formatted date time string</span>
@@ -794,7 +816,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Formats given date according to string with given locale instance and date pattern string</h3>
+	 * <h3 class="en-US">Formats given date according to string with the given locale instance and date pattern string</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象和格式代码将给定的日期实例对象转换为字符串</h3>
 	 *
 	 * @param date    <span class="en-US">date instance</span>
@@ -816,7 +838,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Parse given string according to date with given locale instance and date pattern string</h3>
+	 * <h3 class="en-US">Parse the given string according to date with the given locale instance and date pattern string</h3>
 	 * <h3 class="zh-CN">使用给定的地区实例对象和格式代码将给定的字符串转换为日期实例对象</h3>
 	 *
 	 * @param string  <span class="en-US">formatted date time string</span>
@@ -843,7 +865,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check current year is leap year</h3>
+	 * <h3 class="en-US">Check the current year is leap year</h3>
 	 * <h3 class="zh-CN">检查当前年份是否为闰年</h3>
 	 *
 	 * @return <span class="en-US">check result</span>
@@ -867,7 +889,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve first day of current month and format to string the using given pattern</h3>
+	 * <h3 class="en-US">Retrieve the first day of the current month and format to string the using the given pattern</h3>
 	 * <h3 class="zh-CN">读取当前月份的第一天并使用给定的格式字符串将日期转换为格式化的字符串</h3>
 	 *
 	 * @param pattern <span class="en-US">Pattern string</span>
@@ -881,7 +903,7 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Retrieve last day of current month and format to string the using given pattern</h3>
+	 * <h3 class="en-US">Retrieve the last day of the current month and format to string the using the given pattern</h3>
 	 * <h3 class="zh-CN">读取当前月份的最后一天并使用给定的格式字符串将日期转换为格式化的字符串</h3>
 	 *
 	 * @param pattern <span class="en-US">Pattern string</span>
@@ -906,7 +928,52 @@ public final class DateTimeUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Calculate days count of given month count from current day</h3>
+	 * <h3 class="en-US">Get the MONTH attribute value of the calendar for a given month.</h3>
+	 * <h3 class="zh-CN">获取给定月份的日历 MONTH 属性值</h3>
+	 *
+	 * @param month <span class="en-US">Given month</span>
+	 *              <span class="zh-CN">给定的月份</span>
+	 * @return <span class="en-US">The MONTH attribute value of the calendar</span>
+	 * <span class="zh-CN">日历 MONTH 属性值</span>
+	 * @throws DataInvalidException <span class="en-US">The provided month value is invalid.</span>
+	 *                              <span class="zh-CN">给定的月份值非法</span>
+	 */
+	@MagicConstant(intValues = {Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH, Calendar.APRIL,
+			Calendar.MAY, Calendar.JUNE, Calendar.JULY, Calendar.AUGUST,
+			Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER})
+	private static int calendarMonth(final int month) throws DataInvalidException {
+		switch (month) {
+			case 1:
+				return Calendar.JANUARY;
+			case 2:
+				return Calendar.FEBRUARY;
+			case 3:
+				return Calendar.MARCH;
+			case 4:
+				return Calendar.APRIL;
+			case 5:
+				return Calendar.MAY;
+			case 6:
+				return Calendar.JUNE;
+			case 7:
+				return Calendar.JULY;
+			case 8:
+				return Calendar.AUGUST;
+			case 9:
+				return Calendar.SEPTEMBER;
+			case 10:
+				return Calendar.OCTOBER;
+			case 11:
+				return Calendar.NOVEMBER;
+			case 12:
+				return Calendar.DECEMBER;
+			default:
+				throw new DataInvalidException(0x000000FF0001L);
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Calculate days count of the given month count from the current day</h3>
 	 * <h3 class="zh-CN">根据给定的月数计算当前日期往后月数有多少天</h3>
 	 *
 	 * @param monthCount <span class="en-US">Expire month count</span>

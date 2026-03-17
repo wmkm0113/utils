@@ -19,6 +19,7 @@ package org.nervousync.i18n.impl;
 import com.ibm.icu.text.MessageFormat;
 import jakarta.annotation.Nonnull;
 import org.nervousync.beans.i18n.BundleMessage;
+import org.nervousync.beans.i18n.BundleResource;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.i18n.LocaleUtils;
 import org.slf4j.Logger;
@@ -47,6 +48,11 @@ public final class MessageResource {
 	 */
 	private final Map<Long, String> codeKeysMap;
 	/**
+	 * <span class="en-US">Language code alias mapping</span>
+	 * <span class="zh-CN">语言代码别名映射表</span>
+	 */
+	private final Map<String, String> aliasCodeMap;
+	/**
 	 * <span class="en-US">Resource information map</span>
 	 * <span class="zh-CN">资源信息映射表</span>
 	 */
@@ -63,6 +69,7 @@ public final class MessageResource {
 	 */
 	public MessageResource() {
 		this.codeKeysMap = new HashMap<>();
+		this.aliasCodeMap = new HashMap<>();
 		this.resourcesMap = new HashMap<>();
 		this.cachedFormaterMap = new HashMap<>();
 	}
@@ -71,26 +78,30 @@ public final class MessageResource {
 	 * <h3 class="en-US">Update resource messages</h3>
 	 * <h3 class="zh-CN">更新国际化信息内容</h3>
 	 *
-	 * @param errorCodes     <span class="en-US">Error codes and message key mapping table</span>
-	 *                       <span class="zh-CN">错误代码与信息识别代码的映射表</span>
-	 * @param bundleMessages <span class="en-US">Mapping of message language code and message content</span>
-	 *                       <span class="zh-CN">信息语言代码与信息内容的定义映射表</span>
+	 * @param bundleResource <span class="en-US">Internationalization Resource Data</span>
+	 *                       <span class="zh-CN">国际化资源数据</span>
 	 */
-	public void updateResource(@Nonnull final Map<String, String> errorCodes,
-	                           @Nonnull final Map<String, Map<String, BundleMessage>> bundleMessages) {
-		errorCodes.forEach((key, value) -> {
+	public void updateResource(@Nonnull final BundleResource bundleResource) {
+		bundleResource.getErrorCodes().forEach((key, value) -> {
 			long errorCode = LocaleUtils.parseErrorCode(key);
 			if (errorCode != Globals.DEFAULT_VALUE_LONG) {
 				this.codeKeysMap.put(errorCode, value);
 			}
 		});
-		bundleMessages.forEach((languageCode, messageMap) ->
+		bundleResource.getAliasLocale().forEach((aliasCode, localeCode) -> {
+			if (this.aliasCodeMap.containsKey(aliasCode)) {
+				this.logger.warn("Override locale code alias mapping, alias code: {}, original code: {}, new code: {}",
+						aliasCode, this.aliasCodeMap.get(aliasCode), localeCode);
+			}
+			this.aliasCodeMap.put(aliasCode, localeCode);
+		});
+		bundleResource.getBundleMessages().forEach((localeCode, messageMap) ->
 				messageMap.forEach((key, bundleMessage) -> {
-					String identifyKey = identifyKey(key, languageCode);
+					String identifyKey = identifyKey(key, localeCode);
 					if (this.resourcesMap.containsKey(identifyKey)) {
 						this.cachedFormaterMap.remove(identifyKey);
 						this.logger.warn("Override resource key: {}, language code: {}, original value: {}, new value: {}",
-								key, languageCode, this.resourcesMap.get(identifyKey), bundleMessage);
+								key, localeCode, this.resourcesMap.get(identifyKey), bundleMessage);
 					}
 					this.resourcesMap.put(identifyKey, bundleMessage);
 				}));
@@ -137,6 +148,9 @@ public final class MessageResource {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
 		BundleMessage bundleMessage = this.resourcesMap.get(identifyKey(messageKey, languageCode));
+		if (bundleMessage == null && this.aliasCodeMap.containsKey(languageCode)) {
+			bundleMessage = this.resourcesMap.get(identifyKey(messageKey, this.aliasCodeMap.get(languageCode)));
+		}
 		if (bundleMessage == null) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
@@ -175,8 +189,12 @@ public final class MessageResource {
 				this.cachedFormaterMap.put(identifyKey,
 						new MessageFormat(bundleMessage.getPattern(), LocaleUtils.parseLocale(languageCode)));
 			}
+			return this.cachedFormaterMap.get(identifyKey);
+		} else {
+			return Optional.ofNullable(this.aliasCodeMap.get(languageCode))
+					.map(aliasCode -> this.retrieveFormatter(messageKey, aliasCode))
+					.orElse(null);
 		}
-		return this.cachedFormaterMap.get(identifyKey);
 	}
 
 	/**
@@ -196,12 +214,12 @@ public final class MessageResource {
 	 * <h3 class="en-US">Retrieve resource identify key by given class</h3>
 	 * <h3 class="zh-CN">根据给定的类查找资源唯一识别码</h3>
 	 *
-	 * @param messageKey   <span class="en-US">Message identify key</span>
-	 *                     <span class="zh-CN">信息识别键值</span>
-	 * @param languageCode <span class="en-US">Language code</span>
-	 *                     <span class="zh-CN">语言代码</span>
+	 * @param messageKey <span class="en-US">Message identify key</span>
+	 *                   <span class="zh-CN">信息识别键值</span>
+	 * @param localeCode <span class="en-US">Language code</span>
+	 *                   <span class="zh-CN">语言代码</span>
 	 */
-	public static String identifyKey(final String messageKey, final String languageCode) {
-		return messageKey + Globals.DEFAULT_MULTILINGUAL_KEY_SPLIT_CHARACTER + languageCode;
+	public static String identifyKey(final String messageKey, final String localeCode) {
+		return messageKey + Globals.DEFAULT_MULTILINGUAL_KEY_SPLIT_CHARACTER + localeCode;
 	}
 }

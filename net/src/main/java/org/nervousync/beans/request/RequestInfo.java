@@ -64,7 +64,7 @@ public final class RequestInfo {
 	private final ProxyConfig proxyConfig;
 	/**
 	 * <span class="en-US">Trusted certificate list for sending secure request</span>
-	 * <p class="en-US">Default is empty list for using JDK certificate library</p>
+	 * <p class="en-US">Default is an empty list for using JDK certificate library</p>
 	 * <span class="zh-CN">发送加密请求时信任的证书列表</span>
 	 * <p class="en-US">默认为空列表，代表使用JDK默认的证书库</p>
 	 *
@@ -112,7 +112,7 @@ public final class RequestInfo {
 	 */
 	private final int requestTimeOut;
 	/**
-	 * <span class="en-US">Binary data array of current request will post</span>
+	 * <span class="en-US">Binary data array of the current request will post</span>
 	 * <span class="zh-CN">当前请求要发送的二进制数据数组</span>
 	 */
 	private final byte[] postData;
@@ -139,7 +139,7 @@ public final class RequestInfo {
 
 	/**
 	 * <h3 class="en-US">Constructor for RequestInfo</h3>
-	 * <p class="en-US">Only using for RequestBuilder instance to generate RequestInfo instance</p>
+	 * <p class="en-US">Only using for RequestBuilder instance to generate a RequestInfo instance</p>
 	 * <h3 class="zh-CN">RequestInfo的构造方法</h3>
 	 * <p class="zh-CN">仅用于请求构造器生成RequestInfo实例对象使用</p>
 	 *
@@ -305,7 +305,7 @@ public final class RequestInfo {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for the post binary data array</h3>
+	 * <h3 class="en-US">Getter method for the post-binary data array</h3>
 	 * <h3 class="zh-CN">POST发送二进制数据的Getter方法</h3>
 	 */
 	public byte[] getPostData() {
@@ -385,7 +385,7 @@ public final class RequestInfo {
 		private ProxyConfig proxyConfig;
 		/**
 		 * <span class="en-US">Trusted certificate list for sending secure request</span>
-		 * <p class="en-US">Default is empty list for using JDK certificate library</p>
+		 * <p class="en-US">Default is an empty list for using JDK certificate library</p>
 		 * <span class="zh-CN">发送加密请求时信任的证书列表</span>
 		 * <p class="en-US">默认为空列表，代表使用JDK默认的证书库</p>
 		 *
@@ -433,7 +433,7 @@ public final class RequestInfo {
 		 */
 		private int requestTimeOut = Globals.DEFAULT_TIME_OUT;
 		/**
-		 * <span class="en-US">Binary data array of current request will post</span>
+		 * <span class="en-US">Binary data array of the current request will post</span>
 		 * <span class="zh-CN">当前请求要发送的二进制数据数组</span>
 		 */
 		private byte[] postData;
@@ -463,7 +463,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Confirm request info and generate RequestInfo instance</h3>
+		 * <h3 class="en-US">Confirm request info and generate a RequestInfo instance</h3>
 		 * <h3 class="zh-CN">确认请求配置信息并生成RequestInfo实例对象</h3>
 		 *
 		 * @return <span class="en-US">RequestInfo instance</span>
@@ -476,7 +476,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Generate RequestProxyBuilder instance to configure proxy server</h3>
+		 * <h3 class="en-US">Generate RequestProxyBuilder instance to configure a proxy server</h3>
 		 * <h3 class="zh-CN">生成RequestProxyBuilder实例对象用于配置代理服务器</h3>
 		 *
 		 * @return <span class="en-US">RequestProxyBuilder instance</span>
@@ -548,7 +548,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Configure pass phrase of the system certificate library</h3>
+		 * <h3 class="en-US">Configure the pass phrase of the system certificate library</h3>
 		 * <h3 class="zh-CN">设置系统证书库的读取密码</h3>
 		 *
 		 * @param passPhrase <span class="en-US">Pass phrase of system certificate library</span>
@@ -562,7 +562,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Configure user agent string will be used</h3>
+		 * <h3 class="en-US">Configure the user agent string will be used</h3>
 		 * <h3 class="zh-CN">设置即将使用的用户代理字符串</h3>
 		 *
 		 * @param userAgent <span class="en-US">User agent string</span>
@@ -604,7 +604,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Configure content type string</h3>
+		 * <h3 class="en-US">Configure the content type string</h3>
 		 * <h3 class="zh-CN">设置"Content-Type"值</h3>
 		 *
 		 * @param contentType <span class="en-US">Content type string</span>
@@ -692,7 +692,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Add request header name and value</h3>
+		 * <h3 class="en-US">Add a request header name and value</h3>
 		 * <h3 class="zh-CN">添加请求头的键和值</h3>
 		 *
 		 * @param headerName  <span class="en-US">Request header name</span>
@@ -831,7 +831,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Static method for create redirect ProxyConfig instance</h3>
+		 * <h3 class="en-US">Static method for creation redirect ProxyConfig instance</h3>
 		 * <h3 class="zh-CN">静态方法用于创建无代理的代理服务器配置信息实例对象</h3>
 		 *
 		 * @return <span class="en-US">Generated ProxyConfig instance</span>
@@ -973,7 +973,7 @@ public final class RequestInfo {
 		 */
 		private final ProxyConfig proxyConfig;
 		/**
-		 * <h2 class="en-US">Configure information modified flag</h2>
+		 * <h2 class="en-US">Configure the information modified flag</h2>
 		 * <h2 class="zh-CN">配置信息修改标记</h2>
 		 */
 		private boolean modified = Boolean.FALSE;
@@ -1004,7 +1004,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Configure proxy type</h3>
+		 * <h3 class="en-US">Configure the proxy type</h3>
 		 * <h3 class="zh-CN">配置代理服务器类型</h3>
 		 *
 		 * @param proxyType <span class="en-US">Enumeration value of proxy server</span>
@@ -1045,7 +1045,7 @@ public final class RequestInfo {
 		}
 
 		/**
-		 * <h3 class="en-US">Configure proxy servers authenticate information</h3>
+		 * <h3 class="en-US">Configure proxy server authentication information</h3>
 		 * <h3 class="zh-CN">配置代理服务器身份验证信息</h3>
 		 *
 		 * @param userName <span class="en-US">Authenticate username</span>

@@ -24,6 +24,7 @@ import org.nervousync.i18n.MessageAgent;
 import org.nervousync.i18n.MessageProvider;
 import org.nervousync.i18n.impl.DefaultMessageProviderImpl;
 
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.ServiceLoader;
 
@@ -45,7 +46,14 @@ public final class MultilingualUtils {
 	private static final MessageProvider I18N_PROVIDER;
 
 	static {
-		MessageProvider messageProvider = ServiceLoader.load(MessageProvider.class).findFirst().orElse(null);
+		Iterator<MessageProvider> iterator = ServiceLoader.load(MessageProvider.class).iterator();
+		MessageProvider messageProvider = null;
+		while (iterator.hasNext()) {
+			messageProvider = iterator.next();
+			if (messageProvider != null) {
+				break;
+			}
+		}
 		if (messageProvider == null) {
 			messageProvider = new DefaultMessageProviderImpl();
 		}

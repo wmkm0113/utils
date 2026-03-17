@@ -59,6 +59,11 @@ public final class I18nResourceTransformer implements ReproducibleResourceTransf
 		if (InternationalizationGlobals.BUNDLE_RESOURCE_PATH.equalsIgnoreCase(resource)) {
 			BundleResource readResource = InternationalizationGlobals.readResource(inputStream);
 			if (readResource != null) {
+				if (readResource.getAliasLocale() != null && !readResource.getAliasLocale().isEmpty()) {
+					Map<String, String> aliasLocale = this.bundleResource.getAliasLocale();
+					aliasLocale.putAll(readResource.getAliasLocale());
+					this.bundleResource.setAliasLocale(aliasLocale);
+				}
 				if (readResource.getErrorCodes() != null && !readResource.getErrorCodes().isEmpty()) {
 					Map<String, String> errorCodes = this.bundleResource.getErrorCodes();
 					errorCodes.putAll(readResource.getErrorCodes());

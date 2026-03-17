@@ -306,7 +306,8 @@ public final class OfficeUtils {
 	 * @return <span class="en-US">Mapping table of read data sheet name and data list</span>
 	 * <span class="zh-CN">读取的数据表名和数据列表的映射表</span>
 	 */
-	public static Map<String, List<List<String>>> readExcel(final InputStream inputStream, final String extName, final int beginRow, final int endRow) {
+	public static Map<String, List<List<String>>> readExcel(final InputStream inputStream, final String extName,
+	                                                        final int beginRow, final int endRow) {
 		try (ExcelReader excelReader = newReader(inputStream, extName)) {
 			return excelReader.read(beginRow, endRow);
 		} catch (Exception e) {
