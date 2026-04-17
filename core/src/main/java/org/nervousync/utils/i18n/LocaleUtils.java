@@ -19,6 +19,7 @@ package org.nervousync.utils.i18n;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.utils.core.StringUtils;
 
 import java.util.*;
 
@@ -82,7 +83,7 @@ public final class LocaleUtils {
 		if (languageCode == null) {
 			return null;
 		}
-		String locale = languageCode.replaceAll("-", "_");
+		String locale = StringUtils.replace(languageCode,"-", "_");
 
 		String language = Globals.DEFAULT_VALUE_STRING;
 		String country = Globals.DEFAULT_VALUE_STRING;

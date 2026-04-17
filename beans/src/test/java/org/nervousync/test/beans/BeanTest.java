@@ -8,19 +8,17 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.nervousync.annotations.beans.BeanProperty;
 import org.nervousync.annotations.beans.DataTransfer;
-import org.nervousync.beans.transfers.basic.BigDecimalAdapter;
-import org.nervousync.beans.transfers.basic.BigIntegerAdapter;
-import org.nervousync.beans.transfers.basic.BooleanAdapter;
-import org.nervousync.beans.transfers.beans.BeanObjectAdapter;
-import org.nervousync.beans.transfers.beans.JsonBeanAdapter;
-import org.nervousync.beans.transfers.beans.XmlBeanAdapter;
-import org.nervousync.beans.transfers.beans.YamlBeanAdapter;
-import org.nervousync.beans.transfers.blob.Base32Adapter;
-import org.nervousync.beans.transfers.blob.Base64Adapter;
+import org.nervousync.xml.adapters.basic.BigIntegerAdapter;
+import org.nervousync.xml.adapters.basic.BooleanAdapter;
+import org.nervousync.xml.adapters.beans.BeanObjectAdapter;
+import org.nervousync.xml.adapters.beans.JsonBeanAdapter;
+import org.nervousync.xml.adapters.beans.XmlBeanAdapter;
+import org.nervousync.xml.adapters.beans.YamlBeanAdapter;
+import org.nervousync.xml.adapters.binary.Base32Adapter;
+import org.nervousync.xml.adapters.binary.Base64Adapter;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.BeanUtils;
-import org.nervousync.utils.core.ClassUtils;
 import org.nervousync.utils.core.StringUtils;
 
 import java.io.Serializable;
@@ -30,14 +28,6 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public final class BeanTest extends BaseTest {
-
-    @Test
-    @Order(0)
-    public void testConverter() {
-        printTypes(BigDecimalAdapter.class);
-        printTypes(BigIntegerAdapter.class);
-        printTypes(BeanObjectAdapter.class);
-    }
 
     @Test
     @Order(5)
@@ -95,14 +85,6 @@ public final class BeanTest extends BaseTest {
     @Order(40)
     public void removeConfig() {
         BeanUtils.removeBeanConfig(BeanOne.class, BeanTwo.class, BeanThree.class, BeanFour.class, BeanFive.class, InnerBean.class);
-    }
-
-    private void printTypes(final Class<?> clazz) {
-        StringBuilder stringBuilder = new StringBuilder("Class name: ").append(clazz.getName()).append(" component types: ");
-        for (Class<?> type : ClassUtils.componentTypes(clazz)) {
-            stringBuilder.append(type.getName()).append(",");
-        }
-        System.out.println(stringBuilder);
     }
 
     private static GenericBean generateGeneric() {

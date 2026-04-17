@@ -29,8 +29,8 @@ public final class RegexGlobals {
 	 * <span class="zh-CN">正则表达式，用于匹配电子邮件地址</span>
 	 */
 	public static final String EMAIL_ADDRESS =
-			"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*" +
-					"[a-zA-Z0-9])?\\.)+(?:[A-Z]{2}|asia|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel)\\b";
+			"[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*" +
+					"[a-zA-Z0-9])?\\.)+(?:[a-zA-Z]{2}|asia|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel)\\b";
 
 	/**
 	 * <span class="en-US">Regular expression to match Base64 encoded strings.</span>

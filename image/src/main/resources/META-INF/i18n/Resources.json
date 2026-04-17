@@ -1,0 +1,52 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "alias": {
+    "en": "en-US",
+    "zh": "zh-CN"
+  },
+  "errors": {
+  },
+  "messages": {
+    "en-US": {
+      "Read_Image_Error": {
+        "pattern": "An error occurs when reading image file"
+      },
+      "Cut_Image_Error": {
+        "pattern": "An error occurs when cutting image file"
+      },
+      "Resize_Image_Error": {
+        "pattern": "An error occurs when resizing image file"
+      },
+      "Water_Mark_Image_Error": {
+        "pattern": "An error occurs when adding image watermark"
+      },
+      "Width_Exceeds_Original_Image_Error": {
+        "pattern": "Target width exceeds original image width"
+      },
+      "Height_Exceeds_Original_Image_Error": {
+        "pattern": "Target height exceeds original image height"
+      }
+    },
+    "zh-CN": {
+      "Read_Image_Error": {
+        "pattern": "读取图片文件出错"
+      },
+      "Cut_Image_Error": {
+        "pattern": "切割图片文件出错"
+      },
+      "Resize_Image_Error": {
+        "pattern": "放大/缩小图片文件出错"
+      },
+      "Water_Mark_Image_Error": {
+        "pattern": "添加图片水印出错"
+      },
+      "Width_Exceeds_Original_Image_Error": {
+        "pattern": "目标宽度超过原文件宽度"
+      },
+      "Height_Exceeds_Original_Image_Error": {
+        "pattern": "目标高度超过原文件高度"
+      }
+    }
+  }
+}

@@ -37,6 +37,7 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 @OutputConfig
 @Signature("signature")
+@XmlType(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlRootElement(name = "mail_config", namespace = "https://nervousync.org/schemas/mail")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class MailConfig implements Serializable {
@@ -62,7 +63,7 @@ public final class MailConfig implements Serializable {
 	 * <span class="en-US">Proxy configure information</span>
 	 * <span class="zh-CN">代理服务器配置信息</span>
 	 */
-	@XmlElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
+	@XmlElement(name = "proxy_config", type = ProxyConfig.class)
 	private ProxyConfig proxyConfig = ProxyConfig.redirect();
 	/**
 	 * <span class="en-US">Mail send server config</span>
@@ -509,7 +510,7 @@ public final class MailConfig implements Serializable {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for host server authenticate login</h3>
+		 * <h3 class="en-US">Getter method for the host server authenticate login</h3>
 		 * <h3 class="zh-CN">邮件服务器需要身份验证的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Host server authenticates login</span>
@@ -520,7 +521,7 @@ public final class MailConfig implements Serializable {
 		}
 
 		/**
-		 * <h3 class="en-US">Setter method for host server authenticate login</h3>
+		 * <h3 class="en-US">Setter method for the host server authenticate login</h3>
 		 * <h3 class="zh-CN">邮件服务器需要身份验证的Setter方法</h3>
 		 *
 		 * @param authLogin <span class="en-US">Host server authenticates login</span>

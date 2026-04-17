@@ -35,8 +35,8 @@ import java.io.Serializable;
  */
 @SuppressWarnings("unused")
 @OutputConfig
-@XmlType(name = "launcher_config", namespace = "https://nervousync.org/schemas/startup")
-@XmlRootElement(name = "launcher_config", namespace = "https://nervousync.org/schemas/startup")
+@XmlType(name = "launcher_config", namespace = "https://nervousync.org/schemas/config")
+@XmlRootElement(name = "launcher_config", namespace = "https://nervousync.org/schemas/config")
 public final class LauncherConfig implements Serializable {
 
 	/**

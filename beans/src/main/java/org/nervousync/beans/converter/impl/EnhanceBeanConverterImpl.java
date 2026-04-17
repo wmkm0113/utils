@@ -116,10 +116,10 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 		try {
 			switch (stringType) {
 				case JSON:
-					readObject = JSON_MAPPER.readValue(IOUtils.readContent(inputStream), beanClass);
+					readObject = JSON_MAPPER.readValue(inputStream, beanClass);
 					break;
 				case YAML:
-					readObject = YAML_MAPPER.readValue(IOUtils.readContent(inputStream), beanClass);
+					readObject = YAML_MAPPER.readValue(inputStream, beanClass);
 					break;
 				default:
 					readObject = DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);

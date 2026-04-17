@@ -496,7 +496,9 @@ public final class FileUtils {
 		try (JarFile jarFile = new JarFile(getFile(filePath))) {
 			JarEntry packageEntry = jarFile.getJarEntry(entryPath);
 			if (packageEntry != null) {
-				return IOUtils.readContent(jarFile.getInputStream(packageEntry));
+				try (InputStream inputStream = jarFile.getInputStream(packageEntry)) {
+					return IOUtils.readContent(jarFile.getInputStream(packageEntry));
+				}
 			}
 		} catch (Exception e) {
 			if (LOGGER.isDebugEnabled()) {
@@ -1709,12 +1711,9 @@ public final class FileUtils {
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
 	public static boolean saveFile(final String filePath, final String content, final String encoding) {
-		PrintWriter printWriter = null;
-		OutputStreamWriter outputStreamWriter = null;
-		try (OutputStream outputStream = new FileOutputStream(filePath)) {
-			outputStreamWriter = new OutputStreamWriter(outputStream, encoding);
-			printWriter = new PrintWriter(outputStreamWriter);
-
+		try (OutputStream outputStream = new FileOutputStream(filePath);
+		     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, encoding);
+			 PrintWriter printWriter = new PrintWriter(outputStreamWriter)) {
 			printWriter.print(content);
 			outputStreamWriter.flush();
 			return Boolean.TRUE;
@@ -1724,9 +1723,6 @@ public final class FileUtils {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 			return Boolean.FALSE;
-		} finally {
-			IOUtils.closeStream(printWriter);
-			IOUtils.closeStream(outputStreamWriter);
 		}
 	}
 
@@ -1755,8 +1751,8 @@ public final class FileUtils {
 	 * <span class="zh-CN">文件内容字符串</span>
 	 */
 	public static String readFile(final String filePath, final String encoding) {
-		try {
-			return IOUtils.readContent(getURL(filePath).openStream(), encoding);
+		try (InputStream inputStream = getURL(filePath).openStream()) {
+			return IOUtils.readContent(inputStream, encoding);
 		} catch (Exception e) {
 			return "";
 		}

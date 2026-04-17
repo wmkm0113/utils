@@ -563,24 +563,6 @@
       "Destroy_Generator_Registered_ID_Debug": {
         "pattern": "Destroys the initialized generator instance object"
       },
-      "Read_Image_Error": {
-        "pattern": "An error occurs when reading image file"
-      },
-      "Cut_Image_Error": {
-        "pattern": "An error occurs when cutting image file"
-      },
-      "Resize_Image_Error": {
-        "pattern": "An error occurs when resizing image file"
-      },
-      "Water_Mark_Image_Error": {
-        "pattern": "An error occurs when adding image watermark"
-      },
-      "Width_Exceeds_Original_Image_Error": {
-        "pattern": "Target width exceeds original image width"
-      },
-      "Height_Exceeds_Original_Image_Error": {
-        "pattern": "Target height exceeds original image height"
-      },
       "Close_Stream_IO_Error": {
         "pattern": "An error occurs when closing stream"
       },
@@ -1122,24 +1104,6 @@
       },
       "Destroy_Generator_Registered_ID_Debug": {
         "pattern": "销毁已初始化的生成器实例对象"
-      },
-      "Read_Image_Error": {
-        "pattern": "读取图片文件出错"
-      },
-      "Cut_Image_Error": {
-        "pattern": "切割图片文件出错"
-      },
-      "Resize_Image_Error": {
-        "pattern": "放大/缩小图片文件出错"
-      },
-      "Water_Mark_Image_Error": {
-        "pattern": "添加图片水印出错"
-      },
-      "Width_Exceeds_Original_Image_Error": {
-        "pattern": "目标宽度超过原文件宽度"
-      },
-      "Height_Exceeds_Original_Image_Error": {
-        "pattern": "目标高度超过原文件高度"
       },
       "Close_Stream_IO_Error": {
         "pattern": "关闭数据流出错"

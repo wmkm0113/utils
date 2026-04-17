@@ -217,6 +217,10 @@ public final class LoggerUtils {
 		 * <span class="zh-CN">日志实例</span>
 		 */
 		private final org.slf4j.Logger logger;
+		/**
+		 * <span class="en-US">Internationalization message agent instance object</span>
+		 * <span class="zh-CN">国际化信息代理实例对象</span>
+		 */
 		private final MessageAgent multiAgent;
 
 		/**

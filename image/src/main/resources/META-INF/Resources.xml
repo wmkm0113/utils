@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="Read_Image_Error">An error occurs when reading image file</entry>
+    <entry key="Width_Exceeds_Original_Image_Error">Target width exceeds original image width</entry>
+    <entry key="Height_Exceeds_Original_Image_Error">Target height exceeds original image height</entry>
+    <entry key="Cut_Image_Error">An error occurs when cutting image file</entry>
+    <entry key="Resize_Image_Error">An error occurs when resizing image file</entry>
+    <entry key="Water_Mark_Image_Error">An error occurs when adding image watermark</entry>
+    <entry key="Not_Found_File_Error">Can not found the file: {0}</entry>
+    <entry key="Read_Files_Error">An error occurs when reading file data</entry>
+</properties>

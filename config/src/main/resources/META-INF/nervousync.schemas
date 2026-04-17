@@ -1,2 +1,1 @@
-https\://nervousync.org/schemas/startup=org/nervousync/schemas/utils/startup_config_1_0.xsd
-https\://nervousync.org/schemas/proxy=org/nervousync/schemas/utils/proxy_config_1_0.xsd
+https\://nervousync.org/schemas/config=org/nervousync/schemas/config_1_0.xsd

@@ -479,13 +479,8 @@ public final class OTPUtils {
 	 */
 	private static int generateTOTPCode(final CalcType calcType, final String secret, final long fixedTime,
 	                                    final int syncCount, final int fixWindow) {
-		long currentTime = DateTimeUtils.currentTimeMillis();
-		long calcTime = (currentTime + fixedTime) / 1000L;
-		if (syncCount > 0) {
-			calcTime /= syncCount;
-		} else {
-			calcTime /= DEFAULT_SYNC_COUNT;
-		}
+		long currentTime = DateTimeUtils.currentUTCTimeMillis();
+		long calcTime = (currentTime + fixedTime) / (((syncCount > 0) ? syncCount : DEFAULT_SYNC_COUNT) * 1000L);
 		calcTime += fixWindow;
 		return generateCode(calcType, secret, calcTime);
 	}

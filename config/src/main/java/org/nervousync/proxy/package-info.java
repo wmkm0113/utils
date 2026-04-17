@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@XmlSchema(namespace = "https://nervousync.org/schemas/proxy", elementFormDefault = XmlNsForm.QUALIFIED,
-		location = "https://nervousync.org/schemas/proxy_config_1_0.xsd",
+@XmlSchema(namespace = "https://nervousync.org/schemas/config", elementFormDefault = XmlNsForm.QUALIFIED,
+		location = "https://nervousync.org/schemas/config_1_0.xsd",
 		xmlns = {
 				@XmlNs(prefix = "xs", namespaceURI = "http://www.w3.org/2001/XMLSchema"),
 				@XmlNs(prefix = "xsi", namespaceURI = "http://www.w3.org/2001/XMLSchema-instance"),
-				@XmlNs(prefix = "proxy", namespaceURI = "https://nervousync.org/schemas/proxy")
+				@XmlNs(prefix = "", namespaceURI = "https://nervousync.org/schemas/config")
 		}
 )
 package org.nervousync.proxy;

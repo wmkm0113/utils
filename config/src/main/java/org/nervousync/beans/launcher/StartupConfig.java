@@ -38,8 +38,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @OutputConfig
-@XmlType(name = "startup_config", namespace = "https://nervousync.org/schemas/startup")
-@XmlRootElement(name = "startup_config", namespace = "https://nervousync.org/schemas/startup")
+@XmlType(name = "startup_config", namespace = "https://nervousync.org/schemas/config")
+@XmlRootElement(name = "startup_config", namespace = "https://nervousync.org/schemas/config")
 public final class StartupConfig implements Serializable {
 
 	/**

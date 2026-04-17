@@ -558,8 +558,8 @@ public final class EnhanceFileUtils {
 	 * <span class="zh-CN">文件内容字符串</span>
 	 */
 	public static String readFile(final String filePath, final String encoding) {
-		try {
-			return IOUtils.readContent(EnhanceFileUtils.loadFile(filePath), encoding);
+		try (InputStream inputStream = EnhanceFileUtils.loadFile(filePath)) {
+			return IOUtils.readContent(inputStream, encoding);
 		} catch (Exception e) {
 			return "";
 		}

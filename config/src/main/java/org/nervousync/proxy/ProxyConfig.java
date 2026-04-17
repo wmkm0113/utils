@@ -32,8 +32,8 @@ import org.nervousync.commons.Globals;
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2018 16:05:54 $
  */
 @OutputConfig
-@XmlType(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
-@XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/proxy")
+@XmlType(name = "proxy_config", namespace = "https://nervousync.org/schemas/config")
+@XmlRootElement(name = "proxy_config", namespace = "https://nervousync.org/schemas/config")
 @XmlAccessorType(XmlAccessType.NONE)
 public final class ProxyConfig implements Serializable {
 	/**

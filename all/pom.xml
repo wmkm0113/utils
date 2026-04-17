@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.nervousync</groupId>
         <artifactId>utils-parent</artifactId>
-        <version>1.3.0.1</version>
+        <version>1.3.0.2</version>
     </parent>
     <artifactId>utils-all</artifactId>
     <packaging>jar</packaging>
@@ -15,12 +15,11 @@
         <jaxb.version>4.0.6</jaxb.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
-        <log4j.version>2.25.3</log4j.version>
         <slf4j.version>2.0.17</slf4j.version>
         <jcifs.version>2.1.40</jcifs.version>
         <poi.version>5.5.1</poi.version>
         <zxing.version>3.5.4</zxing.version>
-        <icu4j.version>78.2</icu4j.version>
+        <icu4j.version>78.3</icu4j.version>
         <jakarta.mail.version>2.1.5</jakarta.mail.version>
         <angus.mail.version>2.0.5</angus.mail.version>
         <jakarta.activation.version>2.1.4</jakarta.activation.version>
@@ -29,45 +28,10 @@
         <jakarta.xml.webservice.version>4.0.2</jakarta.xml.webservice.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
         <snmp4j.version>3.9.7</snmp4j.version>
-        <bcprov.version>1.83</bcprov.version>
+        <bcprov.version>1.84</bcprov.version>
     </properties>
     <dependencies>
         <!-- Logging Support -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j2-impl</artifactId>
-            <version>${log4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -76,17 +40,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-ext</artifactId>
-            <version>${slf4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
             <exclusions>
                 <exclusion>
@@ -460,7 +413,7 @@
         </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-log4j</artifactId>
+            <artifactId>utils-image</artifactId>
         </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>

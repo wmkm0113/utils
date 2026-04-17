@@ -189,7 +189,7 @@ public final class SystemUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Check the current operating system is Apple MacOS</h3>
+	 * <h3 class="en-US">Check the current operating system is Apple macOS</h3>
 	 * <h3 class="zh-CN">判断当前操作系统为苹果MacOS</h3>
 	 *
 	 * @return <span class="en-US">Check result</span>

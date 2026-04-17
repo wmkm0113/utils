@@ -672,27 +672,26 @@ public final class ServiceUtils {
 						responseData = responseData.substring(0, responseData.length() - Character.toString(FileUtils.LF).length());
 					}
 
+					String encoding = contentType.getCharsetEncoding();
 					if (returnType.isArray()) {
-						return Optional.ofNullable(BeanUtils.stringToList(responseData, contentType.getStringType(),
-										contentType.getCharsetEncoding(), paramClass))
+						return Optional.ofNullable(BeanUtils.stringToList(responseData, contentType.getStringType(), encoding, paramClass))
 								.map(List::toArray)
 								.orElse(new ArrayList<>().toArray());
 					} else if (List.class.isAssignableFrom(returnType)) {
-						return Optional.ofNullable(BeanUtils.stringToList(responseData, contentType.getStringType(),
-										contentType.getCharsetEncoding(), paramClass))
+						return Optional.ofNullable(BeanUtils.stringToList(responseData, contentType.getStringType(), encoding, paramClass))
 								.orElse(new ArrayList<>());
 					}
 					switch (response.getHeaderString(HttpHeaders.CONTENT_TYPE)) {
 						case FileUtils.MIME_TYPE_JSON:
-							return BeanUtils.stringToObject(responseData, StringType.JSON, contentType.getCharsetEncoding(), returnType);
+							return BeanUtils.stringToObject(responseData, StringType.JSON, encoding, returnType);
 						case FileUtils.MIME_TYPE_TEXT_XML:
 						case FileUtils.MIME_TYPE_XML:
-							return BeanUtils.stringToObject(responseData, StringType.XML, contentType.getCharsetEncoding(), returnType);
+							return BeanUtils.stringToObject(responseData, StringType.XML, encoding, returnType);
 						case FileUtils.MIME_TYPE_TEXT_YAML:
 						case FileUtils.MIME_TYPE_YAML:
-							return BeanUtils.stringToObject(responseData, StringType.YAML, contentType.getCharsetEncoding(), returnType);
+							return BeanUtils.stringToObject(responseData, StringType.YAML, encoding, returnType);
 						default:
-							return responseData;
+							return ClassUtils.parseSimpleData(responseData, returnType);
 					}
 				} else {
 					String errorMsg = response.readEntity(String.class);

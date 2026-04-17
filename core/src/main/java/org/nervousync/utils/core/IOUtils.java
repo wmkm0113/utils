@@ -116,6 +116,32 @@ public final class IOUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Read data content from the given Reader instance</h3>
+	 * <h3 class="en-US">从给定的读取器实例对象中读取字节数组</h3>
+	 *
+	 * @param reader <span class="en-US">Reader instance object</span>
+	 *                    <span class="zh-CN">读取器实例对象</span>
+	 * @return <span class="en-US">Read string, or zero length string if an error occurs</span>
+	 * <span class="zh-CN">读取的字符串，如果读取过程中出现异常则返回空字符串</span>
+	 */
+	public static String readContent(final Reader reader) {
+		try {
+			char[] readBuffer = new char[Globals.DEFAULT_BUFFER_SIZE];
+			int len;
+			StringBuilder returnValue = new StringBuilder();
+			while ((len = reader.read(readBuffer)) > -1) {
+				returnValue.append(readBuffer, 0, len);
+			}
+			return returnValue.toString();
+		} catch (IOException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+			return Globals.DEFAULT_VALUE_STRING;
+		}
+	}
+
+	/**
 	 * <h3 class="en-US">Read data bytes from the given input stream instance use default charset: UTF-8</h3>
 	 * <h3 class="en-US">使用UTF-8编码从给定的输入流实例对象中读取字节数组</h3>
 	 *
@@ -140,30 +166,15 @@ public final class IOUtils {
 	 * <span class="zh-CN">读取的字符串，如果读取过程中出现异常则返回空字符串</span>
 	 */
 	public static String readContent(final InputStream inputStream, final String encoding) {
-		char[] readBuffer = new char[Globals.DEFAULT_BUFFER_SIZE];
-		int len;
-		StringBuilder returnValue = new StringBuilder();
-
-		InputStreamReader inputStreamReader = null;
-		BufferedReader bufferedReader = null;
-		try {
-			inputStreamReader = new InputStreamReader(inputStream, encoding);
-			bufferedReader = new BufferedReader(inputStreamReader);
-
-			while ((len = bufferedReader.read(readBuffer)) > -1) {
-				returnValue.append(readBuffer, 0, len);
-			}
+		try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream, encoding);
+		     BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+			return IOUtils.readContent(bufferedReader);
 		} catch (Exception e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
-			return returnValue.toString();
-		} finally {
-			closeStream(inputStreamReader);
-			closeStream(bufferedReader);
-			closeStream(inputStream);
+			return Globals.DEFAULT_VALUE_STRING;
 		}
-		return returnValue.toString();
 	}
 
 	/**

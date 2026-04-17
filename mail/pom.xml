@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.nervousync</groupId>
         <artifactId>utils-parent</artifactId>
-        <version>1.3.0.1</version>
+        <version>1.3.0.2</version>
     </parent>
     <artifactId>utils-mail</artifactId>
     <packaging>jar</packaging>
@@ -13,7 +13,6 @@
     <properties>
         <jakarta.mail.version>2.1.5</jakarta.mail.version>
         <angus.mail.version>2.0.5</angus.mail.version>
-        <bcprov.version>1.83</bcprov.version>
     </properties>
     <dependencies>
         <dependency>

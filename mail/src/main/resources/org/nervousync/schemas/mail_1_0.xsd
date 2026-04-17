@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="https://nervousync.org/schemas/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:config="https://nervousync.org/schemas/config"
+            targetNamespace="https://nervousync.org/schemas/mail" elementFormDefault="qualified" version="1.0">
+    <xsd:import namespace="https://nervousync.org/schemas/config" schemaLocation="https://nervousync.org/schemas/config_1_0.xsd" />
+    <xsd:complexType name="mail_config">
+        <xsd:all>
+            <xsd:element name="signature" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Digital signature</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="username" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Mail account username</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="password" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Mail account password</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="proxy_config" type="config:proxy_config">
+                <xsd:annotation>
+                    <xsd:documentation>Proxy config</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="send_config" type="server_config">
+                <xsd:annotation>
+                    <xsd:documentation>Send server config</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="receive_config" type="server_config">
+                <xsd:annotation>
+                    <xsd:documentation>Receive server config</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="storage_path" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Receive attaches file save path</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="certificate" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Verify digital signature using certificate, base64 encoded.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="private_key" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Signature the mail using private key, base64 encoded.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="last_modified" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation>Last modified timestamp</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="server_config">
+        <xsd:all>
+            <xsd:element name="host_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Server domain name or IP address</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="host_port" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation>Server port number</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="secure_protocol" default="NONE">
+                <xsd:annotation>
+                    <xsd:documentation>Used secure protocol of connecting to the mail server</xsd:documentation>
+                </xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="NONE" />
+						<xsd:enumeration value="SSL" />
+						<xsd:enumeration value="TLS" />
+					</xsd:restriction>
+				</xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="auth_login" type="xsd:boolean" default="false">
+                <xsd:annotation>
+                    <xsd:documentation>Flag for authentication before send mail</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="protocol">
+                <xsd:annotation>
+                    <xsd:documentation>Mail server protocol</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="SMTP"/>
+                        <xsd:enumeration value="POP3"/>
+                        <xsd:enumeration value="IMAP"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="connection_timeout" type="xsd:int" default="5">
+                <xsd:annotation>
+                    <xsd:documentation>Connect server timeout</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="process_timeout" type="xsd:int" default="5">
+                <xsd:annotation>
+                    <xsd:documentation>Mail process timeout</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="last_modified" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation>Last modified timestamp</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:element name="mail_config" type="mail_config"/>
+</xsd:schema>

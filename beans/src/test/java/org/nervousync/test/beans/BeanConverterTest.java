@@ -18,9 +18,9 @@
 package org.nervousync.test.beans;
 
 import org.junit.jupiter.api.*;
-import org.nervousync.beans.transfers.basic.BigDecimalAdapter;
-import org.nervousync.beans.transfers.basic.BigIntegerAdapter;
-import org.nervousync.beans.transfers.beans.TransferBeanAdapter;
+import org.nervousync.xml.adapters.basic.BigDecimalAdapter;
+import org.nervousync.xml.adapters.basic.BigIntegerAdapter;
+import org.nervousync.xml.adapters.beans.TransferBeanAdapter;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.ClassUtils;
 

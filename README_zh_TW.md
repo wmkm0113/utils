@@ -397,7 +397,6 @@ boolean result = OTPUtils.validateTOTPCode(secret, authCode, fixedTime);
 * 以太坊地址: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
 * Solana 地址: 4Fvujk8DEkVAtYwzim1vrobNm4s72Ra6Xrsu83v2hqE2
 * BNB 地址: 0x849D143e943bAA6Dd078d02ebAEc205E2b00a7CA
-*
 ---
 
 ## 結語

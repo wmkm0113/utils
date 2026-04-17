@@ -111,7 +111,7 @@ public final class MailTest extends BaseTest {
 		String xmlContent = BeanUtils.objectToString(mailConfig, StringType.XML);
 		this.logger.info("Mail_Generate_Config_Info", xmlContent);
 		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, StringType.XML, MailConfig.class,
-				"https://nervousync.org/schemas/proxy", "https://nervousync.org/schemas/mail");
+				"https://nervousync.org/schemas/mail");
 		this.logger.info("Mail_Config_Validate", BeanUtils.validate(parseConfig));
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
 		CONFIGURE_MANAGER.readConfigure(MailConfig.class)
