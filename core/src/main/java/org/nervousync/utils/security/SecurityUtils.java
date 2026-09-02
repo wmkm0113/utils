@@ -3664,7 +3664,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM2Encryptor(final PublicKey publicKey) throws CryptoException {
-		return SECURITY_ADAPTOR.encryptor(new CipherConfig("SM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+		return SECURITY_ADAPTOR.encryptor(new CipherConfig("SM2", "None", "NoPadding"),
 				new CipherKey("SM2", publicKey.getEncoded(), "BC"));
 	}
 
@@ -3680,7 +3680,7 @@ public final class SecurityUtils {
 	 *                         <span class="zh-CN">如果算法未找到</span>
 	 */
 	public static CryptoAdaptor SM2Decryptor(final PrivateKey privateKey) throws CryptoException {
-		return SECURITY_ADAPTOR.decryptor(new CipherConfig("SM2", Globals.DEFAULT_VALUE_STRING, Globals.DEFAULT_VALUE_STRING),
+		return SECURITY_ADAPTOR.decryptor(new CipherConfig("SM2", "None", "NoPadding"),
 				new CipherKey("SM2", privateKey.getEncoded(), "BC"));
 	}
 
