@@ -382,7 +382,7 @@ public final class ObjectUtils {
 	 */
 	public static int nullSafeHashCode(final Object obj) {
 		if (obj == null) {
-			return 0;
+			return Globals.INITIALIZE_INT_VALUE;
 		}
 		if (obj.getClass().isArray()) {
 			if (obj instanceof Object[]) {

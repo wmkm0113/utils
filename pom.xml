@@ -77,19 +77,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.version>3.15.0</maven.compiler.version>
         <maven.jar.version>3.5.0</maven.jar.version>
-        <maven.surefire.version>3.5.4</maven.surefire.version>
-        <maven.resource.version>3.4.0</maven.resource.version>
+        <maven.surefire.version>3.5.6</maven.surefire.version>
+        <maven.resource.version>3.5.0</maven.resource.version>
         <maven.source.version>3.4.0</maven.source.version>
         <maven.javadoc.version>3.12.0</maven.javadoc.version>
         <maven.gpg.version>3.2.8</maven.gpg.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <slf4j.version>2.0.17</slf4j.version>
+        <slf4j.version>2.0.18</slf4j.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.activation.version>2.1.4</jakarta.activation.version>
         <jakarta.json.bind.version>3.0.1</jakarta.json.bind.version>
-        <jackson.version>2.21.2</jackson.version>
-        <junit.jupiter.version>5.14.3</junit.jupiter.version>
+        <jackson.version>2.22.1</jackson.version>
+        <junit.jupiter.version>5.14.4</junit.jupiter.version>
         <bcprov.version>1.84</bcprov.version>
     </properties>
     <dependencyManagement>
@@ -300,7 +300,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.10.0</version>
+                        <version>0.11.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>OSS</publishingServerId>

@@ -11,14 +11,14 @@
     <packaging>jar</packaging>
     <name>Nervousync Java Utilities Logger Configurator using Log4j</name>
     <properties>
-        <log4j.version>2.25.4</log4j.version>
+        <log4j.version>2.26.1</log4j.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.nervousync</groupId>
             <artifactId>utils-core</artifactId>
         </dependency>
-        <!-- Redirect commons-logging to Slf4j -->
+        <!-- Redirect commons-logging to SLF4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -30,7 +30,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Redirect jdk-logging to Slf4j -->
+        <!-- Redirect jdk-logging to SLF4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>

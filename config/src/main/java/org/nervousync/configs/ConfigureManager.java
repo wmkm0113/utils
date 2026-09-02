@@ -22,9 +22,11 @@ import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.configs.Password;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
+import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.security.factory.SecureFactory;
 import org.nervousync.utils.core.*;
 import org.nervousync.utils.logger.LoggerUtils;
+import org.nervousync.utils.security.SecurityUtils;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
@@ -242,6 +244,28 @@ public final class ConfigureManager {
 	public <T> Optional<T> readConfigure(@Nonnull final Class<T> targetClass, final String suffix) {
 		return Optional.ofNullable(targetClass.getAnnotation(OutputConfig.class))
 				.map(outputConfig -> this.readConfigure(targetClass, suffix, outputConfig));
+	}
+
+	/**
+	 * <h3 class="en-US">Get the SHA256 result of the given configuration information</h3>
+	 * <h3 class="zh-CN">获取配置信息文件路径的 SHA256 值</h3>
+	 *
+	 * @param targetClass <span class="en-US">Configuration information JavaBean class</span>
+	 *                    <span class="zh-CN">配置信息JavaBean类</span>
+	 * @param suffix      <span class="en-US">Configuration file custom suffix</span>
+	 *                    <span class="zh-CN">配置文件自定义后缀</span>
+	 * @return <span class="en-US">SHA256 result</span>
+	 * <span class="zh-CN">SHA256 值</span>
+	 */
+	public String identifyCode(@Nonnull final Class<?> targetClass, final String suffix) {
+		return Optional.ofNullable(targetClass.getAnnotation(OutputConfig.class))
+				.filter(outputConfig -> SUPPORTED_TYPES.contains(outputConfig.type()))
+				.map(outputConfig -> this.parseName(targetClass, outputConfig.type(), suffix))
+				.filter(this.existsFiles::containsKey)
+				.map(this.existsFiles::get)
+				.filter(StringUtils::notBlank)
+				.map(filePath -> SecurityUtils.SHA256(filePath, EncodeType.HEX))
+				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**

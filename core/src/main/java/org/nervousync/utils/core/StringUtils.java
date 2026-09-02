@@ -36,6 +36,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * <h2 class="en-US">String utilities</h2>
@@ -392,26 +393,6 @@ public final class StringUtils {
 					return stringBuilder.toString();
 				})
 				.orElse(Globals.DEFAULT_VALUE_STRING);
-	}
-
-	private static byte[] paddingBytes(final byte[] bytes) {
-		if (bytes == null || bytes.length == 0) {
-			return new byte[0];
-		}
-		if (bytes.length % 3 == 0) {
-			return bytes;
-		} else {
-			int length = bytes.length;
-			while (length % 3 != 0) {
-				length++;
-			}
-			byte[] tempBytes = new byte[length];
-			System.arraycopy(bytes, Globals.INITIALIZE_INT_VALUE, tempBytes, Globals.INITIALIZE_INT_VALUE, bytes.length);
-			for (int i = bytes.length; i < length; i++) {
-				tempBytes[i] = 0;
-			}
-			return tempBytes;
-		}
 	}
 
 	/**
@@ -785,6 +766,102 @@ public final class StringUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Check if the input string contains any of the given characters.</h3>
+	 * <h3 class="zh-CN">检查输入字符串包含任一给定的字符</h3>
+	 *
+	 * @param string   <span class="en-US">the string</span>
+	 *                 <span class="zh-CN">输入字符串</span>
+	 * @param strArray <span class="en-US">The string array being checked</span>
+	 *                 <span class="zh-CN">检查的字符数组</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean containsAny(final String string, final String... strArray) {
+		if (strArray.length == 0) {
+			return Boolean.TRUE;
+		}
+		return Stream.of(strArray).anyMatch(string::contains);
+	}
+
+	/**
+	 * <h3 class="en-US">Check if the input string contains all the given characters.</h3>
+	 * <h3 class="zh-CN">检查输入字符串包含所有给定的字符</h3>
+	 *
+	 * @param string   <span class="en-US">the string</span>
+	 *                 <span class="zh-CN">输入字符串</span>
+	 * @param strArray <span class="en-US">The string array being checked</span>
+	 *                 <span class="zh-CN">检查的字符数组</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean containsAll(final String string, final String... strArray) {
+		if (strArray.length == 0) {
+			return Boolean.TRUE;
+		}
+		return Stream.of(strArray).allMatch(string::contains);
+	}
+
+	/**
+	 * <h3 class="en-US">Check if the input string is start with any start string in the start string array</h3>
+	 * <h3 class="zh-CN">检查输入字符串的指定位置是否起始于任一起始字符串</h3>
+	 *
+	 * @param string     <span class="en-US">the string</span>
+	 *                   <span class="zh-CN">输入字符串</span>
+	 * @param position   <span class="en-US">Start position</span>
+	 *                   <span class="zh-CN">起始位置</span>
+	 * @param startArray <span class="en-US">The start string array being checked</span>
+	 *                   <span class="zh-CN">起始字符串数组</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean startsWithAny(final String string, final int position, final String... startArray) {
+		if (startArray.length == 0) {
+			return Boolean.FALSE;
+		}
+		return Stream.of(startArray).anyMatch(start -> string.startsWith(start, position));
+	}
+
+	/**
+	 * <h3 class="en-US">Check whether the input string ends with any of the check strings.</h3>
+	 * <h3 class="zh-CN">检查输入字符串是否结束于任一检查字符串</h3>
+	 *
+	 * @param string   <span class="en-US">the string</span>
+	 *                 <span class="zh-CN">输入字符串</span>
+	 * @param endArray <span class="en-US">The checking string array</span>
+	 *                 <span class="zh-CN">检查字符串数组</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean endsWithAny(final String string, final String... endArray) {
+		if (endArray.length == 0) {
+			return Boolean.FALSE;
+		}
+		return Stream.of(endArray).anyMatch(string::endsWith);
+	}
+
+	/**
+	 * <h3 class="en-US">Check whether the character at the specified position in the input string is any of the given characters.</h3>
+	 * <h3 class="zh-CN">检查输入字符串的指定位置是否为给定的任一字符</h3>
+	 *
+	 * @param string         <span class="en-US">the string</span>
+	 *                       <span class="zh-CN">输入字符串</span>
+	 * @param position       <span class="en-US">Start position</span>
+	 *                       <span class="zh-CN">起始位置</span>
+	 * @param characterArray <span class="en-US">Matched character array</span>
+	 *                       <span class="zh-CN">匹配的字符数组</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean charAtAny(final String string, final int position, final char... characterArray) {
+		for (char character : characterArray) {
+			if (string.charAt(position) == character) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	/**
 	 * <h3 class="en-US">returns the length of the string by detected encoding</h3>
 	 * <span class="en-US">
 	 * returns the length of the string by wrapping it in a byte buffer with
@@ -810,7 +887,7 @@ public final class StringUtils {
 	 * @param strIn   <span class="en-US">the string</span>
 	 *                <span class="zh-CN">输入字符串</span>
 	 * @param charset <span class="en-US">charset encoding</span>
-	 *                <span class="zh-CN">charset encoding</span>
+	 *                <span class="zh-CN">编码集</span>
 	 * @return <span class="en-US">length of the string</span>
 	 * <span class="zh-CN">字符串长度</span>
 	 */
@@ -2555,6 +2632,35 @@ public final class StringUtils {
 	 * <h3 class="zh-CN">字符串工具集的私有构造方法</h3>
 	 */
 	private StringUtils() {
+	}
+
+	/**
+	 * <h3 class="en-US">Fill the given byte array.</h3>
+	 * <h3 class="zh-CN">填充给定的字节数组</h3>
+	 *
+	 * @param bytes <span class="en-US">Byte array</span>
+	 *              <span class="zh-CN">字节数组</span>
+	 * @return <span class="en-US">Filled byte array</span>
+	 * <span class="zh-CN">填充后的字节数组</span>
+	 */
+	private static byte[] paddingBytes(final byte[] bytes) {
+		if (bytes == null || bytes.length == 0) {
+			return new byte[0];
+		}
+		if (bytes.length % 3 == 0) {
+			return bytes;
+		} else {
+			int length = bytes.length;
+			while (length % 3 != 0) {
+				length++;
+			}
+			byte[] tempBytes = new byte[length];
+			System.arraycopy(bytes, Globals.INITIALIZE_INT_VALUE, tempBytes, Globals.INITIALIZE_INT_VALUE, bytes.length);
+			for (int i = bytes.length; i < length; i++) {
+				tempBytes[i] = 0;
+			}
+			return tempBytes;
+		}
 	}
 
 	/**
