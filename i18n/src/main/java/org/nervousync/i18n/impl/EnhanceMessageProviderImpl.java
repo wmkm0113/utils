@@ -204,9 +204,13 @@ public final class EnhanceMessageProviderImpl implements MessageProvider {
 
 		@Override
 		public String errorMessage(final long errorCode, final String languageCode, final Object... collections) {
-			String messageKey = Optional.of(this.messageResource.errorKey(errorCode))
-					.filter(LocaleUtils::notBlank)
-					.orElse(this.defaultResource.errorKey(errorCode));
+			String messageKey = Globals.DEFAULT_VALUE_STRING;
+			if (this.messageResource != null) {
+				messageKey = this.messageResource.errorKey(errorCode);
+			}
+			if (LocaleUtils.isEmpty(messageKey)) {
+				messageKey = this.defaultResource.errorKey(errorCode);
+			}
 			if (LocaleUtils.isEmpty(messageKey)) {
 				return MessageResource.identifyKey(errorCode, languageCode);
 			}
