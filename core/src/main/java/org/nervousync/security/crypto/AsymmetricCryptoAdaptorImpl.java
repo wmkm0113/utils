@@ -44,6 +44,10 @@ import java.util.Arrays;
  */
 public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl {
 
+	/**
+	 * <span class="en-US">Crypto provider name</span>
+	 * <span class="zh-CN">加密库适配器名称</span>
+	 */
 	private final String providerName;
 	/**
 	 * <span class="en-US">Signature instance</span>
@@ -229,22 +233,34 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 		try {
 			switch (this.cryptoMode) {
 				case ENCRYPT:
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Crypto_Config_Debug", this.providerName, this.cipherConfig.toString());
+					}
 					this.cipher = StringUtils.isEmpty(this.providerName)
 							? Cipher.getInstance(this.cipherConfig.toString())
 							: Cipher.getInstance(this.cipherConfig.toString(), this.providerName);
 					this.cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
 					break;
 				case DECRYPT:
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Crypto_Config_Debug", this.providerName, this.cipherConfig.toString());
+					}
 					this.cipher = StringUtils.isEmpty(this.providerName)
 							? Cipher.getInstance(this.cipherConfig.toString())
 							: Cipher.getInstance(this.cipherConfig.toString(), this.providerName);
 					this.cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
 					break;
 				case SIGNATURE:
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.getAlgorithm());
+					}
 					this.signature = Signature.getInstance(this.cipherConfig.getAlgorithm());
 					this.signature.initSign((PrivateKey) key);
 					break;
 				case VERIFY:
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.getAlgorithm());
+					}
 					this.signature = Signature.getInstance(this.cipherConfig.getAlgorithm());
 					this.signature.initVerify((PublicKey) key);
 					break;

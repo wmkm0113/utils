@@ -19,6 +19,7 @@ package org.nervousync.security;
 
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.crypto.CryptoException;
+import org.nervousync.utils.logger.LoggerUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +33,8 @@ import java.nio.charset.StandardCharsets;
  */
 @SuppressWarnings("unused")
 public abstract class CryptoAdaptor {
+
+	protected static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(CryptoAdaptor.class);
 
 	/**
 	 * <h3 class="en-US">Append given string to current adapter</h3>

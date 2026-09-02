@@ -173,6 +173,12 @@
       "Not_Support_Mode_Crypto_Error": {
         "pattern": "Not support this operates in current mode"
       },
+      "Crypto_Config_Debug": {
+        "pattern": "Using crypto provider: {0}, algorithm config: {1}"
+      },
+      "Signature_Config_Debug": {
+        "pattern": "Current algorithm: {0}"
+      },
       "Unknown_Algorithm_Digits_Error": {
         "pattern": "Unknown algorithm: {0}"
       },
@@ -714,6 +720,12 @@
       },
       "Not_Support_Mode_Crypto_Error": {
         "pattern": "当前模式不支持此操作"
+      },
+      "Crypto_Config_Debug": {
+        "pattern": "使用的安全适配器名称：{0}，算法配置：{1}"
+      },
+      "Signature_Config_Debug": {
+        "pattern": "当前算法：{0}"
       },
       "Unknown_Algorithm_Digits_Error": {
         "pattern": "未知的算法名称：{0}"

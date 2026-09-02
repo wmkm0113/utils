@@ -13,6 +13,8 @@
     <entry key="Init_Signature_Crypto_Error">Initialize signer instance error</entry>
     <entry key="Init_Cipher_Crypto_Error">Initialize encryptor/decryptor instance error</entry>
     <entry key="Not_Support_Mode_Crypto_Error">Not support this operates in current mode</entry>
+    <entry key="Crypto_Config_Debug">Using crypto provider: {0}, algorithm config: {1}</entry>
+    <entry key="Signature_Config_Debug">Current algorithm: {0}</entry>
     <entry key="Unknown_Algorithm_Digits_Error">Unknown algorithm: {0}</entry>
     <entry key="Null_Point_Location_Error">Location point instance is null</entry>
     <entry key="Not_Support_Type_Location_Error">Unknown location type: {0}</entry>

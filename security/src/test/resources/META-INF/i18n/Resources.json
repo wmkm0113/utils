@@ -71,6 +71,9 @@
       },
       "Secure_Register_Status": {
         "pattern": "Secure config register status: {0}"
+      },
+      "Certificate_Result": {
+        "pattern": "Base64 encoded {0} certificate data bytes: {1}"
       }
     },
     "zh-CN": {
@@ -142,6 +145,9 @@
       },
       "Secure_Register_Status": {
         "pattern": "安全配置注册状态：{0}"
+      },
+      "Certificate_Result": {
+        "pattern": "Base64编码的 {0} 证书二进制数据：{1}"
       }
     }
   }

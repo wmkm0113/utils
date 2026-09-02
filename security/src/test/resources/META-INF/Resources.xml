@@ -20,4 +20,5 @@
     <entry key="Secure_Encrypt_Result">Secure encrypt result: {0}</entry>
     <entry key="Secure_Decrypt_Result">Secure decrypt result: {0}</entry>
     <entry key="Secure_Register_Status">Secure config register status: {0}</entry>
+    <entry key="Certificate_Result">Base64 encoded {0} certificate data bytes: {1}</entry>
 </properties>
