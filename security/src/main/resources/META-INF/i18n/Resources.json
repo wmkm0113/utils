@@ -1,6 +1,13 @@
 {
   "groupId": "org.nervousync",
   "bundle": "utils",
+  "alias": {
+    "en": "en-US",
+    "zh": "zh-CN"
+  },
+  "errors": {
+    "0x00000015000D": "Unknown_Algorithm_Digits_Error"
+  },
   "messages": {
     "en-US": {
       "PKCS12_Generate_Error": {
