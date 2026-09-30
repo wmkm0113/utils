@@ -21,6 +21,8 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Secure factory configure information define</h2>
  * <p class="en-US">Using for protect custom secure configure information</p>
@@ -37,6 +39,7 @@ public final class FactoryConfig extends AbstractConfig {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 5989686893171586402L;
 
 	public FactoryConfig() {

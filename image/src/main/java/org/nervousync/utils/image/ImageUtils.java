@@ -619,7 +619,7 @@ public final class ImageUtils {
 										&& markOptions.getTransparency() <= 1) {
 									graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,
 											markOptions.getTransparency()));
-									graphics.drawImage(iconImg, markPosition.getPositionX(), markPosition.getPositionY(), null);
+									graphics.drawImage(iconImg, markPosition.positionX(), markPosition.positionY(), null);
 
 									graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 								}
@@ -636,7 +636,7 @@ public final class ImageUtils {
 								graphics.setColor(markOptions.getColor());
 								graphics.setFont(new Font(markOptions.getFontName(), Font.PLAIN, markOptions.getFontSize()));
 
-								graphics.drawString(markOptions.getMarkText(), markPosition.getPositionX(), markPosition.getPositionY());
+								graphics.drawString(markOptions.getMarkText(), markPosition.positionX(), markPosition.positionY());
 							}
 							break;
 					}

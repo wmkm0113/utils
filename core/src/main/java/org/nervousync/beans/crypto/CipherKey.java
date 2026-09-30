@@ -165,21 +165,15 @@ public final class CipherKey {
 					throw new CryptoException(0x00000015000BL, e);
 				}
 			case "RSA":
-				switch (cryptoMode) {
-					case ENCRYPT:
-					case VERIFY:
-						return SecurityUtils.publicKey("RSA", this.keyBytes);
-					default:
-						return SecurityUtils.privateKey("RSA", this.keyBytes);
-				}
+				return switch (cryptoMode) {
+					case ENCRYPT, VERIFY -> SecurityUtils.publicKey("RSA", this.keyBytes);
+					default -> SecurityUtils.privateKey("RSA", this.keyBytes);
+				};
 			case "SM2":
-				switch (cryptoMode) {
-					case ENCRYPT:
-					case VERIFY:
-						return SecurityUtils.publicKey("EC", this.keyBytes);
-					default:
-						return SecurityUtils.privateKey("EC", this.keyBytes);
-				}
+				return switch (cryptoMode) {
+					case ENCRYPT, VERIFY -> SecurityUtils.publicKey("EC", this.keyBytes);
+					default -> SecurityUtils.privateKey("EC", this.keyBytes);
+				};
 			case "DESede":
 				try {
 					DESedeKeySpec keySpec = new DESedeKeySpec(this.keyBytes);

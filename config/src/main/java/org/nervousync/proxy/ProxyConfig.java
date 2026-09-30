@@ -16,6 +16,7 @@
  */
 package org.nervousync.proxy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.Proxy.Type;
 
@@ -40,6 +41,7 @@ public final class ProxyConfig implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -5386443812775715018L;
 	/**
 	 * <span class="en-US">Enumeration value of proxy type</span>

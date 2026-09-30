@@ -16,6 +16,7 @@
  */
 package org.nervousync.beans.location;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -31,6 +32,7 @@ public final class GeoPoint implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -3501428042311016856L;
 	/**
 	 * <span class="en-US">Enumeration value of GeoPoint.LocationType</span>

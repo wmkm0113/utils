@@ -16,10 +16,7 @@
  */
 package org.nervousync.beans.request;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Proxy;
 import java.util.*;
 
@@ -345,8 +342,8 @@ public final class RequestInfo {
 	 */
 	public boolean octetStreamResponse() {
 		return this.headers.stream().anyMatch(simpleHeader ->
-				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName())
-						&& "application/octet-stream".equalsIgnoreCase(simpleHeader.getHeaderValue()));
+				"Accept".equalsIgnoreCase(simpleHeader.headerName())
+						&& "application/octet-stream".equalsIgnoreCase(simpleHeader.headerValue()));
 	}
 
 	/**
@@ -358,8 +355,8 @@ public final class RequestInfo {
 	 */
 	public boolean eventStreamResponse() {
 		return this.headers.stream().anyMatch(simpleHeader ->
-				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName())
-						&& "text/event-stream".equalsIgnoreCase(simpleHeader.getHeaderValue()));
+				"Accept".equalsIgnoreCase(simpleHeader.headerName())
+						&& "text/event-stream".equalsIgnoreCase(simpleHeader.headerValue()));
 	}
 
 	/**
@@ -796,6 +793,7 @@ public final class RequestInfo {
 		 * <span class="en-US">Serial version UID</span>
 		 * <span class="zh-CN">序列化UID</span>
 		 */
+		@Serial
 		private static final long serialVersionUID = -5386443812775715018L;
 		/**
 		 * <span class="en-US">Enumeration value of proxy type</span>

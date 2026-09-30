@@ -19,37 +19,30 @@ package org.nervousync.beans.crypto;
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * <h2 class="en-US">Cipher configure</h2>
  * <h2 class="zh-CN">密码设置</h2>
  *
+ * @param algorithm <span class="en-US">Cipher Algorithm</span>
+ *                  <span class="zh-CN">密码算法</span>
+ * @param mode      <span class="en-US">Cipher Mode</span>
+ *                  <span class="zh-CN">分组密码模式</span>
+ *                  Cipher Mode
+ * @param padding   <span class="en-US">Padding Mode</span>
+ *                  <span class="zh-CN">数据填充模式</span>
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 13, 2016 15:47:22 $
  */
-public final class CipherConfig implements Serializable {
+public record CipherConfig(String algorithm, String mode, String padding) implements Serializable {
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -2132901674474697239L;
-	/**
-	 * <span class="en-US">Cipher Algorithm</span>
-	 * <span class="zh-CN">密码算法</span>
-	 */
-	private final String algorithm;
-	/**
-	 * <span class="en-US">Cipher Mode</span>
-	 * <span class="zh-CN">分组密码模式</span>
-	 * Cipher Mode
-	 */
-	private final String mode;
-	/**
-	 * <span class="en-US">Padding Mode</span>
-	 * <span class="zh-CN">数据填充模式</span>
-	 */
-	private final String padding;
 
 	/**
 	 * <h3 class="en-US">Constructor method for CipherConfig</h3>
@@ -97,7 +90,8 @@ public final class CipherConfig implements Serializable {
 	 * @return <span class="en-US">Cipher Algorithm</span>
 	 * <span class="zh-CN">密码算法</span>
 	 */
-	public String getAlgorithm() {
+	@Override
+	public String algorithm() {
 		return this.algorithm;
 	}
 
@@ -108,7 +102,8 @@ public final class CipherConfig implements Serializable {
 	 * @return <span class="en-US">Cipher Mode</span>
 	 * <span class="zh-CN">分组密码模式</span>
 	 */
-	public String getMode() {
+	@Override
+	public String mode() {
 		return this.mode;
 	}
 
@@ -119,7 +114,8 @@ public final class CipherConfig implements Serializable {
 	 * @return <span class="en-US">Padding Mode</span>
 	 * <span class="zh-CN">数据填充模式</span>
 	 */
-	public String getPadding() {
+	@Override
+	public String padding() {
 		return this.padding;
 	}
 
@@ -136,19 +132,10 @@ public final class CipherConfig implements Serializable {
 	}
 
 	public int ivLength() {
-		switch (this.algorithm) {
-			case "AES":
-			case "RC6":
-			case "SM4":
-				return "ECB".equalsIgnoreCase(this.mode) ? 0 : 16;
-			case "Blowfish":
-			case "DES":
-			case "DESede":
-			case "RC2":
-			case "RC5":
-				return "ECB".equalsIgnoreCase(this.mode) ? 0 : 8;
-			default:
-				return Globals.DEFAULT_VALUE_INT;
-		}
+		return switch (this.algorithm) {
+			case "AES", "RC6", "SM4" -> "ECB".equalsIgnoreCase(this.mode) ? 0 : 16;
+			case "Blowfish", "DES", "DESede", "RC2", "RC5" -> "ECB".equalsIgnoreCase(this.mode) ? 0 : 8;
+			default -> Globals.DEFAULT_VALUE_INT;
+		};
 	}
 }

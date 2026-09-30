@@ -19,16 +19,13 @@ package org.nervousync.beans.converter.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.profile.pegdown.Extensions;
@@ -41,11 +38,12 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.annotations.beans.Signature;
 import org.nervousync.beans.converter.BeanConverter;
-import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.utils.core.*;
 import org.nervousync.utils.security.SecurityUtils;
+import tools.jackson.dataformat.yaml.YAMLMapper;
+import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -65,7 +63,6 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 	 */
 	private static final ObjectMapper JSON_MAPPER =
 			JsonMapper.builder().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-					.addModule(new JavaTimeModule())
 					//  Convert long value to string, resolve the js number precision lost
 					.addModule(new SimpleModule()
 							.addSerializer(Long.class, ToStringSerializer.instance)
@@ -76,9 +73,9 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 	 * <span class="zh-CN">YAML数据映射实例对象</span>
 	 */
 	private static final ObjectMapper YAML_MAPPER =
-			JsonMapper.builder(YAMLFactory.builder().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER).build())
-					.addModule(new JavaTimeModule())
-					.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+			YAMLMapper.builder()
+					.disable(YAMLWriteFeature.WRITE_DOC_START_MARKER)
+					.disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
 					.build();
 
 	private static final BeanConverter DEFAULT_BEAN_CONVERTER = new DefaultBeanConverterImpl();
@@ -87,92 +84,49 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 	public String objectToString(@Nonnull final Object object, @Nonnull final StringType stringType,
 	                             final String encoding, final boolean formatted) {
 		signature(object);
-		try {
-			switch (stringType) {
-				case JSON:
-					return formatted
-							? JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
-							: JSON_MAPPER.writeValueAsString(object);
-				case YAML:
-					return formatted
-							? YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
-							: YAML_MAPPER.writeValueAsString(object);
-				default:
-					return DEFAULT_BEAN_CONVERTER.objectToString(object, stringType, encoding, formatted);
-			}
-		} catch (JsonProcessingException e) {
-			LOGGER.error("Convert_String_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return Globals.DEFAULT_VALUE_STRING;
-		}
+		return switch (stringType) {
+			case JSON -> formatted
+					? JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+					: JSON_MAPPER.writeValueAsString(object);
+			case YAML -> formatted
+					? YAML_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object)
+					: YAML_MAPPER.writeValueAsString(object);
+			default -> DEFAULT_BEAN_CONVERTER.objectToString(object, stringType, encoding, formatted);
+		};
 	}
 
 	@Override
 	public <T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
 	                            final String encoding, final Class<T> beanClass, final String... schemaPaths) {
-		T readObject;
-		try {
-			switch (stringType) {
-				case JSON:
-					readObject = JSON_MAPPER.readValue(inputStream, beanClass);
-					break;
-				case YAML:
-					readObject = YAML_MAPPER.readValue(inputStream, beanClass);
-					break;
-				default:
-					readObject = DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
-					break;
-			}
-		} catch (IOException e) {
-			LOGGER.error("Convert_Object_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return null;
-		}
+		T readObject = switch (stringType) {
+			case JSON -> JSON_MAPPER.readValue(inputStream, beanClass);
+			case YAML -> YAML_MAPPER.readValue(inputStream, beanClass);
+			default ->
+					DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
+		};
 		return validate(readObject) ? readObject : null;
 	}
 
 	@Override
 	public <T> List<T> streamToList(@Nonnull final InputStream inputStream, final StringType stringType,
 	                                final String encoding, final Class<T> beanClass) {
-		try {
-			switch (stringType) {
-				case JSON:
-					return JSON_MAPPER.readValue(inputStream,
-							JSON_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
-				case YAML:
-					return YAML_MAPPER.readValue(inputStream,
-							YAML_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
-				default:
-					return DEFAULT_BEAN_CONVERTER.streamToList(inputStream, stringType, encoding, beanClass);
-			}
-		} catch (IOException e) {
-			LOGGER.error("Convert_List_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return Collections.emptyList();
-		}
+		return switch (stringType) {
+			case JSON -> JSON_MAPPER.readValue(inputStream,
+					JSON_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+			case YAML -> YAML_MAPPER.readValue(inputStream,
+					YAML_MAPPER.getTypeFactory().constructParametricType(ArrayList.class, beanClass));
+			default -> DEFAULT_BEAN_CONVERTER.streamToList(inputStream, stringType, encoding, beanClass);
+		};
 	}
 
 	@Override
 	public Map<String, Object> streamToMap(@Nonnull final InputStream inputStream, final StringType stringType,
 	                                       final String encoding) {
-		try {
-			switch (stringType) {
-				case JSON:
-					return JSON_MAPPER.readValue(inputStream, new TypeReference<>() {});
-				case YAML:
-					return YAML_MAPPER.readValue(inputStream, new TypeReference<>() {});
-				default:
-					return Map.of();
-			}
-		} catch (IOException ignore) {
-			return Map.of();
-		}
+		return switch (stringType) {
+			case JSON -> JSON_MAPPER.readValue(inputStream, new TypeReference<>() {});
+			case YAML -> YAML_MAPPER.readValue(inputStream, new TypeReference<>() {});
+			default -> Map.of();
+		};
 	}
 
 	@Override

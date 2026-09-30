@@ -33,5 +33,4 @@
     <entry key="Password_Encode">Password encode type: {0}, result: {1}</entry>
     <entry key="Password_Verify">Password verify result: {0}</entry>
     <entry key="Password_Upgrade">Password needs upgrade: {0}</entry>
-    <entry key="Component_Debug">Class name: {0} component types: {1}</entry>
 </properties>

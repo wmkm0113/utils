@@ -18,6 +18,8 @@ package org.nervousync.exceptions.mail;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">E-Mail Exception</h2>
  * <h2 class="zh-CN">电子邮件异常</h2>
@@ -30,6 +32,7 @@ public final class MailException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -3903147941241857531L;
 
 	/**

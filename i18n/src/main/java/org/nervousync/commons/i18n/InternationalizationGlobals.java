@@ -17,9 +17,10 @@
 
 package org.nervousync.commons.i18n;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
 import org.nervousync.beans.i18n.BundleResource;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ import java.io.InputStream;
 public final class InternationalizationGlobals {
 
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+	private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS).build();
 
 	/**
 	 * <span class="en-US">Storage path for multilingual resource files</span>

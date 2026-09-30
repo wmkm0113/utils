@@ -171,40 +171,24 @@ public final class BouncyCastleSecurityAdaptorImpl extends BaseSecurityAdaptorIm
 			if (StringUtils.isEmpty(algorithm)) {
 				throw new CryptoException(0x00000015000DL, algorithm);
 			}
-			switch (algorithm.toUpperCase()) {
-				case "MD5":
-					return new MD5.Digest();
-				case "SHA1":
-					return new SHA1.Digest();
-				case "SHA-224":
-					return new SHA224.Digest();
-				case "SHA-256":
-					return new SHA256.Digest();
-				case "SHA-384":
-					return new SHA384.Digest();
-				case "SHA-512":
-					return new SHA512.Digest();
-				case "SHA-512/224":
-					return new SHA512.DigestT224();
-				case "SHA-512/256":
-					return new SHA512.DigestT256();
-				case "SHA3-224":
-					return new SHA3.Digest224();
-				case "SHA3-256":
-					return new SHA3.Digest256();
-				case "SHA3-384":
-					return new SHA3.Digest384();
-				case "SHA3-512":
-					return new SHA3.Digest512();
-				case "SHAKE128":
-					return new SHA3.DigestShake128_256();
-				case "SHAKE256":
-					return new SHA3.DigestShake256_512();
-				case "SM3":
-					return new SM3.Digest();
-				default:
-					throw new CryptoException(0x00000015000DL, algorithm);
-			}
+			return switch (algorithm.toUpperCase()) {
+				case "MD5" -> new MD5.Digest();
+				case "SHA1" -> new SHA1.Digest();
+				case "SHA-224" -> new SHA224.Digest();
+				case "SHA-256" -> new SHA256.Digest();
+				case "SHA-384" -> new SHA384.Digest();
+				case "SHA-512" -> new SHA512.Digest();
+				case "SHA-512/224" -> new SHA512.DigestT224();
+				case "SHA-512/256" -> new SHA512.DigestT256();
+				case "SHA3-224" -> new SHA3.Digest224();
+				case "SHA3-256" -> new SHA3.Digest256();
+				case "SHA3-384" -> new SHA3.Digest384();
+				case "SHA3-512" -> new SHA3.Digest512();
+				case "SHAKE128" -> new SHA3.DigestShake128_256();
+				case "SHAKE256" -> new SHA3.DigestShake256_512();
+				case "SM3" -> new SM3.Digest();
+				default -> throw new CryptoException(0x00000015000DL, algorithm);
+			};
 		}
 
 		@Override

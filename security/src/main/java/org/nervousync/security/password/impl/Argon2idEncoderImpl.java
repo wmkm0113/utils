@@ -118,13 +118,7 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 		return result;
 	}
 
-	private static final class Config {
-
-		private final int memory;
-		private final int iterations;
-		private final int parallelism;
-		private final byte[] salt;
-		private final byte[] hash;
+	private record Config(int memory, int iterations, int parallelism, byte[] salt, byte[] hash) {
 
 		static Config parse(final String encodedPassword) {
 			String[] parts = StringUtils.tokenizeToStringArray(encodedPassword, "$");
@@ -145,12 +139,5 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 					StringUtils.base64Decode(parts[3]), StringUtils.base64Decode(parts[4]));
 		}
 
-		Config(final int memory, final int iterations, final int parallelism, final byte[] salt, final byte[] hash) {
-			this.memory = memory;
-			this.iterations = iterations;
-			this.parallelism = parallelism;
-			this.salt = salt;
-			this.hash = hash;
-		}
 	}
 }

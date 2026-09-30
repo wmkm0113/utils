@@ -173,50 +173,47 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 		int paddingLength = 0;
 		AlgorithmParameterSpec parameterSpec = null;
 		MGF1ParameterSpec mgf1ParameterSpec = null;
-		switch (this.cipherConfig.getPadding()) {
-			case "PKCS1Padding":
-				paddingLength = 11;
-				break;
-			case "OAEPWithMD5AndMGF1Padding":
-				paddingLength = 34;
-				break;
-			case "OAEPWithSHA-1AndMGF1Padding":
+		paddingLength = switch (this.cipherConfig.padding()) {
+			case "PKCS1Padding" -> 11;
+			case "OAEPWithMD5AndMGF1Padding" -> 34;
+			case "OAEPWithSHA-1AndMGF1Padding" -> {
 				mgf1ParameterSpec = MGF1ParameterSpec.SHA1;
-				paddingLength = 42;
-				break;
-			case "OAEPWithSHA-224AndMGF1Padding":
+				yield 42;
+			}
+			case "OAEPWithSHA-224AndMGF1Padding" -> {
 				mgf1ParameterSpec = MGF1ParameterSpec.SHA224;
-				paddingLength = 58;
-				break;
-			case "OAEPWithSHA-256AndMGF1Padding":
+				yield 58;
+			}
+			case "OAEPWithSHA-256AndMGF1Padding" -> {
 				mgf1ParameterSpec = MGF1ParameterSpec.SHA256;
-				paddingLength = 66;
-				break;
-			case "OAEPWithSHA-384AndMGF1Padding":
+				yield 66;
+			}
+			case "OAEPWithSHA-384AndMGF1Padding" -> {
 				mgf1ParameterSpec = MGF1ParameterSpec.SHA384;
-				paddingLength = 98;
-				break;
-			case "OAEPWithSHA-512AndMGF1Padding":
+				yield 98;
+			}
+			case "OAEPWithSHA-512AndMGF1Padding" -> {
 				mgf1ParameterSpec = MGF1ParameterSpec.SHA512;
-				paddingLength = 130;
-				break;
-			case "OAEPWithSHA3-224AndMGF1Padding":
+				yield 130;
+			}
+			case "OAEPWithSHA3-224AndMGF1Padding" -> {
 				mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-224");
-				paddingLength = 58;
-				break;
-			case "OAEPWithSHA3-256AndMGF1Padding":
+				yield 58;
+			}
+			case "OAEPWithSHA3-256AndMGF1Padding" -> {
 				mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-256");
-				paddingLength = 66;
-				break;
-			case "OAEPWithSHA3-384AndMGF1Padding":
+				yield 66;
+			}
+			case "OAEPWithSHA3-384AndMGF1Padding" -> {
 				mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-384");
-				paddingLength = 98;
-				break;
-			case "OAEPWithSHA3-512AndMGF1Padding":
+				yield 98;
+			}
+			case "OAEPWithSHA3-512AndMGF1Padding" -> {
 				mgf1ParameterSpec = new MGF1ParameterSpec("SHA3-512");
-				paddingLength = 130;
-				break;
-		}
+				yield 130;
+			}
+			default -> paddingLength;
+		};
 		if (mgf1ParameterSpec != null) {
 			parameterSpec = new OAEPParameterSpec(mgf1ParameterSpec.getDigestAlgorithm(), "MGF1",
 					mgf1ParameterSpec, PSource.PSpecified.DEFAULT);
@@ -252,16 +249,16 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 					break;
 				case SIGNATURE:
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.getAlgorithm());
+						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.algorithm());
 					}
-					this.signature = Signature.getInstance(this.cipherConfig.getAlgorithm());
+					this.signature = Signature.getInstance(this.cipherConfig.algorithm());
 					this.signature.initSign((PrivateKey) key);
 					break;
 				case VERIFY:
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.getAlgorithm());
+						LOGGER.debug("Signature_Config_Debug", this.cipherConfig.algorithm());
 					}
-					this.signature = Signature.getInstance(this.cipherConfig.getAlgorithm());
+					this.signature = Signature.getInstance(this.cipherConfig.algorithm());
 					this.signature.initVerify((PublicKey) key);
 					break;
 				default:

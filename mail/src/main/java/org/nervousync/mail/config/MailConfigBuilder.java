@@ -293,8 +293,7 @@ public final class MailConfigBuilder<P extends ParentBuilder> extends AbstractBu
 					this.modified = Boolean.TRUE;
 					this.mailConfig.setProxyConfig((ProxyConfig) config);
 				}
-			} else if (config instanceof MailConfig.ServerConfig) {
-				MailConfig.ServerConfig serverConfig = (MailConfig.ServerConfig) config;
+			} else if (config instanceof MailConfig.ServerConfig serverConfig) {
 				if (serverConfig.isSendConfig()) {
 					if (this.mailConfig.getSendConfig() == null
 							|| this.mailConfig.getSendConfig().getLastModified() != serverConfig.getLastModified()) {

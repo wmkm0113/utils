@@ -23,6 +23,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.security.factory.SecureFactory;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -40,6 +41,7 @@ public abstract class AbstractConfig implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 2626987266160131570L;
 	/**
 	 * <span class="en-US">Secure algorithm</span>

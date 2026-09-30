@@ -19,6 +19,7 @@ package org.nervousync.beans.ip;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.net.IPType;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -34,6 +35,7 @@ public final class IPRange implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 7569297312912043791L;
 	/**
 	 * <span class="en-US">Enumeration value of IPType</span>

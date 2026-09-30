@@ -184,9 +184,9 @@ public final class HttpEntity {
 				stringBuilder = new StringBuilder();
 				stringBuilder.append("--").append(this.boundary).append(FileUtils.CRLF);
 				stringBuilder.append("Content-Disposition:" + Globals.FORM_DATA_CONTENT_DISPOSITION + ";");
-				stringBuilder.append("name=\"").append(entityInfo.getEntityName()).append("\"");
-				String value = entityInfo.getEntityValue();
-				if (entityInfo.isBinary()) {
+				stringBuilder.append("name=\"").append(entityInfo.entityName()).append("\"");
+				String value = entityInfo.entityValue();
+				if (entityInfo.binary()) {
 					stringBuilder.append(";filename=\"").append(StringUtils.getFilename(value)).append("\"");
 					stringBuilder.append(FileUtils.CRLF);
 					stringBuilder.append("Content-Type:" + Globals.DEFAULT_CONTENT_TYPE_BINARY);
@@ -195,7 +195,7 @@ public final class HttpEntity {
 				stringBuilder.append(FileUtils.CRLF);
 
 				outputStream.write(stringBuilder.toString().getBytes(Globals.DEFAULT_ENCODING));
-				if (entityInfo.isBinary()) {
+				if (entityInfo.binary()) {
 					outputStream.write(FileUtils.readFileBytes(value));
 				} else {
 					outputStream.write(value.getBytes(charsetEncoding));
@@ -207,9 +207,9 @@ public final class HttpEntity {
 			StringBuilder stringBuilder = new StringBuilder();
 			for (EntityInfo entityInfo : this.entityList) {
 				stringBuilder.append("&");
-				stringBuilder.append(URLEncoder.encode(entityInfo.getEntityName(), charsetEncoding));
+				stringBuilder.append(URLEncoder.encode(entityInfo.entityName(), charsetEncoding));
 				stringBuilder.append("=");
-				stringBuilder.append(URLEncoder.encode(entityInfo.getEntityValue(), charsetEncoding));
+				stringBuilder.append(URLEncoder.encode(entityInfo.entityValue(), charsetEncoding));
 			}
 
 			if (this.logger.isDebugEnabled()) {
@@ -227,7 +227,7 @@ public final class HttpEntity {
 		int formItemCount = 0;
 		int fileItemCount = 0;
 		for (EntityInfo entityInfo : this.entityList) {
-			if (entityInfo.isBinary()) {
+			if (entityInfo.binary()) {
 				fileItemCount++;
 			} else {
 				formItemCount++;
@@ -261,108 +261,98 @@ public final class HttpEntity {
 	 * <h2 class="en-US">Http Entity Information Defines</h2>
 	 * <h2 class="zh-CN">HTTP请求参数信息定义</h2>
 	 *
+	 * @param binary      <span class="en-US">Binary data status</span>
+	 *                    <span class="zh-CN">二进制数据状态</span>
+	 * @param entityName  <span class="en-US">Entity name</span>
+	 *                    <span class="zh-CN">参数名</span>
+	 * @param entityValue <span class="en-US">Entity value</span>
+	 *                    <span class="zh-CN">参数值</span>
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Jul 2, 2018 14:08:33 $
 	 */
-	private static final class EntityInfo {
-		/**
-		 * <span class="en-US">Binary data status</span>
-		 * <span class="zh-CN">二进制数据状态</span>
-		 */
-		private final boolean binary;
-		/**
-		 * <span class="en-US">Entity name</span>
-		 * <span class="zh-CN">参数名</span>
-		 */
-		private final String entityName;
-		/**
-		 * <span class="en-US">Entity value</span>
-		 * <span class="zh-CN">参数值</span>
-		 */
-		private final String entityValue;
-
+		private record EntityInfo(boolean binary, String entityName, String entityValue) {
 		/**
 		 * <h3 class="en-US">Private constructor method for EntityInfo</h3>
 		 * <h3 class="zh-CN">EntityInfo私有构造方法</h3>
 		 *
-		 * @param binary <span class="en-US">Binary status</span>
-		 *               <span class="zh-CN">二进制状态</span>
-		 * @param name   <span class="en-US">Entity name</span>
-		 *               <span class="zh-CN">参数名</span>
-		 * @param value  <span class="en-US">Entity value</span>
-		 *               <span class="zh-CN">参数值</span>
+		 * @param binary      <span class="en-US">Binary status</span>
+		 *                    <span class="zh-CN">二进制状态</span>
+		 * @param entityName  <span class="en-US">Entity name</span>
+		 *                    <span class="zh-CN">参数名</span>
+		 * @param entityValue <span class="en-US">Entity value</span>
+		 *                    <span class="zh-CN">参数值</span>
 		 */
-		private EntityInfo(final boolean binary, final String name, final String value) {
-			this.binary = binary;
-			this.entityName = name;
-			this.entityValue = value;
+		private EntityInfo {
 		}
 
-		/**
-		 * <h3 class="en-US">Static method for generate text EntityInfo instance</h3>
-		 * <h3 class="zh-CN">静态方法用于生成文字类型的EntityInfo实例对象</h3>
-		 *
-		 * @param name  <span class="en-US">Entity name</span>
-		 *              <span class="zh-CN">参数名</span>
-		 * @param value <span class="en-US">Entity value</span>
-		 *              <span class="zh-CN">参数值</span>
-		 * @return    <span class="en-US">Generated EntityInfo instance</span>
-		 * <span class="zh-CN">生成的EntityInfo实例对象</span>
-		 */
-		public static EntityInfo generateTextEntity(final String name, final String value) {
-			return new EntityInfo(Boolean.FALSE, name, value);
-		}
-
-		/**
-		 * <h3 class="en-US">Static method for generate upload file EntityInfo instance</h3>
-		 * <h3 class="zh-CN">静态方法用于生成二进制类型的EntityInfo实例对象</h3>
-		 *
-		 * @param name  <span class="en-US">Entity name</span>
-		 *              <span class="zh-CN">参数名</span>
-		 * @param value <span class="en-US">Upload file path</span>
-		 *              <span class="zh-CN">上传文件地址</span>
-		 * @return    <span class="en-US">Generated EntityInfo instance</span>
-		 * <span class="zh-CN">生成的EntityInfo实例对象</span>
-		 */
-		public static EntityInfo generateBinaryEntity(final String name, final String value)
-				throws FileNotFoundException {
-			if (FileUtils.isExists(value)) {
-				return new EntityInfo(Boolean.TRUE, name, value);
+			/**
+			 * <h3 class="en-US">Static method for generate text EntityInfo instance</h3>
+			 * <h3 class="zh-CN">静态方法用于生成文字类型的EntityInfo实例对象</h3>
+			 *
+			 * @param name  <span class="en-US">Entity name</span>
+			 *              <span class="zh-CN">参数名</span>
+			 * @param value <span class="en-US">Entity value</span>
+			 *              <span class="zh-CN">参数值</span>
+			 * @return <span class="en-US">Generated EntityInfo instance</span>
+			 * <span class="zh-CN">生成的EntityInfo实例对象</span>
+			 */
+			public static EntityInfo generateTextEntity(final String name, final String value) {
+				return new EntityInfo(Boolean.FALSE, name, value);
 			}
-			throw new FileNotFoundException("File not exists");
-		}
 
-		/**
-		 * <h3 class="en-US">Getter method for binary status</h3>
-		 * <h3 class="zh-CN">二进制状态的Getter方法</h3>
-		 *
-		 * @return <span class="en-US">Binary status</span>
-		 * <span class="zh-CN">二进制状态</span>
-		 */
-		public boolean isBinary() {
-			return this.binary;
-		}
+			/**
+			 * <h3 class="en-US">Static method for generate upload file EntityInfo instance</h3>
+			 * <h3 class="zh-CN">静态方法用于生成二进制类型的EntityInfo实例对象</h3>
+			 *
+			 * @param name  <span class="en-US">Entity name</span>
+			 *              <span class="zh-CN">参数名</span>
+			 * @param value <span class="en-US">Upload file path</span>
+			 *              <span class="zh-CN">上传文件地址</span>
+			 * @return <span class="en-US">Generated EntityInfo instance</span>
+			 * <span class="zh-CN">生成的EntityInfo实例对象</span>
+			 */
+			public static EntityInfo generateBinaryEntity(final String name, final String value)
+					throws FileNotFoundException {
+				if (FileUtils.isExists(value)) {
+					return new EntityInfo(Boolean.TRUE, name, value);
+				}
+				throw new FileNotFoundException("File not exists");
+			}
 
-		/**
-		 * <h3 class="en-US">Getter method for entity name</h3>
-		 * <h3 class="zh-CN">参数名的Getter方法</h3>
-		 *
-		 * @return <span class="en-US">Entity name</span>
-		 * <span class="zh-CN">参数名</span>
-		 */
-		public String getEntityName() {
-			return this.entityName;
-		}
+			/**
+			 * <h3 class="en-US">Getter method for binary status</h3>
+			 * <h3 class="zh-CN">二进制状态的Getter方法</h3>
+			 *
+			 * @return <span class="en-US">Binary status</span>
+			 * <span class="zh-CN">二进制状态</span>
+			 */
+			@Override
+			public boolean binary() {
+				return this.binary;
+			}
 
-		/**
-		 * <h3 class="en-US">Getter method for entity value</h3>
-		 * <h3 class="zh-CN">参数值的Getter方法</h3>
-		 *
-		 * @return <span class="en-US">Entity value</span>
-		 * <span class="zh-CN">参数值</span>
-		 */
-		public String getEntityValue() {
-			return this.entityValue;
+			/**
+			 * <h3 class="en-US">Getter method for entity name</h3>
+			 * <h3 class="zh-CN">参数名的Getter方法</h3>
+			 *
+			 * @return <span class="en-US">Entity name</span>
+			 * <span class="zh-CN">参数名</span>
+			 */
+			@Override
+			public String entityName() {
+				return this.entityName;
+			}
+
+			/**
+			 * <h3 class="en-US">Getter method for entity value</h3>
+			 * <h3 class="zh-CN">参数值的Getter方法</h3>
+			 *
+			 * @return <span class="en-US">Entity value</span>
+			 * <span class="zh-CN">参数值</span>
+			 */
+			@Override
+			public String entityValue() {
+				return this.entityValue;
+			}
 		}
-	}
 }

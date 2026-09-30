@@ -19,6 +19,7 @@ package org.nervousync.beans.files;
 import jakarta.xml.bind.annotation.*;
 import org.nervousync.annotations.beans.OutputConfig;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public final class SegmentationInfo implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 2885564700967742489L;
 	/**
 	 * <span class="en-US">Total data size</span>

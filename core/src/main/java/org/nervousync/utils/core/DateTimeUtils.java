@@ -942,34 +942,21 @@ public final class DateTimeUtils {
 			Calendar.MAY, Calendar.JUNE, Calendar.JULY, Calendar.AUGUST,
 			Calendar.SEPTEMBER, Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER})
 	private static int calendarMonth(final int month) throws DataInvalidException {
-		switch (month) {
-			case 1:
-				return Calendar.JANUARY;
-			case 2:
-				return Calendar.FEBRUARY;
-			case 3:
-				return Calendar.MARCH;
-			case 4:
-				return Calendar.APRIL;
-			case 5:
-				return Calendar.MAY;
-			case 6:
-				return Calendar.JUNE;
-			case 7:
-				return Calendar.JULY;
-			case 8:
-				return Calendar.AUGUST;
-			case 9:
-				return Calendar.SEPTEMBER;
-			case 10:
-				return Calendar.OCTOBER;
-			case 11:
-				return Calendar.NOVEMBER;
-			case 12:
-				return Calendar.DECEMBER;
-			default:
-				throw new DataInvalidException(0x000000FF0001L);
-		}
+		return switch (month) {
+			case 1 -> Calendar.JANUARY;
+			case 2 -> Calendar.FEBRUARY;
+			case 3 -> Calendar.MARCH;
+			case 4 -> Calendar.APRIL;
+			case 5 -> Calendar.MAY;
+			case 6 -> Calendar.JUNE;
+			case 7 -> Calendar.JULY;
+			case 8 -> Calendar.AUGUST;
+			case 9 -> Calendar.SEPTEMBER;
+			case 10 -> Calendar.OCTOBER;
+			case 11 -> Calendar.NOVEMBER;
+			case 12 -> Calendar.DECEMBER;
+			default -> throw new DataInvalidException(0x000000FF0001L);
+		};
 	}
 
 	/**

@@ -702,7 +702,7 @@ public final class StringUtils {
 	 * <span class="zh-CN">如果 CharSequence 不为<code>null</code>并且有长度，则为 <code>true</code></span>
 	 */
 	public static boolean notNull(final CharSequence str) {
-		return (str != null && str.length() > 0);
+		return (str != null && !str.isEmpty());
 	}
 
 	/**
@@ -746,7 +746,7 @@ public final class StringUtils {
 	 * <span class="zh-CN">如果 CharSequence 不为 <code>null</code> 并且有长度，则为 <code>true</code>。</span>
 	 */
 	public static boolean hasLength(final CharSequence str) {
-		return (str != null && str.length() > 0);
+		return (str != null && !str.isEmpty());
 	}
 
 	/**
@@ -1061,7 +1061,7 @@ public final class StringUtils {
 			return str;
 		}
 		StringBuilder buf = new StringBuilder(str);
-		while (buf.length() > 0 && Character.isWhitespace(buf.charAt(0))) {
+		while (!buf.isEmpty() && Character.isWhitespace(buf.charAt(0))) {
 			buf.deleteCharAt(0);
 		}
 		return buf.toString();
@@ -1082,7 +1082,7 @@ public final class StringUtils {
 			return str;
 		}
 		StringBuilder buf = new StringBuilder(str);
-		while (buf.length() > 0 && Character.isWhitespace(buf.charAt(buf.length() - 1))) {
+		while (!buf.isEmpty() && Character.isWhitespace(buf.charAt(buf.length() - 1))) {
 			buf.deleteCharAt(buf.length() - 1);
 		}
 		return buf.toString();
@@ -1104,7 +1104,7 @@ public final class StringUtils {
 			return str;
 		}
 		StringBuilder buf = new StringBuilder(str);
-		while (buf.length() > 0 && buf.charAt(0) == leadingCharacter) {
+		while (!buf.isEmpty() && buf.charAt(0) == leadingCharacter) {
 			buf.deleteCharAt(0);
 		}
 		return buf.toString();
@@ -1126,7 +1126,7 @@ public final class StringUtils {
 			return str;
 		}
 		StringBuilder buf = new StringBuilder(str);
-		while (buf.length() > 0 && buf.charAt(buf.length() - 1) == trailingCharacter) {
+		while (!buf.isEmpty() && buf.charAt(buf.length() - 1) == trailingCharacter) {
 			buf.deleteCharAt(buf.length() - 1);
 		}
 		return buf.toString();

@@ -321,26 +321,17 @@ public final class ServiceUtils {
 	 * <h2 class="en-US">Restful service interceptor invocation handler</h2>
 	 * <h2 class="zh-CN">Restful服务拦截器调用处理程序</h2>
 	 *
+	 * @param requestPath   <span class="en-US">Request path</span>
+	 *                      <span class="zh-CN">请求地址</span>
+	 * @param clientBuilder <span class="en-US">Client builder instance object</span>
+	 *                      <span class="zh-CN">客户端构建器</span>
+	 * @param headerMap     <span class="en-US">Request header information map</span>
+	 *                      <span class="zh-CN">请求头部信息映射</span>
 	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
 	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2020 16:28:15 $
 	 */
-	private static final class RestfulInterceptor implements InvocationHandler {
-		/**
-		 * <span class="en-US">Request path</span>
-		 * <span class="zh-CN">请求地址</span>
-		 */
-		private final String requestPath;
-		/**
-		 * <span class="en-US">Client builder instance object</span>
-		 * <span class="zh-CN">客户端构建器</span>
-		 */
-		private final ClientBuilder clientBuilder;
-		/**
-		 * <span class="en-US">Request header information map</span>
-		 * <span class="zh-CN">请求头部信息映射</span>
-		 */
-		private final Map<String, Object> headerMap;
-
+	private record RestfulInterceptor(String requestPath, ClientBuilder clientBuilder,
+	                                  Map<String, Object> headerMap) implements InvocationHandler {
 		/**
 		 * <h3 class="en-US">Constructor for RestfulInterceptor</h3>
 		 * <h3 class="zh-CN">Restful服务拦截器的构造方法</h3>
@@ -352,8 +343,8 @@ public final class ServiceUtils {
 		 * @param headerMap     <span class="en-US">Request header information map</span>
 		 *                      <span class="zh-CN">请求头部信息映射</span>
 		 */
-		RestfulInterceptor(final String requestPath, final ClientBuilder clientBuilder,
-		                   final Map<String, Object> headerMap) {
+		private RestfulInterceptor(final String requestPath, final ClientBuilder clientBuilder,
+		                           final Map<String, Object> headerMap) {
 			this.requestPath = requestPath;
 			this.clientBuilder = (clientBuilder == null) ? ClientBuilder.newBuilder() : clientBuilder;
 			this.headerMap = new HashMap<>();
@@ -589,23 +580,16 @@ public final class ServiceUtils {
 		 */
 		private Response initResponse(final HttpMethodOption methodOption, final Invocation.Builder builder,
 		                              final Form form) throws ServiceException {
-			switch (methodOption) {
-				case GET:
-					return builder.get();
-				case PATCH:
-					return builder.method("PATCH",
-							Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-				case PUT:
-					return builder.put(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-				case POST:
-					return builder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-				case DELETE:
-					return builder.delete();
-				case HEAD:
-					return builder.head();
-				default:
-					throw new ServiceException(0x0000000F0002L, methodOption.toString());
-			}
+			return switch (methodOption) {
+				case GET -> builder.get();
+				case PATCH -> builder.method("PATCH",
+						Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+				case PUT -> builder.put(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+				case POST -> builder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+				case DELETE -> builder.delete();
+				case HEAD -> builder.head();
+				default -> throw new ServiceException(0x0000000F0002L, methodOption.toString());
+			};
 		}
 
 		/**
@@ -628,25 +612,15 @@ public final class ServiceUtils {
 		private Object execute(final HttpMethodOption methodOption, final Invocation.Builder builder,
 		                       final Form form, final Method method) throws ServiceException {
 			try (Response response = this.initResponse(methodOption, builder, form)) {
-				boolean operateResult;
-				switch (methodOption) {
-					case PUT:
-						operateResult = (response.getStatus() == HttpServletResponse.SC_CREATED
-								|| response.getStatus() == HttpServletResponse.SC_NO_CONTENT
-								|| response.getStatus() == HttpServletResponse.SC_OK);
-						break;
-					case POST:
-						operateResult = (response.getStatus() == HttpServletResponse.SC_CREATED
-								|| response.getStatus() == HttpServletResponse.SC_OK);
-						break;
-					case PATCH:
-					case DELETE:
-						operateResult = (response.getStatus() == HttpServletResponse.SC_NO_CONTENT);
-						break;
-					default:
-						operateResult = (response.getStatus() == HttpServletResponse.SC_OK);
-						break;
-				}
+				boolean operateResult = switch (methodOption) {
+					case PUT -> (response.getStatus() == HttpServletResponse.SC_CREATED
+							|| response.getStatus() == HttpServletResponse.SC_NO_CONTENT
+							|| response.getStatus() == HttpServletResponse.SC_OK);
+					case POST -> (response.getStatus() == HttpServletResponse.SC_CREATED
+							|| response.getStatus() == HttpServletResponse.SC_OK);
+					case PATCH, DELETE -> (response.getStatus() == HttpServletResponse.SC_NO_CONTENT);
+					default -> (response.getStatus() == HttpServletResponse.SC_OK);
+				};
 
 				if (operateResult) {
 					if (response.getStatus() == HttpServletResponse.SC_NO_CONTENT) {
@@ -681,18 +655,15 @@ public final class ServiceUtils {
 						return Optional.ofNullable(BeanUtils.stringToList(responseData, contentType.getStringType(), encoding, paramClass))
 								.orElse(new ArrayList<>());
 					}
-					switch (response.getHeaderString(HttpHeaders.CONTENT_TYPE)) {
-						case FileUtils.MIME_TYPE_JSON:
-							return BeanUtils.stringToObject(responseData, StringType.JSON, encoding, returnType);
-						case FileUtils.MIME_TYPE_TEXT_XML:
-						case FileUtils.MIME_TYPE_XML:
-							return BeanUtils.stringToObject(responseData, StringType.XML, encoding, returnType);
-						case FileUtils.MIME_TYPE_TEXT_YAML:
-						case FileUtils.MIME_TYPE_YAML:
-							return BeanUtils.stringToObject(responseData, StringType.YAML, encoding, returnType);
-						default:
-							return ClassUtils.parseSimpleData(responseData, returnType);
-					}
+					return switch (response.getHeaderString(HttpHeaders.CONTENT_TYPE)) {
+						case FileUtils.MIME_TYPE_JSON ->
+								BeanUtils.stringToObject(responseData, StringType.JSON, encoding, returnType);
+						case FileUtils.MIME_TYPE_TEXT_XML, FileUtils.MIME_TYPE_XML ->
+								BeanUtils.stringToObject(responseData, StringType.XML, encoding, returnType);
+						case FileUtils.MIME_TYPE_TEXT_YAML, FileUtils.MIME_TYPE_YAML ->
+								BeanUtils.stringToObject(responseData, StringType.YAML, encoding, returnType);
+						default -> ClassUtils.parseSimpleData(responseData, returnType);
+					};
 				} else {
 					String errorMsg = response.readEntity(String.class);
 					if (LOGGER.isDebugEnabled()) {

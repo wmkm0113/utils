@@ -150,7 +150,7 @@ public final class LocaleUtils {
 	 * <span class="zh-CN">如果 CharSequence 为 null 或长度为 0，则 <code>true</code></span>
 	 */
 	public static boolean isEmpty(final CharSequence str) {
-		return ((str == null || str.length() == 0));
+		return ((str == null || str.isEmpty()));
 	}
 
 	/**

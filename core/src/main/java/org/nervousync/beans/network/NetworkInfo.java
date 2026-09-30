@@ -16,6 +16,7 @@
  */
 package org.nervousync.beans.network;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -41,6 +42,7 @@ public final class NetworkInfo implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -8060054814830700945L;
 	/**
 	 * <span class="en-US">Network interface MAC address separator character</span>
@@ -202,6 +204,7 @@ public final class NetworkInfo implements Serializable {
 		 * <span class="en-US">Serial version UID</span>
 		 * <span class="zh-CN">序列化UID</span>
 		 */
+		@Serial
 		private static final long serialVersionUID = -2882813548945783456L;
 		/**
 		 * <span class="en-US">IP address string, supported IPv4 and IPv6</span>

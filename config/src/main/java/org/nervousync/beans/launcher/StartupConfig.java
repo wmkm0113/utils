@@ -24,6 +24,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.commons.Globals;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public final class StartupConfig implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 2193879449739699710L;
 
 	/**

@@ -25,6 +25,7 @@ import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.proxy.ProxyConfig;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -45,6 +46,7 @@ public final class MailConfig implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -506685998495058905L;
 	/**
 	 * <span class="en-US">Mail account username</span>
@@ -356,6 +358,7 @@ public final class MailConfig implements Serializable {
 		 * <span class="en-US">Serial version UID</span>
 		 * <span class="zh-CN">序列化UID</span>
 		 */
+		@Serial
 		private static final long serialVersionUID = -1768113760096890529L;
 		/**
 		 * <span class="en-US">Is send server configure</span>

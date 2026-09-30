@@ -137,21 +137,7 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 		SHA1, SHA256, SHA512
 	}
 
-	private static final class Config {
-
-		private final String algorithm;
-		private final int iterations;
-		private final int keyLength;
-		private final byte[] salt;
-		private final byte[] hash;
-
-		Config(final String algorithm, final int iterations, final int keyLength, final byte[] salt, final byte[] hash) {
-			this.algorithm = algorithm;
-			this.iterations = iterations;
-			this.keyLength = keyLength;
-			this.salt = salt;
-			this.hash = hash;
-		}
+	private record Config(String algorithm, int iterations, int keyLength, byte[] salt, byte[] hash) {
 
 		static Config parse(final String encodedPassword) {
 			String[] parts = StringUtils.tokenizeToStringArray(encodedPassword, "$");
@@ -160,20 +146,12 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 				throw new IllegalArgumentException("Invalid PBKDF2 hash! " + encodedPassword);
 			}
 			String algorithm = parts[0].substring("pbkdf2-".length()).toUpperCase();
-			int keyLength;
-			switch (algorithm) {
-				case "SHA1":
-					keyLength = 16;
-					break;
-				case "SHA256":
-					keyLength = 32;
-					break;
-				case "SHA512":
-					keyLength = 64;
-					break;
-				default:
-					throw new IllegalArgumentException("Algorithm not supported: " + algorithm);
-			}
+			int keyLength = switch (algorithm) {
+				case "SHA1" -> 16;
+				case "SHA256" -> 32;
+				case "SHA512" -> 64;
+				default -> throw new IllegalArgumentException("Algorithm not supported: " + algorithm);
+			};
 			return new Config("PBKDF2WithHmac" + algorithm,
 					Integer.parseInt(parts[1].substring(2)), keyLength,
 					StringUtils.base64Decode(parts[2]), StringUtils.base64Decode(parts[3]));

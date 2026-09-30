@@ -21,6 +21,7 @@ import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.BeanUtils;
 import org.nervousync.utils.core.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -208,6 +209,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class GenericBean implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = -8250897818064674830L;
         private int testInt;
         private short testShort;
@@ -285,6 +287,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class WrapperBean implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 8469520795055346340L;
         private Short testShort;
         private Integer testInteger;
@@ -370,6 +373,7 @@ public final class BeanTest extends BaseTest {
     }
 
     public static final class InnerBean implements Serializable {
+        @Serial
         private static final long serialVersionUID = 2456743666460180276L;
         private String innerName;
         private int innerCode;
@@ -393,6 +397,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class BeanOne implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 2148709510427702608L;
         @BeanProperty(targetBean = BeanTwo.class, targetField = "bigDecimal")
         @BeanProperty(targetBean = BeanFour.class, targetField = "decimalString", transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
@@ -484,6 +489,7 @@ public final class BeanTest extends BaseTest {
     }
 
     public static final class BeanTwo implements Serializable {
+        @Serial
         private static final long serialVersionUID = -3903310914229238786L;
         @BeanProperty(targetBean = BeanOne.class, transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
         private BigInteger bigDecimal;
@@ -519,6 +525,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class BeanThree implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 2676597737207266268L;
         @BeanProperty(targetBean = BeanOne.class, targetField = "beanOneBytes", transfer = @DataTransfer(adapter = Base64Adapter.class))
         private String base64Data;
@@ -555,6 +562,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class BeanFour implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = 2131533619703353105L;
         @BeanProperty(targetBean = BeanOne.class, targetField = "bigDecimal", transfer = @DataTransfer(adapter = BigIntegerAdapter.class))
         private String decimalString;
@@ -598,6 +606,7 @@ public final class BeanTest extends BaseTest {
 
     public static final class BeanFive implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = -2793808469846338003L;
         private boolean beanFiveBoolean;
         private String yamlString;
@@ -633,6 +642,7 @@ public final class BeanTest extends BaseTest {
     @XmlAccessorType(XmlAccessType.NONE)
     public static final class DataBean implements Serializable {
 
+        @Serial
         private static final long serialVersionUID = -9087272100087754448L;
         @XmlElement(name = "data_string")
         private String dataString;

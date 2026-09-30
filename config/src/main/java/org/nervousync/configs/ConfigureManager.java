@@ -678,18 +678,13 @@ public final class ConfigureManager {
 	 * <span class="zh-CN">文件扩展名</span>
 	 */
 	private static String extName(@Nonnull final StringType stringType) {
-		switch (stringType) {
-			case XML:
-				return ".xml";
-			case JSON:
-				return ".json";
-			case SERIALIZABLE:
-				return ".dat";
-			case YAML:
-				return ".yaml";
-			default:
-				return Globals.DEFAULT_VALUE_STRING;
-		}
+		return switch (stringType) {
+			case XML -> ".xml";
+			case JSON -> ".json";
+			case SERIALIZABLE -> ".dat";
+			case YAML -> ".yaml";
+			default -> Globals.DEFAULT_VALUE_STRING;
+		};
 	}
 
 	/**

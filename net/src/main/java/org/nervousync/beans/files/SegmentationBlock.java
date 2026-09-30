@@ -25,6 +25,7 @@ import org.nervousync.utils.security.SecurityUtils;
 import org.nervousync.xml.adapters.CDataAdapter;
 import org.nervousync.xml.adapters.DateTimeAdapter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public final class SegmentationBlock implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 2993229461743423521L;
 	/**
 	 * <span class="en-US">Block begin position</span>

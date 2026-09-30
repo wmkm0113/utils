@@ -20,6 +20,7 @@ package org.nervousync.beans.i18n;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.nervousync.commons.Globals;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,7 @@ public final class BundleResource implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -6512620733960415512L;
 	/**
 	 * <span class="en-US">Organization identification code</span>

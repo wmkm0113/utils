@@ -3927,16 +3927,11 @@ public final class SecurityUtils {
 		if (dataBytes.length == 0) {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
-		switch (encodeType) {
-			case BASE32:
-				return StringUtils.base32Encode(dataBytes);
-			case BASE64:
-				return StringUtils.base64Encode(dataBytes);
-			case HEX:
-				return ConvertUtils.bytesToHex(dataBytes);
-			default:
-				return Globals.DEFAULT_VALUE_STRING;
-		}
+		return switch (encodeType) {
+			case BASE32 -> StringUtils.base32Encode(dataBytes);
+			case BASE64 -> StringUtils.base64Encode(dataBytes);
+			case HEX -> ConvertUtils.bytesToHex(dataBytes);
+		};
 	}
 
 	/**
@@ -3956,20 +3951,12 @@ public final class SecurityUtils {
 	 */
 	private static byte[] process(@Nonnull final CryptoMode cryptoMode, @Nonnull final CipherConfig cipherConfig,
 	                              @Nonnull final CipherKey cipherKey, @Nonnull final Object source) {
-		CryptoAdaptor adaptor;
-		switch (cryptoMode) {
-			case ENCRYPT:
-				adaptor = SECURITY_ADAPTOR.encryptor(cipherConfig, cipherKey);
-				break;
-			case DECRYPT:
-				adaptor = SECURITY_ADAPTOR.decryptor(cipherConfig, cipherKey);
-				break;
-			case SIGNATURE:
-				adaptor = SECURITY_ADAPTOR.signer(cipherConfig, cipherKey);
-				break;
-			default:
-				throw new CryptoException(0x000000150003L);
-		}
+		CryptoAdaptor adaptor = switch (cryptoMode) {
+			case ENCRYPT -> SECURITY_ADAPTOR.encryptor(cipherConfig, cipherKey);
+			case DECRYPT -> SECURITY_ADAPTOR.decryptor(cipherConfig, cipherKey);
+			case SIGNATURE -> SECURITY_ADAPTOR.signer(cipherConfig, cipherKey);
+			default -> throw new CryptoException(0x000000150003L);
+		};
 		process(adaptor, source);
 		return adaptor.finish();
 	}

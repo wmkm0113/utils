@@ -392,14 +392,11 @@ public final class OfficeUtils {
 		String fileExtName = StringUtils.getFilenameExtension(filePath).toLowerCase();
 		if (FileUtils.isExists(filePath)) {
 			try (InputStream inputStream = FileUtils.getURL(filePath).openStream()) {
-				switch (fileExtName) {
-					case EXCEL_FILE_EXT_NAME_2003:
-						return new HSSFWorkbook(inputStream);
-					case EXCEL_FILE_EXT_NAME_2007:
-						return new XSSFWorkbook(inputStream);
-					default:
-						throw new DataInvalidException(0x000000AE0001L, fileExtName);
-				}
+				return switch (fileExtName) {
+					case EXCEL_FILE_EXT_NAME_2003 -> new HSSFWorkbook(inputStream);
+					case EXCEL_FILE_EXT_NAME_2007 -> new XSSFWorkbook(inputStream);
+					default -> throw new DataInvalidException(0x000000AE0001L, fileExtName);
+				};
 			} catch (IOException e) {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Stack_Message_Error", e);
@@ -422,14 +419,11 @@ public final class OfficeUtils {
 	 */
 	public static Workbook createWorkbook(final String filePath) throws DataInvalidException {
 		String fileExtName = StringUtils.getFilenameExtension(filePath).toLowerCase();
-		switch (fileExtName) {
-			case EXCEL_FILE_EXT_NAME_2003:
-				return new HSSFWorkbook();
-			case EXCEL_FILE_EXT_NAME_2007:
-				return new SXSSFWorkbook(DEFAULT_ROW_ACCESS_WINDOW_SIZE);
-			default:
-				throw new DataInvalidException(0x000000AE0001L, fileExtName);
-		}
+		return switch (fileExtName) {
+			case EXCEL_FILE_EXT_NAME_2003 -> new HSSFWorkbook();
+			case EXCEL_FILE_EXT_NAME_2007 -> new SXSSFWorkbook(DEFAULT_ROW_ACCESS_WINDOW_SIZE);
+			default -> throw new DataInvalidException(0x000000AE0001L, fileExtName);
+		};
 	}
 
 	/**
@@ -451,14 +445,11 @@ public final class OfficeUtils {
 	 */
 	private static ExcelReader newReader(final InputStream inputStream, final String extName)
 			throws IOException, InvalidFormatException, DataInvalidException{
-		switch (extName) {
-			case EXCEL_FILE_EXT_NAME_2003:
-				return new UserModelReaderImpl(inputStream);
-			case EXCEL_FILE_EXT_NAME_2007:
-				return new EventModelReaderImpl(inputStream);
-			default:
-				throw new DataInvalidException(0x000000AE0001L, extName);
-		}
+		return switch (extName) {
+			case EXCEL_FILE_EXT_NAME_2003 -> new UserModelReaderImpl(inputStream);
+			case EXCEL_FILE_EXT_NAME_2007 -> new EventModelReaderImpl(inputStream);
+			default -> throw new DataInvalidException(0x000000AE0001L, extName);
+		};
 	}
 
 	/**
@@ -479,13 +470,10 @@ public final class OfficeUtils {
 	private static ExcelReader newReader(final String filePath)
 			throws IOException, InvalidFormatException, DataInvalidException {
 		String fileExtName = StringUtils.getFilenameExtension(filePath).toLowerCase();
-		switch (fileExtName) {
-			case EXCEL_FILE_EXT_NAME_2003:
-				return new UserModelReaderImpl(filePath);
-			case EXCEL_FILE_EXT_NAME_2007:
-				return new EventModelReaderImpl(filePath);
-			default:
-				throw new DataInvalidException(0x000000AE0001L, fileExtName);
-		}
+		return switch (fileExtName) {
+			case EXCEL_FILE_EXT_NAME_2003 -> new UserModelReaderImpl(filePath);
+			case EXCEL_FILE_EXT_NAME_2007 -> new EventModelReaderImpl(filePath);
+			default -> throw new DataInvalidException(0x000000AE0001L, fileExtName);
+		};
 	}
 }

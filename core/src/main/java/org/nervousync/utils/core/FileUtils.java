@@ -1701,19 +1701,19 @@ public final class FileUtils {
 	 * <h3 class="en-US">Write content to the target file path</h3>
 	 * <h3 class="zh-CN">写入文件内容到目标文件路径</h3>
 	 *
-	 * @param content    <span class="en-US">file content string</span>
-	 *                   <span class="zh-CN">文件内容字符串</span>
-	 * @param filePath   <span class="en-US">target file path</span>
-	 *                   <span class="zh-CN">目标文件路径</span>
-	 * @param encoding   <span class="en-US">Charset encoding</span>
-	 *                   <span class="zh-CN">字符集编码</span>
+	 * @param content  <span class="en-US">file content string</span>
+	 *                 <span class="zh-CN">文件内容字符串</span>
+	 * @param filePath <span class="en-US">target file path</span>
+	 *                 <span class="zh-CN">目标文件路径</span>
+	 * @param encoding <span class="en-US">Charset encoding</span>
+	 *                 <span class="zh-CN">字符集编码</span>
 	 * @return <span class="en-US"><code>Boolean.TRUE</code> for success and <code>Boolean.FALSE</code> for error</span>
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
 	public static boolean saveFile(final String filePath, final String content, final String encoding) {
 		try (OutputStream outputStream = new FileOutputStream(filePath);
 		     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, encoding);
-			 PrintWriter printWriter = new PrintWriter(outputStreamWriter)) {
+		     PrintWriter printWriter = new PrintWriter(outputStreamWriter)) {
 			printWriter.print(content);
 			outputStreamWriter.flush();
 			return Boolean.TRUE;
@@ -1818,12 +1818,12 @@ public final class FileUtils {
 	 * <h3 class="en-US">Move a file from the base path to the target path</h3>
 	 * <h3 class="zh-CN">从原文件地址移动到目标文件地址</h3>
 	 *
-	 * @param originalPath  <span class="en-US">Original path</span>
-	 *                      <span class="zh-CN">原文件地址</span>
-	 * @param targetPath    <span class="en-US">Target path</span>
-	 *                      <span class="zh-CN">目标文件地址</span>
-	 * @param override      <span class="en-US">Override target if exists</span>
-	 *                      <span class="zh-CN">覆盖目标文件</span>
+	 * @param originalPath <span class="en-US">Original path</span>
+	 *                     <span class="zh-CN">原文件地址</span>
+	 * @param targetPath   <span class="en-US">Target path</span>
+	 *                     <span class="zh-CN">目标文件地址</span>
+	 * @param override     <span class="en-US">Override target if exists</span>
+	 *                     <span class="zh-CN">覆盖目标文件</span>
 	 * @return <span class="en-US"><code>Boolean.TRUE</code> for success and <code>Boolean.FALSE</code> for error</span>
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
@@ -1854,10 +1854,10 @@ public final class FileUtils {
 	 * <h3 class="en-US">Move directory from the original folder to the target folder</h3>
 	 * <h3 class="zh-CN">从原文件夹地址移动到目标文件夹地址</h3>
 	 *
-	 * @param originalPath    <span class="en-US">Original folder path</span>
-	 *                        <span class="zh-CN">原文件夹地址</span>
-	 * @param targetPath      <span class="en-US">Target path</span>
-	 *                        <span class="zh-CN">目标文件地址</span>
+	 * @param originalPath <span class="en-US">Original folder path</span>
+	 *                     <span class="zh-CN">原文件夹地址</span>
+	 * @param targetPath   <span class="en-US">Target path</span>
+	 *                     <span class="zh-CN">目标文件地址</span>
 	 * @return <span class="en-US"><code>Boolean.TRUE</code> for success and <code>Boolean.FALSE</code> for error</span>
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
@@ -1869,12 +1869,12 @@ public final class FileUtils {
 	 * <h3 class="en-US">Move directory from the original folder to the target folder</h3>
 	 * <h3 class="zh-CN">从原文件夹地址移动到目标文件夹地址</h3>
 	 *
-	 * @param originalPath    <span class="en-US">Original folder path</span>
-	 *                        <span class="zh-CN">原文件夹地址</span>
-	 * @param targetPath      <span class="en-US">Target path</span>
-	 *                        <span class="zh-CN">目标文件地址</span>
-	 * @param override        <span class="en-US">Override target if exists</span>
-	 *                        <span class="zh-CN">覆盖目标文件</span>
+	 * @param originalPath <span class="en-US">Original folder path</span>
+	 *                     <span class="zh-CN">原文件夹地址</span>
+	 * @param targetPath   <span class="en-US">Target path</span>
+	 *                     <span class="zh-CN">目标文件地址</span>
+	 * @param override     <span class="en-US">Override target if exists</span>
+	 *                     <span class="zh-CN">覆盖目标文件</span>
 	 * @return <span class="en-US"><code>Boolean.TRUE</code> for success and <code>Boolean.FALSE</code> for error</span>
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
@@ -2054,12 +2054,12 @@ public final class FileUtils {
 	 * <h3 class="en-US">Copy file from the base path to the target path</h3>
 	 * <h3 class="zh-CN">从原文件地址复制到目标文件地址</h3>
 	 *
-	 * @param originalPath    <span class="en-US">Original path</span>
-	 *                        <span class="zh-CN">原文件地址</span>
-	 * @param targetPath      <span class="en-US">Target path</span>
-	 *                        <span class="zh-CN">目标文件地址</span>
-	 * @param override        <span class="en-US">Override target if exists</span>
-	 *                        <span class="zh-CN">覆盖目标文件</span>
+	 * @param originalPath <span class="en-US">Original path</span>
+	 *                     <span class="zh-CN">原文件地址</span>
+	 * @param targetPath   <span class="en-US">Target path</span>
+	 *                     <span class="zh-CN">目标文件地址</span>
+	 * @param override     <span class="en-US">Override target if exists</span>
+	 *                     <span class="zh-CN">覆盖目标文件</span>
 	 * @return <span class="en-US"><code>Boolean.TRUE</code> for success and <code>Boolean.FALSE</code> for error</span>
 	 * <span class="zh-CN">成功返回<code>Boolean.TRUE</code>，失败返回<code>Boolean.FALSE</code></span>
 	 */
@@ -2384,14 +2384,11 @@ public final class FileUtils {
 	/**
 	 * <h2 class="en-US">Implements class for FileFilter by check path using regex string</h2>
 	 * <h2 class="zh-CN">使用正则表达式匹配路径的FileFilter实现类</h2>
+	 *
+	 * @param fileNameRegex <span class="en-US">Regex string</span>
+	 *                      <span class="zh-CN">正则表达式</span>
 	 */
-	private static final class FilenameRegexFilter implements FilenameFilter {
-		/**
-		 * <span class="en-US">Regex string</span>
-		 * <span class="zh-CN">正则表达式</span>
-		 */
-		private final String fileNameRegex;
-
+	private record FilenameRegexFilter(String fileNameRegex) implements FilenameFilter {
 		/**
 		 * <h3 class="en-US">Constructor for FilenameRegexFilter</h3>
 		 * <h3 class="zh-CN">正则表达式匹配路径过滤器的构造方法</h3>
@@ -2399,8 +2396,7 @@ public final class FileUtils {
 		 * @param fileNameRegex <span class="en-US">Regex string</span>
 		 *                      <span class="zh-CN">正则表达式</span>
 		 */
-		public FilenameRegexFilter(String fileNameRegex) {
-			this.fileNameRegex = fileNameRegex;
+		private FilenameRegexFilter {
 		}
 
 		/**
@@ -2422,14 +2418,11 @@ public final class FileUtils {
 	/**
 	 * <h2 class="en-US">Implements class for FileFilter by check file extension name</h2>
 	 * <h2 class="zh-CN">检查文件扩展名的FileFilter实现类</h2>
+	 *
+	 * @param fileExtName <span class="en-US">Matched extension name</span>
+	 *                    <span class="zh-CN">检查的扩展名</span>
 	 */
-	private static final class FilenameExtensionFilter implements FilenameFilter {
-		/**
-		 * <span class="en-US">Matched extension name</span>
-		 * <span class="zh-CN">检查的扩展名</span>
-		 */
-		private final String fileExtName;
-
+	private record FilenameExtensionFilter(String fileExtName) implements FilenameFilter {
 		/**
 		 * <h3 class="en-US">Constructor for FilenameExtensionFilter</h3>
 		 * <h3 class="zh-CN">文件扩展名过滤器的构造方法</h3>
@@ -2437,8 +2430,7 @@ public final class FileUtils {
 		 * @param fileExtName <span class="en-US">Matched extension name</span>
 		 *                    <span class="zh-CN">检查的扩展名</span>
 		 */
-		public FilenameExtensionFilter(String fileExtName) {
-			this.fileExtName = fileExtName;
+		private FilenameExtensionFilter {
 		}
 
 		/**

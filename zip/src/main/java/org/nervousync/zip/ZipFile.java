@@ -1951,17 +1951,14 @@ public final class ZipFile implements Cloneable {
 			} else {
 				currentIndex = generalFileHeader.getDiskNumberStart();
 			}
-			switch (compressionMethod) {
-				case Globals.COMP_STORE:
-					return new ZipInputStream(PartInputStream.newInstance(this, currentIndex,
-							offsetStartOfData, compressedSize, this.decryptor, isAESEncryptedFile));
-				case Globals.COMP_DEFLATE:
-					return new ZipInputStream(InflaterInputStream.newInstance(this, currentIndex,
-							offsetStartOfData, compressedSize, generalFileHeader.getOriginalSize(), this.decryptor,
-							isAESEncryptedFile));
-				default:
-					throw new ZipException(0x0000001B004AL);
-			}
+			return switch (compressionMethod) {
+				case Globals.COMP_STORE -> new ZipInputStream(PartInputStream.newInstance(this, currentIndex,
+						offsetStartOfData, compressedSize, this.decryptor, isAESEncryptedFile));
+				case Globals.COMP_DEFLATE -> new ZipInputStream(InflaterInputStream.newInstance(this, currentIndex,
+						offsetStartOfData, compressedSize, generalFileHeader.getOriginalSize(), this.decryptor,
+						isAESEncryptedFile));
+				default -> throw new ZipException(0x0000001B004AL);
+			};
 		} catch (ZipException | IOException e) {
 			if (e instanceof ZipException) {
 				throw (ZipException) e;

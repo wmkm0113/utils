@@ -18,6 +18,8 @@ package org.nervousync.exceptions.cert;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Certification Information Exception</h2>
  * <h2 class="zh-CN">证书信息异常</h2>
@@ -30,6 +32,7 @@ public final class CertInfoException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 8516679443951678751L;
 
 	/**

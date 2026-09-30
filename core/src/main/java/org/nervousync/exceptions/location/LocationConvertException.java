@@ -18,6 +18,8 @@ package org.nervousync.exceptions.location;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Location Convert Exception</h2>
  * <h2 class="zh-CN">坐标系转换异常</h2>
@@ -31,6 +33,7 @@ public final class LocationConvertException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -5116536960719845728L;
 
 	/**

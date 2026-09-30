@@ -63,21 +63,12 @@ public final class HeaderOperator {
 	 * @throws ZipException the zip exception
 	 */
 	public static int saltLength(final int aesStrength) throws ZipException {
-		int saltLength;
-		switch (aesStrength) {
-			case Globals.AES_STRENGTH_128:
-				saltLength = 8;
-				break;
-			case Globals.AES_STRENGTH_192:
-				saltLength = 12;
-				break;
-			case Globals.AES_STRENGTH_256:
-				saltLength = 16;
-				break;
-			default:
-				throw new ZipException(0x0000001B0005L);
-		}
-		return saltLength;
+		return switch (aesStrength) {
+			case Globals.AES_STRENGTH_128 -> 8;
+			case Globals.AES_STRENGTH_192 -> 12;
+			case Globals.AES_STRENGTH_256 -> 16;
+			default -> throw new ZipException(0x0000001B0005L);
+		};
 	}
 
 	/**
@@ -231,23 +222,13 @@ public final class HeaderOperator {
 	 */
 	private static byte[] convertCharset(final String string) throws ZipException {
 		try {
-			byte[] converted;
 			String charSet = StringUtils.detectCharset(string);
-			switch (charSet) {
-				case Globals.CHARSET_CP850:
-					converted = string.getBytes(Globals.CHARSET_CP850);
-					break;
-				case Globals.CHARSET_GBK:
-					converted = string.getBytes(Globals.CHARSET_GBK);
-					break;
-				case Globals.DEFAULT_ENCODING:
-					converted = string.getBytes(Globals.DEFAULT_ENCODING);
-					break;
-				default:
-					converted = string.getBytes(Globals.DEFAULT_SYSTEM_CHARSET);
-					break;
-			}
-			return converted;
+			return switch (charSet) {
+				case Globals.CHARSET_CP850 -> string.getBytes(Globals.CHARSET_CP850);
+				case Globals.CHARSET_GBK -> string.getBytes(Globals.CHARSET_GBK);
+				case Globals.DEFAULT_ENCODING -> string.getBytes(Globals.DEFAULT_ENCODING);
+				default -> string.getBytes(Globals.DEFAULT_SYSTEM_CHARSET);
+			};
 		} catch (UnsupportedEncodingException err) {
 			return string.getBytes(Charset.defaultCharset());
 		} catch (Exception e) {

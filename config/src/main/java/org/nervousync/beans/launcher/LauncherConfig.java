@@ -24,6 +24,7 @@ import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.launcher.StartupType;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -43,6 +44,7 @@ public final class LauncherConfig implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 5228488917816373293L;
 
 	/**

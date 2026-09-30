@@ -35,7 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * <h2 class="en-US">Startup Manager</h2>
@@ -326,7 +325,7 @@ public final class StartupManager {
 				.keySet()
 				.stream()
 				.filter(className -> !scannedClasses.contains(className))
-				.collect(Collectors.toList());
+				.toList();
 
 		for (String className : removedLaunchers) {
 			StartupLauncher startupLauncher = this.registeredLaunchers.get(className);

@@ -306,8 +306,8 @@ public final class BeanUtils {
 	 *                    <span class="zh-CN">要解析的字符串</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding  <span class="en-US">String charset encoding</span>
-	 *                  <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding    <span class="en-US">String charset encoding</span>
+	 *                    <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
@@ -344,8 +344,8 @@ public final class BeanUtils {
 	 *                    <span class="zh-CN">输入流对象实例</span>
 	 * @param stringType  <span class="en-US">The string type</span>
 	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding  <span class="en-US">String charset encoding</span>
-	 *                  <span class="zh-CN">字符串的字符集编码</span>
+	 * @param encoding    <span class="en-US">String charset encoding</span>
+	 *                    <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
@@ -366,10 +366,10 @@ public final class BeanUtils {
 	 *                   <span class="zh-CN">目标JavaBean类</span>
 	 * @param string     <span class="en-US">The string will parse</span>
 	 *                   <span class="zh-CN">要解析的字符串</span>
-	 * @param stringType  <span class="en-US">The string type</span>
-	 *                    <span class="zh-CN">字符串类型</span>
-	 * @param encoding  <span class="en-US">String charset encoding</span>
-	 *                  <span class="zh-CN">字符串的字符集编码</span>
+	 * @param stringType <span class="en-US">The string type</span>
+	 *                   <span class="zh-CN">字符串类型</span>
+	 * @param encoding   <span class="en-US">String charset encoding</span>
+	 *                   <span class="zh-CN">字符串的字符集编码</span>
 	 * @param beanClass  <span class="en-US">target JavaBean class</span>
 	 *                   <span class="zh-CN">目标JavaBean类</span>
 	 * @return <span class="en-US">Converted object instance list</span>
@@ -383,7 +383,7 @@ public final class BeanUtils {
 		}
 		try (InputStream inputStream =
 				     new ByteArrayInputStream(
-							 string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
+						     string.getBytes(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding))) {
 			return streamToList(inputStream, stringType, encoding, beanClass);
 		} catch (Exception e) {
 			LOGGER.error("Parse_String_Error");
@@ -551,14 +551,11 @@ public final class BeanUtils {
 	 * <p class="en-US">Private inner class for define JavaBean mapping configure</p>
 	 * <h2 class="zh-CN">JavaBean映射配置定义</h2>
 	 * <p class="zh-CN">定义JavaBean映射配置的私有内部类</p>
+	 *
+	 * @param fieldMappings <span class="en-US">JavaBean field mapping configure list</span>
+	 *                      <span class="zh-CN">JavaBean属性映射配置列表</span>
 	 */
-	private static final class BeanMapping {
-		/**
-		 * <span class="en-US">JavaBean field mapping configure list</span>
-		 * <span class="zh-CN">JavaBean属性映射配置列表</span>
-		 */
-		private final List<FieldMapping> fieldMappings;
-
+	private record BeanMapping(List<FieldMapping> fieldMappings) {
 		/**
 		 * <h3 class="en-US">Constructor for parse the given JavaBean class instance and generate BeanMapping instance</h3>
 		 * <h3 class="zh-CN">构造方法用于解析给定的JavaBean类对象，并生成BeanMapping对象</h3>
@@ -567,7 +564,7 @@ public final class BeanUtils {
 		 *                  <span class="zh-CN">给定的JavaBean类对象</span>
 		 */
 		BeanMapping(final Class<?> beanClass) {
-			this.fieldMappings = new ArrayList<>();
+			this(new ArrayList<>());
 			ReflectionUtils.getAllDeclaredFields(beanClass, Boolean.TRUE)
 					.forEach(field -> this.fieldMappings.add(new FieldMapping(field)));
 		}

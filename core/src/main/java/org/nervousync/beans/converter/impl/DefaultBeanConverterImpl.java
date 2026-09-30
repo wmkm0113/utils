@@ -193,6 +193,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 			JsonbConfig config = new JsonbConfig().withEncoding(StringUtils.isEmpty(encoding) ? Globals.DEFAULT_ENCODING : encoding);
 			try (Jsonb jsonb = JsonbBuilder.create(config)) {
 				return jsonb.fromJson(inputStream, new HashMap<String, Object>() {
+					@Serial
 					private static final long serialVersionUID = 2929260973754559724L;
 				}.getClass().getGenericSuperclass());
 			} catch (Exception e) {

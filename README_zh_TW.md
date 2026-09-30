@@ -52,10 +52,10 @@
 ---
 
 ## JDK版本相容
-**編譯：** OpenJDK 11
-**測試：** OpenJDK 11 / 17 / 21
-**運行：** OpenJDK 11+ 或相容版本
-**Jakarta EE平台：** 10
+**編譯：** OpenJDK 17
+**測試：** OpenJDK 17 / 21 / 25
+**運行：** OpenJDK 17+ 或相容版本
+**Jakarta EE平台：** 11
 
 ---
 

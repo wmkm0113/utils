@@ -358,13 +358,10 @@ public final class SNMPUtils {
 	 * <span class="zh-CN">OID实例对象</span>
 	 */
 	private OID retrieveAuthProtocol(final SNMPAuthProtocol snmpAuthProtocol) {
-		switch (snmpAuthProtocol) {
-			case MD5:
-				return AuthMD5.ID;
-			case SHA:
-				return AuthSHA.ID;
-		}
-		return null;
+		return switch (snmpAuthProtocol) {
+			case MD5 -> AuthMD5.ID;
+			case SHA -> AuthSHA.ID;
+		};
 	}
 
 	/**
@@ -381,16 +378,11 @@ public final class SNMPUtils {
 			return null;
 		}
 
-		String address = null;
+		String address = switch (targetHost.getProtocol()) {
+			case TCP -> PROTOCOL_TCP + targetHost.getIpAddress() + "/" + targetHost.getPort();
+			case UDP -> PROTOCOL_UDP + targetHost.getIpAddress() + "/" + targetHost.getPort();
+		};
 
-		switch (targetHost.getProtocol()) {
-			case TCP:
-				address = PROTOCOL_TCP + targetHost.getIpAddress() + "/" + targetHost.getPort();
-				break;
-			case UDP:
-				address = PROTOCOL_UDP + targetHost.getIpAddress() + "/" + targetHost.getPort();
-				break;
-		}
 		Target<Address> target;
 
 		if (SNMPVersion.VERSION3.equals(targetHost.getVersion())) {
@@ -421,14 +413,10 @@ public final class SNMPUtils {
 					securityName = new OctetString("privUser");
 					authProtocol = retrieveAuthProtocol(targetHost.getAuthProtocol());
 					authPassword = new OctetString(targetHost.getAuthPassword());
-					switch (targetHost.getPrivProtocol()) {
-						case PrivDES:
-							privProtocol = PrivDES.ID;
-							break;
-						case Priv3DES:
-							privProtocol = Priv3DES.ID;
-							break;
-					}
+					privProtocol = switch (targetHost.getPrivProtocol()) {
+						case PrivDES -> PrivDES.ID;
+						case Priv3DES -> Priv3DES.ID;
+					};
 					privPassword = new OctetString(targetHost.getPrivPassword());
 					break;
 			}

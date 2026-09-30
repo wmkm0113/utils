@@ -18,6 +18,8 @@ package org.nervousync.exceptions.builder;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Builder Exception</h2>
  * <h2 class="zh-CN">构建器异常</h2>
@@ -31,6 +33,7 @@ public final class BuilderException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -156775157749202954L;
 
 	/**

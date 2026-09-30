@@ -1065,15 +1065,11 @@ public final class RawUtils {
 			throw new DataInvalidException(0x000000130001L, dataBytes.length, position, 8);
 		}
 		final ByteBuffer byteBuffer = initBuffer(dataBytes, position, dataLength, byteOrder);
-		switch (dataLength) {
-			case 2:
-				return byteBuffer.getShort();
-			case 4:
-				return byteBuffer.getInt();
-			case 8:
-				return byteBuffer.getLong();
-			default:
-				throw new DataInvalidException(0x000000130006L);
-		}
+		return switch (dataLength) {
+			case 2 -> byteBuffer.getShort();
+			case 4 -> byteBuffer.getInt();
+			case 8 -> byteBuffer.getLong();
+			default -> throw new DataInvalidException(0x000000130006L);
+		};
 	}
 }

@@ -195,34 +195,17 @@ public final class UserModelReaderImpl extends AbstractExcelReader {
 			return this.mergeRegionList.stream()
 					.filter(mergeRegion -> mergeRegion.contains(column, row))
 					.findFirst()
-					.map(MergeRegion::getCellData);
+					.map(MergeRegion::cellData);
 		}
 	}
 
-	private static final class MergeRegion {
-
-		private final int beginColumn;
-		private final int endColumn;
-		private final int beginRow;
-		private final int endRow;
-		private final String cellData;
-
-		public MergeRegion(final int beginColumn, final int endColumn, final int beginRow, final int endRow,
-		                   final String cellData) {
-			this.beginColumn = beginColumn;
-			this.endColumn = endColumn;
-			this.beginRow = beginRow;
-			this.endRow = endRow;
-			this.cellData = cellData;
-		}
+	private record MergeRegion(int beginColumn, int endColumn, int beginRow, int endRow, String cellData) {
 
 		public boolean contains(final int column, final int row) {
 			return row >= this.beginRow && row <= this.endRow && column >= this.beginColumn && column <= this.endColumn;
 		}
 
-		public String getCellData() {
-			return cellData;
-		}
+
 	}
 
 	private static List<String> processRowData(final MergeData mergeData, final Row row) {

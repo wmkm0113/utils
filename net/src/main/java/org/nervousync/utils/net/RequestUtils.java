@@ -147,24 +147,16 @@ public final class RequestUtils {
 			return HttpMethodOption.UNKNOWN;
 		}
 
-		switch (method.toUpperCase()) {
-			case HTTP_METHOD_GET:
-				return HttpMethodOption.GET;
-			case HTTP_METHOD_HEAD:
-				return HttpMethodOption.HEAD;
-			case HTTP_METHOD_PUT:
-				return HttpMethodOption.PUT;
-			case HTTP_METHOD_POST:
-				return HttpMethodOption.POST;
-			case HTTP_METHOD_TRACE:
-				return HttpMethodOption.TRACE;
-			case HTTP_METHOD_DELETE:
-				return HttpMethodOption.DELETE;
-			case HTTP_METHOD_OPTIONS:
-				return HttpMethodOption.OPTIONS;
-			default:
-				return HttpMethodOption.UNKNOWN;
-		}
+		return switch (method.toUpperCase()) {
+			case HTTP_METHOD_GET -> HttpMethodOption.GET;
+			case HTTP_METHOD_HEAD -> HttpMethodOption.HEAD;
+			case HTTP_METHOD_PUT -> HttpMethodOption.PUT;
+			case HTTP_METHOD_POST -> HttpMethodOption.POST;
+			case HTTP_METHOD_TRACE -> HttpMethodOption.TRACE;
+			case HTTP_METHOD_DELETE -> HttpMethodOption.DELETE;
+			case HTTP_METHOD_OPTIONS -> HttpMethodOption.OPTIONS;
+			default -> HttpMethodOption.UNKNOWN;
+		};
 	}
 
 	/**
@@ -625,7 +617,7 @@ public final class RequestUtils {
 		for (Entry<String, String[]> entry : entrySet) {
 			String[] values = entry.getValue();
 			String key = entry.getKey();
-			if (result.length() > 0) {
+			if (!result.isEmpty()) {
 				result.append(ampersand);
 			}
 			try {
@@ -1074,14 +1066,14 @@ public final class RequestUtils {
 
 		requestInfo.getHeaders()
 				.forEach(simpleHeader ->
-						requestBuilder.setHeader(simpleHeader.getHeaderName(), simpleHeader.getHeaderValue()));
+						requestBuilder.setHeader(simpleHeader.headerName(), simpleHeader.headerValue()));
 		requestBuilder.uri(URI.create(uri));
 		if (requestInfo.getRequestTimeOut() > 0) {
 			requestBuilder.timeout(Duration.ofSeconds(requestInfo.getRequestTimeOut()));
 		}
 
 		if (requestInfo.getHeaders().stream().noneMatch(simpleHeader ->
-				"Accept".equalsIgnoreCase(simpleHeader.getHeaderName()))) {
+				"Accept".equalsIgnoreCase(simpleHeader.headerName()))) {
 			requestBuilder.setHeader("Accept", "text/html,text/javascript,text/xml");
 			requestBuilder.setHeader("Accept-Encoding", "gzip, deflate");
 		}
@@ -1221,7 +1213,7 @@ public final class RequestUtils {
 			stringBuilder.append("; ").append(cookieInfo.getName()).append("=").append(cookieInfo.getValue());
 		}
 
-		if (stringBuilder.length() == 0) {
+		if (stringBuilder.isEmpty()) {
 			return null;
 		}
 		return stringBuilder.substring(2);

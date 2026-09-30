@@ -17,10 +17,12 @@
 
 package org.nervousync.beans.version;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.core.DateTimeUtils;
 import org.nervousync.utils.core.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -29,37 +31,25 @@ import java.util.Optional;
  * <h2 class="en-US">Version information</h2>
  * <h2 class="zh-CN">版本信息</h2>
  *
+ * @param major     <span class="en-US">Major version number</span>
+ *                  <span class="zh-CN">主版本号</span>
+ * @param minor     <span class="en-US">Minor version number</span>
+ *                  <span class="zh-CN">子版本号</span>
+ * @param patch     <span class="en-US">Patch version number</span>
+ *                  <span class="zh-CN">补丁版本号</span>
+ * @param timestamp <span class="en-US">Building UTC timestamp</span>
+ *                  <span class="zh-CN">构建时间戳（UTC）</span>
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.1.0 $ $Date: Jun 21, 2023 10:25:22 $
  */
-public final class Version implements Serializable {
+public record Version(int major, int minor, int patch, long timestamp) implements Serializable {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -1007568628615392183L;
-
-	/**
-	 * <span class="en-US">Major version number</span>
-	 * <span class="zh-CN">主版本号</span>
-	 */
-	private final int major;
-	/**
-	 * <span class="en-US">Minor version number</span>
-	 * <span class="zh-CN">子版本号</span>
-	 */
-	private final int minor;
-	/**
-	 * <span class="en-US">Patch version number</span>
-	 * <span class="zh-CN">补丁版本号</span>
-	 */
-	private final int patch;
-	/**
-	 * <span class="en-US">Building UTC timestamp</span>
-	 * <span class="zh-CN">构建时间戳（UTC）</span>
-	 */
-	private final long timestamp;
 
 	/**
 	 * <h3 class="en-US">Constructor method for the version information</h3>
@@ -74,11 +64,7 @@ public final class Version implements Serializable {
 	 * @param timestamp <span class="en-US">Building UTC timestamp</span>
 	 *                  <span class="zh-CN">构建时间戳（UTC）</span>
 	 */
-	public Version(final int major, final int minor, final int patch, final long timestamp) {
-		this.major = major;
-		this.minor = minor;
-		this.patch = patch;
-		this.timestamp = timestamp;
+	public Version {
 	}
 
 	/**
@@ -88,7 +74,8 @@ public final class Version implements Serializable {
 	 * @return <span class="en-US">Major version number</span>
 	 * <span class="zh-CN">主版本号</span>
 	 */
-	public int getMajor() {
+	@Override
+	public int major() {
 		return Math.max(Globals.INITIALIZE_INT_VALUE, this.major);
 	}
 
@@ -99,7 +86,8 @@ public final class Version implements Serializable {
 	 * @return <span class="en-US">Minor version number</span>
 	 * <span class="zh-CN">子版本号</span>
 	 */
-	public int getMinor() {
+	@Override
+	public int minor() {
 		return Math.max(Globals.INITIALIZE_INT_VALUE, this.minor);
 	}
 
@@ -110,7 +98,8 @@ public final class Version implements Serializable {
 	 * @return <span class="en-US">Patch version number</span>
 	 * <span class="zh-CN">补丁版本号</span>
 	 */
-	public int getPatch() {
+	@Override
+	public int patch() {
 		return Math.max(Globals.INITIALIZE_INT_VALUE, this.patch);
 	}
 
@@ -121,11 +110,13 @@ public final class Version implements Serializable {
 	 * @return <span class="en-US">Building UTC timestamp</span>
 	 * <span class="zh-CN">构建时间戳（UTC）</span>
 	 */
-	public long getTimestamp() {
+	@Override
+	public long timestamp() {
 		return this.timestamp;
 	}
 
 	@Override
+	@Nonnull
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder(Math.max(Globals.INITIALIZE_INT_VALUE, this.major));
 		stringBuilder.append(".").append(Math.max(Globals.INITIALIZE_INT_VALUE, this.minor));

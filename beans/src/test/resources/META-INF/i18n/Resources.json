@@ -15,6 +15,9 @@
       },
       "Bean_Result": {
         "pattern": "{0} result: {1}"
+      },
+      "Component_Debug": {
+        "pattern": "Class name: {0} component types: {1}"
       }
     },
     "zh-CN": {
@@ -26,6 +29,9 @@
       },
       "Bean_Result": {
         "pattern": "{0}结果：{1}"
+      },
+      "Component_Debug": {
+        "pattern": "类名：{0} 泛型类型：{1}"
       }
     }
   }

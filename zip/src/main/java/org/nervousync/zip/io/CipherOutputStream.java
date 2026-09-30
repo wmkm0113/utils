@@ -453,17 +453,11 @@ public class CipherOutputStream extends OutputStream {
 					if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_STANDARD) {
 						this.generalFileHeader.setCompressedSize(fileSize + Globals.STD_DEC_HDR_SIZE);
 					} else if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
-						int saltLength;
-						switch (this.zipOptions.getAesKeyStrength()) {
-							case Globals.AES_STRENGTH_128:
-								saltLength = 8;
-								break;
-							case Globals.AES_STRENGTH_256:
-								saltLength = 16;
-								break;
-							default:
-								throw new ZipException(0x0000001B0005L);
-						}
+						int saltLength = switch (this.zipOptions.getAesKeyStrength()) {
+							case Globals.AES_STRENGTH_128 -> 8;
+							case Globals.AES_STRENGTH_256 -> 16;
+							default -> throw new ZipException(0x0000001B0005L);
+						};
 						this.generalFileHeader
 								.setCompressedSize(fileSize + saltLength + Globals.AES_AUTH_LENGTH + 2);
 					} else {

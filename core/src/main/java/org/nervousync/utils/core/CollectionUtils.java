@@ -243,16 +243,14 @@ public final class CollectionUtils {
 	public static List<?> toList(final Object source) {
 		if (source instanceof Collection) {
 			return new ArrayList<>((Collection<?>) source);
-		} else if (source instanceof Enumeration) {
+		} else if (source instanceof Enumeration<?> enumeration) {
 			List<Object> list = new ArrayList<>();
-			Enumeration<?> enumeration = (Enumeration<?>) source;
 			while (enumeration.hasMoreElements()) {
 				list.add(enumeration.nextElement());
 			}
 			return list;
-		} else if (source instanceof Iterator) {
+		} else if (source instanceof Iterator<?> iterator) {
 			List<Object> list = new ArrayList<>();
-			Iterator<?> iterator = (Iterator<?>) source;
 			while (iterator.hasNext()) {
 				list.add(iterator.next());
 			}

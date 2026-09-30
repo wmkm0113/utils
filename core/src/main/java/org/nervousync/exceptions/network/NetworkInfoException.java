@@ -18,6 +18,8 @@ package org.nervousync.exceptions.network;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Network Information Exception</h2>
  * <h2 class="zh-CN">网络信息异常</h2>
@@ -30,6 +32,7 @@ public final class NetworkInfoException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -1431511763422513673L;
 
 	/**

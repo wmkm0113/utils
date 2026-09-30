@@ -18,6 +18,8 @@ package org.nervousync.beans.security;
 
 import jakarta.xml.bind.annotation.*;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Secure configure information define</h2>
  * <p class="en-US">Using for protect password in any configuring files</p>
@@ -35,6 +37,7 @@ public final class SecureConfig extends AbstractConfig {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -4333190425770207630L;
 	/**
 	 * <span class="en-US">Secure config name</span>

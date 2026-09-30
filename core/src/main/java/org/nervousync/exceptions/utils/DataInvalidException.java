@@ -18,6 +18,8 @@ package org.nervousync.exceptions.utils;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Data Invalid Exception</h2>
  * <h2 class="zh-CN">数据非法异常</h2>
@@ -30,6 +32,7 @@ public final class DataInvalidException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -2896313924690716673L;
 
 	/**

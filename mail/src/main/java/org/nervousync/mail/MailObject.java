@@ -16,6 +16,7 @@
  */
 package org.nervousync.mail;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +35,7 @@ public final class MailObject implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -4277408041510934598L;
 	/**
 	 * <span class="en-US">Unified identified ID</span>

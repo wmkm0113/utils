@@ -21,6 +21,7 @@ import jakarta.annotation.Nonnull;
 import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.core.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -31,13 +32,14 @@ import java.util.UUID;
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: May 21, 2025 14:27:18 $
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("ClassCanBeRecord")
 public final class ULID implements Serializable, Comparable<ULID> {
 
 	/**
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 4996816510419541554L;
 
 	/**

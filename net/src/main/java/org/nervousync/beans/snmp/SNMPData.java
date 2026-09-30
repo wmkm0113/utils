@@ -16,6 +16,7 @@
  */
 package org.nervousync.beans.snmp;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ public final class SNMPData implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -9033003833049981503L;
 	/**
 	 * <span class="en-US">Current GMT time in milliseconds</span>

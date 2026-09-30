@@ -192,16 +192,12 @@ public final class ZipOptions implements Cloneable {
 			throw new ZipException(0x0000001B0006L);
 		}
 
-		switch (aesKeyLength) {
-			case 128:
-				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_128);
-			case 192:
-				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_192);
-			case 256:
-				return new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_256);
-			default:
-				throw new ZipException(0x0000001B0005L);
-		}
+		return switch (aesKeyLength) {
+			case 128 -> new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_128);
+			case 192 -> new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_192);
+			case 256 -> new ZipOptions(Boolean.TRUE, password, Globals.ENC_METHOD_AES, Globals.AES_STRENGTH_256);
+			default -> throw new ZipException(0x0000001B0005L);
+		};
 	}
 
 	/**

@@ -20,21 +20,14 @@ package org.nervousync.beans.header;
  * <h2 class="en-US">Simple Header Define</h2>
  * <h2 class="zh-CN">Cookie信息定义</h2>
  *
+ * @param headerName  <span class="en-US">Header name</span>
+ *                    <span class="zh-CN">Header名</span>
+ * @param headerValue <span class="en-US">Header value</span>
+ *                    <span class="zh-CN">Header值</span>
  * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
  * @version $Revision: 1.0.0 $ $Date: Jan 4, 2018 12:15:18 $
  */
-public final class SimpleHeader {
-	/**
-	 * <span class="en-US">Header name</span>
-	 * <span class="zh-CN">Header名</span>
-	 */
-	private final String headerName;
-	/**
-	 * <span class="en-US">Header value</span>
-	 * <span class="zh-CN">Header值</span>
-	 */
-	private final String headerValue;
-
+public record SimpleHeader(String headerName, String headerValue) {
 	/**
 	 * <h3 class="en-US">Constructor method for SimpleHeader</h3>
 	 * <h3 class="zh-CN">SimpleHeader构造方法</h3>
@@ -44,9 +37,7 @@ public final class SimpleHeader {
 	 * @param headerValue <span class="en-US">Header value</span>
 	 *                    <span class="zh-CN">Header值</span>
 	 */
-	public SimpleHeader(final String headerName, final String headerValue) {
-		this.headerName = headerName;
-		this.headerValue = headerValue;
+	public SimpleHeader {
 	}
 
 	/**
@@ -56,7 +47,8 @@ public final class SimpleHeader {
 	 * @return <span class="en-US">Header name</span>
 	 * <span class="zh-CN">Header名</span>
 	 */
-	public String getHeaderName() {
+	@Override
+	public String headerName() {
 		return this.headerName;
 	}
 
@@ -67,7 +59,8 @@ public final class SimpleHeader {
 	 * @return <span class="en-US">Header value</span>
 	 * <span class="zh-CN">Header值</span>
 	 */
-	public String getHeaderValue() {
+	@Override
+	public String headerValue() {
 		return this.headerValue;
 	}
 }

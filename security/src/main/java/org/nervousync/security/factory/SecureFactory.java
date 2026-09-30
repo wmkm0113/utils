@@ -462,26 +462,16 @@ public final class SecureFactory {
 	 * @return <span class="en-US">Generated key data bytes</span>
 	 * <span class="zh-CN">生成的安全密钥数据</span>
 	 */
-	@SuppressWarnings("deprecation")
 	private static byte[] generate(final SecureAlgorithm secureAlgorithm) {
-		switch (secureAlgorithm) {
-			case RSA2048:
-				return convertKeyPair(SecurityUtils.RSAKeyPair(2048), "SHA256withRSA");
-			case SM2:
-				return convertKeyPair(SecurityUtils.SM2KeyPair(), "SM3withSM2");
-			case AES128:
-				return SecurityUtils.AES128Key();
-			case AES192:
-				return SecurityUtils.AES192Key();
-			case AES256:
-				return SecurityUtils.AES256Key();
-			case TRIPLE_DES:
-				return SecurityUtils.TripleDESKey();
-			case SM4:
-				return SecurityUtils.SM4Key();
-			default:
-				return new byte[0];
-		}
+		return switch (secureAlgorithm) {
+			case RSA2048 -> convertKeyPair(SecurityUtils.RSAKeyPair(2048), "SHA256withRSA");
+			case SM2 -> convertKeyPair(SecurityUtils.SM2KeyPair(), "SM3withSM2");
+			case AES128 -> SecurityUtils.AES128Key();
+			case AES192 -> SecurityUtils.AES192Key();
+			case AES256 -> SecurityUtils.AES256Key();
+			case SM4 -> SecurityUtils.SM4Key();
+			default -> new byte[0];
+		};
 	}
 
 	/**
@@ -569,7 +559,6 @@ public final class SecureFactory {
 				case AES128:
 				case AES192:
 				case AES256:
-				case TRIPLE_DES:
 				case SM4:
 					this.initialized = Boolean.TRUE;
 					this.keyBytes = keyBytes;
@@ -594,7 +583,6 @@ public final class SecureFactory {
 		 * @return <span class="en-US">Initialized adapter instance</span>
 		 * <span class="zh-CN">初始化的适配器实例对象</span>
 		 */
-		@SuppressWarnings("deprecation")
 		private Optional<CryptoAdaptor> initCryptor(final boolean encrypt) {
 			CryptoAdaptor secureAdapter = null;
 			if (this.initialized) {
@@ -614,16 +602,9 @@ public final class SecureFactory {
 							secureAdapter = encrypt ? SecurityUtils.AESEncryptor(this.keyBytes)
 									: SecurityUtils.AESDecryptor(this.keyBytes);
 							break;
-						case RC5:
-							secureAdapter = encrypt ? SecurityUtils.RC5Encryptor(this.keyBytes)
-									: SecurityUtils.RC5Decryptor(this.keyBytes);
 						case RC6:
 							secureAdapter = encrypt ? SecurityUtils.RC6Encryptor(this.keyBytes)
 									: SecurityUtils.RC6Decryptor(this.keyBytes);
-							break;
-						case TRIPLE_DES:
-							secureAdapter = encrypt ? SecurityUtils.TripleDESEncryptor(this.keyBytes)
-									: SecurityUtils.TripleDESDecryptor(this.keyBytes);
 							break;
 						case SM4:
 							secureAdapter = encrypt ? SecurityUtils.SM4Encryptor(this.keyBytes)
@@ -662,6 +643,6 @@ public final class SecureFactory {
 	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2012 12:37:28 $
 	 */
 	public enum SecureAlgorithm {
-		RSA2048, SM2, AES128, AES192, AES256, TRIPLE_DES, SM4, RC5, RC6
+		RSA2048, SM2, AES128, AES192, AES256, SM4, RC6
 	}
 }

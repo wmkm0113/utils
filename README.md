@@ -52,10 +52,10 @@ It is framework-agnostic and can be integrated into:
 ---
 
 ## JDK Version Compatibility
-**Compile:** OpenJDK 11   
-**Test：** OpenJDK 11/17/21  
-**Runtime：** OpenJDK 11+ or compatible version  
-**Jakarta EE Platform:** 10
+**Compile:** OpenJDK 17   
+**Test：** OpenJDK 17/21/25  
+**Runtime：** OpenJDK 17+ or compatible version  
+**Jakarta EE Platform:** 11
 
 ## Design Philosophy
 This project is built upon the following engineering principles:

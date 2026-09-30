@@ -259,44 +259,44 @@ public final class MarkOptions {
 				ImageIcon imageIcon = new ImageIcon(this.markPath);
 				Image iconImg = imageIcon.getImage();
 				if (iconImg != null && this.transparency >= 0 && this.transparency <= 1) {
-					switch (this.markLocation) {
-						case LEFT_TOP:
+					positionY = switch (this.markLocation) {
+						case LEFT_TOP -> {
 							positionX = Globals.INITIALIZE_INT_VALUE;
-							positionY = Globals.INITIALIZE_INT_VALUE;
-							break;
-						case TOP:
+							yield Globals.INITIALIZE_INT_VALUE;
+						}
+						case TOP -> {
 							positionX = (width - iconImg.getWidth(null)) / 2;
-							positionY = Globals.INITIALIZE_INT_VALUE;
-							break;
-						case RIGHT_TOP:
+							yield Globals.INITIALIZE_INT_VALUE;
+						}
+						case RIGHT_TOP -> {
 							positionX = width - iconImg.getWidth(null);
-							positionY = Globals.INITIALIZE_INT_VALUE;
-							break;
-						case LEFT:
+							yield Globals.INITIALIZE_INT_VALUE;
+						}
+						case LEFT -> {
 							positionX = Globals.INITIALIZE_INT_VALUE;
-							positionY = (height - iconImg.getHeight(null)) / 2;
-							break;
-						case CENTER:
+							yield (height - iconImg.getHeight(null)) / 2;
+						}
+						case CENTER -> {
 							positionX = (width - iconImg.getWidth(null)) / 2;
-							positionY = (height - iconImg.getHeight(null)) / 2;
-							break;
-						case RIGHT:
+							yield (height - iconImg.getHeight(null)) / 2;
+						}
+						case RIGHT -> {
 							positionX = width - iconImg.getWidth(null);
-							positionY = (height - iconImg.getHeight(null)) / 2;
-							break;
-						case LEFT_BOTTOM:
+							yield (height - iconImg.getHeight(null)) / 2;
+						}
+						case LEFT_BOTTOM -> {
 							positionX = 0;
-							positionY = height - iconImg.getHeight(null);
-							break;
-						case BOTTOM:
+							yield height - iconImg.getHeight(null);
+						}
+						case BOTTOM -> {
 							positionX = (width - iconImg.getWidth(null)) / 2;
-							positionY = height - iconImg.getHeight(null);
-							break;
-						case RIGHT_BOTTOM:
+							yield height - iconImg.getHeight(null);
+						}
+						case RIGHT_BOTTOM -> {
 							positionX = width - iconImg.getWidth(null);
-							positionY = height - iconImg.getHeight(null);
-							break;
-					}
+							yield height - iconImg.getHeight(null);
+						}
+					};
 				}
 				break;
 			case TEXT:
@@ -305,44 +305,44 @@ public final class MarkOptions {
 					int textWidth = this.markText.length() * this.fontSize;
 					int textHeight = this.fontSize;
 
-					switch (this.markLocation) {
-						case LEFT_TOP:
+					positionY = switch (this.markLocation) {
+						case LEFT_TOP -> {
 							positionX = 0;
-							positionY = textHeight;
-							break;
-						case TOP:
-							positionX = (width - textWidth) / 2;
-							positionY = textHeight;
-							break;
-						case RIGHT_TOP:
-							positionX = width - textWidth;
-							positionY = textHeight;
-							break;
-						case LEFT:
+							yield textHeight;
+						}
+						case LEFT_BOTTOM -> {
 							positionX = 0;
-							positionY = (height + textHeight) / 2;
-							break;
-						case CENTER:
+							yield height;
+						}
+						case TOP -> {
 							positionX = (width - textWidth) / 2;
-							positionY = (height + textHeight) / 2;
-							break;
-						case RIGHT:
+							yield textHeight;
+						}
+						case RIGHT_TOP -> {
 							positionX = width - textWidth;
-							positionY = (height + textHeight) / 2;
-							break;
-						case LEFT_BOTTOM:
+							yield textHeight;
+						}
+						case LEFT -> {
 							positionX = 0;
-							positionY = height;
-							break;
-						case BOTTOM:
+							yield (height + textHeight) / 2;
+						}
+						case CENTER -> {
 							positionX = (width - textWidth) / 2;
-							positionY = height;
-							break;
-						case RIGHT_BOTTOM:
+							yield (height + textHeight) / 2;
+						}
+						case RIGHT -> {
 							positionX = width - textWidth;
-							positionY = height;
-							break;
-					}
+							yield (height + textHeight) / 2;
+						}
+						case BOTTOM -> {
+							positionX = (width - textWidth) / 2;
+							yield height;
+						}
+						case RIGHT_BOTTOM -> {
+							positionX = width - textWidth;
+							yield height;
+						}
+					};
 				}
 				break;
 		}
@@ -355,19 +355,13 @@ public final class MarkOptions {
 	/**
 	 * <h2 class="en-US">MarkPosition define</h2>
 	 * <h2 class="zh-CN">MarkPosition定义</h2>
+	 *
+	 * @param positionX <h3 class="en-US">Mark position value X</h3>
+	 *                  <h3 class="zh-CN">水印起始X坐标</h3>
+	 * @param positionY <h3 class="en-US">Mark position value Y</h3>
+	 *                  <h3 class="zh-CN">水印起始Y坐标</h3>
 	 */
-	public static final class MarkPosition {
-		/**
-		 * <h3 class="en-US">Mark position value X</h3>
-		 * <h3 class="zh-CN">水印起始X坐标</h3>
-		 */
-		private final int positionX;
-		/**
-		 * <h3 class="en-US">Mark position value Y</h3>
-		 * <h3 class="zh-CN">水印起始Y坐标</h3>
-		 */
-		private final int positionY;
-
+		public record MarkPosition(int positionX, int positionY) {
 		/**
 		 * <h3 class="en-US">Constructor for MarkPosition</h3>
 		 * <h3 class="zh-CN">MarkPosition构造方法</h3>
@@ -377,33 +371,33 @@ public final class MarkOptions {
 		 * @param positionY <span class="en-US">Mark position value Y</span>
 		 *                  <span class="zh-CN">水印起始Y坐标</span>
 		 */
-		public MarkPosition(final int positionX, final int positionY) {
-			this.positionX = positionX;
-			this.positionY = positionY;
+		public MarkPosition {
 		}
 
-		/**
-		 * <h3 class="en-US">Getter method for position X</h3>
-		 * <h3 class="zh-CN">起始X坐标的Getter方法</h3>
-		 *
-		 * @return <span class="en-US">Value of begin position X</span>
-		 * <span class="zh-CN">起始X坐标值</span>
-		 */
-		public int getPositionX() {
-			return this.positionX;
-		}
+			/**
+			 * <h3 class="en-US">Getter method for position X</h3>
+			 * <h3 class="zh-CN">起始X坐标的Getter方法</h3>
+			 *
+			 * @return <span class="en-US">Value of begin position X</span>
+			 * <span class="zh-CN">起始X坐标值</span>
+			 */
+			@Override
+			public int positionX() {
+				return this.positionX;
+			}
 
-		/**
-		 * <h3 class="en-US">Getter method for position Y</h3>
-		 * <h3 class="zh-CN">起始Y坐标的Getter方法</h3>
-		 *
-		 * @return <span class="en-US">Value of the beginning position Y</span>
-		 * <span class="zh-CN">起始Y坐标值</span>
-		 */
-		public int getPositionY() {
-			return this.positionY;
+			/**
+			 * <h3 class="en-US">Getter method for position Y</h3>
+			 * <h3 class="zh-CN">起始Y坐标的Getter方法</h3>
+			 *
+			 * @return <span class="en-US">Value of the beginning position Y</span>
+			 * <span class="zh-CN">起始Y坐标值</span>
+			 */
+			@Override
+			public int positionY() {
+				return this.positionY;
+			}
 		}
-	}
 
 	/**
 	 * <h2 class="en-US">Enumeration define for MarkType</h2>

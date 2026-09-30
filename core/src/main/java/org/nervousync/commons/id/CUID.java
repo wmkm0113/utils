@@ -22,6 +22,7 @@ import org.nervousync.generator.cuid.impl.CUIDv1Generator;
 import org.nervousync.utils.core.ObjectUtils;
 import org.nervousync.utils.core.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public final class CUID implements Serializable, Comparable<CUID> {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 9198313467092132650L;
 
 	/**

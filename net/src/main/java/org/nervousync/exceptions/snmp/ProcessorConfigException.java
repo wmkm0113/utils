@@ -18,6 +18,8 @@ package org.nervousync.exceptions.snmp;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">SNMP Processor Config Exception</h2>
  * <h2 class="zh-CN">SNMP处理器配置异常</h2>
@@ -31,6 +33,7 @@ public final class ProcessorConfigException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -156906740773445520L;
 
 	/**

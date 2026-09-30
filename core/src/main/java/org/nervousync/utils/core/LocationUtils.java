@@ -93,17 +93,15 @@ public final class LocationUtils {
 		if (currentPoint == null) {
 			throw new LocationConvertException(0x0000000C0001L);
 		}
-		switch (currentPoint.getLocationType()) {
-			case GPS:
-				return currentPoint;
-			case GCJ_02:
-				return GCJ02ToGPS(currentPoint.getLongitude(), currentPoint.getLatitude());
-			case BD_09:
+		return switch (currentPoint.getLocationType()) {
+			case GPS -> currentPoint;
+			case GCJ_02 -> GCJ02ToGPS(currentPoint.getLongitude(), currentPoint.getLatitude());
+			case BD_09 -> {
 				GeoPoint gcjPoint = BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
-				return GCJ02ToGPS(gcjPoint.getLongitude(), gcjPoint.getLatitude());
-			default:
-				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
-		}
+				yield GCJ02ToGPS(gcjPoint.getLongitude(), gcjPoint.getLatitude());
+			}
+			default -> throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
+		};
 	}
 
 	/**
@@ -121,16 +119,12 @@ public final class LocationUtils {
 		if (currentPoint == null) {
 			throw new LocationConvertException(0x0000000C0001L);
 		}
-		switch (currentPoint.getLocationType()) {
-			case GPS:
-				return GPSToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
-			case GCJ_02:
-				return currentPoint;
-			case BD_09:
-				return BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
-			default:
-				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
-		}
+		return switch (currentPoint.getLocationType()) {
+			case GPS -> GPSToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
+			case GCJ_02 -> currentPoint;
+			case BD_09 -> BD09ToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
+			default -> throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
+		};
 	}
 
 	/**
@@ -148,17 +142,15 @@ public final class LocationUtils {
 		if (currentPoint == null) {
 			throw new LocationConvertException(0x0000000C0001L);
 		}
-		switch (currentPoint.getLocationType()) {
-			case GPS:
+		return switch (currentPoint.getLocationType()) {
+			case GPS -> {
 				GeoPoint gcjPoint = GPSToGCJ02(currentPoint.getLongitude(), currentPoint.getLatitude());
-				return GCJ02ToBD09(gcjPoint.getLongitude(), gcjPoint.getLatitude());
-			case GCJ_02:
-				return GCJ02ToBD09(currentPoint.getLongitude(), currentPoint.getLatitude());
-			case BD_09:
-				return currentPoint;
-			default:
-				throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
-		}
+				yield GCJ02ToBD09(gcjPoint.getLongitude(), gcjPoint.getLatitude());
+			}
+			case GCJ_02 -> GCJ02ToBD09(currentPoint.getLongitude(), currentPoint.getLatitude());
+			case BD_09 -> currentPoint;
+			default -> throw new LocationConvertException(0x0000000C0002L, currentPoint.getLocationType().toString());
+		};
 	}
 
 	/**

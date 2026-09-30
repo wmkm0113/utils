@@ -58,15 +58,15 @@ public abstract class BaseDigestAdaptorImpl extends CryptoAdaptor {
 	 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 	 */
 	protected BaseDigestAdaptorImpl(final CipherConfig cipherConfig, final CipherKey cipherKey) {
-		if (StringUtils.isEmpty(cipherConfig.getAlgorithm())) {
+		if (StringUtils.isEmpty(cipherConfig.algorithm())) {
 			throw new CryptoException(0x00000015000DL);
 		}
-		this.macMode = cipherConfig.getAlgorithm().toUpperCase().contains("HMAC");
+		this.macMode = cipherConfig.algorithm().toUpperCase().contains("HMAC");
 		if (this.macMode) {
-			this.initHmac(cipherConfig.getAlgorithm(), cipherKey.getKeyBytes());
+			this.initHmac(cipherConfig.algorithm(), cipherKey.getKeyBytes());
 			this.digest = null;
 		} else {
-			this.digest = this.initDigest(cipherConfig.getAlgorithm());
+			this.digest = this.initDigest(cipherConfig.algorithm());
 		}
 	}
 

@@ -20,6 +20,8 @@ import org.nervousync.commons.Globals;
 import org.nervousync.utils.core.ObjectUtils;
 import org.nervousync.utils.i18n.MultilingualUtils;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Abstract Exception</h2>
  * <h2 class="zh-CN">异常抽象类</h2>
@@ -32,6 +34,7 @@ public abstract class AbstractException extends RuntimeException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 3698481050554660066L;
 	/**
 	 * <span class="en-US">Error identified code</span>

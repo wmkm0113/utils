@@ -16,6 +16,7 @@
  */
 package org.nervousync.beans.snmp;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.nervousync.enumerations.net.IPProtocol;
@@ -37,6 +38,7 @@ public final class TargetHost implements Serializable {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = -7043141633658888918L;
 	/**
 	 * <span class="en-US">Default port number of SNMP</span>

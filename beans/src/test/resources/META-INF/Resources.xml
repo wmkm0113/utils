@@ -4,4 +4,5 @@
     <entry key="Bean_Generate_Result">Generate {0} result: {1}</entry>
     <entry key="Bean_Copy_Result">Copied {0} result: {1}</entry>
     <entry key="Bean_Result">{0} result: {1}</entry>
+    <entry key="Component_Debug">Class name: {0} component types: {1}</entry>
 </properties>

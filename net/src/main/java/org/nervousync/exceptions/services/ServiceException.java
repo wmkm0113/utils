@@ -19,6 +19,8 @@ package org.nervousync.exceptions.services;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Service Exception</h2>
  * <h2 class="zh-CN">服务异常</h2>
@@ -31,6 +33,7 @@ public final class ServiceException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
     private static final long serialVersionUID = -3903147941241857531L;
     /**
 	 * <h3 class="en-US">Constructor method for ServiceException</h3>

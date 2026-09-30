@@ -18,6 +18,8 @@ package org.nervousync.exceptions.crypto;
 
 import org.nervousync.exceptions.AbstractException;
 
+import java.io.Serial;
+
 /**
  * <h2 class="en-US">Crypto Exception</h2>
  * <h2 class="zh-CN">加密异常</h2>
@@ -30,6 +32,7 @@ public final class CryptoException extends AbstractException {
 	 * <span class="en-US">Serial version UID</span>
 	 * <span class="zh-CN">序列化UID</span>
 	 */
+	@Serial
 	private static final long serialVersionUID = 6112136690122627440L;
 
 	/**

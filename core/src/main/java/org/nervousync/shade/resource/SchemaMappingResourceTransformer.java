@@ -64,7 +64,7 @@ public final class SchemaMappingResourceTransformer implements ReproducibleResou
 
 	@Override
 	public boolean hasTransformedResource() {
-		return this.stringBuilder.length() > 0;
+		return !this.stringBuilder.isEmpty();
 	}
 
 	@Override
