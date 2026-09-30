@@ -433,7 +433,7 @@ public final class MailConfig implements Serializable {
 		}
 
 		/**
-		 * <h3 class="en-US">Getter method for is send server configure</h3>
+		 * <h3 class="en-US">Getter method for is sent server configure</h3>
 		 * <h3 class="zh-CN">是发送服务器配置信息的Getter方法</h3>
 		 *
 		 * @return <span class="en-US">Is send server configure</span>

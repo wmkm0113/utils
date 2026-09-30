@@ -345,7 +345,7 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 					XSSFRichTextString xssfRichTextString;
 					switch (this.dataType) {
 						case BOOLEAN:
-							this.lastContents = (this.lastContents.charAt(0) == '0') ? "false" : "true";
+							this.lastContents = Boolean.toString(this.lastContents.charAt(0) != '0');
 							break;
 						case ERROR:
 							this.lastContents = "\"Error: " + this.lastContents + "\"";

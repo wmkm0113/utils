@@ -210,7 +210,7 @@ public class PartInputStream extends InputStream {
 		if (this.isAESEncryptedFile
 				&& (this.decryptor instanceof AESDecryptor)) {
 			if (((AESDecryptor) this.decryptor).getStoredMac() != null) {
-				//	Store mac already set
+				//	StoredMac already set
 				return;
 			}
 

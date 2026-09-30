@@ -35,10 +35,10 @@ public class BeanConverterTest extends BaseTest {
     }
     
     private void printTypes(final Class<?> clazz) {
-        StringBuilder stringBuilder = new StringBuilder("Class name: ").append(clazz.getName()).append(" component types: ");
+        StringBuilder stringBuilder = new StringBuilder();
         for (Class<?> type : ClassUtils.componentTypes(clazz)) {
             stringBuilder.append(type.getName()).append(",");
         }
-        System.out.println(stringBuilder);
+        this.logger.info("Component_Debug", clazz.getName(), stringBuilder.toString());
     }
 }

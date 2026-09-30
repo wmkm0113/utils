@@ -5,17 +5,17 @@
     <parent>
         <groupId>org.nervousync</groupId>
         <artifactId>utils-parent</artifactId>
-        <version>1.3.0.2</version>
+        <version>1.3.1</version>
     </parent>
     <artifactId>utils-all</artifactId>
     <packaging>jar</packaging>
     <name>Nervousync Java Utility All in One</name>
     <properties>
-        <yaml.version>2.6</yaml.version>
+        <yaml.version>2.7</yaml.version>
         <jaxb.version>4.0.9</jaxb.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
-        <slf4j.version>2.0.18</slf4j.version>
+        <slf4j.version>2.0.20</slf4j.version>
         <jcifs.version>2.1.40</jcifs.version>
         <poi.version>5.5.1</poi.version>
         <zxing.version>3.5.4</zxing.version>
@@ -27,8 +27,8 @@
         <jakarta.webservice.version>3.1.0</jakarta.webservice.version>
         <jakarta.xml.webservice.version>4.0.2</jakarta.xml.webservice.version>
         <jakarta.xml.binding.version>4.0.4</jakarta.xml.binding.version>
-        <snmp4j.version>3.12.2</snmp4j.version>
-        <bcprov.version>1.84</bcprov.version>
+        <snmp4j.version>3.13.1</snmp4j.version>
+        <bcprov.version>1.86</bcprov.version>
     </properties>
     <dependencies>
         <!-- Logging Support -->
@@ -189,11 +189,13 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+            <version>${jakarta.activation.version}</version>
         </dependency>
         <!-- JSON Support -->
         <dependency>
             <groupId>jakarta.json.bind</groupId>
             <artifactId>jakarta.json.bind-api</artifactId>
+            <version>${jakarta.json.bind.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

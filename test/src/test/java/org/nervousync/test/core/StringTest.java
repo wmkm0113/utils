@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.core.StringUtils;
-import org.nervousync.utils.security.SecurityUtils;
 
 public final class StringTest extends BaseTest {
 
@@ -30,17 +29,6 @@ public final class StringTest extends BaseTest {
 
 	static {
 		RawUtils.writeLong(BYTE_ARRAY, 1303315200000L);
-	}
-
-	@Test
-	public void sha() {
-		byte[] result = SecurityUtils.SHA256("");
-		StringBuilder builder = new StringBuilder();
-		for (byte b : result) {
-			builder.append(", ").append(b);
-		}
-		System.out.println(builder.substring(1));
-		System.out.println("[-29, -80, -60, 66, -104, -4, 28, 20, -102, -5, -12, -56, -103, 111, -71, 36, 39, -82, 65, -28, 100, -101, -109, 76, -92, -107, -103, 27, 120, 82, -72, 85]");
 	}
 
 	@Test

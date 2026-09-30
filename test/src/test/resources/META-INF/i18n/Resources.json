@@ -31,12 +31,6 @@
       "UUID_Random": {
         "pattern": "UUID version {0}, generated ID: {1}"
       },
-      "Office_Sheet_Exists": {
-        "pattern": "Data sheet: {0}, exists: {1}"
-      },
-      "Office_Excel_Rows_Count": {
-        "pattern": "Data sheet: {0}, rows count: {1}"
-      },
       "Collection_Is_Empty": {
         "pattern": "Check collection type: {0}, is empty : {1}"
       },
@@ -114,6 +108,15 @@
       },
       "Operate_System": {
         "pattern": "Windows: {0}, Unix: {1}, Linux: {2}, MacOS: {3}, MacOSX: {4}, OS2: {5}, Solaris: {6}, SunOS: {7}, MPEiX: {8}, HPUX: {9}, AIX: {10}, OS390: {11}, FreeBSD: {12}, Irix: {13}, DigitalUnix: {14}, Netware: {15}, OSF1: {16}, OpenVMS: {17}"
+      },
+      "Password_Encode": {
+        "pattern": "Password encode type: {0}, result: {1}"
+      },
+      "Password_Verify": {
+        "pattern": "Password verify result: {0}"
+      },
+      "Password_Upgrade": {
+        "pattern": "Password needs upgrade: {0}"
       }
     },
     "zh-CN": {
@@ -140,12 +143,6 @@
       },
       "UUID_Random": {
         "pattern": "UUID版本：{0} 生成随机ID：{1}"
-      },
-      "Office_Sheet_Exists": {
-        "pattern": "数据表：{0}，存在：{1}"
-      },
-      "Office_Excel_Rows_Count": {
-        "pattern": "数据表：{0}，记录数：{1}"
       },
       "Collection_Is_Empty": {
         "pattern": "检查集合类型：{0}，集合为空：{1}"
@@ -224,6 +221,15 @@
       },
       "Operate_System": {
         "pattern": "Windows: {0}, Unix: {1}, Linux: {2}, MacOS: {3}, MacOSX: {4}, OS2: {5}, Solaris: {6}, SunOS: {7}, MPEiX: {8}, HPUX: {9}, AIX: {10}, OS390: {11}, FreeBSD: {12}, Irix: {13}, DigitalUnix: {14}, Netware: {15}, OSF1: {16}, OpenVMS: {17}"
+      },
+      "Password_Encode": {
+        "pattern": "密码编码类型：{0}，编码结果：{1}"
+      },
+      "Password_Verify": {
+        "pattern": "密码验证结果：{0}"
+      },
+      "Password_Upgrade": {
+        "pattern": "密码需要升级：{0}"
       }
     }
   }

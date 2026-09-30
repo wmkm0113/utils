@@ -10,9 +10,6 @@ import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.DateTimeUtils;
 import org.nervousync.utils.id.IDUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 public final class GeneratorTest extends BaseTest {
@@ -72,33 +69,20 @@ public final class GeneratorTest extends BaseTest {
 		}
 		Optional.ofNullable(DateTimeUtils.parseDate("20030421", "yyyyMMdd"))
 				.ifPresent(date -> IDUtils.ulidConfig(date.getTime(), Boolean.TRUE));
-		List<ULID> generatedIds = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			ULID ulid = IDUtils.ULID();
 			this.logger.info("ULID_Reconfigure_Random", ulid);
-			generatedIds.add(ulid);
 		}
-		Collections.reverse(generatedIds);
-		System.out.println(generatedIds);
-		Collections.sort(generatedIds);
-		System.out.println(generatedIds);
 	}
 
 	@Test
 	@Order(40)
 	public void cuid() {
 		this.logger.info("CUID_Random", "1", IDUtils.CUIDv1());
-		List<CUID> generatedIds = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			CUID cuid = IDUtils.CUIDv1();
 			this.logger.info("CUID_Random", "1", cuid);
-			generatedIds.add(cuid);
 		}
-		System.out.println(generatedIds);
-		Collections.reverse(generatedIds);
-		System.out.println(generatedIds);
-		Collections.sort(generatedIds);
-		System.out.println(generatedIds);
 
 		this.logger.info("CUID_Random", "2", IDUtils.CUIDv2());
 		this.logger.info("CUID_Random", "2", IDUtils.CUIDv2(120));

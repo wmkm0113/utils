@@ -78,6 +78,15 @@
       },
       "Certificate_Result": {
         "pattern": "Base64 encoded {0} certificate data bytes: {1}"
+      },
+      "Password_Encode": {
+        "pattern": "Password encode type: {0}, result: {1}"
+      },
+      "Password_Verify": {
+        "pattern": "Password verify result: {0}"
+      },
+      "Password_Upgrade": {
+          "pattern": "Password needs upgrade: {0}"
       }
     },
     "zh-CN": {
@@ -152,6 +161,15 @@
       },
       "Certificate_Result": {
         "pattern": "Base64编码的 {0} 证书二进制数据：{1}"
+      },
+      "Password_Encode": {
+        "pattern": "密码编码类型：{0}，编码结果：{1}"
+      },
+      "Password_Verify": {
+        "pattern": "密码验证结果：{0}"
+      },
+      "Password_Upgrade": {
+        "pattern": "密码需要升级：{0}"
       }
     }
   }

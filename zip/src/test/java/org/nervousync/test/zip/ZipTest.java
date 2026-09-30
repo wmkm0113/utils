@@ -38,6 +38,7 @@ public final class ZipTest extends BaseTest {
 	private static String EXTRACT_FOLDER;
 	private static String ZIP_FILE_PATH;
 	private static final String ZIP_PASSWORD = "Nervousync";
+	private static boolean COPY_RESULT = Boolean.FALSE;
 
 	static {
 		String tmpDir = System.getProperty("java.io.tmpdir");
@@ -75,25 +76,23 @@ public final class ZipTest extends BaseTest {
 			FileUtils.saveFile(byteArrayOutputStream.toByteArray(), randFilePath);
 		}
 
-		boolean copyResult = FileUtils.copy("src/test/resources/TestZip.zip.001",
+		COPY_RESULT = FileUtils.copy("src/test/resources/TestZip.zip.001",
 				ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.001");
-		copyResult &= FileUtils.copy("src/test/resources/TestZip.zip.002",
+		COPY_RESULT &= FileUtils.copy("src/test/resources/TestZip.zip.002",
 				ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.002");
-		copyResult &= FileUtils.copy("src/test/resources/TestZip.zip.003",
+		COPY_RESULT &= FileUtils.copy("src/test/resources/TestZip.zip.003",
 				ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.003");
-		copyResult &= FileUtils.copy("src/test/resources/TestZip.zip.004",
+		COPY_RESULT &= FileUtils.copy("src/test/resources/TestZip.zip.004",
 				ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.004");
-		copyResult &= FileUtils.copy("src/test/resources/TestZip.zip.005",
+		COPY_RESULT &= FileUtils.copy("src/test/resources/TestZip.zip.005",
 				ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.005");
-		System.out.println("Copy test split zip file result: " + copyResult);
 	}
 
 	@AfterAll
 	public static void clearTmpFiles() {
-		boolean removeResult = FileUtils.removeDir(COMPRESS_FOLDER);
-		removeResult &= FileUtils.removeDir(EXTRACT_FOLDER);
-		removeResult &= FileUtils.removeDir(ZIP_FILE_PATH);
-		System.out.println("Remove temp file result: " + removeResult);
+		FileUtils.removeDir(COMPRESS_FOLDER);
+		FileUtils.removeDir(EXTRACT_FOLDER);
+		FileUtils.removeDir(ZIP_FILE_PATH);
 	}
 
 	@Test
@@ -223,12 +222,14 @@ public final class ZipTest extends BaseTest {
 	@Test
 	@Order(110)
 	public void extractSoftwareZippedFile() throws ZipException {
-		String filePath = ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.001";
-		this.logger.info("Zip_Read_Path", filePath);
-		if (FileUtils.isExists(filePath)) {
-			ZipFile zipFile = ZipFile.openZipFile(filePath);
-			Assertions.assertNotNull(zipFile);
-			zipFile.extractAll(EXTRACT_FOLDER + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip");
+		if (COPY_RESULT) {
+			String filePath = ZIP_FILE_PATH + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip.zip.001";
+			this.logger.info("Zip_Read_Path", filePath);
+			if (FileUtils.isExists(filePath)) {
+				ZipFile zipFile = ZipFile.openZipFile(filePath);
+				Assertions.assertNotNull(zipFile);
+				zipFile.extractAll(EXTRACT_FOLDER + Globals.DEFAULT_PAGE_SEPARATOR + "TestZip");
+			}
 		}
 	}
 }

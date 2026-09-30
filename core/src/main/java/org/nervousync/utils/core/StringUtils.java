@@ -368,6 +368,28 @@ public final class StringUtils {
 	 * <span class="zh-CN">编码后的Base64字符串</span>
 	 */
 	public static String base64Encode(final byte[] bytes) {
+		return base64Encode(bytes, Boolean.TRUE);
+	}
+
+	/**
+	 * <h3 class="en-US">Encode byte arrays using Base64</h3>
+	 * <span class="en-US">
+	 * Will return zero length string for given byte arrays is <code>null</code> or arrays length is 0.
+	 * </span>
+	 * <h3 class="zh-CN">使用Base64编码给定的二进制字节数组</h3>
+	 * <span class="zh-CN">如果给定的二进制字节数组为<code>null</code>或长度为0，将返回长度为0的空字符串</span>
+	 * <pre>
+	 * StringUtils.base64Encode(null) = ""
+	 * StringUtils.base64Encode([]) = ""
+	 * StringUtils.base64Encode([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]) = "SGVsbG8gV29ybGQ="
+	 * </pre>
+	 *
+	 * @param bytes <span class="en-US">byte arrays</span>
+	 *              <span class="zh-CN">二进制字节数组</span>
+	 * @return <span class="en-US">Encoded Base64 string</span>
+	 * <span class="zh-CN">编码后的Base64字符串</span>
+	 */
+	public static String base64Encode(final byte[] bytes, final boolean padding) {
 		return Optional.of(paddingBytes(bytes))
 				.filter(dataBytes -> dataBytes.length > 0)
 				.map(dataBytes -> {
@@ -387,8 +409,10 @@ public final class StringUtils {
 						index++;
 					}
 
-					while (stringBuilder.length() % 4 > 0) {
-						stringBuilder.append((char) PADDING);
+					if (padding) {
+						while (stringBuilder.length() % 4 > 0) {
+							stringBuilder.append((char) PADDING);
+						}
 					}
 					return stringBuilder.toString();
 				})

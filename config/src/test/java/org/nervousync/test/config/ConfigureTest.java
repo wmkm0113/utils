@@ -74,6 +74,6 @@ public final class ConfigureTest extends BaseTest {
 										.orElse(Globals.DEFAULT_VALUE_STRING));
 					}
 				});
-		System.out.println(fieldMap);
+		this.logger.info("Scan_Field_Result", beanClass.getName(), fieldMap);
 	}
 }

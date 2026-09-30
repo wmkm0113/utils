@@ -21,4 +21,7 @@
     <entry key="Secure_Decrypt_Result">Secure decrypt result: {0}</entry>
     <entry key="Secure_Register_Status">Secure config register status: {0}</entry>
     <entry key="Certificate_Result">Base64 encoded {0} certificate data bytes: {1}</entry>
+    <entry key="Password_Encode">Password encode type: {0}, result: {1}</entry>
+    <entry key="Password_Verify">Password verify result: {0}</entry>
+    <entry key="Password_Upgrade">Password needs upgrade: {0}</entry>
 </properties>
