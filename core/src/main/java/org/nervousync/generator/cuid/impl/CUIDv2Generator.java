@@ -45,6 +45,12 @@ public final class CUIDv2Generator extends CUIDGenerator {
 	 * <span class="zh-CN">合法值的字符串长度</span>
 	 */
 	public static final int VALUE_LENGTH = 24;
+	private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
+	/**
+	 * <span class="en-US">Initial letter safety table</span>
+	 * <span class="zh-CN">首字母安全表</span>
+	 */
+	private static final String STARTING_LETTERS = "abcdefghijklmnopqrstuvwxy";
 	/**
 	 * <span class="en-US">Valid string value length</span>
 	 * <span class="zh-CN">合法值的字符串长度</span>
@@ -71,14 +77,24 @@ public final class CUIDv2Generator extends CUIDGenerator {
 			length = VALUE_LENGTH;
 		}
 		this.counter.compareAndSet(Integer.MAX_VALUE, safeAbs(Globals.random()));
-		final char firstChar = (char) ((safeAbs(Globals.random()) % 26) + 97);
+		final char firstChar = STARTING_LETTERS.charAt(Globals.random(STARTING_LETTERS.length()));
 		final String timestamp = Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX);
-		final String data = timestamp + SALT(length)
+		final String data = timestamp
 				+ processPadding(Integer.toString(this.counter.incrementAndGet(), DEFAULT_RADIX), 4)
 				+ MACHINE_FINGERPRINT;
 		String result = new BigInteger(SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8)))
-					.toString(DEFAULT_RADIX);
-		return CUID.fromString(processPadding(firstChar + result.substring(1, Math.min(length, result.length())), length));
+				.toString(DEFAULT_RADIX);
+		int maxLength = Math.min(length, 32);
+		if (result.length() > maxLength) {
+			return CUID.fromString(firstChar + result.substring(1, maxLength));
+		} else {
+			StringBuilder stringBuilder =
+					new StringBuilder(Character.toString(firstChar)).append(result, 1, result.length());
+			while (stringBuilder.length() < maxLength) {
+				stringBuilder.append(ALPHABET.charAt(Globals.random(ALPHABET.length())));
+			}
+			return CUID.fromString(stringBuilder.toString());
+		}
 	}
 
 	@Override

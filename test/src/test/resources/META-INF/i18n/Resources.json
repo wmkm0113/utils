@@ -117,6 +117,18 @@
       },
       "Password_Upgrade": {
         "pattern": "Password needs upgrade: {0}"
+      },
+      "SparkID_Random": {
+        "pattern": "Generate Spark ID: {0}"
+      },
+      "SparkID_Epoch_Random": {
+        "pattern": "Generate Spark ID: {0} using epoch timestamp: {1}"
+      },
+      "SparkID_Worker_Random": {
+        "pattern": "Generate Spark ID: {0} with worker id: {1}"
+      },
+      "SparkID_Counter_Random": {
+        "pattern": "Generate Spark ID count: {0} in 10 second"
       }
     },
     "zh-CN": {
@@ -230,6 +242,18 @@
       },
       "Password_Upgrade": {
         "pattern": "密码需要升级：{0}"
+      },
+      "SparkID_Random": {
+        "pattern": "生成的 Spark ID: {0}"
+      },
+      "SparkID_Epoch_Random": {
+        "pattern": "生成的 Spark ID：{0} 使用的基准时间戳：{1}"
+      },
+      "SparkID_Worker_Random": {
+        "pattern": "生成的 Spark ID：{0} 使用的机器码：{1}"
+      },
+      "SparkID_Counter_Random": {
+        "pattern": "10秒钟生成的 Spark ID 计数: {0}"
       }
     }
   }

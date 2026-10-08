@@ -9,3 +9,5 @@ org.nervousync.generator.uuid.impl.UUIDv3Generator
 org.nervousync.generator.uuid.impl.UUIDv4Generator
 org.nervousync.generator.uuid.impl.UUIDv5Generator
 org.nervousync.generator.uuid.impl.UUIDv6Generator
+org.nervousync.generator.uuid.impl.UUIDv7Generator
+org.nervousync.generator.sparkid.SparkIDGenerator

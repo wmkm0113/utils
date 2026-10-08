@@ -113,10 +113,6 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 		}
 		this.lastTime.set(currentTime);
 
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug("Generate_ULID_Debug", this.lastTime, this.referenceTime, this.sequenceIndex);
-		}
-
 		byte[] dataBytes = this.lastRandom.get();
 		return new ULID(((currentTime - this.referenceTime) << 16) | (RawUtils.readShort(dataBytes) & 0xFFFFL),
 				RawUtils.readLong(dataBytes, 2) + this.sequenceIndex);

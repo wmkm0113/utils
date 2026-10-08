@@ -33,5 +33,8 @@
     <entry key="Password_Encode">Password encode type: {0}, result: {1}</entry>
     <entry key="Password_Verify">Password verify result: {0}</entry>
     <entry key="Password_Upgrade">Password needs upgrade: {0}</entry>
-    <entry key="Component_Debug">Class name: {0} component types: {1}</entry>
+    <entry key="SparkID_Random">Generate Spark ID：{0}</entry>
+    <entry key="SparkID_Epoch_Random">Generate Spark ID：{0} using epoch timestamp: {1}</entry>
+    <entry key="SparkID_Worker_Random">Generate Spark ID：{0} with worker id: {1}</entry>
+    <entry key="ID_Benchmark">Generate {0} count：{1} in 10 second</entry>
 </properties>

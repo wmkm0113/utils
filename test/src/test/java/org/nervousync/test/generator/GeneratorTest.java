@@ -2,7 +2,9 @@ package org.nervousync.test.generator;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.nervousync.commons.Globals;
 import org.nervousync.commons.id.CUID;
+import org.nervousync.commons.id.SparkID;
 import org.nervousync.commons.id.ULID;
 import org.nervousync.enumerations.generator.UUIDIdentifier;
 import org.nervousync.enumerations.generator.UUIDLocalDomain;
@@ -10,6 +12,7 @@ import org.nervousync.test.BaseTest;
 import org.nervousync.utils.core.DateTimeUtils;
 import org.nervousync.utils.id.IDUtils;
 
+import java.time.Instant;
 import java.util.Optional;
 
 public final class GeneratorTest extends BaseTest {
@@ -58,6 +61,8 @@ public final class GeneratorTest extends BaseTest {
 		for (int i = 0; i < 10; i++) {
 			this.logger.info("UUID_Random", 6, IDUtils.UUIDv6());
 		}
+		//  Version 7
+		this.logger.info("UUID_Random", 7, IDUtils.UUIDv7());
 	}
 
 	@Test
@@ -86,5 +91,125 @@ public final class GeneratorTest extends BaseTest {
 
 		this.logger.info("CUID_Random", "2", IDUtils.CUIDv2());
 		this.logger.info("CUID_Random", "2", IDUtils.CUIDv2(120));
+	}
+
+	@Test
+	@Order(50)
+	public void sparkId() {
+		SparkID sparkID = SparkID.fromString("1ocmpHE1bFnygEBAPTzMK");
+		this.logger.info("SparkID_Random", sparkID);
+		this.logger.info("SparkID_Epoch_Random", IDUtils.sparkID(1767225600000L), 1767225600000L);
+		IDUtils.sparkIdConfig(2L);
+		this.logger.info("SparkID_Worker_Random", IDUtils.sparkID(), 2L);
+	}
+
+	@Test
+	@Order(60)
+	public void benchmark() {
+		int counter = 0;
+		byte[] dataBytes = new byte[16];
+		Globals.randomBytes(dataBytes);
+		long endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.sparkID();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "SparkID", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv1();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 1", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv2();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 2", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv3(dataBytes);
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 3", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv4();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 4", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv5(dataBytes);
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 5", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.UUIDv6();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "UUID version 6", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.CUIDv1();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "CUID version 1", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.CUIDv2();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "CUID version 2", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.snowflake();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "Snowflake", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.nano();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "Nano", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.ULID();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "ULID", counter);
+
+		counter = 0;
+		endTimestamp = Instant.now().toEpochMilli() + 10000L;
+		while (Instant.now().toEpochMilli() < endTimestamp) {
+			IDUtils.sparkID();
+			counter++;
+		}
+		this.logger.info("ID_Benchmark", "Spark ID", counter);
 	}
 }
