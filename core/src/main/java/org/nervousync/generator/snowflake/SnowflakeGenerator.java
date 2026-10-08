@@ -125,11 +125,6 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 		}
 		this.lastTime = currentTime;
 
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug("Generate_Snowflake_Debug",
-					this.lastTime, this.referenceTime, this.deviceId, this.instanceId, this.sequenceIndex);
-		}
-
 		return ((this.lastTime - this.referenceTime) << 22L)
 				| (this.deviceId << 17L) | (this.instanceId << 12L) | this.sequenceIndex;
 	}

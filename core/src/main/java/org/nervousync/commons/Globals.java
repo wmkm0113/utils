@@ -35,7 +35,7 @@ public final class Globals {
 	 * <span class="en-US">Global unique instance object of secure random</span>
 	 * <span class="zh-CN">全局唯一的随机数生成器</span>
 	 */
-	private static final SecureRandom RANDOM = new SecureRandom();
+	private static final ThreadLocal<SecureRandom> RANDOM = ThreadLocal.withInitial(SecureRandom::new);
 	/**
 	 * <span class="en-US">Multiplier value of calculate hash result.</span>
 	 * <span class="zh-CN">计算哈希值需要用到的乘数</span>
@@ -516,15 +516,15 @@ public final class Globals {
 	}
 
 	public static int random(final int bound) {
-		return bound > INITIALIZE_INT_VALUE ? RANDOM.nextInt(bound) : RANDOM.nextInt();
+		return bound > INITIALIZE_INT_VALUE ? RANDOM.get().nextInt(bound) : RANDOM.get().nextInt();
 	}
 
 	public static void randomBytes(final byte[] bytes) {
-		RANDOM.nextBytes(bytes);
+		RANDOM.get().nextBytes(bytes);
 	}
 
 	public static long randomLong() {
-		return RANDOM.nextLong();
+		return RANDOM.get().nextLong();
 	}
 
 	private Globals() {

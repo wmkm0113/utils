@@ -19,6 +19,7 @@ package org.nervousync.utils.id;
 import org.nervousync.annotations.provider.Provider;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.id.CUID;
+import org.nervousync.commons.id.SparkID;
 import org.nervousync.commons.id.ULID;
 import org.nervousync.enumerations.generator.UUIDIdentifier;
 import org.nervousync.enumerations.generator.UUIDLocalDomain;
@@ -26,6 +27,7 @@ import org.nervousync.generator.IGenerator;
 import org.nervousync.generator.cuid.impl.CUIDv2Generator;
 import org.nervousync.generator.nano.NanoGenerator;
 import org.nervousync.generator.snowflake.SnowflakeGenerator;
+import org.nervousync.generator.sparkid.SparkIDGenerator;
 import org.nervousync.generator.ulid.ULIDGenerator;
 import org.nervousync.generator.uuid.impl.UUIDv1Generator;
 import org.nervousync.generator.uuid.impl.UUIDv2Generator;
@@ -87,6 +89,11 @@ public final class IDUtils {
 	 */
 	public static final String UUIDv6 = "UUIDv6";
 	/**
+	 * <span class="en-US">Static value for provider name of UUIDv7 Generator</span>
+	 * <span class="zh-CN">静态值用于UUIDv7生成器的提供名称</span>
+	 */
+	public static final String UUIDv7 = "UUIDv7";
+	/**
 	 * <span class="en-US">Static value for provider name of NanoID Generator</span>
 	 * <span class="zh-CN">静态值用于NanoID生成器的提供名称</span>
 	 */
@@ -101,6 +108,11 @@ public final class IDUtils {
 	 * <span class="zh-CN">静态值用于通用唯一字典排序标识符生成器的提供名称</span>
 	 */
 	public static final String ULID = "ULID";
+	/**
+	 * <span class="en-US">Static value for provider name of SparkID Generator</span>
+	 * <span class="zh-CN">静态值用于SparkID生成器的提供名称</span>
+	 */
+	public static final String SPARK_ID = "SparkID";
 	/**
 	 * <span class="en-US">Multilingual supported logger instance</span>
 	 * <span class="zh-CN">多语言支持的日志对象</span>
@@ -231,6 +243,21 @@ public final class IDUtils {
 				generator.config(localDomain);
 				INITIALIZE_MAP.put(UUIDv2, generator);
 			}
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for configuring worker id of SparkID generator</h3>
+	 * <h3 class="zh-CN">静态方法用于设置SparkID生成器的机器码</h3>
+	 *
+	 * @param workerId <span class="en-US">Worker id</span>
+	 *                 <span class="zh-CN">机器码</span>
+	 */
+	public static void sparkIdConfig(final long workerId) {
+		if (INITIALIZE_MAP.containsKey(SPARK_ID)) {
+			SparkIDGenerator generator = (SparkIDGenerator) INITIALIZE_MAP.get(SPARK_ID);
+			generator.config(workerId);
+			INITIALIZE_MAP.put(SPARK_ID, generator);
 		}
 	}
 
@@ -370,14 +397,51 @@ public final class IDUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Static method for generate UUIDv4 value</h3>
-	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv4值</h3>
+	 * <h3 class="en-US">Static method for generate UUIDv6 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv6值</h3>
 	 *
 	 * @return <span class="en-US">Generated value</span>
 	 * <span class="zh-CN">生成的值</span>
 	 */
 	public static UUID UUIDv6() {
 		return (UUID) generate(UUIDv6, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate UUIDv7 value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成随机UUIDv7值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static UUID UUIDv7() {
+		return (UUID) generate(UUIDv7, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate SparkID value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成SparkID值</h3>
+	 *
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static SparkID sparkID() {
+		return (SparkID) generate(SPARK_ID, new byte[0]);
+	}
+
+	/**
+	 * <h3 class="en-US">Static method for generate SparkID value</h3>
+	 * <h3 class="zh-CN">静态方法用于生成SparkID值</h3>
+	 *
+	 * @param epoch <span class="en-US">Epoch timestamp</span>
+	 *              <span class="zh-CN">基准时间戳</span>
+	 * @return <span class="en-US">Generated value</span>
+	 * <span class="zh-CN">生成的值</span>
+	 */
+	public static SparkID sparkID(final long epoch) {
+		byte[] dataBytes = new byte[8];
+		RawUtils.writeLong(dataBytes, epoch);
+		return (SparkID) generate(SPARK_ID, dataBytes);
 	}
 
 	/**

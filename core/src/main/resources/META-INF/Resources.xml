@@ -190,6 +190,8 @@
     <entry key="version4.uuid.id.generator.name">Universally Unique Identifier Version 4</entry>
     <entry key="version5.uuid.id.generator.name">Universally Unique Identifier Version 5</entry>
     <entry key="version6.uuid.id.generator.name">Universally Unique Identifier Version 6</entry>
+    <entry key="version7.uuid.id.generator.name">Universally Unique Identifier Version 7</entry>
+    <entry key="spark.id.generator.name">Fast, sortable, compact unique IDs</entry>
     <entry key="default.i18n.provider.title">Default i18n provider</entry>
     <entry key="default.i18n.provider.description">Default internationalization provider implement class</entry>
     <entry key="Execute_Begin_Test">Starting execute class {0} method: {1}</entry>

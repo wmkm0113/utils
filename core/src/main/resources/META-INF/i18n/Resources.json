@@ -653,6 +653,12 @@
       "version6.uuid.id.generator.name": {
         "pattern": "Universally Unique Identifier Version 6"
       },
+      "version7.uuid.id.generator.name": {
+        "pattern": "Universally Unique Identifier Version 7"
+      },
+      "spark.id.generator.name": {
+        "pattern": "Fast, sortable, compact unique IDs"
+      },
       "Office_Ext_Name_Invalid": {
         "pattern": "Unknown file ext name: {0}"
       },
@@ -1200,6 +1206,12 @@
       },
       "version6.uuid.id.generator.name": {
         "pattern": "通用唯一识别码 版本6"
+      },
+      "version7.uuid.id.generator.name": {
+        "pattern": "通用唯一识别码 版本7"
+      },
+      "spark.id.generator.name": {
+        "pattern": "快速、可排序、简短的唯一识别码"
       },
       "Office_Ext_Name_Invalid": {
         "pattern": "未知的文件扩展名：{0}"
