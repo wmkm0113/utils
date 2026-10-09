@@ -103,7 +103,7 @@ public abstract class TimeBasedUUIDGenerator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public final UUID generate() {
+	public synchronized final UUID generate() {
 		long timestamp = this.uuidTimer.timestamp();
 		return new UUID(this.highBits(timestamp), this.lowBits(timestamp));
 	}
@@ -118,7 +118,7 @@ public abstract class TimeBasedUUIDGenerator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public final UUID generate(final byte[] dataBytes) {
+	public synchronized final UUID generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 

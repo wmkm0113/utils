@@ -17,12 +17,11 @@
 package org.nervousync.generator.nano;
 
 import org.nervousync.annotations.provider.Provider;
+import org.nervousync.commons.Globals;
 import org.nervousync.generator.IGenerator;
 import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 import org.nervousync.utils.core.StringUtils;
-
-import java.security.SecureRandom;
 
 /**
  * <h2 class="en-US">NanoID generator</h2>
@@ -48,11 +47,6 @@ public final class NanoGenerator implements IGenerator<String> {
 	 * <span class="zh-CN">默认的生成结果长度</span>
 	 */
 	private static final int DEFAULT_LENGTH = 27;
-	/**
-	 * <span class="en-US">Secure Random instance</span>
-	 * <span class="zh-CN">安全随机数对象</span>
-	 */
-	private final SecureRandom secureRandom = new SecureRandom();
 	/**
 	 * <span class="en-US">Result used alphabet character array</span>
 	 * <span class="zh-CN">结果用到的字母字符数组</span>
@@ -92,7 +86,7 @@ public final class NanoGenerator implements IGenerator<String> {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public String generate() {
+	public synchronized String generate() {
 		final int mask = (2 << (int) Math.floor(Math.log(this.alphabetArray.length - 1) / Math.log(2))) - 1;
 		final int length = (int) Math.ceil(1.6 * mask * this.generateLength / this.alphabetArray.length);
 
@@ -100,7 +94,7 @@ public final class NanoGenerator implements IGenerator<String> {
 
 		while (true) {
 			final byte[] dataBytes = new byte[length];
-			this.secureRandom.nextBytes(dataBytes);
+			Globals.randomBytes(dataBytes);
 			for (int i = 0; i < length; i++) {
 				final int alphabetIndex = dataBytes[i] & mask;
 				if (alphabetIndex < this.alphabetArray.length) {

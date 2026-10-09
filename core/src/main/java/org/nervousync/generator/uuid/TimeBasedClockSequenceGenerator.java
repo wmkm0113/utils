@@ -21,8 +21,6 @@ import org.nervousync.commons.Globals;
 
 import java.util.Arrays;
 import java.util.SplittableRandom;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * <h2 class="en-US">Abstract time-based and clock-sequence UUID generator</h2>
@@ -33,29 +31,29 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class TimeBasedClockSequenceGenerator extends TimeBasedUUIDGenerator {
 
-	private final AtomicInteger sequence;
-	private final AtomicLong lastTimestamp = new AtomicLong(Globals.DEFAULT_VALUE_LONG);
+	private int sequence;
+	private long lastTimestamp = Globals.DEFAULT_VALUE_LONG;
 	private static final ClockSequence CLOCK_SEQUENCE = new ClockSequence();
 	private static final SplittableRandom RANDOM = new SplittableRandom();
 
 	public TimeBasedClockSequenceGenerator() {
-		this.sequence = new AtomicInteger(CLOCK_SEQUENCE.random());
+		this.sequence = CLOCK_SEQUENCE.random();
 	}
 
 	@Override
 	protected final long lowBits(final long timestamp) {
 		long nodeIdentifier = super.getNodeIdentifier();
 		long clockSequence;
-		if (timestamp > this.lastTimestamp.get()) {
-			this.lastTimestamp.set(timestamp);
-			clockSequence = this.sequence.get();
+		if (timestamp > this.lastTimestamp) {
+			clockSequence = this.sequence;
 		} else {
-			this.lastTimestamp.set(timestamp);
-			if (this.sequence.incrementAndGet() > ClockSequence.MAX_VALUE) {
-				this.sequence.set(ClockSequence.MIN_VALUE);
+			this.sequence++;
+			if (this.sequence > ClockSequence.MAX_VALUE) {
+				this.sequence = ClockSequence.MIN_VALUE;
 			}
-			clockSequence = this.sequence.updateAndGet(CLOCK_SEQUENCE::take);
+			clockSequence = CLOCK_SEQUENCE.take(this.sequence);
 		}
+		this.lastTimestamp = timestamp;
 		return ((((clockSequence & 0x3FFFL) << 48) | (nodeIdentifier & 0xFFFFFFFFFFFFL)) & 0x3FFFFFFFFFFFFFFFL)
 				| 0x8000000000000000L;
 	}

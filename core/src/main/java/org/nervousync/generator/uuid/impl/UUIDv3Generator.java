@@ -43,7 +43,7 @@ public final class UUIDv3Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public UUID generate() {
+	public synchronized UUID generate() {
 		byte[] dataBytes = new byte[16];
 		Globals.randomBytes(dataBytes);
 		return this.generate(dataBytes);
@@ -59,7 +59,7 @@ public final class UUIDv3Generator extends UUIDGenerator {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public UUID generate(final byte[] dataBytes) {
+	public synchronized UUID generate(final byte[] dataBytes) {
 		byte[] randomBytes = SecurityUtils.MD5(dataBytes);
 		/* clear version */
 		randomBytes[6] &= 0x0F;

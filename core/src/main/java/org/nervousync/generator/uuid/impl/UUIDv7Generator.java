@@ -36,7 +36,7 @@ import java.util.UUID;
 public final class UUIDv7Generator extends UUIDGenerator {
 
 	@Override
-	public UUID generate() {
+	public synchronized UUID generate() {
 		long msb = DateTimeUtils.currentUTCTimeMillis() << 16;
 		msb |= (7L << 12);
 		msb |= (Globals.randomLong() >>> 52);
@@ -47,7 +47,7 @@ public final class UUIDv7Generator extends UUIDGenerator {
 	}
 
 	@Override
-	public UUID generate(final byte[] dataBytes) {
+	public synchronized UUID generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 }

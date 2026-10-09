@@ -64,12 +64,12 @@ public final class SparkIDGenerator implements IGenerator<SparkID> {
 	private long workerId = 0L;
 
 	@Override
-	public SparkID generate() {
+	public synchronized SparkID generate() {
 		return this.generate(Globals.DEFAULT_VALUE_LONG);
 	}
 
 	@Override
-	public SparkID generate(final byte[] dataBytes) {
+	public synchronized SparkID generate(final byte[] dataBytes) {
 		return this.generate(RawUtils.readLong(dataBytes));
 	}
 
