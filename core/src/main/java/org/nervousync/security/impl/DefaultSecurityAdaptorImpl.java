@@ -48,16 +48,36 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 
 	@Override
 	public CryptoAdaptor initDigest(@Nonnull final CipherConfig cipherConfig, final CipherKey cipherKey) {
-		return new DigestAdaptorImpl(cipherConfig, cipherKey);
+		BaseDigestAdaptorImpl adaptor = super.adaptor(cipherConfig.getAlgorithm(), BaseDigestAdaptorImpl.class);
+		if (adaptor == null) {
+			adaptor = new DigestAdaptorImpl(cipherConfig, cipherKey);
+			super.register(cipherConfig.getAlgorithm(), adaptor);
+		}
+		if (adaptor.isMacMode()) {
+			adaptor.initHmac(cipherConfig.getAlgorithm(), cipherKey.getKeyBytes());
+		}
+		return adaptor;
 	}
 
 	@Override
 	public CryptoAdaptor initCipher(@Nonnull final CipherConfig cipherConfig, @Nonnull final CryptoMode cryptoMode,
 	                                @Nonnull final CipherKey cipherKey) {
 		if (cipherConfig.isAsymmetric()) {
-			return new AsymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
+			AsymmetricAdaptorImpl adaptor = super.adaptor(cipherConfig.getAlgorithm(), AsymmetricAdaptorImpl.class);
+			if (adaptor == null) {
+				adaptor = new AsymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
+			} else {
+				adaptor.config(cipherConfig, cryptoMode, cipherKey);
+			}
+			return adaptor;
 		} else {
-			return new SymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
+			SymmetricAdaptorImpl adaptor = super.adaptor(cipherConfig.getAlgorithm(), SymmetricAdaptorImpl.class);
+			if (adaptor == null) {
+				adaptor = new SymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
+			} else {
+				adaptor.config(cipherConfig, cryptoMode, cipherKey);
+			}
+			return adaptor;
 		}
 	}
 
@@ -151,7 +171,7 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 		 * @throws CryptoException <span class="en-US">If an error occurs when initialize Hmac instance</span>
 		 *                         <span class="zh-CN">当初始化消息认证码算法适配器实例对象时出现异常</span>
 		 */
-		protected void initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException {
+		public void initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException {
 			try {
 				SecretKey key = new SecretKeySpec(keyBytes, algorithm);
 				this.hmac = Mac.getInstance(algorithm);

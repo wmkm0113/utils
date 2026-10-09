@@ -138,7 +138,6 @@ public interface SecurityAdaptor {
 	 */
 	PublicKey publicKey(final String algorithm, final byte[] keyBytes);
 
-
 	/**
 	 * <h3 class="en-US">Generate PrivateKey from key data bytes and given algorithm</h3>
 	 * <h3 class="zh-CN">根据给定的算法和二进制数据生成私钥</h3>

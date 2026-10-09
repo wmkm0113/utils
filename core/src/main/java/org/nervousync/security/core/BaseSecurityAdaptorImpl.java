@@ -19,7 +19,9 @@ package org.nervousync.security.core;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.exceptions.crypto.CryptoException;
+import org.nervousync.security.CryptoAdaptor;
 import org.nervousync.security.SecurityAdaptor;
+import org.nervousync.utils.core.ClassUtils;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
@@ -30,6 +32,8 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * <h2 class="en-US">Abstract implement class of security adaptor</h2>
@@ -46,10 +50,24 @@ public abstract class BaseSecurityAdaptorImpl implements SecurityAdaptor {
 	 */
 	protected final LoggerUtils.Logger logger = LoggerUtils.getLogger(this.getClass());
 
+	private final ThreadLocal<Map<String, CryptoAdaptor>> registeredAdaptors = ThreadLocal.withInitial(WeakHashMap::new);
+
 	private final String providerName;
 
 	protected BaseSecurityAdaptorImpl(@Nonnull final String providerName) {
 		this.providerName = providerName;
+	}
+
+	protected final <T> T adaptor(final String algorithm, final Class<T> adaptorClass) {
+		CryptoAdaptor adaptor = this.registeredAdaptors.get().get(algorithm);
+		if (adaptor != null && ClassUtils.isAssignable(adaptor.getClass(), adaptorClass)) {
+			return adaptorClass.cast(adaptor);
+		}
+		return null;
+	}
+
+	protected final void register(final String algorithm, final CryptoAdaptor adaptor) {
+		this.registeredAdaptors.get().put(algorithm, adaptor);
 	}
 
 	@Override

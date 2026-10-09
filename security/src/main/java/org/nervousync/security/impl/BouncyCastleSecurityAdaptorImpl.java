@@ -208,7 +208,7 @@ public final class BouncyCastleSecurityAdaptorImpl extends BaseSecurityAdaptorIm
 		}
 
 		@Override
-		protected void initHmac(final String algorithm, final byte[] keyBytes) {
+		public void initHmac(final String algorithm, final byte[] keyBytes) {
 			if (algorithm.contains("MD5")) {
 				this.hmac = new HMac(new MD5Digest());
 			} else if (algorithm.contains("SHA1")) {

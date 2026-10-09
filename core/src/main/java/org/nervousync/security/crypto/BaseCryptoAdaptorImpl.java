@@ -37,17 +37,17 @@ public abstract class BaseCryptoAdaptorImpl extends CryptoAdaptor {
 	 * <span class="en-US">Cipher configure</span>
 	 * <span class="zh-CN">密码设置</span>
 	 */
-	protected final CipherConfig cipherConfig;
+	protected CipherConfig cipherConfig = null;
 	/**
 	 * <span class="en-US">Crypto mode</span>
 	 * <span class="zh-CN">加密解密模式</span>
 	 */
-	protected final CryptoMode cryptoMode;
+	protected CryptoMode cryptoMode = null;
 	/**
 	 * <span class="en-US">Crypto key</span>
 	 * <span class="zh-CN">加密解密密钥</span>
 	 */
-	protected final CipherKey cipherKey;
+	protected CipherKey cipherKey = null;
 	/**
 	 * <span class="en-US">Cipher instance</span>
 	 * <span class="zh-CN">加密解密实例对象</span>
@@ -57,8 +57,8 @@ public abstract class BaseCryptoAdaptorImpl extends CryptoAdaptor {
 
 
 	/**
-	 * <h3 class="en-US">Constructor for BaseCryptoAdapter</h3>
-	 * <h3 class="zh-CN">加密解密适配器的构造方法</h3>
+	 * <h3 class="en-US">Configure current crypto adaptor</h3>
+	 * <h3 class="zh-CN">配置加密解密适配器</h3>
 	 *
 	 * @param cipherConfig <span class="en-US">Cipher configure</span>
 	 *                     <span class="zh-CN">密码设置</span>
@@ -67,10 +67,11 @@ public abstract class BaseCryptoAdaptorImpl extends CryptoAdaptor {
 	 * @param cipherKey    <span class="en-US">Crypto key</span>
 	 *                     <span class="zh-CN">加密解密密钥</span>
 	 */
-	protected BaseCryptoAdaptorImpl(final CipherConfig cipherConfig, final CryptoMode cryptoMode,
+	public final void config(final CipherConfig cipherConfig, final CryptoMode cryptoMode,
 	                                final CipherKey cipherKey) {
 		this.cipherConfig = cipherConfig;
 		this.cryptoMode = cryptoMode;
 		this.cipherKey = cipherKey;
+		this.reset();
 	}
 }
