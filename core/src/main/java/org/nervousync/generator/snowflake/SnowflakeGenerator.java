@@ -103,7 +103,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public Long generate() {
+	public synchronized Long generate() {
 		long currentTime = DateTimeUtils.currentUTCTimeMillis();
 		if (currentTime < this.lastTime) {
 			throw new RuntimeException(
@@ -139,7 +139,7 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 * <span class="zh-CN">生成的ID值</span>
 	 */
 	@Override
-	public Long generate(final byte[] dataBytes) {
+	public synchronized Long generate(final byte[] dataBytes) {
 		return this.generate();
 	}
 

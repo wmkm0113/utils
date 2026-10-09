@@ -24,8 +24,6 @@ import org.nervousync.generator.cuid.CUIDGenerator;
 import org.nervousync.utils.core.DateTimeUtils;
 import org.nervousync.utils.id.IDUtils;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * <h2 class="en-US">CUID version 1 generator</h2>
  * <h2 class="zh-CN">CUID版本1生成器抽象类</h2>
@@ -55,18 +53,22 @@ public final class CUIDv1Generator extends CUIDGenerator {
 	 * <span class="en-US">Counter</span>
 	 * <span class="zh-CN">计数器</span>
 	 */
-	private final AtomicInteger counter = new AtomicInteger(Globals.INITIALIZE_INT_VALUE);
+	private int counter = Globals.INITIALIZE_INT_VALUE;
 
 	@Override
-	public CUID generate() {
+	public synchronized CUID generate() {
 		return this.generate(new byte[0]);
 	}
 
 	@Override
-	public CUID generate(final byte[] dataBytes) {
-		this.counter.compareAndSet(DISCRETE_VALUE, Globals.INITIALIZE_INT_VALUE);
+	public synchronized CUID generate(final byte[] dataBytes) {
+		if (this.counter == DISCRETE_VALUE) {
+			this.counter = Globals.INITIALIZE_INT_VALUE;
+		} else {
+			this.counter++;
+		}
 		String value = CUIDv1Generator.START_CHAR + Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX)
-				+ processPadding(Integer.toString(this.counter.incrementAndGet(), DEFAULT_RADIX), 4)
+				+ processPadding(Integer.toString(this.counter, DEFAULT_RADIX), 4)
 				+ MACHINE_FINGERPRINT
 				+ processPadding(Integer.toString(Globals.random(), DEFAULT_RADIX), 4)
 				+ processPadding(Integer.toString(Globals.random(), DEFAULT_RADIX), 4);
@@ -75,6 +77,6 @@ public final class CUIDv1Generator extends CUIDGenerator {
 
 	@Override
 	public void destroy() {
-		this.counter.set(Globals.INITIALIZE_INT_VALUE);
+		this.counter = Globals.INITIALIZE_INT_VALUE;
 	}
 }

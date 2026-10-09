@@ -28,7 +28,6 @@ import org.nervousync.utils.security.SecurityUtils;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <h2 class="en-US">CUID version 2 generator</h2>
@@ -61,27 +60,30 @@ public final class CUIDv2Generator extends CUIDGenerator {
 	 * <span class="en-US">Counter</span>
 	 * <span class="zh-CN">计数器</span>
 	 */
-	private final AtomicInteger counter = new AtomicInteger(Integer.MAX_VALUE);
+	private int counter = Integer.MAX_VALUE;
 
 	@Override
-	public CUID generate() {
+	public synchronized CUID generate() {
 		byte[] dataBytes = new byte[4];
 		RawUtils.writeInt(dataBytes, VALUE_LENGTH);
 		return this.generate(dataBytes);
 	}
 
 	@Override
-	public CUID generate(final byte[] dataBytes) {
+	public synchronized CUID generate(final byte[] dataBytes) {
 		int length = RawUtils.readInt(dataBytes);
 		if (length <= Globals.INITIALIZE_INT_VALUE) {
 			length = VALUE_LENGTH;
 		}
-		this.counter.compareAndSet(Integer.MAX_VALUE, safeAbs(Globals.random()));
-		final char firstChar = STARTING_LETTERS.charAt(Globals.random(STARTING_LETTERS.length()));//(char) ((safeAbs(Globals.random()) % 26) + 97);
+		if (this.counter == Integer.MAX_VALUE) {
+			this.counter = safeAbs(Globals.random());
+		} else {
+			this.counter++;
+		}
+		final char firstChar = STARTING_LETTERS.charAt(Globals.random(STARTING_LETTERS.length()));
 		final String timestamp = Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX);
-		final String data = timestamp
-				+ processPadding(Integer.toString(this.counter.incrementAndGet(), DEFAULT_RADIX), 4)
-				+ MACHINE_FINGERPRINT;
+		final String data =
+				timestamp + processPadding(Integer.toString(this.counter, DEFAULT_RADIX), 4) + MACHINE_FINGERPRINT;
 		String result = new BigInteger(SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8)))
 					.toString(DEFAULT_RADIX);
 		int maxLength = Math.min(length, 32);
@@ -99,7 +101,7 @@ public final class CUIDv2Generator extends CUIDGenerator {
 
 	@Override
 	public void destroy() {
-		this.counter.set(Integer.MAX_VALUE);
+		this.counter = Integer.MAX_VALUE;
 	}
 
 	static String SALT(final int length) {

@@ -26,9 +26,6 @@ import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * <h2 class="en-US">Universally Unique Lexicographically Sortable Identifier generator</h2>
  * <h2 class="zh-CN">通用唯一字典排序标识符生成器</h2>
@@ -63,12 +60,12 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 	 * <span class="en-US">Previous generate time</span>
 	 * <span class="zh-CN">上次生成ID的时间</span>
 	 */
-	private final AtomicLong lastTime = new AtomicLong(Globals.DEFAULT_VALUE_LONG);
+	private long lastTime = Globals.DEFAULT_VALUE_LONG;
 	/**
 	 * <span class="en-US">Previous generate random data bytes</span>
 	 * <span class="zh-CN">上次生成的随机数</span>
 	 */
-	private final AtomicReference<byte[]> lastRandom = new AtomicReference<>(new byte[0]);
+	private final byte[] lastRandom = new byte[10];
 
 	/**
 	 * <h3 class="en-US">Configure current generator</h3>
@@ -89,17 +86,17 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 	}
 
 	@Override
-	public ULID generate() {
+	public synchronized ULID generate() {
 		long currentTime = DateTimeUtils.currentUTCTimeMillis();
-		if (currentTime < this.lastTime.get()) {
+		if (currentTime < this.lastTime) {
 			throw new RuntimeException(
 					String.format("System clock moved backwards. Refusing to generate id for %d milliseconds",
-							this.lastTime.get() - currentTime));
+							this.lastTime - currentTime));
 		}
 
 		boolean random = Boolean.TRUE;
 		if (this.monotonic) {
-			if (currentTime == this.lastTime.get()) {
+			if (currentTime == this.lastTime) {
 				this.sequenceIndex += 1;
 				random = Boolean.FALSE;
 			} else {
@@ -107,25 +104,22 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 			}
 		}
 		if (random) {
-			byte[] dataBytes = new byte[10];
-			Globals.randomBytes(dataBytes);
-			this.lastRandom.set(dataBytes);
+			Globals.randomBytes(this.lastRandom);
 		}
-		this.lastTime.set(currentTime);
+		this.lastTime = currentTime;
 
-		byte[] dataBytes = this.lastRandom.get();
-		return new ULID(((currentTime - this.referenceTime) << 16) | (RawUtils.readShort(dataBytes) & 0xFFFFL),
-				RawUtils.readLong(dataBytes, 2) + this.sequenceIndex);
+		return new ULID(((currentTime - this.referenceTime) << 16) | (RawUtils.readShort(this.lastRandom) & 0xFFFFL),
+				RawUtils.readLong(this.lastRandom, 2) + this.sequenceIndex);
 	}
 
 	@Override
-	public ULID generate(final byte[] dataBytes) {
+	public synchronized ULID generate(final byte[] dataBytes) {
 		return ULID.fromBytes(dataBytes);
 	}
 
 	@Override
 	public void destroy() {
 		this.sequenceIndex = 0L;
-		this.lastTime.set(Globals.DEFAULT_VALUE_LONG);
+		this.lastTime = Globals.DEFAULT_VALUE_LONG;
 	}
 }
