@@ -26,8 +26,6 @@ import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * <h2 class="en-US">Universally Unique Lexicographically Sortable Identifier generator</h2>
  * <h2 class="zh-CN">通用唯一字典排序标识符生成器</h2>
@@ -67,7 +65,7 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 	 * <span class="en-US">Previous generate random data bytes</span>
 	 * <span class="zh-CN">上次生成的随机数</span>
 	 */
-	private final AtomicReference<byte[]> lastRandom = new AtomicReference<>(new byte[0]);
+	private final byte[] lastRandom = new byte[10];
 
 	/**
 	 * <h3 class="en-US">Configure current generator</h3>
@@ -106,15 +104,14 @@ public final class ULIDGenerator implements IGenerator<ULID> {
 			}
 		}
 		if (random) {
-			byte[] dataBytes = new byte[10];
-			Globals.randomBytes(dataBytes);
-			this.lastRandom.set(dataBytes);
+			Globals.randomBytes(this.lastRandom);
 		}
 		this.lastTime = currentTime;
 
-		byte[] dataBytes = this.lastRandom.get();
-		return new ULID(((currentTime - this.referenceTime) << 16) | (RawUtils.readShort(dataBytes) & 0xFFFFL),
-				RawUtils.readLong(dataBytes, 2) + this.sequenceIndex);
+		return new ULID((
+				(currentTime - this.referenceTime) << 16) | (RawUtils.readShort(this.lastRandom) & 0xFFFFL),
+				RawUtils.readLong(this.lastRandom, 2) + this.sequenceIndex
+		);
 	}
 
 	@Override
