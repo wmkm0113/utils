@@ -37,7 +37,7 @@ public final class UUIDv7Generator extends UUIDGenerator {
 
 	@Override
 	public synchronized UUID generate() {
-		long msb = DateTimeUtils.currentUTCTimeMillis() << 16;
+		long msb = (DateTimeUtils.currentUTCTimeMillis() & 0xFFFFFFFFFFFFL) << 16;
 		msb |= (7L << 12);
 		msb |= (Globals.randomLong() >>> 52);
 		long lsb = Globals.randomLong();

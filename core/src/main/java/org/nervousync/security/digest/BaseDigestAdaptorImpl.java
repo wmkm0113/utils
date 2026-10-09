@@ -121,6 +121,10 @@ public abstract class BaseDigestAdaptorImpl extends CryptoAdaptor {
 		}
 	}
 
+	public final boolean isMacMode() {
+		return this.macMode;
+	}
+
 	/**
 	 * <h3 class="en-US">Append parts of the given binary data array to the current adapter</h3>
 	 * <h3 class="zh-CN">追加给定的二进制字节数组到当前适配器</h3>
@@ -180,5 +184,5 @@ public abstract class BaseDigestAdaptorImpl extends CryptoAdaptor {
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize Hmac instance</span>
 	 *                         <span class="zh-CN">当初始化消息认证码算法适配器实例对象时出现异常</span>
 	 */
-	protected abstract void initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException;
+	public abstract void initHmac(final String algorithm, final byte[] keyBytes) throws CryptoException;
 }

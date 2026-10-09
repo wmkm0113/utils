@@ -50,9 +50,8 @@ public abstract class SymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl {
 
 	protected SymmetricCryptoAdaptorImpl(@Nonnull final String providerName, @Nonnull final CipherConfig cipherConfig,
 	                                     @Nonnull final CryptoMode cryptoMode, @Nonnull final CipherKey cipherKey) {
-		super(cipherConfig, cryptoMode, cipherKey);
 		this.providerName = providerName;
-		this.reset();
+		this.config(cipherConfig, cryptoMode, cipherKey);
 	}
 
 	@Override

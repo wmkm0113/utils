@@ -26,7 +26,6 @@ import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.security.SecurityUtils;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -44,7 +43,7 @@ public final class CUIDv2Generator extends CUIDGenerator {
 	 * <span class="zh-CN">合法值的字符串长度</span>
 	 */
 	public static final int VALUE_LENGTH = 24;
-	private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
+	private static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz";
 	/**
 	 * <span class="en-US">Initial letter safety table</span>
 	 * <span class="zh-CN">首字母安全表</span>
@@ -84,19 +83,41 @@ public final class CUIDv2Generator extends CUIDGenerator {
 		final String timestamp = Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX);
 		final String data =
 				timestamp + processPadding(Integer.toString(this.counter, DEFAULT_RADIX), 4) + MACHINE_FINGERPRINT;
-		String result = new BigInteger(SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8)))
-					.toString(DEFAULT_RADIX);
+		byte[] result = SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8));
+//		String result = new BigInteger(SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8)))
+//					.toString(DEFAULT_RADIX);
 		int maxLength = Math.min(length, 32);
-		if (result.length() > maxLength) {
-			return CUID.fromString(firstChar + result.substring(1, maxLength));
-		} else {
-			StringBuilder stringBuilder =
-					new StringBuilder(Character.toString(firstChar)).append(result, 1, result.length());
-			while (stringBuilder.length() < maxLength) {
-				stringBuilder.append(ALPHABET.charAt(Globals.random(ALPHABET.length())));
+		char[] buffer = new char[maxLength];
+		buffer[0] = firstChar;
+		long currentWindow = 0;
+		int bitsInWindow = 0, byteIndex = 0, charIndex = 1;
+		while (charIndex < maxLength) {
+			while (bitsInWindow < 6 && byteIndex < result.length) {
+				currentWindow = (currentWindow << 8) | (result[byteIndex++] & 0xFFL);
+				bitsInWindow += 8;
 			}
-			return CUID.fromString(stringBuilder.toString());
+
+			if (bitsInWindow == 0) {
+				buffer[charIndex++] = '0';
+				continue;
+			}
+
+			int extractBits = Math.min(bitsInWindow, 5),
+					value = (int) ((currentWindow >>> (bitsInWindow - extractBits)) & ((1 << extractBits) - 1));
+			bitsInWindow -= extractBits;
+			buffer[charIndex++] = ALPHABET.charAt(value % 36);
 		}
+		return CUID.fromString(new String(buffer));
+//		if (result.length() > maxLength) {
+//			return CUID.fromString(firstChar + result.substring(1, maxLength));
+//		} else {
+//			StringBuilder stringBuilder =
+//					new StringBuilder(Character.toString(firstChar)).append(result, 1, result.length());
+//			while (stringBuilder.length() < maxLength) {
+//				stringBuilder.append(ALPHABET.charAt(Globals.random(ALPHABET.length())));
+//			}
+//			return CUID.fromString(stringBuilder.toString());
+//		}
 	}
 
 	@Override
@@ -105,13 +126,19 @@ public final class CUIDv2Generator extends CUIDGenerator {
 	}
 
 	static String SALT(final int length) {
-		int primeNumber;
-		StringBuilder stringBuilder = new StringBuilder(length);
-		while (stringBuilder.length() < length) {
-			primeNumber = PRIME_NUMBER_ARRAY[safeAbs(Globals.random()) % PRIME_NUMBER_ARRAY.length];
-			stringBuilder.append(Integer.toString(primeNumber * Globals.random(), 36));
+		char[] buffer = new char[length];
+		int primeLength = PRIME_NUMBER_ARRAY.length;
+		for (int i = 0; i < length; i++) {
+			int random = Globals.random(), primeNumber = PRIME_NUMBER_ARRAY[safeAbs(random) % primeLength];
+			buffer[i] = ALPHABET.charAt(safeAbs(primeNumber * random) % 36);
 		}
-		return stringBuilder.toString();
+		return new String(buffer);
+//		StringBuilder stringBuilder = new StringBuilder(length);
+//		while (stringBuilder.length() < length) {
+//			primeNumber = PRIME_NUMBER_ARRAY[safeAbs(Globals.random()) % PRIME_NUMBER_ARRAY.length];
+//			stringBuilder.append(Integer.toString(primeNumber * Globals.random(), 36));
+//		}
+//		return stringBuilder.toString();
 	}
 
 	private static int safeAbs(final int value) {

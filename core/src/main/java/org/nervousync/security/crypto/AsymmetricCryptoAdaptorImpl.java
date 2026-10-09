@@ -77,9 +77,8 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 
 	protected AsymmetricCryptoAdaptorImpl(@Nonnull final String providerName, @Nonnull final CipherConfig cipherConfig,
 	                                      @Nonnull final CryptoMode cryptoMode, @Nonnull final CipherKey cipherKey) {
-		super(cipherConfig, cryptoMode, cipherKey);
 		this.providerName = providerName;
-		this.reset();
+		this.config(cipherConfig, cryptoMode, cipherKey);
 		this.appendBuffer = new byte[0];
 		this.dataBytes = new byte[0];
 	}
