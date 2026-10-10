@@ -278,9 +278,12 @@ public final class MailUtils {
 				}
 				properties.setProperty("mail.pop3.disabletop", Boolean.TRUE.toString());
 				properties.setProperty("mail.pop3.ssl.enable", Boolean.TRUE.toString());
+				properties.setProperty("mail.pop3.ssl.checkserveridentity", Boolean.TRUE.toString());
 				break;
 			case TLS:
 				properties.setProperty("mail.pop3.starttls.enable", Boolean.TRUE.toString());
+				properties.setProperty("mail.pop3.starttls.required", Boolean.TRUE.toString());
+				properties.setProperty("mail.pop3.ssl.checkserveridentity", Boolean.TRUE.toString());
 				break;
 		}
 	}
@@ -318,11 +321,13 @@ public final class MailUtils {
 				properties.setProperty(MAIL_STORE_PROTOCOL, gmail ? "gimaps" : "imaps");
 				if (gmail) {
 					properties.setProperty("mail.gimap.socketFactory.class", SSL_FACTORY_CLASS);
+					properties.setProperty("mail.gimap.ssl.checkserveridentity", Boolean.TRUE.toString());
 					if (hostPort != Globals.DEFAULT_VALUE_INT) {
 						properties.setProperty("mail.gimap.socketFactory.port", Integer.toString(hostPort));
 					}
 				} else {
 					properties.setProperty("mail.imap.socketFactory.class", SSL_FACTORY_CLASS);
+					properties.setProperty("mail.imap.ssl.checkserveridentity", Boolean.TRUE.toString());
 					if (hostPort != Globals.DEFAULT_VALUE_INT) {
 						properties.setProperty("mail.imap.socketFactory.port", Integer.toString(hostPort));
 					}
@@ -331,8 +336,12 @@ public final class MailUtils {
 			case TLS:
 				if (gmail) {
 					properties.setProperty("mail.gimap.starttls.enable", Boolean.TRUE.toString());
+					properties.setProperty("mail.gimap.starttls.required", Boolean.TRUE.toString());
+					properties.setProperty("mail.gimap.ssl.checkserveridentity", Boolean.TRUE.toString());
 				} else {
 					properties.setProperty("mail.imap.starttls.enable", Boolean.TRUE.toString());
+					properties.setProperty("mail.imap.starttls.required", Boolean.TRUE.toString());
+					properties.setProperty("mail.imap.ssl.checkserveridentity", Boolean.TRUE.toString());
 				}
 				break;
 		}

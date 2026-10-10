@@ -169,6 +169,8 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 
 	@Override
 	public final void reset() throws CryptoException {
+		this.appendBuffer = new byte[0];
+		this.dataBytes = new byte[0];
 		int paddingLength = 0;
 		AlgorithmParameterSpec parameterSpec = null;
 		MGF1ParameterSpec mgf1ParameterSpec = null;

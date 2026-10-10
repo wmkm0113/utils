@@ -66,7 +66,7 @@ public final class JMXUtils {
 	 * <span class="zh-CN">监控对象的ObjectName</span>
 	 */
 	public static String name(@Nonnull final Object mbeanObject) {
-		if (mbeanObject.getClass().isAnnotationPresent(Monitor.class)) {
+		if (!mbeanObject.getClass().isAnnotationPresent(Monitor.class)) {
 			return null;
 		}
 		return Optional.ofNullable(mbeanObject.getClass().getAnnotation(Monitor.class))

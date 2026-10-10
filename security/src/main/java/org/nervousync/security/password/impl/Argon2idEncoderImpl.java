@@ -75,9 +75,9 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 	 *                    <span class="zh-CN">并行通道数量</span>
 	 */
 	public Argon2idEncoderImpl(final int memory, final int iterations, final int parallelism) {
-		this.memory = memory;
-		this.iterations = iterations;
-		this.parallelism = parallelism;
+		this.memory = Math.min(Math.max(memory, MIN_MEMORY), MAX_MEMORY);
+		this.iterations = Math.min(Math.max(iterations, MIN_ITERATIONS), MAX_ITERATIONS);
+		this.parallelism = Math.min(Math.max(parallelism, MIN_PARALLELISM), MAX_PARALLELISM);
 	}
 
 	@Override
@@ -126,14 +126,6 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 	}
 
 	private record Config(int memory, int iterations, int parallelism, byte[] salt, byte[] hash) {
-
-		Config(int memory, int iterations, int parallelism, byte[] salt, byte[] hash) {
-			this.memory = Math.min(Math.max(memory, MIN_MEMORY), MAX_MEMORY);
-			this.iterations = Math.min(Math.max(iterations, MIN_ITERATIONS), MAX_ITERATIONS);
-			this.parallelism = Math.min(Math.max(parallelism, MIN_PARALLELISM), MAX_PARALLELISM);
-			this.salt = salt;
-			this.hash = hash;
-		}
 
 		@Override
 		@Nonnull

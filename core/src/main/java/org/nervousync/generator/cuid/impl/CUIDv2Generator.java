@@ -83,8 +83,8 @@ public final class CUIDv2Generator extends CUIDGenerator {
 		final String timestamp = Long.toString(DateTimeUtils.currentUTCTimeMillis(), DEFAULT_RADIX);
 		final String data =
 				timestamp + processPadding(Integer.toString(this.counter, DEFAULT_RADIX), 4) + MACHINE_FINGERPRINT;
-		byte[] result = SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8));
 		int maxLength = Math.min(length, 32);
+		byte[] result = SecurityUtils.SHA3_256((data + SALT(maxLength)).getBytes(StandardCharsets.UTF_8));
 		char[] buffer = new char[maxLength];
 		buffer[0] = firstChar;
 		long currentWindow = 0;
@@ -121,12 +121,6 @@ public final class CUIDv2Generator extends CUIDGenerator {
 			buffer[i] = ALPHABET.charAt(safeAbs(primeNumber * random) % 36);
 		}
 		return new String(buffer);
-//		StringBuilder stringBuilder = new StringBuilder(length);
-//		while (stringBuilder.length() < length) {
-//			primeNumber = PRIME_NUMBER_ARRAY[safeAbs(Globals.random()) % PRIME_NUMBER_ARRAY.length];
-//			stringBuilder.append(Integer.toString(primeNumber * Globals.random(), 36));
-//		}
-//		return stringBuilder.toString();
 	}
 
 	private static int safeAbs(final int value) {

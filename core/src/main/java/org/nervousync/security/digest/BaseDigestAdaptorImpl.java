@@ -18,7 +18,6 @@
 package org.nervousync.security.digest;
 
 import org.nervousync.beans.crypto.CipherConfig;
-import org.nervousync.beans.crypto.CipherKey;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.CryptoAdaptor;
 import org.nervousync.utils.core.StringUtils;
@@ -52,18 +51,15 @@ public abstract class BaseDigestAdaptorImpl extends CryptoAdaptor {
 	 *
 	 * @param cipherConfig <span class="en-US">Signature verifier cipher config instance object</span>
 	 *                     <span class="zh-CN">签名验证算法配置信息</span>
-	 * @param cipherKey    <span class="en-US">Signature verifier cipher key instance object</span>
-	 *                     <span class="zh-CN">签名验证密钥实例对象</span>
 	 * @throws CryptoException <span class="en-US">If an error occurs when initialize adaptor</span>
 	 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 	 */
-	protected BaseDigestAdaptorImpl(final CipherConfig cipherConfig, final CipherKey cipherKey) {
+	protected BaseDigestAdaptorImpl(final CipherConfig cipherConfig) {
 		if (StringUtils.isEmpty(cipherConfig.algorithm())) {
 			throw new CryptoException(0x00000015000DL);
 		}
 		this.macMode = cipherConfig.algorithm().toUpperCase().contains("HMAC");
 		if (this.macMode) {
-			this.initHmac(cipherConfig.algorithm(), cipherKey.getKeyBytes());
 			this.digest = null;
 		} else {
 			this.digest = this.initDigest(cipherConfig.algorithm());

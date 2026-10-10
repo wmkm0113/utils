@@ -1979,15 +1979,14 @@ public final class ZipFile implements Cloneable {
 				fullPath += Globals.DEFAULT_PAGE_SEPARATOR;
 			}
 
-			File targetFile = new File(fullPath, fileName);
-			if (!targetFile.getCanonicalPath().startsWith(fullPath)) {
-				throw new ZipException(0x0000001B0038L, fullPath + fileName);
-			}
-
 			fullPath += fileName;
 			fullPath = StringUtils.replace(fullPath, Globals.DEFAULT_ZIP_PAGE_SEPARATOR, Globals.DEFAULT_PAGE_SEPARATOR);
-			FileUtils.makeDir(fullPath.substring(0, fullPath.lastIndexOf(Globals.DEFAULT_PAGE_SEPARATOR)));
-			return new FileOutputStream(FileUtils.getFile(fullPath));
+			File targetFile = new File(fullPath);
+			if (targetFile.getCanonicalPath().startsWith(folderPath)) {
+				FileUtils.makeDir(fullPath.substring(0, fullPath.lastIndexOf(Globals.DEFAULT_PAGE_SEPARATOR)));
+				return new FileOutputStream(FileUtils.getFile(fullPath));
+			}
+			throw new ZipException(0x0000001B0038L, fullPath);
 		} catch (IOException e) {
 			throw new ZipException(0x0000001B0038L, e);
 		}

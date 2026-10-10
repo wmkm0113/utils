@@ -1530,6 +1530,8 @@ public final class StringUtils {
 	 */
 	public static String cleanPath(final String path) {
 		String pathToUse = path;
+		pathToUse = StringUtils.replace(pathToUse, "\\", Globals.DEFAULT_PAGE_SEPARATOR);
+		pathToUse = StringUtils.replace(pathToUse, "/", Globals.DEFAULT_PAGE_SEPARATOR);
 
 		// Strip prefix from path to analyze, to not treat it as part of the
 		// first path element. This is necessary to correctly parse paths like

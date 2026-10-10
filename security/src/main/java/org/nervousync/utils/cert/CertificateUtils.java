@@ -40,6 +40,9 @@ import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -280,8 +283,22 @@ public final class CertificateUtils {
 			if (checkValidity) {
 				x509Certificate.checkValidity();
 			}
-			x509Certificate.verify((verifyKey == null) ? x509Certificate.getPublicKey() : verifyKey, "BC");
-			return Boolean.TRUE;
+			if (verifyKey == null) {
+				TrustManagerFactory trustManagerFactory =
+						TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+				trustManagerFactory.init((KeyStore) null);
+				for (TrustManager trustManager : trustManagerFactory.getTrustManagers()) {
+					if (trustManager instanceof X509TrustManager) {
+						((X509TrustManager) trustManager)
+								.checkServerTrusted(new X509Certificate[]{x509Certificate}, "RSA");
+						return Boolean.TRUE;
+					}
+				}
+				return Boolean.FALSE;
+			} else {
+				x509Certificate.verify(verifyKey, "BC");
+				return Boolean.TRUE;
+			}
 		} catch (Exception e) {
 			LOGGER.error("Certificate_Invalid_Error");
 			if (LOGGER.isDebugEnabled()) {

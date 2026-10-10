@@ -128,16 +128,7 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 		}
 		try {
 			XSSFReader xssfReader = new XSSFReader(this.opcPackage);
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			//  Enable FSP
-			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			//  Disallow doctype
-			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			//  Disallow external general entities
-			factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-			//  Disallow external parameter entities
-			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-			XMLReader xmlReader = factory.newSAXParser().getXMLReader();
+			XMLReader xmlReader = this.newFactory().newSAXParser().getXMLReader();
 			MaxRowHandler maxRowHandler = new MaxRowHandler();
 			xmlReader.setContentHandler(maxRowHandler);
 			XSSFReader.SheetIterator iterator = (XSSFReader.SheetIterator) xssfReader.getSheetsData();
@@ -155,6 +146,20 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 			}
 		}
 		return Globals.DEFAULT_VALUE_INT;
+	}
+
+	private SAXParserFactory newFactory() throws Exception {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		//  Enable FSP
+		factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+		//  Disallow doctype
+		factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		//  Disallow external general entities
+		factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+		//  Disallow external parameter entities
+		factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+
+		return factory;
 	}
 
 	/**
@@ -178,7 +183,7 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 		InputStream inputStream = null;
 		try {
 			XSSFReader xssfReader = new XSSFReader(this.opcPackage);
-			XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+			XMLReader xmlReader = this.newFactory().newSAXParser().getXMLReader();
 			SheetHandler sheetHandler =
 					new SheetHandler(xssfReader.getStylesTable(), xssfReader.getSharedStringsTable(), beginRow, endRow);
 			xmlReader.setContentHandler(sheetHandler);

@@ -518,7 +518,7 @@ public final class BeanUtils {
 		schemaFactory.setResourceResolver(new SchemaResourceResolver());
 		try {
 			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
+			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 
 			Source[] sources = new Source[schemaPaths.length];
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

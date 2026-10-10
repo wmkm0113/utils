@@ -50,7 +50,7 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 	public CryptoAdaptor initDigest(@Nonnull final CipherConfig cipherConfig, final CipherKey cipherKey) {
 		BaseDigestAdaptorImpl adaptor = super.adaptor(cipherConfig.algorithm(), BaseDigestAdaptorImpl.class);
 		if (adaptor == null) {
-			adaptor = new DigestAdaptorImpl(cipherConfig, cipherKey);
+			adaptor = new DigestAdaptorImpl(cipherConfig);
 			super.register(cipherConfig.algorithm(), adaptor);
 		}
 		if (adaptor.isMacMode()) {
@@ -102,13 +102,11 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 		 *
 		 * @param cipherConfig <span class="en-US">Signature verifier cipher config instance object</span>
 		 *                     <span class="zh-CN">签名验证算法配置信息</span>
-		 * @param cipherKey    <span class="en-US">Signature verifier cipher key instance object</span>
-		 *                     <span class="zh-CN">签名验证密钥实例对象</span>
 		 * @throws CryptoException <span class="en-US">If an error occurs when initialize adaptor</span>
 		 *                         <span class="zh-CN">当初始化适配器时出现异常</span>
 		 */
-		DigestAdaptorImpl(final CipherConfig cipherConfig, final CipherKey cipherKey) {
-			super(cipherConfig, cipherKey);
+		DigestAdaptorImpl(final CipherConfig cipherConfig) {
+			super(cipherConfig);
 		}
 
 		@Override

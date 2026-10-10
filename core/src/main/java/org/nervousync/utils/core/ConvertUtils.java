@@ -221,7 +221,11 @@ public final class ConvertUtils {
 
 		try (ByteArrayInputStream byteInputStream = new ByteArrayInputStream(dataBytes);
 		     ObjectInputStream objectInputStream = new ObjectInputStream(byteInputStream)) {
-			objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filter));
+			String filterRules = filter;
+			if (!filterRules.endsWith(";!*")) {
+				filterRules += ";!*";
+			}
+			objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filterRules));
 			return objectInputStream.readObject();
 		} catch (Exception e) {
 			LOGGER.error("Convert_Array_To_Object_Error");

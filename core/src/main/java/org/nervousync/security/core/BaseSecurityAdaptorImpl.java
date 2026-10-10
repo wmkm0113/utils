@@ -60,7 +60,7 @@ public abstract class BaseSecurityAdaptorImpl implements SecurityAdaptor {
 
 	protected final <T> T adaptor(final String algorithm, final Class<T> adaptorClass) {
 		CryptoAdaptor adaptor = this.registeredAdaptors.get().get(algorithm);
-		if (adaptor != null && ClassUtils.isAssignable(adaptor.getClass(), adaptorClass)) {
+		if (adaptor != null && ClassUtils.isAssignable(adaptorClass, adaptor.getClass())) {
 			return adaptorClass.cast(adaptor);
 		}
 		return null;

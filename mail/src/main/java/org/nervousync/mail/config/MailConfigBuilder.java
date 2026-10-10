@@ -269,6 +269,7 @@ public final class MailConfigBuilder<P extends ParentBuilder> extends AbstractBu
 			this.mailConfig.setStorePassword(StringUtils.isEmpty(storePassword) ? Globals.DEFAULT_VALUE_STRING : storePassword);
 			this.mailConfig.setAliasName(aliasName);
 			this.mailConfig.setKeyPassword(StringUtils.isEmpty(keyPassword) ? Globals.DEFAULT_VALUE_STRING : keyPassword);
+			this.modified = Boolean.TRUE;
 		}
 		return this;
 	}

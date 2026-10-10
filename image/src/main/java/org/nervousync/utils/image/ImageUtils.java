@@ -91,7 +91,11 @@ public final class ImageUtils {
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
 				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
-				return reader.getWidth(0);
+				try {
+					return reader.getWidth(0);
+				} finally {
+					reader.dispose();
+				}
 			}
 		} catch (Exception e) {
 			LOGGER.error("Read_Image_Error");
@@ -121,10 +125,7 @@ public final class ImageUtils {
 				ImageReader reader = readers.next();
 				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
 				try {
-					long estimatedMemory = (long) reader.getWidth(0) * reader.getHeight(0) * 4;
-					if (estimatedMemory > MEMORY_LIMIT) {
-						throw new SecurityException("Image size is out of the maximum memory limit! ");
-					}
+					checkSize(reader.getWidth(0), reader.getHeight(0));
 					return reader.read(0);
 				} finally {
 					reader.dispose();
@@ -137,6 +138,13 @@ public final class ImageUtils {
 			}
 		}
 		return null;
+	}
+
+	private static void checkSize(final int width, final int height) throws SecurityException {
+		long estimatedMemory = (long) width * height * 4;
+		if (estimatedMemory > MEMORY_LIMIT) {
+			throw new SecurityException("Image size is out of the maximum memory limit! ");
+		}
 	}
 
 	/**
@@ -154,7 +162,11 @@ public final class ImageUtils {
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
 				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
-				return reader.getHeight(0);
+				try {
+					return reader.getHeight(0);
+				} finally {
+					reader.dispose();
+				}
 			}
 		} catch (Exception e) {
 			LOGGER.error("Read_Image_Error");
@@ -180,9 +192,13 @@ public final class ImageUtils {
 			if (readers.hasNext()) {
 				ImageReader reader = readers.next();
 				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
-				double imageHeight = reader.getHeight(0);
-				double imageWidth = reader.getWidth(0);
-				return imageWidth / imageHeight;
+				try {
+					double imageHeight = reader.getHeight(0);
+					double imageWidth = reader.getWidth(0);
+					return imageWidth / imageHeight;
+				} finally {
+					reader.dispose();
+				}
 			}
 		} catch (Exception e) {
 			LOGGER.error("Read_Image_Error");
@@ -216,6 +232,7 @@ public final class ImageUtils {
 				LOGGER.error("Height_Exceeds_Original_Image_Error");
 				return Boolean.FALSE;
 			}
+			checkSize(cutOptions.getCutWidth(), cutOptions.getCutHeight());
 
 			try {
 				BufferedImage srcImage = readImage(origPath);
@@ -645,6 +662,7 @@ public final class ImageUtils {
 	 */
 	public static BufferedImage processImage(@Nonnull final BufferedImage srcImage, final int targetWidth,
 	                                         final int targetHeight, final MarkOptions markOptions) {
+		checkSize(targetWidth, targetHeight);
 		if (targetWidth > 0 && targetHeight > 0) {
 			BufferedImage bufferedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = bufferedImage.createGraphics();

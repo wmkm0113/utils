@@ -74,9 +74,21 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 		if (iterations <= 0) {
 			throw new IllegalArgumentException("Iterations must be positive");
 		}
+		switch (algorithm) {
+			case SHA1:
+				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA1), ITERATION_MAX_LIMIT_SHA1);
+				break;
+			case SHA256:
+				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA256), ITERATION_MAX_LIMIT_SHA256);
+				break;
+			case SHA512:
+				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA512), ITERATION_MAX_LIMIT_SHA512);
+				break;
+			default:
+				throw new IllegalArgumentException("Algorithm not supported: " + algorithm);
+		}
 		Config config = new Config(algorithm, iterations, keyLength(algorithm), new byte[0], new byte[0]);
 		this.algorithm = config.algorithm;
-		this.iterations = config.iterations;
 		this.keyLength = config.keyLength;
 	}
 
@@ -84,7 +96,7 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 	public String encode(final char[] password) {
 		byte[] salt = new byte[SALT_LENGTH];
 		Globals.randomBytes(salt);
-		Config config = new Config(algorithm, iterations, this.keyLength, salt, new byte[0]);
+		Config config = new Config(this.algorithm, this.iterations, this.keyLength, salt, new byte[0]);
 		byte[] hash = this.derive(password, config);
 		return config + "$" + StringUtils.base64Encode(hash, Boolean.FALSE);
 	}
@@ -131,27 +143,6 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 
 	private record Config(Algorithm algorithm, int iterations, int keyLength, byte[] salt, byte[] hash) {
 
-		Config(final Algorithm algorithm, final int iterations, final int keyLength,
-		       final byte[] salt, final byte[] hash) {
-			this.algorithm = algorithm;
-			switch (this.algorithm) {
-				case SHA1:
-					this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA1), ITERATION_MAX_LIMIT_SHA1);
-					break;
-				case SHA256:
-					this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA256), ITERATION_MAX_LIMIT_SHA256);
-					break;
-				case SHA512:
-					this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA512), ITERATION_MAX_LIMIT_SHA512);
-					break;
-				default:
-					throw new IllegalArgumentException("Algorithm not supported: " + this.algorithm);
-			}
-			this.keyLength = keyLength;
-			this.salt = salt;
-			this.hash = hash;
-		}
-
 		public String algorithmName() {
 			return switch (algorithm) {
 				case SHA1 -> "PBKDF2WithHmacSHA1";
@@ -169,8 +160,7 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 				case SHA512 -> "sha512";
 			};
 			return "$pbkdf2-" + identify + "$i=" + this.iterations
-					+ "$" + StringUtils.base64Encode(salt, Boolean.FALSE)
-					+ "$" + StringUtils.base64Encode(hash, Boolean.FALSE);
+					+ "$" + StringUtils.base64Encode(this.salt, Boolean.FALSE);
 		}
 
 		static Config parse(final String encodedPassword) {
