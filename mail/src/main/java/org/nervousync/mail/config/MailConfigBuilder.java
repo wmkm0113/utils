@@ -31,9 +31,6 @@ import org.nervousync.utils.core.FileUtils;
 import org.nervousync.utils.core.ObjectUtils;
 import org.nervousync.utils.core.StringUtils;
 
-import java.security.PrivateKey;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
 import java.util.Optional;
 
 /**
@@ -254,33 +251,24 @@ public final class MailConfigBuilder<P extends ParentBuilder> extends AbstractBu
 	 * <h3 class="en-US">Configure the x509 certificate and private key for mail signature</h3>
 	 * <h3 class="zh-CN">设置用于电子邮件签名及验签的x509证书及私钥</h3>
 	 *
-	 * @param x509Certificate <span class="en-US">x509 certificate using for verify signature</span>
-	 *                        <span class="zh-CN">x509证书，用于验证电子签名</span>
-	 * @param privateKey      <span class="en-US">Private key instance using for generate signature</span>
-	 *                        <span class="zh-CN">私钥对象实例，用于生成电子签名</span>
+	 * @param storePath     <span class="en-US">Key store path</span>
+	 *                      <span class="zh-CN">密钥库地址</span>
+	 * @param storePassword <span class="en-US">Key store password</span>
+	 *                      <span class="zh-CN">密钥库密码</span>
+	 * @param aliasName     <span class="en-US">Item alias name</span>
+	 *                      <span class="zh-CN">条目别名</span>
+	 * @param keyPassword   <span class="en-US">Private key password</span>
+	 *                      <span class="zh-CN">私钥密码</span>
 	 * @return <span class="en-US">ServerConfigBuilder instance</span>
 	 * <span class="zh-CN">邮件服务器配置构建器实例对象</span>
 	 */
-	public MailConfigBuilder<P> signer(final X509Certificate x509Certificate, final PrivateKey privateKey) {
-		if (x509Certificate != null && privateKey != null) {
-			try {
-				String certData = StringUtils.base64Encode(x509Certificate.getEncoded());
-				String pkData = StringUtils.base64Encode(privateKey.getEncoded());
-				if (ObjectUtils.nullSafeEquals(this.mailConfig.getCertificate(), certData)
-						&& ObjectUtils.nullSafeEquals(this.mailConfig.getPrivateKey(), pkData)) {
-					return this;
-				}
-				this.mailConfig.setCertificate(certData);
-				this.mailConfig.setPrivateKey(pkData);
-				this.modified = Boolean.TRUE;
-			} catch (CertificateEncodingException e) {
-				if (StringUtils.notBlank(this.mailConfig.getCertificate())
-						|| StringUtils.notBlank(this.mailConfig.getPrivateKey())) {
-					this.modified = Boolean.TRUE;
-				}
-				this.mailConfig.setCertificate(Globals.DEFAULT_VALUE_STRING);
-				this.mailConfig.setPrivateKey(Globals.DEFAULT_VALUE_STRING);
-			}
+	public MailConfigBuilder<P> signer(final String storePath, final String storePassword,
+	                                   final String aliasName, final String keyPassword) {
+		if (StringUtils.notBlank(storePath) && StringUtils.notBlank(aliasName)) {
+			this.mailConfig.setStorePath(storePath);
+			this.mailConfig.setStorePassword(StringUtils.isEmpty(storePassword) ? Globals.DEFAULT_VALUE_STRING : storePassword);
+			this.mailConfig.setAliasName(aliasName);
+			this.mailConfig.setKeyPassword(StringUtils.isEmpty(keyPassword) ? Globals.DEFAULT_VALUE_STRING : keyPassword);
 		}
 		return this;
 	}

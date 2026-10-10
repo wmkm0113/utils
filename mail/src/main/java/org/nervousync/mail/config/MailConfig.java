@@ -86,21 +86,29 @@ public final class MailConfig implements Serializable {
 	@XmlElement(name = "storage_path")
 	private String storagePath;
 	/**
-	 * <span class="en-US">Base64 encoded binary data bytes of x509 certificate</span>
-	 * <p class="en-US">Using for email signature verify</p>
-	 * <span class="zh-CN">Base64编码的x509证书二进制数组</span>
-	 * <p class="zh-CN">用于电子邮件签名验证</p>
+	 * <span class="en-US">Key store path</span>
+	 * <span class="zh-CN">密钥库地址</span>
 	 */
-	@XmlElement
-	private String certificate;
+	@XmlElement(name = "key_store_path")
+	private String storePath;
 	/**
-	 * <span class="en-US">Base64 encoded binary data bytes of private key</span>
-	 * <p class="en-US">Using for email signature</p>
-	 * <span class="zh-CN">Base64编码的私有密钥二进制数组</span>
-	 * <p class="zh-CN">用于电子邮件签名</p>
+	 * <span class="en-US">Key store password</span>
+	 * <span class="zh-CN">密钥库密码</span>
 	 */
-	@XmlElement(name = "private_key")
-	private String privateKey;
+	@XmlElement(name = "key_store_password")
+	private String storePassword;
+	/**
+	 * <span class="en-US">Item alias name</span>
+	 * <span class="zh-CN">条目别名</span>
+	 */
+	@XmlElement(name = "alias_name")
+	private String aliasName;
+	/**
+	 * <span class="en-US">Private key password</span>
+	 * <span class="zh-CN">私钥密码</span>
+	 */
+	@XmlElement(name = "key_password")
+	private String keyPassword;
 	/**
 	 * <span class="en-US">Last modified timestamp</span>
 	 * <span class="zh-CN">最后修改时间戳</span>
@@ -119,8 +127,6 @@ public final class MailConfig implements Serializable {
 	 * <h3 class="zh-CN">MailConfig构造方法</h3>
 	 */
 	public MailConfig() {
-		this.certificate = Globals.DEFAULT_VALUE_STRING;
-		this.privateKey = Globals.DEFAULT_VALUE_STRING;
 	}
 
 	/**
@@ -256,47 +262,91 @@ public final class MailConfig implements Serializable {
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for base64 encoded binary data bytes of x509 certificate</h3>
-	 * <h3 class="zh-CN">Base64编码的x509证书二进制数组的Getter方法</h3>
+	 * <h3 class="en-US">Getter method for the key store path</h3>
+	 * <h3 class="zh-CN">密钥库地址的 Getter 方法</h3>
 	 *
-	 * @return <span class="en-US">Base64 encoded binary data bytes of x509 certificate</span>
-	 * <span class="zh-CN">Base64编码的x509证书二进制数组</span>
+	 * @return <span class="en-US">Key store path</span>
+	 * <span class="zh-CN">密钥库地址</span>
 	 */
-	public String getCertificate() {
-		return this.certificate;
+	public String getStorePath() {
+		return this.storePath;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for base64 encoded binary data bytes of x509 certificate</h3>
-	 * <h3 class="zh-CN">Base64编码的x509证书二进制数组的Setter方法</h3>
+	 * <h3 class="en-US">Setter method for the key store path</h3>
+	 * <h3 class="zh-CN">密钥库地址的 Setter 方法</h3>
 	 *
-	 * @param certificate <span class="en-US">Base64 encoded binary data bytes of x509 certificate</span>
-	 *                    <span class="zh-CN">Base64编码的x509证书二进制数组</span>
+	 * @param storePath <span class="en-US">Key store path</span>
+	 *                  <span class="zh-CN">密钥库地址</span>
 	 */
-	public void setCertificate(final String certificate) {
-		this.certificate = certificate;
+	public void setStorePath(final String storePath) {
+		this.storePath = storePath;
 	}
 
 	/**
-	 * <h3 class="en-US">Getter method for base64 encoded binary data bytes of the private key</h3>
-	 * <h3 class="zh-CN">Base64编码的私有密钥二进制数组的Getter方法</h3>
+	 * <h3 class="en-US">Getter method for the key store password</h3>
+	 * <h3 class="zh-CN">密钥库密码的 Getter 方法</h3>
 	 *
-	 * @return <span class="en-US">Base64 encoded binary data bytes of private key</span>
-	 * <span class="zh-CN">Base64编码的私有密钥二进制数组</span>
+	 * @return <span class="en-US">Key store password</span>
+	 * <span class="zh-CN">密钥库密码</span>
 	 */
-	public String getPrivateKey() {
-		return this.privateKey;
+	public String getStorePassword() {
+		return this.storePassword;
 	}
 
 	/**
-	 * <h3 class="en-US">Setter method for base64 encoded binary data bytes of the private key</h3>
-	 * <h3 class="zh-CN">Base64编码的私有密钥二进制数组的Setter方法</h3>
+	 * <h3 class="en-US">Setter method for the key store password</h3>
+	 * <h3 class="zh-CN">密钥库密码的 Setter 方法</h3>
 	 *
-	 * @param privateKey <span class="en-US">Base64 encoded binary data bytes of private key</span>
-	 *                   <span class="zh-CN">Base64编码的私有密钥二进制数组</span>
+	 * @param storePassword <span class="en-US">Key store password</span>
+	 *                      <span class="zh-CN">密钥库密码</span>
 	 */
-	public void setPrivateKey(final String privateKey) {
-		this.privateKey = privateKey;
+	public void setStorePassword(final String storePassword) {
+		this.storePassword = storePassword;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the item alias name</h3>
+	 * <h3 class="zh-CN">条目别名的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Item alias name</span>
+	 * <span class="zh-CN">条目别名</span>
+	 */
+	public String getAliasName() {
+		return this.aliasName;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the item alias name</h3>
+	 * <h3 class="zh-CN">条目别名的 Setter 方法</h3>
+	 *
+	 * @param aliasName <span class="en-US">Item alias name</span>
+	 *                  <span class="zh-CN">条目别名</span>
+	 */
+	public void setAliasName(final String aliasName) {
+		this.aliasName = aliasName;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the private key password</h3>
+	 * <h3 class="zh-CN">私钥密码的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Private key password</span>
+	 * <span class="zh-CN">私钥密码</span>
+	 */
+	public String getKeyPassword() {
+		return this.keyPassword;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the private key password</h3>
+	 * <h3 class="zh-CN">私钥密码的 Setter 方法</h3>
+	 *
+	 * @param keyPassword <span class="en-US">Private key password</span>
+	 *                    <span class="zh-CN">私钥密码</span>
+	 */
+	public void setKeyPassword(final String keyPassword) {
+		this.keyPassword = keyPassword;
 	}
 
 	/**

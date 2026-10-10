@@ -19,6 +19,7 @@ package org.nervousync.test.zip;
 
 import org.junit.jupiter.api.*;
 import org.nervousync.commons.Globals;
+import org.nervousync.utils.core.SystemUtils;
 import org.nervousync.zip.options.ZipOptions;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.test.BaseTest;
@@ -41,7 +42,7 @@ public final class ZipTest extends BaseTest {
 	private static boolean COPY_RESULT = Boolean.FALSE;
 
 	static {
-		String tmpDir = System.getProperty("java.io.tmpdir");
+		String tmpDir = SystemUtils.JAVA_TMP_DIR;
 		BASE_PATH = tmpDir.endsWith(Globals.DEFAULT_PAGE_SEPARATOR)
 				? tmpDir.substring(0, tmpDir.length() - 1)
 				: tmpDir;

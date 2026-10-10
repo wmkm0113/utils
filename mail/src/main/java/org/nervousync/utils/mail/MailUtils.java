@@ -239,12 +239,15 @@ public final class MailUtils {
 				properties.setProperty("mail.smtp.ssl.enable", Boolean.TRUE.toString());
 				properties.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY_CLASS);
 				properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
+				properties.setProperty("mail.smtp.ssl.checkserveridentity", Boolean.TRUE.toString());
 				if (hostPort != Globals.DEFAULT_VALUE_INT) {
 					properties.setProperty("mail.smtp.socketFactory.port", Integer.toString(hostPort));
 				}
 				break;
 			case TLS:
 				properties.setProperty("mail.smtp.starttls.enable", Boolean.TRUE.toString());
+				properties.setProperty("mail.smtp.starttls.required", Boolean.TRUE.toString());
+				properties.setProperty("mail.smtp.ssl.checkserveridentity", Boolean.TRUE.toString());
 				break;
 		}
 	}

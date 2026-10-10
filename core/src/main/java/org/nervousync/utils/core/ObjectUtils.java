@@ -217,7 +217,7 @@ public final class ObjectUtils {
 		     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
 			objectOutputStream.writeObject(object);
 			objectOutputStream.flush();
-			return (T) ConvertUtils.toObject(outputStream.toByteArray());
+			return (T) ConvertUtils.toObject(outputStream.toByteArray(), object.getClass().getName());
 		} catch (Exception e) {
 			LOGGER.error("Convert_Object_To_Array_Error");
 			if (LOGGER.isDebugEnabled()) {

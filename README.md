@@ -57,6 +57,9 @@ It is framework-agnostic and can be integrated into:
 **Runtime：** OpenJDK 17+ or compatible version  
 **Jakarta EE Platform:** 11
 
+## Old Version Compatibility
+We provided an old version for OpenJDK 11, users can found the source code at branch v1.x
+
 ## Design Philosophy
 This project is built upon the following engineering principles:
 

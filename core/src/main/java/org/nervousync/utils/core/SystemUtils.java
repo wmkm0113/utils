@@ -108,6 +108,11 @@ public final class SystemUtils {
 	 */
 	public static final int MAJOR_VERSION;
 	/**
+	 * <span class="en-US">JVM can be use processors count</span>
+	 * <span class="zh-CN">JVM可用核心书</span>
+	 */
+	public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
+	/**
 	 * <span class="en-US">System identified ID</span>
 	 * <span class="zh-CN">系统标识ID</span>
 	 */

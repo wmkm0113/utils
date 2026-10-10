@@ -97,12 +97,14 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 
 	@Override
 	public <T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
-	                            final String encoding, final Class<T> beanClass, final String... schemaPaths) {
+	                            final String encoding, final String filter, final Class<T> beanClass,
+	                            final String... schemaPaths) {
 		T readObject = switch (stringType) {
 			case JSON -> JSON_MAPPER.readValue(inputStream, beanClass);
 			case YAML -> YAML_MAPPER.readValue(inputStream, beanClass);
 			default ->
-					DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
+					DEFAULT_BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding,
+							filter, beanClass, schemaPaths);
 		};
 		return validate(readObject) ? readObject : null;
 	}

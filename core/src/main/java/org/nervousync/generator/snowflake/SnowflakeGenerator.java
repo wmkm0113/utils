@@ -86,8 +86,8 @@ public final class SnowflakeGenerator implements IGenerator<Long> {
 	 */
 	public void config(final long referenceTime, final long deviceId, final long instanceId) {
 		this.referenceTime = (referenceTime >= 0L) ? referenceTime : Globals.DEFAULT_REFERENCE_TIME;
-		this.deviceId = (deviceId >= 0L && deviceId <= 64L) ? deviceId : DEFAULT_ID;
-		this.instanceId = (instanceId >= 0L && instanceId <= 64L) ? instanceId : DEFAULT_ID;
+		this.deviceId = (deviceId >= 0L && deviceId < 64L) ? deviceId : DEFAULT_ID;
+		this.instanceId = (instanceId >= 0L && instanceId < 64L) ? instanceId : DEFAULT_ID;
 		this.sequenceIndex = 0L;
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Config_Snowflake_Error",

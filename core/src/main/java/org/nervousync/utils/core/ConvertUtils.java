@@ -214,13 +214,14 @@ public final class ConvertUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static Object toObject(@Nonnull final byte[] dataBytes) {
+	public static Object toObject(@Nonnull final byte[] dataBytes, final String filter) {
 		if (dataBytes.length == 0) {
 			return null;
 		}
 
 		try (ByteArrayInputStream byteInputStream = new ByteArrayInputStream(dataBytes);
 		     ObjectInputStream objectInputStream = new ObjectInputStream(byteInputStream)) {
+			objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filter));
 			return objectInputStream.readObject();
 		} catch (Exception e) {
 			LOGGER.error("Convert_Array_To_Object_Error");

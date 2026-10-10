@@ -38,6 +38,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,7 +128,16 @@ public final class EventModelReaderImpl extends AbstractExcelReader {
 		}
 		try {
 			XSSFReader xssfReader = new XSSFReader(this.opcPackage);
-			XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			//  Enable FSP
+			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			//  Disallow doctype
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			//  Disallow external general entities
+			factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			//  Disallow external parameter entities
+			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			XMLReader xmlReader = factory.newSAXParser().getXMLReader();
 			MaxRowHandler maxRowHandler = new MaxRowHandler();
 			xmlReader.setContentHandler(maxRowHandler);
 			XSSFReader.SheetIterator iterator = (XSSFReader.SheetIterator) xssfReader.getSheetsData();

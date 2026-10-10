@@ -60,6 +60,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateParsingException;
@@ -147,7 +148,7 @@ public final class MailClient implements Closeable {
 			if (StringUtils.notBlank(this.userName)) {
 				properties.setProperty("mail.smtp.from", this.userName);
 			}
-			this.sendSession = Session.getDefaultInstance(properties, new DefaultAuthenticator(this.userName, this.passWord));
+			this.sendSession = Session.getInstance(properties, new DefaultAuthenticator(this.userName, this.passWord));
 		}
 		if (mailConfig.getReceiveConfig() == null) {
 			throw new MailException(0x0000000E0004L);
@@ -163,12 +164,30 @@ public final class MailClient implements Closeable {
 		if (StringUtils.notBlank(this.storagePath)) {
 			FileUtils.makeDir(this.storagePath);
 		}
-		this.x509Certificate = StringUtils.notBlank(mailConfig.getCertificate())
-				? CertificateUtils.x509(StringUtils.base64Decode(mailConfig.getCertificate()))
-				: null;
-		this.privateKey = StringUtils.notBlank(mailConfig.getPrivateKey())
-				? CertificateUtils.privateKey("RSA", StringUtils.base64Decode(mailConfig.getPrivateKey()))
-				: null;
+		if (StringUtils.notBlank(mailConfig.getStorePath())) {
+			KeyStore keyStore = CertificateUtils.loadKeyStore(mailConfig.getStorePath(), mailConfig.getStorePassword());
+			if (keyStore == null) {
+				throw new MailException(0x0000000E0003L);
+			}
+			try {
+				if (keyStore.containsAlias(mailConfig.getAliasName())) {
+					this.x509Certificate = (X509Certificate) keyStore.getCertificate(mailConfig.getAliasName());
+					this.privateKey =
+							(PrivateKey) keyStore.getKey(mailConfig.getAliasName(),
+									mailConfig.getKeyPassword().toCharArray());
+				} else {
+					throw new MailException(0x0000000E0003L);
+				}
+			} catch (Exception e) {
+				if (e instanceof MailException) {
+					throw (MailException) e;
+				}
+				throw new MailException(0x0000000E0003L, e);
+			}
+		} else {
+			this.x509Certificate = null;
+			this.privateKey = null;
+		}
 	}
 
 	/**
@@ -744,7 +763,7 @@ public final class MailClient implements Closeable {
 				try {
 					SignerInformationVerifier signerInformationVerifier =
 							new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certificate);
-					return signerInformation.verify(signerInformationVerifier);
+					return CertificateUtils.verify(certificate) && signerInformation.verify(signerInformationVerifier);
 				} catch (Exception e) {
 					LOGGER.error("Verify_Signature_Mail_Error");
 					if (LOGGER.isDebugEnabled()) {
@@ -891,10 +910,9 @@ public final class MailClient implements Closeable {
 			}
 			if (StringUtils.notBlank(bodyPart.getFileName())) {
 				String disposition = bodyPart.getDisposition();
-				if (disposition != null
-						&& (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {
-					String savePath = this.storagePath + Globals.DEFAULT_PAGE_SEPARATOR
-							+ MimeUtility.decodeText(bodyPart.getFileName());
+				if (disposition != null && (disposition.equals(Part.ATTACHMENT) || disposition.equals(Part.INLINE))) {
+					String fileName = StringUtils.getFilename(MimeUtility.decodeText(bodyPart.getFileName()));
+					String savePath = this.storagePath + Globals.DEFAULT_PAGE_SEPARATOR + fileName;
 					if (!savePath.toLowerCase().endsWith("p7s")) {
 						boolean saveFile = FileUtils.saveFile(bodyPart.getInputStream(), savePath);
 						if (saveFile) {

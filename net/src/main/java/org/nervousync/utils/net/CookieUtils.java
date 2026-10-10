@@ -252,6 +252,7 @@ public final class CookieUtils {
 	private static void secureCheck(final Cookie cookie) {
 		if ("secure".equalsIgnoreCase(cookie.getName())) {
 			cookie.setSecure(Boolean.TRUE);
+			cookie.setHttpOnly(Boolean.TRUE);
 		}
 	}
 

@@ -17,11 +17,13 @@
 
 package org.nervousync.security.password.impl;
 
+import jakarta.annotation.Nonnull;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.nervousync.commons.Globals;
 import org.nervousync.security.password.PasswordEncoder;
 import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.core.SystemUtils;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -37,6 +39,13 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 
 	private static final int SALT_LENGTH = 16;
 	private static final int HASH_LENGTH = 32;
+
+	private static final int MIN_MEMORY = 16;
+	private static final int MAX_MEMORY = 256;
+	private static final int MIN_ITERATIONS = 2;
+	private static final int MAX_ITERATIONS = 10;
+	private static final int MIN_PARALLELISM = 1;
+	private static final int MAX_PARALLELISM = SystemUtils.AVAILABLE_PROCESSORS;
 
 	/**
 	 * <span class="en-US">Usage memory size</span>
@@ -75,16 +84,15 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 	public String encode(final char[] password) {
 		byte[] salt = new byte[SALT_LENGTH];
 		Globals.randomBytes(salt);
-		byte[] hash = derive(password, salt, this.memory, this.iterations, this.parallelism);
-		return "$argon2id$v=19$m=" + (this.memory * 1024) + ",t=" + this.iterations + ",p=" + this.parallelism
-				+ "$" + StringUtils.base64Encode(salt, Boolean.FALSE)
-				+ "$" + StringUtils.base64Encode(hash, Boolean.FALSE);
+		Config config = new Config(this.memory, this.iterations, this.parallelism, salt, new byte[0]);
+		byte[] hash = derive(password, config);
+		return config + "$" + StringUtils.base64Encode(hash, Boolean.FALSE);
 	}
 
 	@Override
 	public boolean verify(final char[] password, final String encodedPassword) {
 		Config config = Config.parse(encodedPassword);
-		byte[] hash = derive(password, config.salt, config.memory, config.iterations, config.parallelism);
+		byte[] hash = derive(password, config);
 		try {
 			return MessageDigest.isEqual(config.hash, hash);
 		} finally {
@@ -100,15 +108,14 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 				|| this.parallelism != config.parallelism;
 	}
 
-	private static byte[] derive(final char[] password, final byte[] salt,
-	                             final int memory, final int iterations, final int parallelism) {
+	private static byte[] derive(final char[] password, final Config config) {
 		Argon2Parameters parameters =
 				new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
 						.withVersion(Argon2Parameters.ARGON2_VERSION_13)
-						.withMemoryAsKB(memory * 1024)
-						.withIterations(iterations)
-						.withParallelism(parallelism)
-						.withSalt(salt)
+						.withMemoryAsKB(config.memory * 1024)
+						.withIterations(config.iterations)
+						.withParallelism(config.parallelism)
+						.withSalt(config.salt)
 						.build();
 		Argon2BytesGenerator generator = new Argon2BytesGenerator();
 		generator.init(parameters);
@@ -119,6 +126,21 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 	}
 
 	private record Config(int memory, int iterations, int parallelism, byte[] salt, byte[] hash) {
+
+		Config(int memory, int iterations, int parallelism, byte[] salt, byte[] hash) {
+			this.memory = Math.min(Math.max(memory, MIN_MEMORY), MAX_MEMORY);
+			this.iterations = Math.min(Math.max(iterations, MIN_ITERATIONS), MAX_ITERATIONS);
+			this.parallelism = Math.min(Math.max(parallelism, MIN_PARALLELISM), MAX_PARALLELISM);
+			this.salt = salt;
+			this.hash = hash;
+		}
+
+		@Override
+		@Nonnull
+		public String toString() {
+			return "$argon2id$v=19$m=" + (this.memory * 1024) + ",t=" + this.iterations + ",p=" + this.parallelism
+					+ "$" + StringUtils.base64Encode(this.salt, Boolean.FALSE);
+		}
 
 		static Config parse(final String encodedPassword) {
 			String[] parts = StringUtils.tokenizeToStringArray(encodedPassword, "$");
@@ -138,6 +160,5 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 					Integer.parseInt(confParts[1].substring(2)), Integer.parseInt(confParts[2].substring(2)),
 					StringUtils.base64Decode(parts[3]), StringUtils.base64Decode(parts[4]));
 		}
-
 	}
 }

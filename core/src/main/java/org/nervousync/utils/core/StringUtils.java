@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -2632,6 +2633,16 @@ public final class StringUtils {
 					try {
 						DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 						documentBuilderFactory.setNamespaceAware(Boolean.TRUE);
+						documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+						documentBuilderFactory.setXIncludeAware(Boolean.FALSE);
+						documentBuilderFactory.setExpandEntityReferences(Boolean.FALSE);
+						documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+						//  Disallow external general entities
+						documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+						//  Disallow external parameter entities
+						documentBuilderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+						documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+						documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
 						DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 						Document document = documentBuilder.parse(new InputSource(new StringReader(xmlData)));
 						schema.newValidator().validate(new DOMSource(document));

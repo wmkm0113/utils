@@ -319,7 +319,9 @@ public final class RequestUtils {
 				HttpResponse<String> httpResponse =
 						buildClient(requestInfo).send(httpRequest, HttpResponse.BodyHandlers.ofString());
 				String responseData = httpResponse.body();
-				ContentType contentType = ContentType.parse(httpResponse.headers().firstValue("Content-Type").orElse(Globals.DEFAULT_VALUE_STRING));
+				ContentType contentType =
+						ContentType.parse(httpResponse.headers().firstValue("Content-Type")
+								.orElse(Globals.DEFAULT_VALUE_STRING));
 				if (String.class.equals(targetClass)) {
 					response = responseData;
 				} else if (targetClass.isArray() || ClassUtils.isAssignable(targetClass, Collection.class)) {

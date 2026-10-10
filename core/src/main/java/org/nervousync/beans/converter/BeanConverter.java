@@ -69,6 +69,8 @@ public interface BeanConverter {
 	 *                    <span class="zh-CN">字符串类型</span>
 	 * @param encoding    <span class="en-US">String charset encoding</span>
 	 *                    <span class="zh-CN">字符串的字符集编码</span>
+	 * @param filter      <span class="en-US">Allowlist filter rules</span>
+	 *                    <span class="zh-CN">白名单过滤规则</span>
 	 * @param beanClass   <span class="en-US">target JavaBean class</span>
 	 *                    <span class="zh-CN">目标JavaBean类</span>
 	 * @param schemaPaths <span class="en-US">XML schema path(Maybe schema uri or local path)</span>
@@ -77,7 +79,8 @@ public interface BeanConverter {
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
 	<T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
-	                     final String encoding, final Class<T> beanClass, final String... schemaPaths);
+	                     final String encoding, final String filter, final Class<T> beanClass,
+	                     final String... schemaPaths);
 
 	/**
 	 * <h3 class="en-US">Parse the input stream instance to target JavaBean instance list. </h3>

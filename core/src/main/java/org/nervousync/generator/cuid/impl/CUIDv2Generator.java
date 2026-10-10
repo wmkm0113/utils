@@ -84,8 +84,6 @@ public final class CUIDv2Generator extends CUIDGenerator {
 		final String data =
 				timestamp + processPadding(Integer.toString(this.counter, DEFAULT_RADIX), 4) + MACHINE_FINGERPRINT;
 		byte[] result = SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8));
-//		String result = new BigInteger(SecurityUtils.SHA3_256((data + SALT(length)).getBytes(StandardCharsets.UTF_8)))
-//					.toString(DEFAULT_RADIX);
 		int maxLength = Math.min(length, 32);
 		char[] buffer = new char[maxLength];
 		buffer[0] = firstChar;
@@ -108,16 +106,6 @@ public final class CUIDv2Generator extends CUIDGenerator {
 			buffer[charIndex++] = ALPHABET.charAt(value % 36);
 		}
 		return CUID.fromString(new String(buffer));
-//		if (result.length() > maxLength) {
-//			return CUID.fromString(firstChar + result.substring(1, maxLength));
-//		} else {
-//			StringBuilder stringBuilder =
-//					new StringBuilder(Character.toString(firstChar)).append(result, 1, result.length());
-//			while (stringBuilder.length() < maxLength) {
-//				stringBuilder.append(ALPHABET.charAt(Globals.random(ALPHABET.length())));
-//			}
-//			return CUID.fromString(stringBuilder.toString());
-//		}
 	}
 
 	@Override

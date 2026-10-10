@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.utils.jmx;
+package org.nervousync.utils.net;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.jmx.Monitor;
@@ -57,8 +57,8 @@ public final class JMXUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">According to the annotation {@link org.nervousync.annotations.jmx.Monitor} information, parse the ObjectName of the monitoring object</h3>
-	 * <h3 class="zh-CN">根据注解 {@link org.nervousync.annotations.jmx.Monitor} 信息，解析监控对象的ObjectName</h3>
+	 * <h3 class="en-US">According to the annotation {@link Monitor} information, parse the ObjectName of the monitoring object</h3>
+	 * <h3 class="zh-CN">根据注解 {@link Monitor} 信息，解析监控对象的ObjectName</h3>
 	 *
 	 * @param mbeanObject <span class="en-US">Standard MBean object</span>
 	 *                    <span class="zh-CN">标准MBean对象</span>

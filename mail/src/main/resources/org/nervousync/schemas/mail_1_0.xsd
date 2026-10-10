@@ -2,7 +2,8 @@
 <xsd:schema xmlns="https://nervousync.org/schemas/mail" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:config="https://nervousync.org/schemas/config"
             targetNamespace="https://nervousync.org/schemas/mail" elementFormDefault="qualified" version="1.0">
-    <xsd:import namespace="https://nervousync.org/schemas/config" schemaLocation="https://nervousync.org/schemas/config_1_0.xsd" />
+    <xsd:import namespace="https://nervousync.org/schemas/config"
+                schemaLocation="https://nervousync.org/schemas/config_1_0.xsd"/>
     <xsd:complexType name="mail_config">
         <xsd:all>
             <xsd:element name="signature" type="xsd:string" minOccurs="0">
@@ -40,15 +41,24 @@
                     <xsd:documentation>Receive attaches file save path</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="certificate" type="xsd:string">
+            <xsd:element name="key_store_path" type="xsd:string">
                 <xsd:annotation>
-                    <xsd:documentation>Verify digital signature using certificate, base64 encoded.
-                    </xsd:documentation>
+                    <xsd:documentation>Key store path</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="private_key" type="xsd:string">
+            <xsd:element name="key_store_password" type="xsd:string">
                 <xsd:annotation>
-                    <xsd:documentation>Signature the mail using private key, base64 encoded.</xsd:documentation>
+                    <xsd:documentation>Key store password</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="alias_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Item alias name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="key_password" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Private key password</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="last_modified" type="xsd:long">
@@ -74,13 +84,13 @@
                 <xsd:annotation>
                     <xsd:documentation>Used secure protocol of connecting to the mail server</xsd:documentation>
                 </xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="NONE" />
-						<xsd:enumeration value="SSL" />
-						<xsd:enumeration value="TLS" />
-					</xsd:restriction>
-				</xsd:simpleType>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="NONE"/>
+                        <xsd:enumeration value="SSL"/>
+                        <xsd:enumeration value="TLS"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
             </xsd:element>
             <xsd:element name="auth_login" type="xsd:boolean" default="false">
                 <xsd:annotation>

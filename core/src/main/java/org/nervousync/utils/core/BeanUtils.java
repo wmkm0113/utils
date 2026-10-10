@@ -95,6 +95,11 @@ public final class BeanUtils {
 	 * <span class="zh-CN">JavaBean 转换适配器实现类实例对象</span>
 	 */
 	private static final BeanConverter BEAN_CONVERTER;
+	/**
+	 * <span class="en-US">Allowlist filter rules</span>
+	 * <span class="zh-CN">白名单过滤规则</span>
+	 */
+	private static String ALLOWLIST_FILTER = Globals.DEFAULT_VALUE_STRING;
 
 	static {
 		try {
@@ -112,6 +117,17 @@ public final class BeanUtils {
 			beanConverter = new DefaultBeanConverterImpl();
 		}
 		BEAN_CONVERTER = beanConverter;
+	}
+
+	/**
+	 * <h3 class="en-US">Configure allowlist filter rules</h3>
+	 * <h3 class="zh-CN">设置白名单过滤规则</h3>
+	 *
+	 * @param allowList <span class="en-US">Allowlist filter rules</span>
+	 *                  <span class="zh-CN">白名单过滤规则</span>
+	 */
+	public static void serializableAllowlist(final String allowList) {
+		ALLOWLIST_FILTER = allowList;
 	}
 
 	/**
@@ -355,7 +371,7 @@ public final class BeanUtils {
 	 */
 	public static <T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
 	                                   final String encoding, final Class<T> beanClass, final String... schemaPaths) {
-		return BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, beanClass, schemaPaths);
+		return BEAN_CONVERTER.streamToObject(inputStream, stringType, encoding, ALLOWLIST_FILTER, beanClass, schemaPaths);
 	}
 
 	/**
@@ -501,6 +517,9 @@ public final class BeanUtils {
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		schemaFactory.setResourceResolver(new SchemaResourceResolver());
 		try {
+			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
+
 			Source[] sources = new Source[schemaPaths.length];
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			docFactory.setNamespaceAware(Boolean.TRUE);

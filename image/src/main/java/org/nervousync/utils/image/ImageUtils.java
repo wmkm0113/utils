@@ -25,11 +25,13 @@ import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.Optional;
 
 /**
@@ -48,10 +50,30 @@ public final class ImageUtils {
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(ImageUtils.class);
 
 	/**
+	 * <span class="en-US">Maximum memory allowed for loading images</span>
+	 * <span class="zh-CN">读取图片允许使用的最大内存数</span>
+	 */
+	private static long MEMORY_LIMIT = 10L * 1024L * 1024L;
+
+	/**
 	 * <h3 class="en-US">Private constructor for ImageUtils</h3>
 	 * <h3 class="zh-CN">图片工具集的私有构造方法</h3>
 	 */
 	private ImageUtils() {
+	}
+
+	/**
+	 * <h3 class="en-US">Configure the maximum memory allowed for loading images</h3>
+	 * <h3 class="zh-CN">设置允许使用的最大内存数</h3>
+	 *
+	 * @param limit
+	 * <span class="en-US">Maximum memory allowed for loading images (Unit: MB)</span>
+	 * <span class="zh-CN">读取图片允许使用的最大内存数（单位：MB）</span>
+	 */
+	public static void memoryLimit(final int limit) {
+		if (limit > 0) {
+			MEMORY_LIMIT = limit * 1024L * 1024L;
+		}
 	}
 
 	/**
@@ -64,18 +86,57 @@ public final class ImageUtils {
 	 * <span class="zh-CN">图片宽度值</span>
 	 */
 	public static int imageWidth(final String imagePath) {
-		if (FileUtils.isExists(imagePath) && FileUtils.imageFile(imagePath)) {
-			try {
-				BufferedImage srcImage = ImageIO.read(FileUtils.getFile(imagePath));
-				return srcImage.getWidth(null);
-			} catch (Exception e) {
-				LOGGER.error("Read_Image_Error");
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Stack_Message_Error", e);
-				}
+		try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(FileUtils.getFile(imagePath))) {
+			Iterator<ImageReader> readers = ImageIO.getImageReaders(imageInputStream);
+			if (readers.hasNext()) {
+				ImageReader reader = readers.next();
+				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
+				return reader.getWidth(0);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Read_Image_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
 			}
 		}
 		return Globals.DEFAULT_VALUE_INT;
+	}
+
+	private static BufferedImage readImage(final String imagePath) {
+		try {
+			return readImage(FileUtils.getFile(imagePath));
+		} catch (Exception e) {
+			LOGGER.error("Read_Image_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+		}
+		return null;
+	}
+
+	private static BufferedImage readImage(final File file) {
+		try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(file)) {
+			Iterator<ImageReader> readers = ImageIO.getImageReaders(imageInputStream);
+			if (readers.hasNext()) {
+				ImageReader reader = readers.next();
+				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
+				try {
+					long estimatedMemory = (long) reader.getWidth(0) * reader.getHeight(0) * 4;
+					if (estimatedMemory > MEMORY_LIMIT) {
+						throw new SecurityException("Image size is out of the maximum memory limit! ");
+					}
+					return reader.read(0);
+				} finally {
+					reader.dispose();
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Read_Image_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -88,15 +149,17 @@ public final class ImageUtils {
 	 * <span class="zh-CN">图片高度值</span>
 	 */
 	public static int imageHeight(final String imagePath) {
-		if (FileUtils.isExists(imagePath) && FileUtils.imageFile(imagePath)) {
-			try {
-				BufferedImage srcImage = ImageIO.read(FileUtils.getFile(imagePath));
-				return srcImage.getHeight(null);
-			} catch (Exception e) {
-				LOGGER.error("Read_Image_Error");
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Stack_Message_Error", e);
-				}
+		try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(FileUtils.getFile(imagePath))) {
+			Iterator<ImageReader> readers = ImageIO.getImageReaders(imageInputStream);
+			if (readers.hasNext()) {
+				ImageReader reader = readers.next();
+				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
+				return reader.getHeight(0);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Read_Image_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
 			}
 		}
 		return Globals.DEFAULT_VALUE_INT;
@@ -112,14 +175,22 @@ public final class ImageUtils {
 	 * <span class="zh-CN">图片宽高比</span>
 	 */
 	public static double imageRatio(final String imagePath) {
-		double imageHeight = ImageUtils.imageHeight(imagePath);
-		double imageWidth = ImageUtils.imageHeight(imagePath);
-
-		if (imageHeight == Globals.DEFAULT_VALUE_DOUBLE || imageWidth == Globals.DEFAULT_VALUE_DOUBLE) {
-			return Globals.DEFAULT_VALUE_DOUBLE;
+		try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(FileUtils.getFile(imagePath))) {
+			Iterator<ImageReader> readers = ImageIO.getImageReaders(imageInputStream);
+			if (readers.hasNext()) {
+				ImageReader reader = readers.next();
+				reader.setInput(imageInputStream, Boolean.TRUE, Boolean.TRUE);
+				double imageHeight = reader.getHeight(0);
+				double imageWidth = reader.getWidth(0);
+				return imageWidth / imageHeight;
+			}
+		} catch (Exception e) {
+			LOGGER.error("Read_Image_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
 		}
-
-		return imageWidth / imageHeight;
+		return Globals.DEFAULT_VALUE_DOUBLE;
 	}
 
 	/**
@@ -147,7 +218,10 @@ public final class ImageUtils {
 			}
 
 			try {
-				BufferedImage srcImage = ImageIO.read(FileUtils.getFile(origPath));
+				BufferedImage srcImage = readImage(origPath);
+				if (srcImage == null) {
+					return Boolean.FALSE;
+				}
 				BufferedImage bufferedImage =
 						new BufferedImage(cutOptions.getCutWidth(), cutOptions.getCutHeight(),
 								BufferedImage.TYPE_INT_RGB);
@@ -207,7 +281,10 @@ public final class ImageUtils {
 	                                    final MarkOptions markOptions) {
 		if (FileUtils.isExists(origPath) && FileUtils.imageFile(origPath) && ratio > 0) {
 			try {
-				BufferedImage srcImage = ImageIO.read(FileUtils.getFile(origPath));
+				BufferedImage srcImage = readImage(origPath);
+				if (srcImage == null) {
+					return Boolean.FALSE;
+				}
 
 				int origWidth = srcImage.getWidth(null);
 				int origHeight = srcImage.getHeight(null);
@@ -299,7 +376,10 @@ public final class ImageUtils {
 		if (FileUtils.isExists(origPath) && FileUtils.imageFile(origPath)
 				&& (targetWidth > 0 || targetHeight > 0)) {
 			try {
-				BufferedImage srcImage = ImageIO.read(FileUtils.getFile(origPath));
+				BufferedImage srcImage = readImage(origPath);
+				if (srcImage == null) {
+					return Boolean.FALSE;
+				}
 
 				int origWidth = srcImage.getWidth(null);
 				int origHeight = srcImage.getHeight(null);
@@ -450,15 +530,7 @@ public final class ImageUtils {
 	 * <span class="zh-CN">差异值哈希字符串</span>
 	 */
 	public static String dHash(final File file) {
-		try {
-			return ImageUtils.dHash(ImageIO.read(file));
-		} catch (IOException e) {
-			LOGGER.error("Read_Files_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return Globals.DEFAULT_VALUE_STRING;
-		}
+		return Optional.ofNullable(readImage(file)).map(ImageUtils::dHash).orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -519,15 +591,7 @@ public final class ImageUtils {
 	 * <span class="zh-CN">感知哈希字符串</span>
 	 */
 	public static String pHash(final File file) {
-		try {
-			return ImageUtils.pHash(ImageIO.read(file));
-		} catch (IOException e) {
-			LOGGER.error("Read_Files_Error");
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Stack_Message_Error", e);
-			}
-			return Globals.DEFAULT_VALUE_STRING;
-		}
+		return Optional.ofNullable(readImage(file)).map(ImageUtils::pHash).orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 
 	/**
@@ -614,7 +678,7 @@ public final class ImageUtils {
 					switch (markOptions.getMarkType()) {
 						case ICON:
 							try {
-								BufferedImage iconImg = ImageIO.read(FileUtils.getFile(markOptions.getMarkPath()));
+								BufferedImage iconImg = readImage(markOptions.getMarkPath());
 								if (iconImg != null && markOptions.getTransparency() >= 0
 										&& markOptions.getTransparency() <= 1) {
 									graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,

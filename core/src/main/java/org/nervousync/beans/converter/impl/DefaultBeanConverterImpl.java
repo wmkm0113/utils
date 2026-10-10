@@ -128,7 +128,8 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 
 	@Override
 	public <T> T streamToObject(@Nonnull final InputStream inputStream, final StringType stringType,
-	                            final String encoding, @Nonnull final Class<T> beanClass, final String... schemaPaths) {
+	                            final String encoding, final String filter, @Nonnull final Class<T> beanClass,
+	                            final String... schemaPaths) {
 		switch (stringType) {
 			case XML:
 				try {
@@ -148,7 +149,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 			case SERIALIZABLE:
 				return Optional.of(IOUtils.readContent(inputStream))
 						.map(StringUtils::base64Decode)
-						.map(ConvertUtils::toObject)
+						.map(dataBytes -> ConvertUtils.toObject(dataBytes, filter))
 						.filter(object -> ClassUtils.isAssignable(object.getClass(), beanClass))
 						.map(beanClass::cast)
 						.orElse(null);
