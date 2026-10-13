@@ -140,7 +140,7 @@ public final class CryptoTest extends BaseTest {
         KeyPair keyPair = SecurityUtils.RSAKeyPair();
         //  Testing for encrypting and decrypt data using RSA
         for (String padding : RSA_PADDINGS) {
-            if (padding.equalsIgnoreCase("OAEPWithSHA-512AndMGF1Padding")) {
+            if (padding.equalsIgnoreCase("OAEPWithSHA-256AndMGF1Padding")) {
                 //  Minimum key size was 2048 when padding mode is "OAEPWithSHA-512AndMGF1Padding"
                 keyPair = SecurityUtils.RSAKeyPair(2048);
             }

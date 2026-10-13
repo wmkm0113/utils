@@ -87,6 +87,8 @@ public final class CertificateUtils {
 	 */
 	private static final LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(CertificateUtils.class);
 
+	private static final String EMAIL_PROTECTION_EKU = "1.3.6.1.5.5.7.3.4";
+
 	static {
 		/* Add Bouncy Castle Provider */
 		Security.addProvider(new BouncyCastleProvider());
@@ -305,6 +307,82 @@ public final class CertificateUtils {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 			return Boolean.FALSE;
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Check and Verify S/MIME Signature</h3>
+	 * <h3 class="zh-CN">检查电子邮件签名是否有效</h3>
+	 *
+	 * @param signer          <span class="en-US">X.509 Certificate</span>
+	 *                        <span class="zh-CN">X.509证书</span>
+	 * @param certificates    <span class="en-US">Certificate chain</span>
+	 *                        <span class="zh-CN">证书链</span>
+	 * @param trustStore      <span class="en-US">Trust store</span>
+	 *                        <span class="zh-CN">可信证书库</span>
+	 * @param expectedAddress <span class="en-US">Expected sender e-mail address</span>
+	 *                        <span class="zh-CN">预期的发件人地址</span>
+	 * @param revocation      <span class="en-US">The flag for check the certificate revocation</span>
+	 *                        <span class="zh-CN">检查证书是否被吊销标记</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	public static boolean verify(final X509Certificate signer, final Collection<X509Certificate> certificates,
+	                             final KeyStore trustStore, final String expectedAddress, final boolean revocation) {
+		try {
+			signer.checkValidity();
+			checkUsage(signer);
+			checkIdentity(signer, expectedAddress);
+
+			X509CertSelector selector = new X509CertSelector();
+			selector.setCertificate(signer);
+
+			PKIXBuilderParameters parameters = new PKIXBuilderParameters(trustStore, selector);
+			parameters.setRevocationEnabled(revocation);
+
+			CertStore intermediates = CertStore.getInstance("Collection", new CollectionCertStoreParameters(certificates));
+			parameters.addCertStore(intermediates);
+
+			CertPathBuilder builder = CertPathBuilder.getInstance("PKIX", "BC");
+			builder.build(parameters);
+			return Boolean.TRUE;
+		} catch (GeneralSecurityException e) {
+			LOGGER.error("Certificate_Invalid_Error");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Stack_Message_Error", e);
+			}
+			return Boolean.FALSE;
+		}
+	}
+
+	private static void checkUsage(final X509Certificate certificate) throws CertificateException {
+		boolean[] keyUsage = certificate.getKeyUsage();
+		if (keyUsage != null && (keyUsage.length == 0 || !keyUsage[0])) {
+			throw new CertificateException("S/MIME signer lacks digitalSignature usage");
+		}
+		List<String> extendedUsage = certificate.getExtendedKeyUsage();
+		if (extendedUsage != null && !extendedUsage.contains(EMAIL_PROTECTION_EKU)) {
+			throw new CertificateException("S/MIME signer lacks emailProtection EKU");
+		}
+	}
+
+	private static void checkIdentity(final X509Certificate certificate, final String expectedAddress)
+			throws CertificateException {
+		String normalizedAddress = expectedAddress.trim().toLowerCase(Locale.ROOT);
+
+		Collection<List<?>> names = certificate.getSubjectAlternativeNames();
+		if (names == null) {
+			throw new CertificateException("S/MIME certificate has no rfc822Name");
+		}
+
+		boolean matched = names.stream()
+				.filter(name -> name.size() >= 2)
+				.filter(name -> Integer.valueOf(1).equals(name.get(0)))
+				.map(name -> String.valueOf(name.get(1)))
+				.map(value -> value.trim().toLowerCase(Locale.ROOT))
+				.anyMatch(normalizedAddress::equals);
+		if (!matched) {
+			throw new CertificateException("S/MIME signer does not match From");
 		}
 	}
 

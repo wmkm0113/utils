@@ -48,11 +48,7 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 
 	@Override
 	public CryptoAdaptor initDigest(@Nonnull final CipherConfig cipherConfig, final CipherKey cipherKey) {
-		BaseDigestAdaptorImpl adaptor = super.adaptor(cipherConfig.algorithm(), BaseDigestAdaptorImpl.class);
-		if (adaptor == null) {
-			adaptor = new DigestAdaptorImpl(cipherConfig);
-			super.register(cipherConfig.algorithm(), adaptor);
-		}
+		BaseDigestAdaptorImpl adaptor = new DigestAdaptorImpl(cipherConfig);
 		if (adaptor.isMacMode()) {
 			adaptor.initHmac(cipherConfig.algorithm(), cipherKey.getKeyBytes());
 		}
@@ -62,23 +58,9 @@ public final class DefaultSecurityAdaptorImpl extends BaseSecurityAdaptorImpl {
 	@Override
 	public CryptoAdaptor initCipher(@Nonnull final CipherConfig cipherConfig, @Nonnull final CryptoMode cryptoMode,
 	                                @Nonnull final CipherKey cipherKey) {
-		if (cipherConfig.isAsymmetric()) {
-			AsymmetricAdaptorImpl adaptor = super.adaptor(cipherConfig.algorithm(), AsymmetricAdaptorImpl.class);
-			if (adaptor == null) {
-				adaptor = new AsymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
-			} else {
-				adaptor.config(cipherConfig, cryptoMode, cipherKey);
-			}
-			return adaptor;
-		} else {
-			SymmetricAdaptorImpl adaptor = super.adaptor(cipherConfig.algorithm(), SymmetricAdaptorImpl.class);
-			if (adaptor == null) {
-				adaptor = new SymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
-			} else {
-				adaptor.config(cipherConfig, cryptoMode, cipherKey);
-			}
-			return adaptor;
-		}
+		return cipherConfig.isAsymmetric()
+				? new AsymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey)
+				: new SymmetricAdaptorImpl(cipherConfig, cryptoMode, cipherKey);
 	}
 
 	/**

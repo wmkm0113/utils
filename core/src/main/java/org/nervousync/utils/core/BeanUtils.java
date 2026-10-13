@@ -523,7 +523,20 @@ public final class BeanUtils {
 			Source[] sources = new Source[schemaPaths.length];
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			docFactory.setNamespaceAware(Boolean.TRUE);
+			docFactory.setXIncludeAware(Boolean.FALSE);
+			docFactory.setExpandEntityReferences(Boolean.FALSE);
+			docFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			docFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			docFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			docFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			docFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			docFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			docBuilder.setEntityResolver((publicId, systemId) -> {
+				throw new SAXException("External entities are disabled");
+			});
 			for (int i = 0; i < schemaPaths.length; i++) {
 				String locationPath = SCHEMA_MAPPING.getOrDefault(schemaPaths[i], schemaPaths[i]);
 				try (InputStream in = FileUtils.loadFile(locationPath)) {
@@ -855,15 +868,15 @@ public final class BeanUtils {
 			LOGGER.debug("Resolving_Schema_Debug",
 					type, namespaceURI, publicId, systemId, baseURI);
 			String schemaLocation = baseURI.substring(0, baseURI.lastIndexOf("/") + 1);
-			String filePath;
-			if (SCHEMA_MAPPING.containsKey(namespaceURI)) {
-				filePath = SCHEMA_MAPPING.get(namespaceURI);
-			} else {
-				if (!systemId.contains(Globals.HTTP_PROTOCOL)) {
-					filePath = schemaLocation + systemId;
-				} else {
-					filePath = systemId;
-				}
+			String filePath = SCHEMA_MAPPING.getOrDefault(namespaceURI, Globals.DEFAULT_VALUE_STRING);
+			if (StringUtils.isEmpty(filePath)) {
+				filePath = SCHEMA_MAPPING.getOrDefault(systemId, Globals.DEFAULT_VALUE_STRING);
+			}
+
+			if (StringUtils.isEmpty(filePath) || filePath.startsWith(Globals.HTTP_PROTOCOL)
+					|| filePath.startsWith(Globals.SECURE_HTTP_PROTOCOL)
+					|| filePath.startsWith(Globals.FILE_URL_PREFIX)) {
+				return new LSInputImpl(publicId, systemId, InputStream.nullInputStream());
 			}
 			try {
 				return new LSInputImpl(publicId, namespaceURI, FileUtils.loadFile(filePath));
@@ -871,7 +884,7 @@ public final class BeanUtils {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Load_Schemas_Error", e);
 				}
-				return new LSInputImpl();
+				return new LSInputImpl(publicId, systemId, InputStream.nullInputStream());
 			}
 		}
 	}

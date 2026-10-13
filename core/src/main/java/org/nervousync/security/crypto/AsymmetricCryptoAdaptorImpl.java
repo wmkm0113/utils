@@ -318,7 +318,9 @@ public abstract class AsymmetricCryptoAdaptorImpl extends BaseCryptoAdaptorImpl 
 			position += blockLength;
 		}
 		int remainLength = this.appendBuffer.length - position;
-		this.appendBuffer = ByteBuffer.allocate(remainLength).put(this.appendBuffer, position, remainLength).array();
+		if (remainLength >= 0) {
+			this.appendBuffer = ByteBuffer.allocate(remainLength).put(this.appendBuffer, position, remainLength).array();
+		}
 	}
 
 	/**

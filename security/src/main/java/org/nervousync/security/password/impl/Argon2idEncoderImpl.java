@@ -92,12 +92,15 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 	@Override
 	public boolean verify(final char[] password, final String encodedPassword) {
 		Config config = Config.parse(encodedPassword);
-		byte[] hash = derive(password, config);
-		try {
-			return MessageDigest.isEqual(config.hash, hash);
-		} finally {
-			Arrays.fill(hash, (byte) 0);
+		if (VALID_CONFIG(config)) {
+			byte[] hash = derive(password, config);
+			try {
+				return MessageDigest.isEqual(config.hash, hash);
+			} finally {
+				Arrays.fill(hash, (byte) 0);
+			}
 		}
+		return Boolean.FALSE;
 	}
 
 	@Override
@@ -106,6 +109,25 @@ public final class Argon2idEncoderImpl implements PasswordEncoder {
 		return this.memory != config.memory
 				|| this.iterations != config.iterations
 				|| this.parallelism != config.parallelism;
+	}
+
+	/**
+	 * <h3 class="en-US">Check whether the given configure information is valid</h3>
+	 * <h3 class="zh-CN">检查给定的配置信息参数是否合法</h3>
+	 *
+	 * @param config <span class="en-US">Configure information</span>
+	 *               <span class="zh-CN">配置信息</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	private static boolean VALID_CONFIG(final Config config) {
+		if (config.memory < MIN_MEMORY || config.memory > MAX_MEMORY) {
+			return Boolean.FALSE;
+		}
+		if (config.iterations < MIN_ITERATIONS || config.iterations > MAX_ITERATIONS) {
+			return Boolean.FALSE;
+		}
+		return config.parallelism >= MIN_PARALLELISM && config.parallelism <= MAX_PARALLELISM;
 	}
 
 	private static byte[] derive(final char[] password, final Config config) {

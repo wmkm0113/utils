@@ -325,6 +325,10 @@ public final class Globals {
 	 * <span class="zh-CN">JAR URL 和 JAR 内路径之间的分隔符</span>
 	 */
 	public static final String JAR_URL_SEPARATOR = "!/";
+
+	public static final String CONTENT_TYPE_OID_SIGNED_DATA = "1.2.840.113549.1.7.2";
+	public static final String CONTENT_TYPE_OID_ENVELOPED_DATA = "1.2.840.113549.1.7.3";
+
 	/*
 	 * Header signatures
 	 */

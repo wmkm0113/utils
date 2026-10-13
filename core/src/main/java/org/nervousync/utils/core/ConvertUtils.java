@@ -24,6 +24,7 @@ import org.nervousync.utils.properties.PropertiesUtils;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -58,6 +59,18 @@ public final class ConvertUtils {
 	 * <span class="zh-CN">多语言支持的日志对象</span>
 	 */
 	private final static LoggerUtils.Logger LOGGER = LoggerUtils.getLogger(ConvertUtils.class);
+
+	private static final long MAX_BASE64_BYTES = 12L * 1024L * 1024L;
+	private static final long MAX_SERIALIZED_BYTES = 8L * 1024L * 1024L;
+	private static final long MAX_ARRAY_LENGTH = 1_000_000L;
+	private static final long MAX_DEPTH = 64L;
+	private static final long MAX_REFERENCES = 100_000L;
+
+	private static final String MANDATORY_LIMITS =
+			"maxbytes=" + MAX_SERIALIZED_BYTES
+					+ ";maxarray=" + MAX_ARRAY_LENGTH
+					+ ";maxdepth=" + MAX_DEPTH
+					+ ";maxrefs=" + MAX_REFERENCES;
 
 	/**
 	 * <h3 class="en-US">Private constructor for ConvertUtils</h3>
@@ -211,6 +224,8 @@ public final class ConvertUtils {
 	 *
 	 * @param dataBytes <span class="en-US">the original data byte array</span>
 	 *                  <span class="zh-CN">原始二进制数组</span>
+	 * @param filter    <span class="en-US">Allowlist filter rules</span>
+	 *                  <span class="zh-CN">白名单过滤规则</span>
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
@@ -219,20 +234,75 @@ public final class ConvertUtils {
 			return null;
 		}
 
-		try (ByteArrayInputStream byteInputStream = new ByteArrayInputStream(dataBytes);
-		     ObjectInputStream objectInputStream = new ObjectInputStream(byteInputStream)) {
-			String filterRules = filter;
-			if (!filterRules.endsWith(";!*")) {
-				filterRules += ";!*";
-			}
-			objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filterRules));
-			return objectInputStream.readObject();
+		try (ByteArrayInputStream byteInputStream = new ByteArrayInputStream(dataBytes)) {
+			return toObject(byteInputStream, filter, Boolean.FALSE);
 		} catch (Exception e) {
 			LOGGER.error("Convert_Array_To_Object_Error");
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Stack_Message_Error", e);
 			}
 			return null;
+		}
+	}
+
+	/**
+	 * <h3 class="en-US">Convert given data byte array instance to object instance</h3>
+	 * <h3 class="zh-CN">转换二进制数组为实例对象</h3>
+	 *
+	 * @param inputStream <span class="en-US">Input stream instance object</span>
+	 *                    <span class="zh-CN">输入流实例对象</span>
+	 * @param filter      <span class="en-US">Allowlist filter rules</span>
+	 *                    <span class="zh-CN">白名单过滤规则</span>
+	 * @return <span class="en-US">Converted object instance</span>
+	 * <span class="zh-CN">转换后的实例对象</span>
+	 */
+	public static Object toObject(@Nonnull final InputStream inputStream, final String filter) {
+		return toObject(inputStream, filter, Boolean.TRUE);
+	}
+
+	/**
+	 * <h3 class="en-US">Convert given data byte array instance to object instance</h3>
+	 * <h3 class="zh-CN">转换二进制数组为实例对象</h3>
+	 *
+	 * @param inputStream <span class="en-US">Input stream instance object</span>
+	 *                    <span class="zh-CN">输入流实例对象</span>
+	 * @param filter      <span class="en-US">Allowlist filter rules</span>
+	 *                    <span class="zh-CN">白名单过滤规则</span>
+	 * @param decode      <span class="en-US">Using base64 decode input data</span>
+	 *                    <span class="zh-CN">Base64解码输入数据</span>
+	 * @return <span class="en-US">Converted object instance</span>
+	 * <span class="zh-CN">转换后的实例对象</span>
+	 */
+	public static Object toObject(@Nonnull final InputStream inputStream, final String filter, boolean decode) {
+		String filterRules = filter;
+		if (!filterRules.endsWith(";!*")) {
+			filterRules += ";!*";
+		}
+		if (decode) {
+			try (InputStream limitInputStream = new LimitedInputStream(inputStream, MAX_BASE64_BYTES);
+			     InputStream decoded = Base64.getMimeDecoder().wrap(limitInputStream);
+			     ObjectInputStream objectInputStream = new ObjectInputStream(decoded)) {
+				objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(MANDATORY_LIMITS + ";" + filterRules));
+				return objectInputStream.readObject();
+			} catch (Exception e) {
+				LOGGER.error("Convert_Array_To_Object_Error");
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Stack_Message_Error", e);
+				}
+				return null;
+			}
+		} else {
+			try (InputStream limitInputStream = new LimitedInputStream(inputStream, MAX_BASE64_BYTES);
+			     ObjectInputStream objectInputStream = new ObjectInputStream(limitInputStream)) {
+				objectInputStream.setObjectInputFilter(ObjectInputFilter.Config.createFilter(MANDATORY_LIMITS + ";" + filterRules));
+				return objectInputStream.readObject();
+			} catch (Exception e) {
+				LOGGER.error("Convert_Array_To_Object_Error");
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Stack_Message_Error", e);
+				}
+				return null;
+			}
 		}
 	}
 
@@ -322,5 +392,41 @@ public final class ConvertUtils {
 			properties.forEach((key, value) -> dataMap.put((String) key, (String) value));
 		}
 		return dataMap;
+	}
+
+	private static final class LimitedInputStream extends FilterInputStream {
+
+		private final long limitSize;
+		private long count;
+
+		private LimitedInputStream(final InputStream in, final long limitSize) {
+			super(in);
+			this.limitSize = limitSize;
+		}
+
+		@Override
+		public int read() throws IOException {
+			int value = super.read();
+			if (value >= 0) {
+				this.checkLimit(1);
+			}
+			return value;
+		}
+
+		@Override
+		public int read(@Nonnull final byte[] bytes, final int off, final int len) throws IOException {
+			int read = super.read(bytes, off, len);
+			if (read > 0) {
+				this.checkLimit(read);
+			}
+			return read;
+		}
+
+		private void checkLimit(final int delta) throws IOException {
+			this.count += delta;
+			if (this.count > this.limitSize) {
+				throw new IOException("Serialized input exceeds limit");
+			}
+		}
 	}
 }

@@ -147,9 +147,7 @@ public final class DefaultBeanConverterImpl implements BeanConverter {
 			case SIMPLE:
 				return ClassUtils.parseSimpleData(IOUtils.readContent(inputStream), beanClass);
 			case SERIALIZABLE:
-				return Optional.of(IOUtils.readContent(inputStream))
-						.map(StringUtils::base64Decode)
-						.map(dataBytes -> ConvertUtils.toObject(dataBytes, filter))
+				return Optional.ofNullable(ConvertUtils.toObject(inputStream, filter))
 						.filter(object -> ClassUtils.isAssignable(object.getClass(), beanClass))
 						.map(beanClass::cast)
 						.orElse(null);

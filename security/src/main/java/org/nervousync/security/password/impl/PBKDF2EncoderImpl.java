@@ -74,19 +74,11 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 		if (iterations <= 0) {
 			throw new IllegalArgumentException("Iterations must be positive");
 		}
-		switch (algorithm) {
-			case SHA1:
-				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA1), ITERATION_MAX_LIMIT_SHA1);
-				break;
-			case SHA256:
-				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA256), ITERATION_MAX_LIMIT_SHA256);
-				break;
-			case SHA512:
-				this.iterations = Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA512), ITERATION_MAX_LIMIT_SHA512);
-				break;
-			default:
-				throw new IllegalArgumentException("Algorithm not supported: " + algorithm);
-		}
+		this.iterations = switch (algorithm) {
+			case SHA1 -> Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA1), ITERATION_MAX_LIMIT_SHA1);
+			case SHA256 -> Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA256), ITERATION_MAX_LIMIT_SHA256);
+			case SHA512 -> Math.min(Math.max(iterations, ITERATION_MIN_LIMIT_SHA512), ITERATION_MAX_LIMIT_SHA512);
+		};
 		Config config = new Config(algorithm, iterations, keyLength(algorithm), new byte[0], new byte[0]);
 		this.algorithm = config.algorithm;
 		this.keyLength = config.keyLength;
@@ -104,12 +96,15 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 	@Override
 	public boolean verify(final char[] password, final String encodedPassword) {
 		Config config = Config.parse(encodedPassword);
-		byte[] hash = this.derive(password, config);
-		try {
-			return MessageDigest.isEqual(config.hash, hash);
-		} finally {
-			Arrays.fill(hash, (byte) 0);
+		if (VALID_ITERATIONS(config)) {
+			byte[] hash = this.derive(password, config);
+			try {
+				return MessageDigest.isEqual(config.hash, hash);
+			} finally {
+				Arrays.fill(hash, (byte) 0);
+			}
 		}
+		return Boolean.FALSE;
 	}
 
 	@Override
@@ -134,6 +129,27 @@ public final class PBKDF2EncoderImpl implements PasswordEncoder {
 			case SHA1 -> 16;
 			case SHA256 -> 32;
 			case SHA512 -> 64;
+		};
+	}
+
+	/**
+	 * <h3 class="en-US">Check whether the number of iterations for the given algorithm falls within the valid range</h3>
+	 * <h3 class="zh-CN">检查给定算法的迭代次数是否在合法区间内</h3>
+	 *
+	 * @param config <span class="en-US">Configure information</span>
+	 *               <span class="zh-CN">配置信息</span>
+	 * @return <span class="en-US">Check result</span>
+	 * <span class="zh-CN">检查结果</span>
+	 */
+	private static boolean VALID_ITERATIONS(final Config config) {
+		if (config.iterations <= Globals.INITIALIZE_INT_VALUE || config.salt.length != SALT_LENGTH
+				|| config.keyLength != keyLength(config.algorithm) || config.hash.length != config.keyLength) {
+			return Boolean.FALSE;
+		}
+		return switch (config.algorithm) {
+			case SHA1 -> config.iterations >= ITERATION_MIN_LIMIT_SHA1 && config.iterations <= ITERATION_MAX_LIMIT_SHA1;
+			case SHA256 -> config.iterations >= ITERATION_MIN_LIMIT_SHA256 && config.iterations <= ITERATION_MAX_LIMIT_SHA256;
+			case SHA512 -> config.iterations >= ITERATION_MIN_LIMIT_SHA512 && config.iterations <= ITERATION_MAX_LIMIT_SHA512;
 		};
 	}
 

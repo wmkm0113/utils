@@ -32,15 +32,10 @@ import org.bouncycastle.asn1.smime.SMIMEEncryptionKeyPreferenceAttribute;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cms.SignerInfoGenerator;
-import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.cms.SignerInformationVerifier;
+import org.bouncycastle.cms.*;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
-import org.bouncycastle.mail.smime.SMIMEException;
-import org.bouncycastle.mail.smime.SMIMESignedGenerator;
-import org.bouncycastle.mail.smime.SMIMESignedParser;
-import org.bouncycastle.mail.smime.SMIMEUtil;
+import org.bouncycastle.mail.smime.*;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.eclipse.angus.mail.imap.IMAPFolder;
@@ -56,10 +51,7 @@ import org.nervousync.utils.core.FileUtils;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.CertificateEncodingException;
@@ -103,6 +95,11 @@ public final class MailClient implements Closeable {
 	 * <span class="zh-CN">附件文件的保存地址</span>
 	 */
 	private final String storagePath;
+	/**
+	 * <span class="en-US">Trust key store</span>
+	 * <span class="zh-CN">信任证书库</span>
+	 */
+	private final KeyStore keyStore;
 	/**
 	 * <span class="en-US">x509 certificate Using for email signature verify</span>
 	 * <span class="zh-CN">x509证书用于电子邮件签名验证</span>
@@ -165,15 +162,15 @@ public final class MailClient implements Closeable {
 			FileUtils.makeDir(this.storagePath);
 		}
 		if (StringUtils.notBlank(mailConfig.getStorePath())) {
-			KeyStore keyStore = CertificateUtils.loadKeyStore(mailConfig.getStorePath(), mailConfig.getStorePassword());
-			if (keyStore == null) {
+			this.keyStore = CertificateUtils.loadKeyStore(mailConfig.getStorePath(), mailConfig.getStorePassword());
+			if (this.keyStore == null) {
 				throw new MailException(0x0000000E0003L);
 			}
 			try {
-				if (keyStore.containsAlias(mailConfig.getAliasName())) {
-					this.x509Certificate = (X509Certificate) keyStore.getCertificate(mailConfig.getAliasName());
+				if (this.keyStore.containsAlias(mailConfig.getAliasName())) {
+					this.x509Certificate = (X509Certificate) this.keyStore.getCertificate(mailConfig.getAliasName());
 					this.privateKey =
-							(PrivateKey) keyStore.getKey(mailConfig.getAliasName(),
+							(PrivateKey) this.keyStore.getKey(mailConfig.getAliasName(),
 									mailConfig.getKeyPassword().toCharArray());
 				} else {
 					throw new MailException(0x0000000E0003L);
@@ -185,6 +182,13 @@ public final class MailClient implements Closeable {
 				throw new MailException(0x0000000E0003L, e);
 			}
 		} else {
+			try {
+				this.keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+				this.keyStore.load(null, null);
+			} catch (Exception e) {
+				throw new MailException(0x0000000E0003L, e);
+			}
+
 			this.x509Certificate = null;
 			this.privateKey = null;
 		}
@@ -753,20 +757,31 @@ public final class MailClient implements Closeable {
 				return Boolean.TRUE;
 			}
 
-			org.bouncycastle.util.Store<?> certificates = signedParser.getCertificates();
+			String senderAddress = Arrays.stream(signedMessage.getFrom())
+					.filter(InternetAddress.class::isInstance)
+					.map(InternetAddress.class::cast)
+					.map(InternetAddress::getAddress)
+					.filter(StringUtils::notBlank)
+					.findFirst()
+					.orElseThrow(() -> new MessagingException("Missing sender address"));
+
+			List<X509Certificate> certificates = new ArrayList<>();
+			org.bouncycastle.util.Store<X509CertificateHolder> certStore = signedParser.getCertificates();
+			for (X509CertificateHolder holder : certStore.getMatches(null)) {
+				certificates.add(new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder));
+			}
 			for (SignerInformation signerInformation : signedParser.getSignerInfos().getSigners()) {
-				Collection<?> certCollection = certificates.getMatches(signerInformation.getSID());
+				Collection<?> certCollection = certStore.getMatches(signerInformation.getSID());
 				X509Certificate certificate =
 						new JcaX509CertificateConverter().setProvider("BC")
 								.getCertificate((X509CertificateHolder) certCollection.iterator().next());
 
 				try {
-					SignerInformationVerifier signerInformationVerifier =
-							new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certificate);
-					return CertificateUtils.verify(certificate) && signerInformation.verify(signerInformationVerifier);
+					return CertificateUtils.verify(certificate, certificates, this.keyStore, senderAddress, Boolean.TRUE)
+							&& signerInformation.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(certificate));
 				} catch (Exception e) {
-					LOGGER.error("Verify_Signature_Mail_Error");
 					if (LOGGER.isDebugEnabled()) {
+						LOGGER.error("Verify_Signature_Mail_Error");
 						LOGGER.debug("Stack_Message_Error", e);
 					}
 				}

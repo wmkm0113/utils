@@ -46,6 +46,9 @@ import org.nervousync.zip.options.ZipOptions;
 import java.io.*;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -1419,17 +1422,9 @@ public final class ZipFile implements Cloneable {
 		}
 
 		try {
-			String targetPath = destPath;
-			if (!targetPath.endsWith(Globals.DEFAULT_PAGE_SEPARATOR)) {
-				targetPath += Globals.DEFAULT_PAGE_SEPARATOR;
-			}
-
 			if (generalFileHeader.isDirectory()) {
-				targetPath += generalFileHeader.getEntryPath();
-				targetPath = StringUtils.replace(targetPath, Globals.DEFAULT_ZIP_PAGE_SEPARATOR, Globals.DEFAULT_PAGE_SEPARATOR);
-				if (!FileUtils.makeDir(targetPath)) {
-					throw new ZipException(0x0000001B0038L);
-				}
+				Path rootPath = extractRoot(destPath);
+				extractTarget(rootPath, generalFileHeader.getEntryPath(), Boolean.TRUE);
 			} else {
 				if (!FileUtils.isExists(destPath)) {
 					FileUtils.makeDir(destPath);
@@ -1968,25 +1963,60 @@ public final class ZipFile implements Cloneable {
 		}
 	}
 
+	private static Path extractRoot(final String folderPath) throws IOException, ZipException {
+		Path rootPath = Path.of(folderPath).toAbsolutePath().normalize();
+		Files.createDirectories(rootPath);
+		if (Files.isSymbolicLink(rootPath)) {
+			throw new ZipException(0x0000001B0038L, rootPath);
+		}
+		return rootPath.toRealPath(LinkOption.NOFOLLOW_LINKS);
+	}
+
+	private static Path extractTarget(final Path rootPath, final String entryName, final boolean directory)
+			throws IOException, ZipException {
+		String entryPath = StringUtils.replace(entryName, "\\", Globals.DEFAULT_ZIP_PAGE_SEPARATOR);
+		entryPath = StringUtils.replace(entryPath, Globals.DEFAULT_ZIP_PAGE_SEPARATOR, Globals.DEFAULT_PAGE_SEPARATOR);
+		Path relative = Path.of(entryPath).normalize();
+		if (relative.isAbsolute() || relative.getNameCount() == 0 || relative.startsWith("..")) {
+			throw new ZipException(0x0000001B0038L, entryName);
+		}
+
+		Path target = rootPath.resolve(relative).normalize();
+		if (!target.startsWith(rootPath)) {
+			throw new ZipException(0x0000001B0038L, entryName);
+		}
+		Path lastDirectory = directory ? target : target.getParent();
+		if (lastDirectory != null) {
+			Path cursor = rootPath;
+			for (Path part : rootPath.relativize(lastDirectory)) {
+				cursor = cursor.resolve(part);
+				if (Files.exists(cursor, LinkOption.NOFOLLOW_LINKS)) {
+					if (Files.isSymbolicLink(cursor)
+							|| !Files.isDirectory(cursor, LinkOption.NOFOLLOW_LINKS)) {
+						throw new ZipException(0x0000001B0038L, entryName);
+					}
+				} else {
+					Files.createDirectory(cursor);
+				}
+			}
+		}
+
+		if (Files.exists(target, LinkOption.NOFOLLOW_LINKS)
+				&& Files.isSymbolicLink(target)) {
+			throw new ZipException(0x0000001B0038L, entryName);
+		}
+		return target;
+	}
+
 	private FileOutputStream openOutputStream(final String folderPath, final String fileName) throws ZipException {
 		if (StringUtils.isEmpty(folderPath) || StringUtils.isEmpty(fileName) || !FileUtils.makeDir(folderPath)) {
 			throw new ZipException(0x0000001B0043L);
 		}
 
 		try {
-			String fullPath = folderPath;
-			if (!fullPath.endsWith(Globals.DEFAULT_PAGE_SEPARATOR)) {
-				fullPath += Globals.DEFAULT_PAGE_SEPARATOR;
-			}
-
-			fullPath += fileName;
-			fullPath = StringUtils.replace(fullPath, Globals.DEFAULT_ZIP_PAGE_SEPARATOR, Globals.DEFAULT_PAGE_SEPARATOR);
-			File targetFile = new File(fullPath);
-			if (targetFile.getCanonicalPath().startsWith(folderPath)) {
-				FileUtils.makeDir(fullPath.substring(0, fullPath.lastIndexOf(Globals.DEFAULT_PAGE_SEPARATOR)));
-				return new FileOutputStream(FileUtils.getFile(fullPath));
-			}
-			throw new ZipException(0x0000001B0038L, fullPath);
+			Path rootPath = extractRoot(folderPath);
+			Path target = extractTarget(rootPath, fileName, false);
+			return new FileOutputStream(target.toFile());
 		} catch (IOException e) {
 			throw new ZipException(0x0000001B0038L, e);
 		}
