@@ -135,19 +135,10 @@ public final class MailTest extends BaseTest {
 				.signer(TMP_PATH + STORE_PATH, PASSWORD, ALIAS_NAME, PASSWORD)
 				.build();
 		String xmlContent = BeanUtils.objectToString(mailConfig, StringType.XML);
-		this.logger.info("Mail_Generate_Config_Info", xmlContent);
 		MailConfig parseConfig = BeanUtils.stringToObject(xmlContent, StringType.XML, MailConfig.class,
 				"https://nervousync.org/schemas/mail");
 		this.logger.info("Mail_Config_Validate", BeanUtils.validate(parseConfig));
 		CONFIGURE_MANAGER.saveConfigure(mailConfig);
-		CONFIGURE_MANAGER.readConfigure(MailConfig.class)
-				.ifPresent(readConfig ->
-						this.logger.info("Mail_Parse_Config_Info",
-								BeanUtils.objectToString(readConfig, StringType.JSON)));
-
-		AutomaticConfig automaticConfig = new AutomaticConfig();
-		this.logger.info("Mail_Generate_Config_Info",
-				BeanUtils.objectToString(automaticConfig.getMailConfig(), StringType.JSON));
 	}
 
 	@Test
@@ -156,8 +147,8 @@ public final class MailTest extends BaseTest {
 		if (SKIP_TEST) {
 			return;
 		}
-		Optional.ofNullable(CONFIGURE_MANAGER)
-				.flatMap(manager -> manager.readConfigure(MailConfig.class))
+		AutomaticConfig automaticConfig = new AutomaticConfig();
+		Optional.ofNullable(automaticConfig.getMailConfig())
 				.ifPresent(mailConfig -> {
 					MailClient mailAgent = MailUtils.client(mailConfig);
 					Assertions.assertNotNull(mailAgent);

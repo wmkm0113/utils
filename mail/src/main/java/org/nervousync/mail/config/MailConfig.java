@@ -95,6 +95,7 @@ public final class MailConfig implements Serializable {
 	 * <span class="en-US">Key store password</span>
 	 * <span class="zh-CN">密钥库密码</span>
 	 */
+	@Password
 	@XmlElement(name = "key_store_password")
 	private String storePassword;
 	/**
@@ -107,6 +108,7 @@ public final class MailConfig implements Serializable {
 	 * <span class="en-US">Private key password</span>
 	 * <span class="zh-CN">私钥密码</span>
 	 */
+	@Password
 	@XmlElement(name = "key_password")
 	private String keyPassword;
 	/**

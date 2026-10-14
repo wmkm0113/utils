@@ -230,7 +230,7 @@ public final class ConvertUtils {
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
 	public static Object toObject(@Nonnull final byte[] dataBytes, final String filter) {
-		if (dataBytes.length == 0) {
+		if (dataBytes.length == 0 || StringUtils.isEmpty(filter)) {
 			return null;
 		}
 
@@ -273,7 +273,10 @@ public final class ConvertUtils {
 	 * @return <span class="en-US">Converted object instance</span>
 	 * <span class="zh-CN">转换后的实例对象</span>
 	 */
-	public static Object toObject(@Nonnull final InputStream inputStream, final String filter, boolean decode) {
+	public static Object toObject(final InputStream inputStream, final String filter, boolean decode) {
+		if (inputStream == null || StringUtils.isEmpty(filter)) {
+			return null;
+		}
 		String filterRules = filter;
 		if (!filterRules.endsWith(";!*")) {
 			filterRules += ";!*";
