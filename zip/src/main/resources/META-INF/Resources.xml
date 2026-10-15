@@ -87,4 +87,6 @@
     <entry key="Invalid_Buffer_Size_Zip_Error">Negative buffer size</entry>
     <entry key="Min_Split_Size_Zip_Error">Split length less than minimum allowed split length of {0} bytes</entry>
     <entry key="Open_Split_File_Zip_Error">Check buffer size and start next split file error! </entry>
+    <entry key="Disk_Number_Start_Error">Disk number start value invalid</entry>
+    <entry key="Entry_Count_Out_Of_Range">Total entry count out of range</entry>
 </properties>

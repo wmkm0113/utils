@@ -17,6 +17,7 @@
 package org.nervousync.zip.crypto.impl.aes;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
@@ -127,21 +128,21 @@ public class AESCrypto {
 	 * @param aesStrength AES key strength
 	 */
 	void preInit(final int aesStrength) throws ZipException {
-		this.iv = new byte[Globals.AES_BLOCK_SIZE];
-		this.countBlock = new byte[Globals.AES_BLOCK_SIZE];
+		this.iv = new byte[ZipGlobals.AES_BLOCK_SIZE];
+		this.countBlock = new byte[ZipGlobals.AES_BLOCK_SIZE];
 
 		switch (aesStrength) {
-			case Globals.AES_STRENGTH_128:
+			case ZipGlobals.AES_STRENGTH_128:
 				this.keyLength = 16;
 				this.macLength = 16;
 				this.saltLength = 8;
 				break;
-			case Globals.AES_STRENGTH_192:
+			case ZipGlobals.AES_STRENGTH_192:
 				this.keyLength = 24;
 				this.macLength = 24;
 				this.saltLength = 12;
 				break;
-			case Globals.AES_STRENGTH_256:
+			case ZipGlobals.AES_STRENGTH_256:
 				this.keyLength = 32;
 				this.macLength = 32;
 				this.saltLength = 16;
@@ -297,23 +298,23 @@ public class AESCrypto {
 		byte[] keyBytes;
 		try {
 			keyBytes = this.deriveKey(this.saltBytes, password,
-					this.keyLength + this.macLength + Globals.PASSWORD_VERIFIER_LENGTH);
+					this.keyLength + this.macLength + ZipGlobals.PASSWORD_VERIFIER_LENGTH);
 		} catch (DataInvalidException e) {
 			throw new ZipException(0x0000001B000AL, e);
 		}
 
-		if (keyBytes.length != (this.keyLength + this.macLength + Globals.PASSWORD_VERIFIER_LENGTH)) {
+		if (keyBytes.length != (this.keyLength + this.macLength + ZipGlobals.PASSWORD_VERIFIER_LENGTH)) {
 			throw new ZipException(0x0000001B0008L);
 		}
 
 		byte[] aesKey = new byte[this.keyLength];
 		byte[] macKey = new byte[this.macLength];
-		this.derivedPasswordVerifier = new byte[Globals.PASSWORD_VERIFIER_LENGTH];
+		this.derivedPasswordVerifier = new byte[ZipGlobals.PASSWORD_VERIFIER_LENGTH];
 
 		System.arraycopy(keyBytes, Globals.INITIALIZE_INT_VALUE, aesKey, Globals.INITIALIZE_INT_VALUE, this.keyLength);
 		System.arraycopy(keyBytes, this.keyLength, macKey, Globals.INITIALIZE_INT_VALUE, this.macLength);
 		System.arraycopy(keyBytes, (this.keyLength + this.macLength),
-				this.derivedPasswordVerifier, Globals.INITIALIZE_INT_VALUE, Globals.PASSWORD_VERIFIER_LENGTH);
+				this.derivedPasswordVerifier, Globals.INITIALIZE_INT_VALUE, ZipGlobals.PASSWORD_VERIFIER_LENGTH);
 
 		this.aesEngine = new AESEngine(aesKey);
 		this.macBasedPRF = SecurityUtils.HmacSHA1(macKey);

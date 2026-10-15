@@ -58,7 +58,7 @@
 **Jakarta EE平台：** 11
 
 ## 旧版本兼容
-我们提供了使用OpenJDK11编译的旧版本，使用者可以在分支v1.x中找到源代码
+我们提供了使用OpenJDK11编译的旧版本，使用者可以在[这里](https://github.com/wmkm0113/utils-jdk11)找到源代码
 
 ---
 

@@ -25,9 +25,9 @@ package org.nervousync.zip.models.central;
 public final class Zip64EndCentralDirectoryLocator {
 
 	private long signature;
-	private int indexOfZip64EndOfCentralDirectoryRecord;
+	private long indexOfZip64EndOfCentralDirectoryRecord;
 	private long offsetZip64EndOfCentralDirectoryRecord;
-	private int totalNumberOfDiscs;
+	private long totalNumberOfDiscs;
 
 	/**
 	 * Instantiates a new Zip64 end central directory locator.
@@ -58,7 +58,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @return the indexOfZip64EndOfCentralDirectoryRecord
 	 */
-	public int getIndexOfZip64EndOfCentralDirectoryRecord() {
+	public long getIndexOfZip64EndOfCentralDirectoryRecord() {
 		return this.indexOfZip64EndOfCentralDirectoryRecord;
 	}
 
@@ -67,7 +67,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param indexOfZip64EndOfCentralDirectoryRecord the indexOfZip64EndOfCentralDirectoryRecord to set
 	 */
-	public void setIndexOfZip64EndOfCentralDirectoryRecord(final int indexOfZip64EndOfCentralDirectoryRecord) {
+	public void setIndexOfZip64EndOfCentralDirectoryRecord(final long indexOfZip64EndOfCentralDirectoryRecord) {
 		this.indexOfZip64EndOfCentralDirectoryRecord = indexOfZip64EndOfCentralDirectoryRecord;
 	}
 
@@ -94,7 +94,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @return the totalNumberOfDiscs
 	 */
-	public int getTotalNumberOfDiscs() {
+	public long getTotalNumberOfDiscs() {
 		return this.totalNumberOfDiscs;
 	}
 
@@ -103,7 +103,7 @@ public final class Zip64EndCentralDirectoryLocator {
 	 *
 	 * @param totalNumberOfDiscs the totalNumberOfDiscs to set
 	 */
-	public void setTotalNumberOfDiscs(final int totalNumberOfDiscs) {
+	public void setTotalNumberOfDiscs(final long totalNumberOfDiscs) {
 		this.totalNumberOfDiscs = totalNumberOfDiscs;
 	}
 }

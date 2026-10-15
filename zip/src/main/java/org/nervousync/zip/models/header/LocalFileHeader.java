@@ -17,6 +17,7 @@
 package org.nervousync.zip.models.header;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.impl.aes.AESCrypto;
 import org.nervousync.zip.models.header.utils.HeaderOperator;
@@ -110,7 +111,7 @@ public final class LocalFileHeader extends FileHeader {
 		}
 
 		try {
-			if (this.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+			if (this.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 				if (this.getAesExtraDataRecord() != null) {
 					byte[] salt = new byte[HeaderOperator.saltLength(this.getAesExtraDataRecord().getAesStrength())];
 					int readLength = Globals.DEFAULT_VALUE_INT;
@@ -141,7 +142,7 @@ public final class LocalFileHeader extends FileHeader {
 					}
 				}
 				return Boolean.FALSE;
-			} else if (this.getEncryptionMethod() == Globals.ENC_METHOD_STANDARD) {
+			} else if (this.getEncryptionMethod() == ZipGlobals.ENC_METHOD_STANDARD) {
 				//	Not supported verify password of standard encrypting
 				return Boolean.TRUE;
 			} else {

@@ -104,4 +104,6 @@
     <entry key="0x0000001B0056">Invalid_Buffer_Size_Zip_Error</entry>
     <entry key="0x0000001B0057">Min_Split_Size_Zip_Error</entry>
     <entry key="0x0000001B0058">Open_Split_File_Zip_Error</entry>
+    <entry key="0x0000001B0059">Disk_Number_Start_Error</entry>
+    <entry key="0x0000001B005A">Entry_Count_Out_Of_Range</entry>
 </properties>

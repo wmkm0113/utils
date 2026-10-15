@@ -18,6 +18,7 @@ package org.nervousync.zip.io.input;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.io.StandardFile;
 import org.nervousync.zip.ZipFile;
@@ -42,7 +43,7 @@ public class PartInputStream extends InputStream {
 	private final long length;
 	private final Cryptor decryptor;
 	private final byte[] oneByteBuffer = new byte[1];
-	private final byte[] aesBlockBuffer = new byte[Globals.AES_BLOCK_SIZE];
+	private final byte[] aesBlockBuffer = new byte[ZipGlobals.AES_BLOCK_SIZE];
 	private int aesBytesReturned = 0;
 	private final boolean isAESEncryptedFile;
 
@@ -96,7 +97,7 @@ public class PartInputStream extends InputStream {
 	}
 
 	@Override
-	public synchronized int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
+	public int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		try {
 			int length = len;
 			if (length > (this.length - this.readBytes)) {
@@ -214,16 +215,16 @@ public class PartInputStream extends InputStream {
 				return;
 			}
 
-			byte[] storedMac = new byte[Globals.AES_AUTH_LENGTH];
+			byte[] storedMac = new byte[ZipGlobals.AES_AUTH_LENGTH];
 			int readLength = this.input.read(storedMac);
 
-			if (readLength != Globals.AES_AUTH_LENGTH) {
+			if (readLength != ZipGlobals.AES_AUTH_LENGTH) {
 				if (this.zipFile.isSplitArchive()) {
 					this.input.close();
 					this.currentIndex++;
 					this.input = this.zipFile.openSplitFile(this.currentIndex);
 					int newReadLength = this.input.read(storedMac,
-							readLength, Globals.AES_AUTH_LENGTH - readLength);
+							readLength, ZipGlobals.AES_AUTH_LENGTH - readLength);
 
 					readLength += newReadLength;
 				} else {
@@ -231,7 +232,7 @@ public class PartInputStream extends InputStream {
 				}
 			}
 
-			if (readLength != Globals.AES_AUTH_LENGTH) {
+			if (readLength != ZipGlobals.AES_AUTH_LENGTH) {
 				throw new ZipException(0x0000001B0055L);
 			}
 

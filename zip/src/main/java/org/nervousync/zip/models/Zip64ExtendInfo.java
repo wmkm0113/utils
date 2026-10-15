@@ -31,7 +31,7 @@ public final class Zip64ExtendInfo {
 	private long compressedSize = Globals.DEFAULT_VALUE_LONG;
 	private long originalSize = Globals.DEFAULT_VALUE_LONG;
 	private long offsetLocalHeader = Globals.DEFAULT_VALUE_LONG;
-	private int diskNumberStart = Globals.DEFAULT_VALUE_INT;
+	private long diskNumberStart = Globals.DEFAULT_VALUE_LONG;
 
 	/**
 	 * Instantiates new Zip64 extend info.
@@ -134,7 +134,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @return the diskNumberStart
 	 */
-	public int getDiskNumberStart() {
+	public long getDiskNumberStart() {
 		return this.diskNumberStart;
 	}
 
@@ -143,7 +143,7 @@ public final class Zip64ExtendInfo {
 	 *
 	 * @param diskNumberStart the diskNumberStart to set
 	 */
-	public void setDiskNumberStart(final int diskNumberStart) {
+	public void setDiskNumberStart(final long diskNumberStart) {
 		this.diskNumberStart = diskNumberStart;
 	}
 }

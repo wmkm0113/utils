@@ -26,7 +26,7 @@ public final class GeneralFileHeader extends FileHeader {
 
 	private int madeVersion;
 	private int fileCommentLength;
-	private int diskNumberStart;
+	private long diskNumberStart;
 	private byte[] internalFileAttr;
 	private byte[] externalFileAttr;
 	private long offsetLocalHeader;
@@ -80,7 +80,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @return the diskNumberStart
 	 */
-	public int getDiskNumberStart() {
+	public long getDiskNumberStart() {
 		return this.diskNumberStart;
 	}
 
@@ -89,7 +89,7 @@ public final class GeneralFileHeader extends FileHeader {
 	 *
 	 * @param diskNumberStart the diskNumberStart to set
 	 */
-	public void setDiskNumberStart(final int diskNumberStart) {
+	public void setDiskNumberStart(final long diskNumberStart) {
 		this.diskNumberStart = diskNumberStart;
 	}
 

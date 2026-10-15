@@ -16,7 +16,7 @@
  */
 package org.nervousync.zip.crypto.impl.standard;
 
-import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.Cryptor;
 import org.nervousync.zip.models.header.LocalFileHeader;
@@ -42,9 +42,9 @@ public class StandardDecryptor implements Cryptor {
 		this.standardCryptoEngine.initKeys(localFileHeader.getPassword());
 
 		int result = decryptorHeader[0];
-		for (int i = 0; i < Globals.STD_DEC_HDR_SIZE; i++) {
+		for (int i = 0; i < ZipGlobals.STD_DEC_HDR_SIZE; i++) {
 			this.standardCryptoEngine.updateKeys((byte) (result ^ this.standardCryptoEngine.processByte()));
-			if ((i + 1) != Globals.STD_DEC_HDR_SIZE) {
+			if ((i + 1) != ZipGlobals.STD_DEC_HDR_SIZE) {
 				result = decryptorHeader[i + 1];
 			}
 		}

@@ -201,6 +201,26 @@ public final class RawUtils {
 	}
 
 	/**
+	 * <h3 class="en-US">Read unsigned short from binary data bytes</h3>
+	 * <h3 class="zh-CN">从二进制数组中读取无符号的short数据</h3>
+	 *
+	 * @param dataBytes <span class="en-US">Binary data bytes</span>
+	 *                  <span class="zh-CN">二进制字节数组</span>
+	 * @param position  <span class="en-US">Begin position of data bytes</span>
+	 *                  <span class="zh-CN">字节数组的起始下标</span>
+	 * @param byteOrder <span class="en-US">Byte order type</span>
+	 *                  <span class="zh-CN">大端/小端</span>
+	 * @return <span class="en-US">Read value</span>
+	 * <span class="zh-CN">读取的数值</span>
+	 * @throws DataInvalidException <span class="en-US">If array index out of bounds</span>
+	 *                              <span class="zh-CN">如果数组下标越界</span>
+	 */
+	public static int readUnsignedShort(final byte[] dataBytes, final int position, final ByteOrder byteOrder)
+			throws DataInvalidException {
+		return Short.toUnsignedInt(readShort(dataBytes, position, byteOrder));
+	}
+
+	/**
 	 * <h3 class="en-US">Write short into binary data bytes</h3>
 	 * <h3 class="zh-CN">向二进制数组中写入short类型的数据</h3>
 	 *
@@ -338,6 +358,26 @@ public final class RawUtils {
 	public static int readInt(final byte[] dataBytes, final int position, final ByteOrder byteOrder)
 			throws DataInvalidException {
 		return (int) readNumber(dataBytes, position, byteOrder, 4);
+	}
+
+	/**
+	 * <h3 class="en-US">Read unsigned int from binary data bytes</h3>
+	 * <h3 class="zh-CN">从二进制数组中读取无符号的int数据</h3>
+	 *
+	 * @param dataBytes <span class="en-US">Binary data bytes</span>
+	 *                  <span class="zh-CN">二进制字节数组</span>
+	 * @param position  <span class="en-US">Begin position of data bytes</span>
+	 *                  <span class="zh-CN">字节数组的起始下标</span>
+	 * @param byteOrder <span class="en-US">Byte order type</span>
+	 *                  <span class="zh-CN">大端/小端</span>
+	 * @return <span class="en-US">Read value</span>
+	 * <span class="zh-CN">读取的数值</span>
+	 * @throws DataInvalidException <span class="en-US">If array index out of bounds</span>
+	 *                              <span class="zh-CN">如果数组下标越界</span>
+	 */
+	public static long readUnsignedInt(final byte[] dataBytes, final int position, final ByteOrder byteOrder)
+			throws DataInvalidException {
+		return Integer.toUnsignedLong(readInt(dataBytes, position, byteOrder));
 	}
 
 	/**

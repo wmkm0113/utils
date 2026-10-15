@@ -41,13 +41,6 @@ public class ZipOutputStream extends DeflaterOutputStream {
 	}
 
 	@Override
-	public void write(final int value) throws IOException {
-		byte[] b = new byte[1];
-		b[0] = (byte) value;
-		this.write(b, 0, 1);
-	}
-
-	@Override
 	public void write(@Nonnull final byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}

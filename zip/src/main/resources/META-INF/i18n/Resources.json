@@ -91,7 +91,9 @@
     "0x0000001B0055": "Read_AES_Bytes_Zip_Error",
     "0x0000001B0056": "Invalid_Buffer_Size_Zip_Error",
     "0x0000001B0057": "Min_Split_Size_Zip_Error",
-    "0x0000001B0058": "Open_Split_File_Zip_Error"
+    "0x0000001B0058": "Open_Split_File_Zip_Error",
+    "0x0000001B0059": "Disk_Number_Start_Error",
+    "0x0000001B005A": "Entry_Count_Out_Of_Range"
   },
   "messages": {
     "en-US": {
@@ -346,6 +348,12 @@
       },
       "Not_Support_Encoding_Error": {
         "pattern": "Unsupported charset encoding"
+      },
+      "Disk_Number_Start_Error": {
+        "pattern": "Disk number start value invalid"
+      },
+      "Entry_Count_Out_Of_Range": {
+        "pattern": "Total entry count out of range"
       }
     },
     "zh-CN": {
@@ -600,6 +608,12 @@
       },
       "Not_Support_Encoding_Error": {
         "pattern": "不支持的字符集编码"
+      },
+      "Disk_Number_Start_Error": {
+        "pattern": "起始磁盘索引值错误！"
+      },
+      "Entry_Count_Out_Of_Range": {
+        "pattern": "总实体计数超过允许范围"
       }
     }
   }

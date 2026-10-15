@@ -16,7 +16,7 @@
  */
 package org.nervousync.zip.models.header;
 
-import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.zip.models.AESExtraDataRecord;
 import org.nervousync.zip.models.ExtraDataRecord;
 import org.nervousync.zip.models.Zip64ExtendInfo;
@@ -50,7 +50,8 @@ public class FileHeader {
 	private boolean fileNameUTF8Encoded;
 	private boolean isEncrypted;
 	private boolean dataDescriptorExists;
-	private int encryptionMethod = Globals.ENC_NO_ENCRYPTION;
+	private boolean zip64Entry;
+	private int encryptionMethod = ZipGlobals.ENC_NO_ENCRYPTION;
 
 	/**
 	 * Instantiates a new File header.
@@ -329,6 +330,14 @@ public class FileHeader {
 	 */
 	public void setDataDescriptorExists(final boolean dataDescriptorExists) {
 		this.dataDescriptorExists = dataDescriptorExists;
+	}
+
+	public boolean isZip64Entry() {
+		return this.zip64Entry;
+	}
+
+	public void setZip64Entry(final boolean zip64Entry) {
+		this.zip64Entry = zip64Entry;
 	}
 
 	/**

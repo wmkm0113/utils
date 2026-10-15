@@ -29,7 +29,7 @@ public final class EndCentralDirectoryRecord {
 	private int indexOfThisDiskStartOfCentralDirectory;
 	private int totalOfEntriesInCentralDirectoryOnThisDisk;
 	private int totalOfEntriesInCentralDirectory;
-	private int sizeOfCentralDirectory;
+	private long sizeOfCentralDirectory;
 	private long offsetOfStartOfCentralDirectory;
 	private int commentLength;
 	private byte[] commentBytes;
@@ -135,7 +135,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @return the sizeOfCentralDirectory
 	 */
-	public int getSizeOfCentralDirectory() {
+	public long getSizeOfCentralDirectory() {
 		return this.sizeOfCentralDirectory;
 	}
 
@@ -144,7 +144,7 @@ public final class EndCentralDirectoryRecord {
 	 *
 	 * @param sizeOfCentralDirectory the sizeOfCentralDirectory to set
 	 */
-	public void setSizeOfCentralDirectory(final int sizeOfCentralDirectory) {
+	public void setSizeOfCentralDirectory(final long sizeOfCentralDirectory) {
 		this.sizeOfCentralDirectory = sizeOfCentralDirectory;
 	}
 

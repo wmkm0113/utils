@@ -21,8 +21,8 @@ import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.models.AESExtraDataRecord;
 import org.nervousync.zip.models.header.utils.HeaderOperator;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * AES Engine
@@ -75,20 +75,19 @@ public final class AESEngine {
 	 * Process header.
 	 *
 	 * @param aesExtraDataRecord the aes extra data record
-	 * @param headerBytesList    the header bytes list
+	 * @param headerBytes    the header bytes list
 	 */
-	public static void processHeader(final AESExtraDataRecord aesExtraDataRecord, final List<String> headerBytesList)
+	public static void processHeader(final AESExtraDataRecord aesExtraDataRecord,
+	                                 final ByteArrayOutputStream headerBytes)
 			throws ZipException, DataInvalidException {
-		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getSignature(), headerBytesList);
-		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getDataSize(), headerBytesList);
-		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getVersionNumber(), headerBytesList);
-		HeaderOperator.copyByteArrayToList(aesExtraDataRecord.getVendorID().getBytes(StandardCharsets.UTF_8), headerBytesList);
+		HeaderOperator.writeShort((short) aesExtraDataRecord.getSignature(), headerBytes);
+		HeaderOperator.writeShort((short) aesExtraDataRecord.getDataSize(), headerBytes);
+		HeaderOperator.writeShort((short) aesExtraDataRecord.getVersionNumber(), headerBytes);
+		HeaderOperator.writeBytes(aesExtraDataRecord.getVendorID().getBytes(StandardCharsets.UTF_8), headerBytes);
 
-		byte[] aesStrengthBytes = new byte[1];
-		aesStrengthBytes[0] = (byte) aesExtraDataRecord.getAesStrength();
-		HeaderOperator.copyByteArrayToList(aesStrengthBytes, headerBytesList);
+		headerBytes.write(aesExtraDataRecord.getAesStrength());
 
-		HeaderOperator.appendShortToArrayList((short) aesExtraDataRecord.getCompressionMethod(), headerBytesList);
+		HeaderOperator.writeShort((short) aesExtraDataRecord.getCompressionMethod(), headerBytes);
 	}
 
 	private void stateIn(final byte[] bytes) {

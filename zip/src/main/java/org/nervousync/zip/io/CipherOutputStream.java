@@ -18,6 +18,9 @@ package org.nervousync.zip.io;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
+import org.nervousync.enumerations.zip.CompressionType;
+import org.nervousync.enumerations.zip.Zip64Mode;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.utils.core.DateTimeUtils;
@@ -37,12 +40,12 @@ import org.nervousync.zip.models.header.LocalFileHeader;
 import org.nervousync.zip.models.header.utils.HeaderOperator;
 import org.nervousync.zip.options.ZipOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.CRC32;
 
 /**
@@ -57,6 +60,10 @@ public class CipherOutputStream extends OutputStream {
 	 * Target output stream
 	 */
 	private final OutputStream outputStream;
+	/**
+	 * One byte buffer
+	 */
+	private final byte[] oneByteBuffer = new byte[1];
 	/**
 	 * Source file
 	 */
@@ -99,7 +106,7 @@ public class CipherOutputStream extends OutputStream {
 		this.totalWriteBytes = 0L;
 		this.bytesWrittenForThisFile = 0L;
 		this.totalReadBytes = 0L;
-		this.pendingBuffer = new byte[Globals.AES_BLOCK_SIZE];
+		this.pendingBuffer = new byte[ZipGlobals.AES_BLOCK_SIZE];
 		this.pendingBufferLength = 0;
 	}
 
@@ -111,6 +118,9 @@ public class CipherOutputStream extends OutputStream {
 	 * @throws ZipException the zip exception
 	 */
 	public void putNextEntry(final File file, final ZipOptions zipOptions) throws ZipException {
+		if (zipOptions == null) {
+			throw new ZipException(0x0000001B0021L);
+		}
 		if (!zipOptions.isSourceExternalStream() && file == null) {
 			throw new ZipException(0x0000001B0013L);
 		}
@@ -121,22 +131,26 @@ public class CipherOutputStream extends OutputStream {
 
 		try {
 			this.sourceFile = file;
-			this.zipOptions = (ZipOptions) zipOptions.clone();
+			this.zipOptions = zipOptions;
 
 			if (this.zipOptions.isSourceExternalStream()) {
 				if (StringUtils.notBlank(this.zipOptions.getFileNameInZip())) {
 					if (this.zipOptions.getFileNameInZip().endsWith(Globals.DEFAULT_ZIP_PAGE_SEPARATOR)
 							|| this.zipOptions.getFileNameInZip().endsWith(Globals.DEFAULT_PAGE_SEPARATOR)) {
-						this.zipOptions.setEncryptFiles(Boolean.FALSE);
-						this.zipOptions.setEncryptionMethod(Globals.ENC_NO_ENCRYPTION);
-						this.zipOptions.setCompressionMethod(Globals.COMP_STORE);
+						this.zipOptions =
+								zipOptions.cloneBuilder().compressionType(CompressionType.NONE).noCrypto().build();
+						this.zipOptions.setSourceFileCRC(zipOptions.getSourceFileCRC());
+						this.zipOptions.setDefaultFolderPath(zipOptions.getDefaultFolderPath());
+						this.zipOptions.setSourceExternalStream(zipOptions.isSourceExternalStream());
 					}
 				}
 			} else {
 				if (this.sourceFile.isDirectory()) {
-					this.zipOptions.setEncryptFiles(Boolean.FALSE);
-					this.zipOptions.setEncryptionMethod(Globals.ENC_NO_ENCRYPTION);
-					this.zipOptions.setCompressionMethod(Globals.COMP_STORE);
+					this.zipOptions =
+							zipOptions.cloneBuilder().compressionType(CompressionType.NONE).noCrypto().build();
+					this.zipOptions.setSourceFileCRC(zipOptions.getSourceFileCRC());
+					this.zipOptions.setDefaultFolderPath(zipOptions.getDefaultFolderPath());
+					this.zipOptions.setSourceExternalStream(zipOptions.isSourceExternalStream());
 				}
 			}
 
@@ -148,7 +162,7 @@ public class CipherOutputStream extends OutputStream {
 						|| this.zipFile.getCentralDirectory().getFileHeaders() == null
 						|| this.zipFile.getCentralDirectory().getFileHeaders().isEmpty()) {
 					byte[] intBuffer = new byte[4];
-					RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) Globals.EXTSIG);
+					RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) ZipGlobals.EXTSIG);
 					this.outputStream.write(intBuffer);
 					this.totalWriteBytes += 4L;
 				}
@@ -174,12 +188,12 @@ public class CipherOutputStream extends OutputStream {
 			if (this.zipOptions.isEncryptFiles()) {
 				this.initEncryptor();
 				if (this.encryptor != null) {
-					if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_STANDARD) {
+					if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_STANDARD) {
 						byte[] headerBytes = ((StandardEncryptor) this.encryptor).getHeaderBytes();
 						this.outputStream.write(headerBytes);
 						this.totalWriteBytes += headerBytes.length;
 						this.bytesWrittenForThisFile += headerBytes.length;
-					} else if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+					} else if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 						byte[] saltBytes = ((AESEncryptor) this.encryptor).getSaltBytes();
 						byte[] passwordVerifier = ((AESEncryptor) this.encryptor).getDerivedPasswordVerifier();
 						this.outputStream.write(saltBytes);
@@ -200,9 +214,8 @@ public class CipherOutputStream extends OutputStream {
 
 	@Override
 	public void write(final int b) throws IOException {
-		byte[] buffer = new byte[1];
-		buffer[0] = (byte) b;
-		this.write(buffer, 0, 1);
+		this.oneByteBuffer[0] =  (byte) b;
+		this.write(this.oneByteBuffer, 0, 1);
 	}
 
 	@Override
@@ -219,13 +232,13 @@ public class CipherOutputStream extends OutputStream {
 			return;
 		}
 		int offset = off, length = len;
-		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 			if (this.pendingBufferLength != 0) {
-				if (len >= (Globals.AES_BLOCK_SIZE - this.pendingBufferLength)) {
+				if (len >= (ZipGlobals.AES_BLOCK_SIZE - this.pendingBufferLength)) {
 					System.arraycopy(b, off, this.pendingBuffer, this.pendingBufferLength,
-							(Globals.AES_BLOCK_SIZE - this.pendingBufferLength));
+							(ZipGlobals.AES_BLOCK_SIZE - this.pendingBufferLength));
 					this.encryptAndWrite(this.pendingBuffer, 0, this.pendingBuffer.length);
-					offset = (Globals.AES_BLOCK_SIZE - this.pendingBufferLength);
+					offset = (ZipGlobals.AES_BLOCK_SIZE - this.pendingBufferLength);
 					length -= offset;
 					this.pendingBufferLength = 0;
 				} else {
@@ -258,7 +271,7 @@ public class CipherOutputStream extends OutputStream {
 			this.pendingBufferLength = 0;
 		}
 
-		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 			if (this.encryptor instanceof AESEncryptor) {
 				this.outputStream.write(((AESEncryptor) this.encryptor).getFinalMac());
 				this.bytesWrittenForThisFile += 10;
@@ -281,7 +294,7 @@ public class CipherOutputStream extends OutputStream {
 		long crc32 = this.crc.getValue();
 
 		if (this.generalFileHeader.isEncrypted()
-				&& this.generalFileHeader.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+				&& this.generalFileHeader.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 			crc32 = 0L;
 		}
 
@@ -369,18 +382,21 @@ public class CipherOutputStream extends OutputStream {
 			}
 		}
 
-		this.zipFile.getEndCentralDirectoryRecord().setSignature(Globals.ENDSIG);
+		this.zipFile.getEndCentralDirectoryRecord().setSignature(ZipGlobals.ENDSIG);
 	}
 
 	private void createGeneralFileHeaders() throws ZipException {
+		boolean zip64Entry = this.zip64Entry();
 		this.generalFileHeader = new GeneralFileHeader();
 
-		this.generalFileHeader.setSignature((int) Globals.CENSIG);
-		this.generalFileHeader.setMadeVersion(20);
-		this.generalFileHeader.setExtractNeeded(20);
+		this.generalFileHeader.setZip64Entry(zip64Entry);
 
-		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
-			this.generalFileHeader.setCompressionMethod(Globals.ENC_METHOD_AES);
+		this.generalFileHeader.setSignature((int) ZipGlobals.CENSIG);
+		this.generalFileHeader.setMadeVersion(zip64Entry ? ZipGlobals.ZIP_64_VERSION : 20);
+		this.generalFileHeader.setExtractNeeded(zip64Entry ? ZipGlobals.ZIP_64_VERSION : 20);
+
+		if (this.zipOptions.isEncryptFiles() && this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
+			this.generalFileHeader.setCompressionMethod(ZipGlobals.ENC_METHOD_AES);
 			this.generateAESExtraDataRecord();
 		} else {
 			this.generalFileHeader.setCompressionMethod(this.zipOptions.getCompressionMethod());
@@ -449,17 +465,17 @@ public class CipherOutputStream extends OutputStream {
 		} else {
 			if (!this.zipOptions.isSourceExternalStream()) {
 				long fileSize = FileUtils.fileSize(this.sourceFile);
-				if (this.zipOptions.getCompressionMethod() == Globals.COMP_STORE) {
-					if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_STANDARD) {
-						this.generalFileHeader.setCompressedSize(fileSize + Globals.STD_DEC_HDR_SIZE);
-					} else if (this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_AES) {
+				if (this.zipOptions.getCompressionMethod() == ZipGlobals.COMP_STORE) {
+					if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_STANDARD) {
+						this.generalFileHeader.setCompressedSize(fileSize + ZipGlobals.STD_DEC_HDR_SIZE);
+					} else if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
 						int saltLength = switch (this.zipOptions.getAesKeyStrength()) {
-							case Globals.AES_STRENGTH_128 -> 8;
-							case Globals.AES_STRENGTH_256 -> 16;
+							case ZipGlobals.AES_STRENGTH_128 -> 8;
+							case ZipGlobals.AES_STRENGTH_256 -> 16;
 							default -> throw new ZipException(0x0000001B0005L);
 						};
 						this.generalFileHeader
-								.setCompressedSize(fileSize + saltLength + Globals.AES_AUTH_LENGTH + 2);
+								.setCompressedSize(fileSize + saltLength + ZipGlobals.AES_AUTH_LENGTH + 2);
 					} else {
 						this.generalFileHeader.setCompressedSize(0L);
 					}
@@ -471,7 +487,7 @@ public class CipherOutputStream extends OutputStream {
 		}
 
 		if (this.zipOptions.isEncryptFiles()
-				&& this.zipOptions.getEncryptionMethod() == Globals.ENC_METHOD_STANDARD) {
+				&& this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_STANDARD) {
 			this.generalFileHeader.setCrc32(this.zipOptions.getSourceFileCRC());
 		}
 
@@ -497,16 +513,16 @@ public class CipherOutputStream extends OutputStream {
 		}
 
 		AESExtraDataRecord aesExtraDataRecord = new AESExtraDataRecord();
-		aesExtraDataRecord.setSignature(Globals.AESSIG);
+		aesExtraDataRecord.setSignature(ZipGlobals.AESSIG);
 		aesExtraDataRecord.setDataSize(7);
 		aesExtraDataRecord.setVendorID("AE");
 
 		aesExtraDataRecord.setVersionNumber(2);
 
-		if (this.zipOptions.getAesKeyStrength() == Globals.AES_STRENGTH_128) {
-			aesExtraDataRecord.setAesStrength(Globals.AES_STRENGTH_128);
-		} else if (this.zipOptions.getAesKeyStrength() == Globals.AES_STRENGTH_256) {
-			aesExtraDataRecord.setAesStrength(Globals.AES_STRENGTH_256);
+		if (this.zipOptions.getAesKeyStrength() == ZipGlobals.AES_STRENGTH_128) {
+			aesExtraDataRecord.setAesStrength(ZipGlobals.AES_STRENGTH_128);
+		} else if (this.zipOptions.getAesKeyStrength() == ZipGlobals.AES_STRENGTH_256) {
+			aesExtraDataRecord.setAesStrength(ZipGlobals.AES_STRENGTH_256);
 		} else {
 			throw new ZipException(0x0000001B0005L);
 		}
@@ -545,7 +561,7 @@ public class CipherOutputStream extends OutputStream {
 			generalPurposeFlag[0] = 0;
 		}
 
-		if (compressionMethod != Globals.COMP_DEFLATE) {
+		if (compressionMethod != ZipGlobals.COMP_DEFLATE) {
 			generalPurposeFlag[1] = 0;
 			generalPurposeFlag[2] = 0;
 		}
@@ -562,7 +578,7 @@ public class CipherOutputStream extends OutputStream {
 
 		this.localFileHeader = new LocalFileHeader();
 
-		this.localFileHeader.setSignature((int) Globals.LOCSIG);
+		this.localFileHeader.setSignature((int) ZipGlobals.LOCSIG);
 		this.localFileHeader.setExtractNeeded(this.generalFileHeader.getExtractNeeded());
 		this.localFileHeader.setCompressionMethod(this.generalFileHeader.getCompressionMethod());
 		this.localFileHeader.setLastModFileTime(this.generalFileHeader.getLastModFileTime());
@@ -574,17 +590,19 @@ public class CipherOutputStream extends OutputStream {
 		this.localFileHeader.setAesExtraDataRecord(this.generalFileHeader.getAesExtraDataRecord());
 		this.localFileHeader.setCrc32(this.generalFileHeader.getCrc32());
 		this.localFileHeader.setCompressedSize(this.generalFileHeader.getCompressedSize());
+		this.localFileHeader.setZip64Entry(this.generalFileHeader.isZip64Entry());
+		this.localFileHeader.setWriteCompressSizeInZip64ExtraRecord(this.generalFileHeader.isZip64Entry());
 		this.localFileHeader.setGeneralPurposeFlag(this.generalFileHeader.getGeneralPurposeFlag().clone());
 	}
 
 	private void initEncryptor() throws ZipException {
 		if (this.zipOptions.isEncryptFiles()) {
 			switch (this.zipOptions.getEncryptionMethod()) {
-				case Globals.ENC_METHOD_STANDARD:
+				case ZipGlobals.ENC_METHOD_STANDARD:
 					this.encryptor = new StandardEncryptor(this.zipOptions.getPassword(),
 							(this.localFileHeader.getLastModFileTime() & 0x0000FFFF) << 16);
 					break;
-				case Globals.ENC_METHOD_AES:
+				case ZipGlobals.ENC_METHOD_AES:
 					this.encryptor = new AESEncryptor(this.zipOptions.getPassword(), this.zipOptions.getAesKeyStrength());
 					break;
 				default:
@@ -601,55 +619,30 @@ public class CipherOutputStream extends OutputStream {
 			throw new ZipException(0x0000001B000EL);
 		}
 		try {
-			List<String> headerBytesList = new ArrayList<>();
+			ByteArrayOutputStream headerBytes =
+					new ByteArrayOutputStream(30 + localFileHeader.getFileNameLength() + 32);
 
-			byte[] shortBuffer = new byte[2];
-			byte[] intBuffer = new byte[4];
-			byte[] longBuffer = new byte[8];
-			byte[] emptyLongBuffer = {0, 0, 0, 0, 0, 0, 0, 0};
+			HeaderOperator.writeInt(localFileHeader.getSignature(), headerBytes);
+			HeaderOperator.writeShort((short) localFileHeader.getExtractNeeded(), headerBytes);
+			HeaderOperator.writeBytes(localFileHeader.getGeneralPurposeFlag(), headerBytes);
+			HeaderOperator.writeShort((short) localFileHeader.getCompressionMethod(), headerBytes);
+			HeaderOperator.writeInt(localFileHeader.getLastModFileTime(), headerBytes);
+			HeaderOperator.writeInt((int) localFileHeader.getCrc32(), headerBytes);
 
-			RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, localFileHeader.getSignature());
-			HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
+			boolean writingZip64Record = localFileHeader.isWriteCompressSizeInZip64ExtraRecord();
 
-			RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) localFileHeader.getExtractNeeded());
-			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
+			if (writingZip64Record) {
+				localFileHeader.setExtractNeeded(ZipGlobals.ZIP_64_VERSION);
+				localFileHeader.setWriteCompressSizeInZip64ExtraRecord(Boolean.TRUE);
 
-			HeaderOperator.copyByteArrayToList(localFileHeader.getGeneralPurposeFlag(), headerBytesList);
-
-			RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) localFileHeader.getCompressionMethod());
-			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
-
-			RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, localFileHeader.getLastModFileTime());
-			HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-
-			RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) localFileHeader.getCrc32());
-			HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-
-			boolean writingZip64Record = Boolean.FALSE;
-
-			long originalSize = localFileHeader.getOriginalSize();
-			if (originalSize + Globals.ZIP64_EXTRA_BUFFER_SIZE >= Globals.ZIP_64_LIMIT) {
-				RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, Globals.ZIP_64_LIMIT);
-				System.arraycopy(longBuffer, 0, intBuffer, 0, 4);
-
-				HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-				HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-				writingZip64Record = true;
-				localFileHeader.setWriteCompressSizeInZip64ExtraRecord(true);
+				HeaderOperator.writeInt((int) ZipGlobals.ZIP_64_LIMIT, headerBytes);
+				HeaderOperator.writeInt((int) ZipGlobals.ZIP_64_LIMIT, headerBytes);
 			} else {
-				RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, localFileHeader.getCompressedSize());
-				System.arraycopy(longBuffer, 0, intBuffer, 0, 4);
-				HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-
-				RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, localFileHeader.getOriginalSize());
-				System.arraycopy(longBuffer, 0, intBuffer, 0, 4);
-				HeaderOperator.copyByteArrayToList(intBuffer, headerBytesList);
-
-				localFileHeader.setWriteCompressSizeInZip64ExtraRecord(Boolean.FALSE);
+				HeaderOperator.writeInt((int) localFileHeader.getCompressedSize(), headerBytes);
+				HeaderOperator.writeInt((int) localFileHeader.getOriginalSize(), headerBytes);
 			}
 
-			RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) localFileHeader.getFileNameLength());
-			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
+			HeaderOperator.writeShort((short) localFileHeader.getFileNameLength(), headerBytes);
 
 			int extraFieldLength = 0;
 			if (writingZip64Record) {
@@ -660,40 +653,88 @@ public class CipherOutputStream extends OutputStream {
 				extraFieldLength += 11;
 			}
 
-			RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) extraFieldLength);
-			HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
+			HeaderOperator.writeShort((short) extraFieldLength, headerBytes);
 
 			if (StringUtils.notBlank(this.zipFile.getCharsetEncoding())) {
-				byte[] fileNameBytes = localFileHeader.getEntryPath().getBytes(this.zipFile.getCharsetEncoding());
-				HeaderOperator.copyByteArrayToList(fileNameBytes, headerBytesList);
+				HeaderOperator.writeBytes(localFileHeader.getEntryPath().getBytes(this.zipFile.getCharsetEncoding()), headerBytes);
 			} else {
-				HeaderOperator.copyByteArrayToList(localFileHeader.getEntryPath(), headerBytesList);
+				HeaderOperator.writeEntryPath(localFileHeader.getEntryPath(), headerBytes);
 			}
 
 			if (writingZip64Record) {
-				RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) Globals.EXTRAFIELDZIP64LENGTH);
-				HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
-
-				RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, (short) 16);
-				HeaderOperator.copyByteArrayToList(shortBuffer, headerBytesList);
-
-				RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, localFileHeader.getOriginalSize());
-				HeaderOperator.copyByteArrayToList(longBuffer, headerBytesList);
-
-				HeaderOperator.copyByteArrayToList(emptyLongBuffer, headerBytesList);
+				HeaderOperator.writeShort((short) ZipGlobals.EXTRAFIELDZIP64LENGTH, headerBytes);
+				HeaderOperator.writeShort((short) 16, headerBytes);
+				HeaderOperator.writeLong(this.zipOptions.isSourceExternalStream() ? 0L : localFileHeader.getOriginalSize(),
+						headerBytes);
+				HeaderOperator.writeLong(0L, headerBytes);
 			}
 
 			if (localFileHeader.getAesExtraDataRecord() != null) {
-				AESEngine.processHeader(localFileHeader.getAesExtraDataRecord(), headerBytesList);
+				AESEngine.processHeader(localFileHeader.getAesExtraDataRecord(), headerBytes);
 			}
 
-			byte[] bytes = HeaderOperator.convertByteArrayListToByteArray(headerBytesList);
-			outputStream.write(bytes);
-			outputStream.flush();
+			int expectSize = 30 + localFileHeader.getFileNameLength() + extraFieldLength;
+			if (headerBytes.size() != expectSize) {
+				throw new ZipException(0x0000001B0048L);
+			}
 
-			return bytes.length;
+			headerBytes.writeTo(outputStream);
+			return headerBytes.size();
 		} catch (Exception e) {
 			throw new ZipException(0x0000001B0017L, e);
 		}
+	}
+
+	private boolean zip64Entry() {
+		if (Zip64Mode.ALWAYS.equals(this.zipOptions.getZip64Mode())) {
+			return Boolean.TRUE;
+		}
+		if (this.zipOptions.isSourceExternalStream()) {
+			return this.zipOptions.getZip64Mode() != Zip64Mode.NEVER;
+		}
+
+		if (this.sourceFile == null) {
+			throw new ZipException(0x0000001B0013L);
+		}
+
+		long originalSize = this.sourceFile.length();
+		long maximumCompressedSize = this.maximumCompressedSize(originalSize);
+		boolean required = originalSize >= ZipGlobals.ZIP_64_LIMIT || maximumCompressedSize >= ZipGlobals.ZIP_64_LIMIT;
+
+		if (required && Zip64Mode.NEVER.equals(this.zipOptions.getZip64Mode())) {
+			throw new ZipException(0x0000001B0058L);
+		}
+		return required;
+	}
+
+	private long maximumCompressedSize(final long originalSize) {
+		long result = originalSize;
+		if (this.zipOptions.getCompressionMethod() == ZipGlobals.COMP_DEFLATE) {
+			result = saturatedAdd(result, originalSize >>> 12);
+			result = saturatedAdd(result, originalSize >>> 14);
+			result = saturatedAdd(result, originalSize >>> 25);
+			result = saturatedAdd(result, 13L);
+		}
+
+		if (this.zipOptions.isEncryptFiles()) {
+			if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_STANDARD) {
+				result = saturatedAdd(result, ZipGlobals.STD_DEC_HDR_SIZE);
+			} else if (this.zipOptions.getEncryptionMethod() == ZipGlobals.ENC_METHOD_AES) {
+				try {
+					result = saturatedAdd(result,
+							HeaderOperator.saltLength(this.zipOptions.getAesKeyStrength()) + ZipGlobals.AES_AUTH_LENGTH + 2L);
+				} catch (ZipException ignore) {
+					return Long.MAX_VALUE;
+				}
+			}
+		}
+		return result;
+	}
+
+	private static long saturatedAdd(final long left, final long right) {
+		if (right > 0L && left > Long.MAX_VALUE - right) {
+			return Long.MAX_VALUE;
+		}
+		return left + right;
 	}
 }

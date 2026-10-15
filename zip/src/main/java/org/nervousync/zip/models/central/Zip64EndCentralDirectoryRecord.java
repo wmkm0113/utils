@@ -28,8 +28,8 @@ public final class Zip64EndCentralDirectoryRecord {
 	private long recordSize;
 	private int madeVersion;
 	private int extractNeeded;
-	private int index;
-	private int startOfCentralDirectory;
+	private long index;
+	private long startOfCentralDirectory;
 	private long totalEntriesInCentralDirectoryOnThisDisk;
 	private long totalEntriesInCentralDirectory;
 	private long sizeOfCentralDirectory;
@@ -119,7 +119,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @return the index
 	 */
-	public int getIndex() {
+	public long getIndex() {
 		return this.index;
 	}
 
@@ -128,7 +128,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param index the index to set
 	 */
-	public void setIndex(final int index) {
+	public void setIndex(final long index) {
 		this.index = index;
 	}
 
@@ -137,7 +137,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @return the startOfCentralDirectory
 	 */
-	public int getStartOfCentralDirectory() {
+	public long getStartOfCentralDirectory() {
 		return this.startOfCentralDirectory;
 	}
 
@@ -146,7 +146,7 @@ public final class Zip64EndCentralDirectoryRecord {
 	 *
 	 * @param startOfCentralDirectory the startOfCentralDirectory to set
 	 */
-	public void setStartOfCentralDirectory(final int startOfCentralDirectory) {
+	public void setStartOfCentralDirectory(final long startOfCentralDirectory) {
 		this.startOfCentralDirectory = startOfCentralDirectory;
 	}
 

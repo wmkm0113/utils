@@ -16,7 +16,7 @@
  */
 package org.nervousync.zip.crypto.impl.aes;
 
-import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.Cryptor;
@@ -64,9 +64,9 @@ public final class AESDecryptor extends AESCrypto implements Cryptor {
 			throw new ZipException(0x0000001B0002L);
 		}
 		try {
-			for (int i = start; i < (start + len); i += Globals.AES_BLOCK_SIZE) {
-				this.loopCount = (i + Globals.AES_BLOCK_SIZE <= (start + len)) ?
-						Globals.AES_BLOCK_SIZE : ((start + len) - i);
+			for (int i = start; i < (start + len); i += ZipGlobals.AES_BLOCK_SIZE) {
+				this.loopCount = (i + ZipGlobals.AES_BLOCK_SIZE <= (start + len)) ?
+						ZipGlobals.AES_BLOCK_SIZE : ((start + len) - i);
 				this.macBasedPRF.append(buff, i, this.loopCount);
 				super.processData(buff, i);
 			}

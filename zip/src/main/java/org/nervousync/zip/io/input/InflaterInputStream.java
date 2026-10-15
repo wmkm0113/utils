@@ -18,6 +18,7 @@ package org.nervousync.zip.io.input;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.io.StandardFile;
 import org.nervousync.zip.ZipFile;
@@ -57,7 +58,7 @@ public class InflaterInputStream extends PartInputStream {
 	                            final long originalSize, final Cryptor decryptor, final boolean isAESEncryptedFile) {
 		super(zipFile, currentIndex, input, length, decryptor, isAESEncryptedFile);
 		this.inflater = new Inflater(Boolean.TRUE);
-		this.buffer = new byte[Globals.DEFAULT_BUFFER_SIZE];
+		this.buffer = new byte[ZipGlobals.IO_BUFFER_SIZE];
 		this.writeBytes = 0L;
 		this.originalSize = originalSize;
 	}
@@ -86,7 +87,7 @@ public class InflaterInputStream extends PartInputStream {
 	public int read(@Nonnull final byte[] b, final int off, final int len) throws IOException {
 		if (off < 0 || len < 0 || off + len > b.length) {
 			throw new IndexOutOfBoundsException();
-		} else if (b.length == 0) {
+		} else if (len == 0) {
 			return 0;
 		}
 
@@ -96,20 +97,29 @@ public class InflaterInputStream extends PartInputStream {
 				return Globals.DEFAULT_VALUE_INT;
 			}
 
-			int readLength;
-			while ((readLength = this.inflater.inflate(b, off, len)) == 0) {
-				if (this.inflater.finished() || this.inflater.needsDictionary()) {
+			while (true) {
+				int readLength = this.inflater.inflate(b, off, len);
+				if (readLength > 0) {
+					this.writeBytes += readLength;
+					return readLength;
+				}
+
+				if (this.inflater.finished()) {
 					this.finishInflating();
 					return Globals.DEFAULT_VALUE_INT;
 				}
 
+				if (this.inflater.needsDictionary()) {
+					throw new IOException("Inflater requires a preset dictionary");
+				}
+
 				if (this.inflater.needsInput()) {
 					this.fill();
+					continue;
 				}
-			}
 
-			this.writeBytes += readLength;
-			return readLength;
+				throw new IOException("Inflater made no progress");
+			}
 		} catch (DataFormatException | ZipException e) {
 			throw new IOException("Invalid data format", e);
 		}
@@ -121,21 +131,21 @@ public class InflaterInputStream extends PartInputStream {
 			throw new IllegalArgumentException("Negative skip length");
 		}
 
-		int limit = (int) Math.min(length, Integer.MAX_VALUE);
-		int total = 0;
-		byte[] b = new byte[512];
-		while (total < limit) {
-			int len = limit - total;
-			if (len > b.length) {
-				len = b.length;
-			}
-			len = this.read(b, 0, len);
-			if (len == Globals.DEFAULT_VALUE_INT) {
+		long remaining = length, skipped = 0L;
+		byte[] skipBuffer = new byte[ZipGlobals.IO_BUFFER_SIZE];
+		while (remaining > 0L) {
+			int expLen = (int) Math.min(skipBuffer.length, remaining);
+			int readLength = this.read(skipBuffer, 0, expLen);
+
+			if (readLength < 0) {
 				break;
 			}
-			total += len;
+
+			skipped += readLength;
+			remaining -= readLength;
 		}
-		return total;
+
+		return skipped;
 	}
 
 	@Override
@@ -156,8 +166,8 @@ public class InflaterInputStream extends PartInputStream {
 
 	private void fill() throws IOException {
 		int length = super.read(this.buffer, 0, this.buffer.length);
-		if (length == Globals.DEFAULT_VALUE_INT) {
-			throw new EOFException("Unexpected end of input stream");
+		if (length <= Globals.INITIALIZE_INT_VALUE) {
+			throw new EOFException("Unexpected end of compressed input stream");
 		}
 		this.inflater.setInput(this.buffer, 0, length);
 	}

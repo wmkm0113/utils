@@ -58,7 +58,7 @@ It is framework-agnostic and can be integrated into:
 **Jakarta EE Platform:** 11
 
 ## Old Version Compatibility
-We provided an old version for OpenJDK 11, users can found the source code at branch v1.x
+We provided an old version for OpenJDK 11, users can found the source code at [repository](https://github.com/wmkm0113/utils-jdk11)
 
 ## Design Philosophy
 This project is built upon the following engineering principles:

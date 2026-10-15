@@ -17,6 +17,7 @@
 package org.nervousync.zip.crypto.impl.standard;
 
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.zip.crypto.Cryptor;
 
@@ -44,7 +45,7 @@ public final class StandardEncryptor implements Cryptor {
 		}
 
 		this.standardCryptoEngine = new StandardCryptoEngine();
-		this.headerBytes = new byte[Globals.STD_DEC_HDR_SIZE];
+		this.headerBytes = new byte[ZipGlobals.STD_DEC_HDR_SIZE];
 		this.init(password, crc);
 	}
 
@@ -82,16 +83,16 @@ public final class StandardEncryptor implements Cryptor {
 
 		this.standardCryptoEngine.initKeys(password);
 
-		this.headerBytes[Globals.STD_DEC_HDR_SIZE - 1] = (byte) (crc >>> 24);
-		this.headerBytes[Globals.STD_DEC_HDR_SIZE - 2] = (byte) (crc >>> 16);
+		this.headerBytes[ZipGlobals.STD_DEC_HDR_SIZE - 1] = (byte) (crc >>> 24);
+		this.headerBytes[ZipGlobals.STD_DEC_HDR_SIZE - 2] = (byte) (crc >>> 16);
 
 		this.process(this.headerBytes);
 	}
 
 	private byte[] generateRandomBytes() {
-		byte[] buffer = new byte[Globals.STD_DEC_HDR_SIZE];
+		byte[] buffer = new byte[ZipGlobals.STD_DEC_HDR_SIZE];
 
-		for (int i = 0; i < Globals.STD_DEC_HDR_SIZE; i++) {
+		for (int i = 0; i < ZipGlobals.STD_DEC_HDR_SIZE; i++) {
 			buffer[i] = this.encryptByte((byte) Globals.random(256));
 		}
 

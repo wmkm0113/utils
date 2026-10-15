@@ -118,10 +118,11 @@ public final class CRCDigestAdapterImpl extends CryptoAdaptor {
 	 */
 	@Override
 	public void append(final byte[] dataBytes, final int position, final int length) throws CryptoException {
-		if (dataBytes.length < (position + length)) {
+		int endPosition = position + length;
+		if (dataBytes.length < endPosition) {
 			throw new CryptoException(0x000000150001L);
 		}
-		for (int i = position; i < length; i++) {
+		for (int i = position; i < endPosition; i++) {
 			long crc = (dataBytes[i] < 0) ? ((int) dataBytes[i]) + 256 : dataBytes[i];
 			if (this.crcConfig.getBit() <= 8) {
 				this.crc ^= crc;

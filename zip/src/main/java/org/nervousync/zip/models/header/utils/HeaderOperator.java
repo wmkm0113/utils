@@ -32,20 +32,19 @@
  */
 package org.nervousync.zip.models.header.utils;
 
+import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
-import org.nervousync.utils.core.RawUtils;
 import org.nervousync.utils.core.StringUtils;
 import org.nervousync.zip.models.header.LocalFileHeader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The type Header operator.
@@ -64,9 +63,9 @@ public final class HeaderOperator {
 	 */
 	public static int saltLength(final int aesStrength) throws ZipException {
 		return switch (aesStrength) {
-			case Globals.AES_STRENGTH_128 -> 8;
-			case Globals.AES_STRENGTH_192 -> 12;
-			case Globals.AES_STRENGTH_256 -> 16;
+			case ZipGlobals.AES_STRENGTH_128 -> 8;
+			case ZipGlobals.AES_STRENGTH_192 -> 12;
+			case ZipGlobals.AES_STRENGTH_256 -> 16;
 			default -> throw new ZipException(0x0000001B0005L);
 		};
 	}
@@ -86,131 +85,71 @@ public final class HeaderOperator {
 			throw new ZipException(0x0000001B002EL);
 		}
 
-		List<String> byteArrayList = new ArrayList<>();
-		byte[] intBuffer = new byte[4];
+		ByteArrayOutputStream headerBytes =
+				new ByteArrayOutputStream(localFileHeader.isWriteCompressSizeInZip64ExtraRecord() ? 24 : 16);
+		writeInt((int) ZipGlobals.EXTSIG, headerBytes);
+		writeInt((int) localFileHeader.getCrc32(), headerBytes);
 
-		// Extended local file header signature
-		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) Globals.EXTSIG);
-		copyByteArrayToList(intBuffer, byteArrayList);
-
-		// CRC
-		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) localFileHeader.getCrc32());
-		copyByteArrayToList(intBuffer, byteArrayList);
-
-		// Compressed size
-		long compressedSize = localFileHeader.getCompressedSize();
-		if (compressedSize > Integer.MAX_VALUE) {
-			compressedSize = Integer.MAX_VALUE;
-		}
-		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) compressedSize);
-		copyByteArrayToList(intBuffer, byteArrayList);
-
-		// Original size
-		long originalSize = localFileHeader.getOriginalSize();
-		if (originalSize > Integer.MAX_VALUE) {
-			originalSize = Integer.MAX_VALUE;
-		}
-		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, (int) originalSize);
-		copyByteArrayToList(intBuffer, byteArrayList);
-
-		byte[] extendLocationHdrBytes = convertByteArrayListToByteArray(byteArrayList);
-		outputStream.write(extendLocationHdrBytes);
-		return extendLocationHdrBytes.length;
-	}
-
-	/**
-	 * Convert the byte array list to byte array byte [ ].
-	 *
-	 * @param arrayList the array list
-	 * @return the byte [ ]
-	 * @throws ZipException the zip exception
-	 */
-	public static byte[] convertByteArrayListToByteArray(final List<String> arrayList) throws ZipException {
-		if (arrayList == null) {
-			throw new ZipException(0x0000001B0053L);
-		}
-
-		if (!arrayList.isEmpty()) {
-			byte[] returnBytes = new byte[arrayList.size()];
-
-			for (int i = 0; i < arrayList.size(); i++) {
-				returnBytes[i] = Byte.parseByte(arrayList.get(i));
+		if (localFileHeader.isWriteCompressSizeInZip64ExtraRecord()) {
+			// Compressed size
+			writeLong(localFileHeader.getCompressedSize(), headerBytes);
+			// Original size
+			writeLong(localFileHeader.getOriginalSize(), headerBytes);
+		} else {
+			if (localFileHeader.getCompressedSize() >= ZipGlobals.ZIP_64_LIMIT
+					|| localFileHeader.getOriginalSize() >= ZipGlobals.ZIP_64_LIMIT) {
+				throw new ZipException(0x0000001B0048L);
 			}
 
-			return returnBytes;
+			// Compressed size
+			writeInt((int) localFileHeader.getCompressedSize(), headerBytes);
+			// Original size
+			writeInt((int) localFileHeader.getOriginalSize(), headerBytes);
 		}
 
-		return new byte[0];
-	}
-
-	/**
-	 * Append short to the array list.
-	 *
-	 * @param value     the value
-	 * @param arrayList the array list
-	 * @throws ZipException the zip exception
-	 */
-	public static void appendShortToArrayList(final short value, final List<String> arrayList)
-			throws ZipException, DataInvalidException {
-		byte[] shortBuffer = new byte[2];
-		RawUtils.writeShort(shortBuffer, ByteOrder.LITTLE_ENDIAN, value);
-		HeaderOperator.copyByteArrayToList(shortBuffer, arrayList);
-	}
-
-	/**
-	 * Append int to the array list.
-	 *
-	 * @param value     the value
-	 * @param arrayList the array list
-	 * @throws ZipException the zip exception
-	 */
-	public static void appendIntToArrayList(final int value, final List<String> arrayList)
-			throws ZipException, DataInvalidException {
-		byte[] intBuffer = new byte[4];
-		RawUtils.writeInt(intBuffer, ByteOrder.LITTLE_ENDIAN, value);
-		HeaderOperator.copyByteArrayToList(intBuffer, arrayList);
-	}
-
-	/**
-	 * Append long to the array list.
-	 *
-	 * @param value     the value
-	 * @param arrayList the array list
-	 * @throws ZipException the zip exception
-	 */
-	public static void appendLongToArrayList(final long value, final List<String> arrayList)
-			throws ZipException, DataInvalidException {
-		byte[] longBuffer = new byte[8];
-		RawUtils.writeLong(longBuffer, ByteOrder.LITTLE_ENDIAN, value);
-		HeaderOperator.copyByteArrayToList(longBuffer, arrayList);
-	}
-
-	/**
-	 * Copy byte arrays to list.
-	 *
-	 * @param byteArray the byte array
-	 * @param arrayList the array list
-	 * @throws ZipException the zip exception
-	 */
-	public static void copyByteArrayToList(final byte[] byteArray, final List<String> arrayList) throws ZipException {
-		if (arrayList == null || byteArray == null) {
-			throw new ZipException(0x0000001B0054L);
+		int expectSize = localFileHeader.isWriteCompressSizeInZip64ExtraRecord() ? 24 : 16;
+		if (headerBytes.size() != expectSize) {
+			throw new ZipException(0x0000001B0048L);
 		}
 
-		for (byte b : byteArray) {
-			arrayList.add(Byte.toString(b));
-		}
+		headerBytes.writeTo(outputStream);
+		return headerBytes.size();
 	}
 
-	/**
-	 * Copy entry byte arrays to list.
-	 *
-	 * @param entryPath the entry path
-	 * @param arrayList the array list
-	 * @throws ZipException the zip exception
-	 */
-	public static void copyByteArrayToList(final String entryPath, final List<String> arrayList) throws ZipException {
-		copyByteArrayToList(convertCharset(entryPath), arrayList);
+	public static void writeShort(final short value, @Nonnull final ByteArrayOutputStream outputStream)
+			throws ZipException {
+		outputStream.write(value & 0xFF);
+		outputStream.write((value >>> 8) & 0xFF);
+	}
+
+	public static void writeInt(final int value, @Nonnull final ByteArrayOutputStream outputStream)
+			throws ZipException {
+		outputStream.write(value & 0xFF);
+		outputStream.write((value >>> 8) & 0xFF);
+		outputStream.write((value >>> 16) & 0xFF);
+		outputStream.write((value >>> 24) & 0xFF);
+	}
+
+	public static void writeLong(final long value, @Nonnull final ByteArrayOutputStream outputStream)
+			throws ZipException {
+		outputStream.write((int) value & 0xFF);
+		outputStream.write((int) (value >>> 8) & 0xFF);
+		outputStream.write((int) (value >>> 16) & 0xFF);
+		outputStream.write((int) (value >>> 24) & 0xFF);
+		outputStream.write((int) (value >>> 32) & 0xFF);
+		outputStream.write((int) (value >>> 40) & 0xFF);
+		outputStream.write((int) (value >>> 48) & 0xFF);
+		outputStream.write((int) (value >>> 56) & 0xFF);
+	}
+
+	public static void writeBytes(@Nonnull final byte[] dataBytes, @Nonnull final ByteArrayOutputStream outputStream)
+			throws ZipException {
+		outputStream.write(dataBytes, 0, dataBytes.length);
+	}
+
+	public static void writeEntryPath(final String entryPath, @Nonnull final ByteArrayOutputStream outputStream)
+			throws ZipException {
+		writeBytes(convertCharset(entryPath), outputStream);
 	}
 
 	/**

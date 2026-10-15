@@ -18,6 +18,7 @@ package org.nervousync.zip.io;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
+import org.nervousync.commons.zip.ZipGlobals;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.exceptions.zip.ZipException;
 import org.nervousync.io.StandardFile;
@@ -30,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteOrder;
+import java.util.Objects;
 
 /**
  * The type Split output stream.
@@ -42,18 +44,23 @@ public class SplitOutputStream extends OutputStream {
 	private static final long[] HEADER_SIGNATURES = new long[11];
 
 	static {
-		HEADER_SIGNATURES[0] = Globals.LOCSIG;
-		HEADER_SIGNATURES[1] = Globals.EXTSIG;
-		HEADER_SIGNATURES[2] = Globals.CENSIG;
-		HEADER_SIGNATURES[3] = Globals.ENDSIG;
-		HEADER_SIGNATURES[4] = Globals.DIGSIG;
-		HEADER_SIGNATURES[5] = Globals.ARCEXTDATREC;
-		HEADER_SIGNATURES[6] = Globals.EXTSIG;
-		HEADER_SIGNATURES[7] = Globals.ZIP64ENDCENDIRLOC;
-		HEADER_SIGNATURES[8] = Globals.ZIP64ENDCENDIRREC;
-		HEADER_SIGNATURES[9] = Globals.EXTRAFIELDZIP64LENGTH;
-		HEADER_SIGNATURES[10] = Globals.AESSIG;
+		HEADER_SIGNATURES[0] = ZipGlobals.LOCSIG;
+		HEADER_SIGNATURES[1] = ZipGlobals.EXTSIG;
+		HEADER_SIGNATURES[2] = ZipGlobals.CENSIG;
+		HEADER_SIGNATURES[3] = ZipGlobals.ENDSIG;
+		HEADER_SIGNATURES[4] = ZipGlobals.DIGSIG;
+		HEADER_SIGNATURES[5] = ZipGlobals.ARCEXTDATREC;
+		HEADER_SIGNATURES[6] = ZipGlobals.EXTSIG;
+		HEADER_SIGNATURES[7] = ZipGlobals.ZIP64ENDCENDIRLOC;
+		HEADER_SIGNATURES[8] = ZipGlobals.ZIP64ENDCENDIRREC;
+		HEADER_SIGNATURES[9] = ZipGlobals.EXTRAFIELDZIP64LENGTH;
+		HEADER_SIGNATURES[10] = ZipGlobals.AESSIG;
 	}
+
+	/**
+	 * One byte buffer
+	 */
+	private final byte[] oneByteBuffer = new byte[1];
 
 	private StandardFile dataOutput;
 	private final String fileName;
@@ -92,17 +99,16 @@ public class SplitOutputStream extends OutputStream {
 
 	public static SplitOutputStream newInstance(final String savePath, final long splitLength)
 			throws FileNotFoundException, ZipException {
-		if (splitLength >= 0 && splitLength < Globals.MIN_SPLIT_LENGTH) {
-			throw new ZipException(0x0000001B0057L, Globals.MIN_SPLIT_LENGTH);
+		if (splitLength >= 0 && splitLength < ZipGlobals.MIN_SPLIT_LENGTH) {
+			throw new ZipException(0x0000001B0057L, ZipGlobals.MIN_SPLIT_LENGTH);
 		}
 		return new SplitOutputStream(savePath, splitLength);
 	}
 
 	@Override
 	public void write(final int b) throws IOException {
-		byte[] buffer = new byte[1];
-		buffer[0] = (byte) b;
-		this.write(buffer, 0, 1);
+		this.oneByteBuffer[0] =  (byte) b;
+		this.write(this.oneByteBuffer, 0, 1);
 	}
 
 	@Override
@@ -118,38 +124,41 @@ public class SplitOutputStream extends OutputStream {
 
 	@Override
 	public void write(@Nonnull final byte[] b, final int off, final int len) throws IOException {
+		Objects.checkFromIndexSize(off, len, b.length);
 		if (len < 0) {
 			return;
 		}
 
-		if (this.splitLength != Globals.DEFAULT_VALUE_LONG) {
-			if (this.splitLength < Globals.MIN_SPLIT_LENGTH) {
-				throw new IOException("split length less than minimum allowed split length of " + Globals.MIN_SPLIT_LENGTH + " Bytes");
-			}
-
-			if (this.bytesWrittenForThisPart >= this.splitLength) {
-				this.startNextSplitFile();
-				this.dataOutput.write(b, off, len);
-				this.bytesWrittenForThisPart = len;
-			} else if (this.bytesWrittenForThisPart + len > this.splitLength) {
-				if (this.isHeaderData(b)) {
-					this.startNextSplitFile();
-					this.dataOutput.write(b, off, len);
-					this.bytesWrittenForThisPart = len;
-				} else {
-					this.dataOutput.write(b, off, (int) (this.splitLength - this.bytesWrittenForThisPart));
-					this.startNextSplitFile();
-					this.dataOutput.write(b, (int) (this.splitLength - this.bytesWrittenForThisPart),
-							(int) (len - (this.splitLength - this.bytesWrittenForThisPart)));
-					this.bytesWrittenForThisPart = len - (this.splitLength - this.bytesWrittenForThisPart);
-				}
-			} else {
-				this.dataOutput.write(b, off, len);
-				this.bytesWrittenForThisPart += len;
-			}
-		} else {
+		if (this.splitLength == Globals.DEFAULT_VALUE_LONG) {
 			this.dataOutput.write(b, off, len);
 			this.bytesWrittenForThisPart += len;
+			return;
+		}
+
+		int offset = off, remaining = len;
+		boolean headerData = this.isHeaderData(b, off, len);
+
+		while (remaining > 0) {
+			long available = this.splitLength - this.bytesWrittenForThisPart;
+			if (available == 0L) {
+				this.startNextSplitFile();
+				available = this.splitLength;
+			}
+
+			if (headerData && remaining > available) {
+				if (remaining > this.splitLength) {
+					throw new IOException("ZIP header exceeds configured split length");
+				}
+				this.startNextSplitFile();
+				continue;
+			}
+
+			int writeLength = (int) Math.min(remaining, available);
+			this.dataOutput.write(b, offset, writeLength);
+			this.bytesWrittenForThisPart += writeLength;
+			offset += writeLength;
+			remaining -= writeLength;
+			headerData = Boolean.FALSE;
 		}
 	}
 
@@ -157,10 +166,9 @@ public class SplitOutputStream extends OutputStream {
 	 * Check buffer size and start next split file boolean.
 	 *
 	 * @param bufferSize the buffer size
-	 * @return the boolean
 	 * @throws ZipException the zip exception
 	 */
-	public boolean checkBufferSizeAndStartNextSplitFile(final int bufferSize) throws ZipException {
+	public void checkBufferSizeAndStartNextSplitFile(final int bufferSize) throws ZipException {
 		if (bufferSize < 0) {
 			throw new ZipException(0x0000001B0056L);
 		}
@@ -169,12 +177,10 @@ public class SplitOutputStream extends OutputStream {
 			try {
 				this.startNextSplitFile();
 				this.bytesWrittenForThisPart = 0;
-				return Boolean.TRUE;
 			} catch (IOException e) {
 				throw new ZipException(0x0000001B0057L, e);
 			}
 		}
-		return Boolean.FALSE;
 	}
 
 	private boolean isBufferSizeFitForCurrentSplitFile(final int bufferSize) throws ZipException {
@@ -182,7 +188,7 @@ public class SplitOutputStream extends OutputStream {
 			throw new ZipException(0x0000001B0056L);
 		}
 
-		if (this.splitLength >= Globals.MIN_SPLIT_LENGTH) {
+		if (this.splitLength >= ZipGlobals.MIN_SPLIT_LENGTH) {
 			return (this.bytesWrittenForThisPart + bufferSize <= this.splitLength);
 		} else {
 			return Boolean.TRUE;
@@ -256,6 +262,7 @@ public class SplitOutputStream extends OutputStream {
 
 		this.dataOutput = new StandardFile(this.currentFullPath, Boolean.TRUE);
 		this.currentSplitFileIndex++;
+		this.bytesWrittenForThisPart = 0L;
 	}
 
 	private String splitPath() {
@@ -274,20 +281,21 @@ public class SplitOutputStream extends OutputStream {
 		}
 	}
 
-	private boolean isHeaderData(final byte[] buffer) throws IOException {
-		if (buffer != null && buffer.length >= 4) {
-			try {
-				int signature = RawUtils.readInt(buffer, 0, ByteOrder.LITTLE_ENDIAN);
-
-				for (long headerSignature : HEADER_SIGNATURES) {
-					if (headerSignature != Globals.EXTSIG && headerSignature == signature) {
-						return Boolean.TRUE;
-					}
-				}
-			} catch (DataInvalidException e) {
-				throw new IOException(e);
-			}
+	private boolean isHeaderData(final byte[] buffer, final int offset, final int length) throws IOException {
+		if (buffer == null || length < Integer.BYTES) {
+			return Boolean.FALSE;
 		}
-		return Boolean.FALSE;
+		try {
+			long signature = RawUtils.readUnsignedInt(buffer, offset, ByteOrder.LITTLE_ENDIAN);
+
+			for (long headerSignature : HEADER_SIGNATURES) {
+				if (headerSignature != ZipGlobals.EXTSIG && headerSignature == signature) {
+					return Boolean.TRUE;
+				}
+			}
+			return Boolean.FALSE;
+		} catch (DataInvalidException e) {
+			throw new IOException(e);
+		}
 	}
 }
