@@ -20,15 +20,17 @@
     <dependencies>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-core</artifactId>
+            <artifactId>utils-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>
             <artifactId>utils-beans</artifactId>
         </dependency>
+        <!-- Test -->
         <dependency>
-            <groupId>org.nervousync</groupId>
-            <artifactId>utils-test</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Jakarta Servlet -->

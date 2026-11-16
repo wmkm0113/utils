@@ -15,14 +15,18 @@ import org.nervousync.mail.config.MailConfig;
 import org.nervousync.mail.config.MailConfigBuilder;
 import org.nervousync.security.factory.SecureFactory;
 import org.nervousync.test.BaseTest;
+import org.nervousync.utils.beans.BeanUtils;
 import org.nervousync.utils.cert.CertificateUtils;
-import org.nervousync.utils.core.*;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.StringUtils;
+import org.nervousync.utils.commons.SystemUtils;
 import org.nervousync.utils.i18n.MultilingualUtils;
 import org.nervousync.utils.id.IDUtils;
 import org.nervousync.utils.mail.MailClient;
 import org.nervousync.utils.mail.MailUtils;
 import org.nervousync.utils.properties.PropertiesUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.CryptoUtils;
 
 //import java.net.Proxy;
 import java.io.FileOutputStream;
@@ -65,7 +69,7 @@ public final class MailTest extends BaseTest {
 		CONFIGURE_MANAGER = ConfigureManager.getInstance();
 
 		long currentTime = DateTimeUtils.currentUTCTimeMillis();
-		KeyPair keyPair = SecurityUtils.RSAKeyPair(1024);
+		KeyPair keyPair = CryptoUtils.RSAKeyPair(1024);
 		X509Certificate x509Certificate = CertificateUtils.x509(keyPair.getPublic(), IDUtils.snowflake(),
 				new Date(currentTime), new Date(currentTime + 365 * 24 * 60 * 60 * 1000L), "TestCert", keyPair.getPrivate(), "SHA1withRSA");
 		try {

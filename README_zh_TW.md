@@ -21,12 +21,13 @@
 * [模組](#模組)
 * [安裝引用](#安裝引用)
 * [快速開始](#快速開始)
-+ [JavaBean 與不同資料的相互轉換](#JavaBean-與不同資料的相互轉換)
-+ [隨機ID生成](#隨機ID生成)
-+ [地理資訊](#地理資訊)
-+ [統一管理的設定文件](#統一管理的設定文件)
-+ [國際化的支持](#國際化的支持)
-+ [OTP產生與驗證](#OTP產生與驗證)
+    + [Zip檔操作](#zip檔操作)
+    + [JavaBean 與不同資料的相互轉換](#JavaBean-與不同資料的相互轉換)
+    + [隨機ID生成](#隨機ID生成)
+    + [地理資訊](#地理資訊)
+    + [統一管理的設定文件](#統一管理的設定文件)
+    + [國際化的支持](#國際化的支持)
+    + [OTP產生與驗證](#OTP產生與驗證)
 * [架構概覽](#架構概覽)
 * [同類產品比較](#同類產品比較)
 * [適用場景](#適用場景)
@@ -157,6 +158,43 @@ libraryDependencies += "org.nervousync" % "${模組名稱}" % "${版本號碼}" 
 ```
 
 ## 快速開始
+
+### Zip檔操作
+
+需要 `utils-archive` 模組
+
+使用 ArchiveFile.zipFile 方法開啟一個 zip 壓縮文件，現在僅支援
+LocalDataFile 的本機文件，下一個版本會加入 SambaDataFile
+來支援網路文件存取。
+
+ArchiveFile 是一個實作了 AutoClosable
+介面的實作類，建議使用者透過以下方式調用，防止檔案在使用完成後未及時釋放。
+
+```java
+try(ArchiveFile archiveFile = ArchiveFile.zipFile()){
+		// Process archive file
+}catch(Exception e){
+		// Process exceptions
+}
+```
+
+**訪問條目：**
+archiveFile.entry 取得類型為 ArchiveEntry
+的條目信息，以獲取到的 ArchiveEntry 做為參數，使用
+archiveFile.openReader 取得對應條目資料的讀取器（類型為
+ResourceReader），resourceReader.extract 可以將條目資訊解壓縮到指定位置，也可以透過
+resourceReader.openStream 來取得讀取條目資料的輸入流。
+
+**寫入條目：**
+archiveFile.openWriter 方法可以開啟一個條目資料的寫入器（類型為
+ResourceWriter），透過 resourceWriter.write
+方法可以將檔案寫入到壓縮包中，也可以透過
+resourceWriter.openStream 來取得條目寫入的輸出流。
+資料寫入完成後，需要顯示呼叫 resourceWriter.finish
+方法來確認修改已經完成。
+
+[詳細介紹點擊查看](archive/README_zh_TW.md)
+
 ### JavaBean 與不同資料的相互轉換
 
 `utils-core（使用jsonb）`支援 XML 和 JSON 格式的數據，`utils-beans（使用Jackson）`支援 XML、JSON 和 YAML 格式的數據

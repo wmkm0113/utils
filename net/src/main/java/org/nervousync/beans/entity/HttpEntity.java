@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.nervousync.enumerations.web.HttpMethodOption;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import org.nervousync.commons.Globals;

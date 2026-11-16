@@ -18,8 +18,8 @@ package org.nervousync.proxy;
 
 import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
-import org.nervousync.utils.core.DateTimeUtils;
-import org.nervousync.utils.core.ObjectUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.ObjectUtils;
 
 import java.net.Proxy;
 

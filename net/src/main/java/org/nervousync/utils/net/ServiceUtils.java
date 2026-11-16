@@ -35,7 +35,8 @@ import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.web.HttpMethodOption;
 import org.nervousync.exceptions.network.NetworkInfoException;
 import org.nervousync.exceptions.services.ServiceException;
-import org.nervousync.utils.core.*;
+import org.nervousync.utils.beans.BeanUtils;
+import org.nervousync.utils.commons.*;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.xml.namespace.QName;

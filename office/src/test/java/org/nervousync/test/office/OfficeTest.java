@@ -24,7 +24,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.office.excel.ExcelWriter;
 import org.nervousync.office.excel.SheetWriter;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.FileUtils;
+import org.nervousync.utils.commons.FileUtils;
 import org.nervousync.utils.office.OfficeUtils;
 
 import java.util.ArrayList;

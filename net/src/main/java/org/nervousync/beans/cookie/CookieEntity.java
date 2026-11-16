@@ -17,8 +17,8 @@
 package org.nervousync.beans.cookie;
 
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.DateTimeUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Date;
 import java.util.Optional;

@@ -18,8 +18,8 @@ import org.nervousync.xml.adapters.binary.Base32Adapter;
 import org.nervousync.xml.adapters.binary.Base64Adapter;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.BeanUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.beans.BeanUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;

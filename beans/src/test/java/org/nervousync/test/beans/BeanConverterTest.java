@@ -22,7 +22,7 @@ import org.nervousync.xml.adapters.basic.BigDecimalAdapter;
 import org.nervousync.xml.adapters.basic.BigIntegerAdapter;
 import org.nervousync.xml.adapters.beans.TransferBeanAdapter;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.ClassUtils;
+import org.nervousync.utils.commons.ClassUtils;
 
 public class BeanConverterTest extends BaseTest {
 

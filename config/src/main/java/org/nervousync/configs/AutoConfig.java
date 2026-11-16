@@ -19,7 +19,7 @@ package org.nervousync.configs;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.configs.Configuration;
-import org.nervousync.utils.core.ReflectionUtils;
+import org.nervousync.utils.commons.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Optional;

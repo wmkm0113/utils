@@ -21,6 +21,7 @@ English
 * [Modules](#Modules)
 * [Installation](#Installation)
 * [Quick Start](#Quick-Start)
+    + [Zip file operations](#zip-file-operations)
     + [JavaBean and the conversion between different data types](#JavaBean-and-the-conversion-between-different-data-types)
     + [Random ID Generation](#Random-ID-Generation)
     + [Geographic Information](#Geographic-Information)
@@ -153,6 +154,47 @@ libraryDependencies += "org.nervousync" % "${module_name}" % "${version}" % "pro
 ---
 
 ## Quick Start
+
+### Zip File Operations
+
+Requires the `utils-archive` module.
+
+Use the `ArchiveFile.zipFile` method to open a ZIP archive.
+Currently, only local files (via `LocalDataFile`) are
+supported; support for network file access (via
+`SambaDataFile`) will be added in the next version.
+
+`ArchiveFile` implements the `AutoCloseable` interface. It
+is recommended to use the following pattern to ensure that
+file resources are properly released after use:
+
+```java
+try(ArchiveFile archiveFile = ArchiveFile.zipFile()){
+    // Process archive file
+}catch(Exception e){
+    // Process exceptions
+}
+```
+
+**Accessing Entries:**
+Use `archiveFile.entry` to retrieve information about an
+entry (of type `ArchiveEntry`). Pass this `ArchiveEntry`
+object to `archiveFile.openReader` to obtain a reader (of
+type `ResourceReader`) for the corresponding entry data. You
+can use `resourceReader.extract` to decompress the entry to
+a specified location, or use `resourceReader.openStream` to
+obtain an input stream for reading the entry's data.
+
+**Writing Entries:**
+The `archiveFile.openWriter` method opens a writer (of type
+`ResourceWriter`) for entry data. You can use the
+`resourceWriter.write` method to add files to the archive,
+or use `resourceWriter.openStream` to obtain an output
+stream for writing data to an entry. Once data writing is
+complete, you must explicitly call the
+`resourceWriter.finish` method to finalize the changes.
+
+[Click here for detailed information](archive/README.md)
 
 ### JavaBean and the conversion between different data types
 

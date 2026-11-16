@@ -19,7 +19,7 @@ package org.nervousync.office.excel.core;
 
 import org.nervousync.commons.Globals;
 import org.nervousync.office.excel.ExcelReader;
-import org.nervousync.utils.core.CollectionUtils;
+import org.nervousync.utils.commons.CollectionUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import java.util.*;

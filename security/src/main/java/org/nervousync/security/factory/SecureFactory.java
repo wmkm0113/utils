@@ -25,10 +25,11 @@ import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.exceptions.crypto.CryptoException;
 import org.nervousync.security.CryptoAdaptor;
+import org.nervousync.utils.beans.BeanUtils;
 import org.nervousync.utils.cert.CertificateUtils;
-import org.nervousync.utils.core.*;
+import org.nervousync.utils.commons.*;
 import org.nervousync.utils.logger.LoggerUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.CryptoUtils;
 
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -420,10 +421,14 @@ public final class SecureFactory {
 			LOGGER.error("Key_Bytes_Empty_Error");
 			return null;
 		}
+		final byte[] iv = generateIv(algorithm);
 		SecureConfig secureConfig = new SecureConfig();
 		secureConfig.setSecureName(secureName);
 		secureConfig.setSecureAlgorithm(algorithm);
 		secureConfig.setSecureKey(StringUtils.base64Encode(initKey(secureKey, Boolean.TRUE)));
+		if (iv != null) {
+			secureConfig.setIvData(StringUtils.base64Encode(initKey(iv, Boolean.TRUE)));
+		}
 		return secureConfig;
 	}
 
@@ -453,6 +458,32 @@ public final class SecureFactory {
 				.orElse(dataBytes);
 	}
 
+	private static byte[] generateIv(final SecureAlgorithm secureAlgorithm) {
+		String algorithm;
+		switch (secureAlgorithm) {
+			case RSA2048:
+				algorithm = "RSA";
+				break;
+			case SM2:
+				algorithm = "SM2";
+				break;
+			case AES128:
+			case AES192:
+			case AES256:
+				algorithm = "AES";
+				break;
+			case TRIPLE_DES:
+				algorithm = "DESede";
+				break;
+			case SM4:
+				algorithm = "SM4";
+				break;
+			default:
+				return null;
+		}
+		return CryptoUtils.generateIV(algorithm, "CBC");
+	}
+
 	/**
 	 * <h3 class="en-US">Generate a secure key by the given secure algorithm</h3>
 	 * <h3 class="zh-CN">使用给定的安全算法生成安全密钥</h3>
@@ -464,12 +495,13 @@ public final class SecureFactory {
 	 */
 	private static byte[] generate(final SecureAlgorithm secureAlgorithm) {
 		return switch (secureAlgorithm) {
-			case RSA2048 -> convertKeyPair(SecurityUtils.RSAKeyPair(2048), "SHA256withRSA");
-			case SM2 -> convertKeyPair(SecurityUtils.SM2KeyPair(), "SM3withSM2");
-			case AES128 -> SecurityUtils.AES128Key();
-			case AES192 -> SecurityUtils.AES192Key();
-			case AES256 -> SecurityUtils.AES256Key();
-			case SM4 -> SecurityUtils.SM4Key();
+			case RSA2048 -> convertKeyPair(CryptoUtils.RSAKeyPair(2048), "SHA256withRSA");
+			case SM2 -> convertKeyPair(CryptoUtils.SM2KeyPair(), "SM3withSM2");
+			case AES128 -> CryptoUtils.AES128Key();
+			case AES192 -> CryptoUtils.AES192Key();
+			case AES256 -> CryptoUtils.AES256Key();
+			case TRIPLE_DES -> CryptoUtils.TripleDESKey();
+			case SM4 -> CryptoUtils.SM4Key();
 			default -> new byte[0];
 		};
 	}
@@ -516,6 +548,11 @@ public final class SecureFactory {
 		 */
 		private final byte[] keyBytes;
 		/**
+		 * <span class="en-US">Initialization vector</span>
+		 * <span class="zh-CN">初始向量</span>
+		 */
+		private final byte[] ivBytes;
+		/**
 		 * <span class="en-US">Asymmetric private key</span>
 		 * <span class="zh-CN">非对称加密私钥</span>
 		 */
@@ -536,11 +573,15 @@ public final class SecureFactory {
 		private SecureNode(@Nonnull final AbstractConfig secureConfig) {
 			final byte[] keyBytes =
 					SecureFactory.initKey(StringUtils.base64Decode(secureConfig.getSecureKey()), Boolean.FALSE);
+			final byte[] ivBytes = StringUtils.isEmpty(secureConfig.getIvData())
+					? new byte[0]
+					: SecureFactory.initKey(StringUtils.base64Decode(secureConfig.getIvData()),  Boolean.FALSE);
 			this.secureAlgorithm = secureConfig.getSecureAlgorithm();
 			switch (this.secureAlgorithm) {
 				case RSA2048:
 				case SM2:
 					this.keyBytes = keyBytes;
+					this.ivBytes = null;
 					KeyStore keyStore = CertificateUtils.loadKeyStore(keyBytes, SECURE_CERTIFICATE_PASSWORD);
 					if (keyStore == null) {
 						this.initialized = Boolean.FALSE;
@@ -559,15 +600,18 @@ public final class SecureFactory {
 				case AES128:
 				case AES192:
 				case AES256:
+				case TRIPLE_DES:
 				case SM4:
 					this.initialized = Boolean.TRUE;
 					this.keyBytes = keyBytes;
+					this.ivBytes = ivBytes;
 					this.privateKey = null;
 					this.publicKey = null;
 					break;
 				default:
 					this.initialized = Boolean.FALSE;
 					this.keyBytes = null;
+					this.ivBytes = null;
 					this.privateKey = null;
 					this.publicKey = null;
 					break;
@@ -589,26 +633,33 @@ public final class SecureFactory {
 				try {
 					switch (this.secureAlgorithm) {
 						case RSA2048:
-							secureAdapter = encrypt ? SecurityUtils.RSAEncryptor(this.publicKey)
-									: SecurityUtils.RSADecryptor(this.privateKey);
+							secureAdapter = encrypt ? CryptoUtils.RSAEncryptor(this.publicKey)
+									: CryptoUtils.RSADecryptor(this.privateKey);
 							break;
 						case SM2:
-							secureAdapter = encrypt ? SecurityUtils.SM2Encryptor(this.publicKey)
-									: SecurityUtils.SM2Decryptor(this.privateKey);
+							secureAdapter = encrypt ? CryptoUtils.SM2Encryptor(this.publicKey)
+									: CryptoUtils.SM2Decryptor(this.privateKey);
 							break;
 						case AES128:
 						case AES192:
 						case AES256:
-							secureAdapter = encrypt ? SecurityUtils.AESEncryptor(this.keyBytes)
-									: SecurityUtils.AESDecryptor(this.keyBytes);
+							secureAdapter = encrypt ? CryptoUtils.AESEncryptor(this.keyBytes, this.ivBytes)
+									: CryptoUtils.AESDecryptor(this.keyBytes, this.ivBytes);
 							break;
+						case RC5:
+							secureAdapter = encrypt ? CryptoUtils.RC5Encryptor(this.keyBytes, this.ivBytes)
+									: CryptoUtils.RC5Decryptor(this.keyBytes, this.ivBytes);
 						case RC6:
-							secureAdapter = encrypt ? SecurityUtils.RC6Encryptor(this.keyBytes)
-									: SecurityUtils.RC6Decryptor(this.keyBytes);
+							secureAdapter = encrypt ? CryptoUtils.RC6Encryptor(this.keyBytes, this.ivBytes)
+									: CryptoUtils.RC6Decryptor(this.keyBytes, this.ivBytes);
+							break;
+						case TRIPLE_DES:
+							secureAdapter = encrypt ? CryptoUtils.TripleDESEncryptor(this.keyBytes, this.ivBytes)
+									: CryptoUtils.TripleDESDecryptor(this.keyBytes, this.ivBytes);
 							break;
 						case SM4:
-							secureAdapter = encrypt ? SecurityUtils.SM4Encryptor(this.keyBytes)
-									: SecurityUtils.SM4Decryptor(this.keyBytes);
+							secureAdapter = encrypt ? CryptoUtils.SM4Encryptor(this.keyBytes, this.ivBytes)
+									: CryptoUtils.SM4Decryptor(this.keyBytes, this.ivBytes);
 							break;
 						default:
 							break;
@@ -643,6 +694,6 @@ public final class SecureFactory {
 	 * @version $Revision: 1.0.0 $ $Date: Jan 13, 2012 12:37:28 $
 	 */
 	public enum SecureAlgorithm {
-		RSA2048, SM2, AES128, AES192, AES256, SM4, RC6
+		RSA2048, SM2, AES128, AES192, AES256, TRIPLE_DES, SM4, RC5, RC6
 	}
 }

@@ -23,9 +23,9 @@ import org.nervousync.annotations.configs.Password;
 import org.nervousync.beans.security.SecureSettings;
 import org.nervousync.commons.Globals;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.ClassUtils;
-import org.nervousync.utils.core.ReflectionUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.ClassUtils;
+import org.nervousync.utils.commons.ReflectionUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;

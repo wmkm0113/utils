@@ -18,9 +18,9 @@ package org.nervousync.beans.cert;
 
 import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.exceptions.cert.CertInfoException;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.ObjectUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.ObjectUtils;
+import org.nervousync.utils.security.DigestUtils;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -67,7 +67,7 @@ public final class CertStore {
 	private CertStore(final String storePath, final String storePassword) throws FileNotFoundException {
 		this.storePath = storePath;
 		this.storePassword = storePassword;
-		this.sha256 = SecurityUtils.SHA256(FileUtils.readFileBytes(storePath), EncodeType.HEX);
+		this.sha256 = DigestUtils.SHA256(FileUtils.readFileBytes(storePath), EncodeType.HEX);
 	}
 
 	/**

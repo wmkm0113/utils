@@ -22,8 +22,8 @@ import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.nervousync.commons.Globals;
 import org.nervousync.security.password.PasswordEncoder;
-import org.nervousync.utils.core.StringUtils;
-import org.nervousync.utils.core.SystemUtils;
+import org.nervousync.utils.commons.StringUtils;
+import org.nervousync.utils.commons.SystemUtils;
 
 import java.security.MessageDigest;
 import java.util.Arrays;

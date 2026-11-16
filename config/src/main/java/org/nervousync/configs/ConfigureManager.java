@@ -24,9 +24,10 @@ import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.security.EncodeType;
 import org.nervousync.security.factory.SecureFactory;
-import org.nervousync.utils.core.*;
+import org.nervousync.utils.beans.BeanUtils;
+import org.nervousync.utils.commons.*;
 import org.nervousync.utils.logger.LoggerUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.DigestUtils;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
@@ -264,7 +265,7 @@ public final class ConfigureManager {
 				.filter(this.existsFiles::containsKey)
 				.map(this.existsFiles::get)
 				.filter(StringUtils::notBlank)
-				.map(filePath -> SecurityUtils.SHA256(filePath, EncodeType.HEX))
+				.map(filePath -> DigestUtils.SHA256(filePath, EncodeType.HEX))
 				.orElse(Globals.DEFAULT_VALUE_STRING);
 	}
 

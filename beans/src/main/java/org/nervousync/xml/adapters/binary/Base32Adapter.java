@@ -17,7 +17,7 @@
 package org.nervousync.xml.adapters.binary;
 
 import org.nervousync.beans.transfer.TransferAdapter;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 /**
  * <h2 class="en-US">Encode Base32 DataConverter</h2>

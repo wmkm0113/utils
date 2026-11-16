@@ -18,8 +18,8 @@ package org.nervousync.xml.adapters;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.ClassUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.ClassUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Optional;
 

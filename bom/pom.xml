@@ -14,12 +14,17 @@
         <dependencies>
             <dependency>
                 <groupId>org.nervousync</groupId>
-                <artifactId>utils-core</artifactId>
+                <artifactId>utils-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.nervousync</groupId>
                 <artifactId>utils-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nervousync</groupId>
+                <artifactId>utils-archive</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -35,6 +40,11 @@
             <dependency>
                 <groupId>org.nervousync</groupId>
                 <artifactId>utils-i18n</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nervousync</groupId>
+                <artifactId>utils-id</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -66,17 +76,6 @@
                 <groupId>org.nervousync</groupId>
                 <artifactId>utils-security</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.nervousync</groupId>
-                <artifactId>utils-zip</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.nervousync</groupId>
-                <artifactId>utils-test</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

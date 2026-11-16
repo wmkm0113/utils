@@ -21,7 +21,7 @@ import org.nervousync.beans.ip.IPRange;
 import org.nervousync.commons.Globals;
 import org.nervousync.commons.RegexGlobals;
 import org.nervousync.enumerations.net.IPType;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.math.BigInteger;
 

@@ -19,7 +19,7 @@ package org.nervousync.xml.adapters;
 
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.DateTimeUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Date;

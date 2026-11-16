@@ -25,7 +25,7 @@ import org.nervousync.enumerations.mail.SecureProtocol;
 import org.nervousync.exceptions.mail.MailException;
 import org.nervousync.mail.config.MailConfig;
 import org.nervousync.proxy.ProxyConfig;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import java.io.IOException;

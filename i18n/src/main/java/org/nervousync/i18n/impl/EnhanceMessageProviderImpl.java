@@ -24,7 +24,7 @@ import org.nervousync.commons.Globals;
 import org.nervousync.commons.i18n.InternationalizationGlobals;
 import org.nervousync.i18n.MessageAgent;
 import org.nervousync.i18n.MessageProvider;
-import org.nervousync.utils.core.ClassUtils;
+import org.nervousync.utils.commons.ClassUtils;
 import org.nervousync.utils.i18n.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

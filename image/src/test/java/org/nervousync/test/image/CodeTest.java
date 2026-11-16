@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.nervousync.beans.image.CodeOptions;
 import org.nervousync.beans.image.MarkOptions;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.image.CodeUtils;
 import org.nervousync.utils.image.ImageUtils;
 

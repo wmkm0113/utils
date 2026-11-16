@@ -18,8 +18,8 @@ package org.nervousync.xml.adapters.basic;
 
 import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.DateTimeUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Date;

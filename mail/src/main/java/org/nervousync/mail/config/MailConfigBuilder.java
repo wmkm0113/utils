@@ -26,10 +26,10 @@ import org.nervousync.proxy.ProxyConfig;
 import org.nervousync.enumerations.mail.MailProtocol;
 import org.nervousync.exceptions.builder.BuilderException;
 import org.nervousync.proxy.ProxyConfigBuilder;
-import org.nervousync.utils.core.DateTimeUtils;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.ObjectUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.ObjectUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Optional;
 

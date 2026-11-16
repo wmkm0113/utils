@@ -21,12 +21,13 @@
 * [模块](#模块)
 * [安装引用](#安装引用)
 * [快速开始](#快速开始)
-  + [JavaBean 与不同数据的相互转换](#JavaBean-与不同数据的相互转换)
-  + [随机ID生成](#随机ID生成)
-  + [地理信息](#地理信息)
-  + [统一管理的配置文件](#统一管理的配置文件)
-  + [国际化的支持](#国际化的支持)
-  + [OTP生成与验证](#OTP生成与验证)
+    + [Zip文件操作](#Zip文件操作)
+    + [JavaBean 与不同数据的相互转换](#JavaBean-与不同数据的相互转换)
+    + [随机ID生成](#随机ID生成)
+    + [地理信息](#地理信息)
+    + [统一管理的配置文件](#统一管理的配置文件)
+    + [国际化的支持](#国际化的支持)
+    + [OTP生成与验证](#OTP生成与验证)
 * [架构概览](#架构概览)
 * [同类产品比较](#同类产品比较)
 * [适用场景](#适用场景)
@@ -158,6 +159,41 @@ libraryDependencies += "org.nervousync" % "${模块名}" % "${版本号}" % "pro
 ```
 
 ## 快速开始
+
+### Zip文件操作
+
+需要 `utils-archive` 模块
+
+使用 ArchiveFile.zipFile 方法打开一个 zip 压缩文件，现在仅支持
+LocalDataFile 的本地文件，下一个版本会加入 SambaDataFile
+来支持网络文件访问。
+
+ArchiveFile 是一个实现了 AutoClosable 接口的实现类，建议使用者通过以下方式调用，防止文件在使用完成后未及时释放。
+
+```java
+try (ArchiveFile archiveFile = ArchiveFile.zipFile()) {
+	//  Process archive file
+} catch (Exception e) {
+	//  Process exceptions
+}
+```
+
+**访问条目：**
+archiveFile.entry 获取类型为 ArchiveEntry
+的条目信息，以获取到的 ArchiveEntry 做为参数，使用
+archiveFile.openReader 获取对应条目数据的读取器（类型为
+ResourceReader），resourceReader.extract 可以将条目信息解压缩到指定位置，也可以通过
+resourceReader.openStream 来获取读取条目数据的输入流。
+
+**写入条目：**
+archiveFile.openWriter 方法可以打开一个条目数据的写入器（类型为
+ResourceWriter），通过 resourceWriter.write
+方法可以将文件写入到压缩包中，也可以通过
+resourceWriter.openStream 来获取条目写入的输出流。
+数据写入完成后，需要显示调用 resourceWriter.finish 方法来确认修改已经完成。
+
+[详细介绍点击查看](archive/README_zh_CN.md)
+
 ### JavaBean 与不同数据的相互转换
 
 `utils-core（使用jsonb）`支持 XML 和 JSON 格式的数据，`utils-beans（使用Jackson）`支持 XML、JSON 和 YAML 格式的数据

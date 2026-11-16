@@ -19,6 +19,8 @@ package org.nervousync.beans.converter.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.nervousync.utils.commons.*;
+import org.nervousync.utils.security.DigestUtils;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
@@ -40,8 +42,6 @@ import org.nervousync.annotations.beans.Signature;
 import org.nervousync.beans.converter.BeanConverter;
 import org.nervousync.enumerations.beans.StringType;
 import org.nervousync.enumerations.security.EncodeType;
-import org.nervousync.utils.core.*;
-import org.nervousync.utils.security.SecurityUtils;
 import tools.jackson.dataformat.yaml.YAMLMapper;
 import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
@@ -151,7 +151,7 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 		if (signature == null || StringUtils.isEmpty(signature.value())) {
 			return;
 		}
-		ReflectionUtils.setField(signature.value(), object, SecurityUtils.SHA256(fieldsMap(object), EncodeType.HEX));
+		ReflectionUtils.setField(signature.value(), object, DigestUtils.SHA256(fieldsMap(object), EncodeType.HEX));
 	}
 
 	/**
@@ -177,7 +177,7 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 		if (StringUtils.isEmpty(signature)) {
 			return Boolean.FALSE;
 		}
-		return ObjectUtils.nullSafeEquals(signature, SecurityUtils.SHA256(fieldsMap(object), EncodeType.HEX));
+		return ObjectUtils.nullSafeEquals(signature, DigestUtils.SHA256(fieldsMap(object), EncodeType.HEX));
 	}
 
 	/**
@@ -250,7 +250,7 @@ public final class EnhanceBeanConverterImpl implements BeanConverter {
 									Optional.ofNullable(ReflectionUtils.getFieldValue(field, object))
 											.map(fieldValue -> {
 												if (fieldValue.getClass().isAnnotationPresent(OutputConfig.class)) {
-													return SecurityUtils.SHA256(fieldsMap(fieldValue), EncodeType.HEX);
+													return DigestUtils.SHA256(fieldsMap(fieldValue), EncodeType.HEX);
 												} else {
 													return StringUtils.base64Encode(ConvertUtils.toByteArray(fieldValue));
 												}

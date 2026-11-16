@@ -55,6 +55,12 @@ public abstract class AbstractConfig implements Serializable {
 	 */
 	@XmlElement(name = "secure_key")
 	private String secureKey = null;
+	/**
+	 * <span class="en-US">Initialization vector</span>
+	 * <span class="zh-CN">初始向量</span>
+	 */
+	@XmlElement(name = "iv_data")
+	private String ivData = null;
 
 	/**
 	 * <h3 class="en-US">Getter method for secure algorithm</h3>
@@ -98,5 +104,27 @@ public abstract class AbstractConfig implements Serializable {
 	 */
 	public void setSecureKey(final String secureKey) {
 		this.secureKey = secureKey;
+	}
+
+	/**
+	 * <h3 class="en-US">Getter method for the initialization vector</h3>
+	 * <h3 class="zh-CN">初始向量的 Getter 方法</h3>
+	 *
+	 * @return <span class="en-US">Initialization vector</span>
+	 * <span class="zh-CN">初始向量</span>
+	 */
+	public String getIvData() {
+		return this.ivData;
+	}
+
+	/**
+	 * <h3 class="en-US">Setter method for the initialization vector</h3>
+	 * <h3 class="zh-CN">初始向量的 Setter 方法</h3>
+	 *
+	 * @param ivData <span class="en-US">Initialization vector</span>
+	 *               <span class="zh-CN">初始向量</span>
+	 */
+	public void setIvData(final String ivData) {
+		this.ivData = ivData;
 	}
 }

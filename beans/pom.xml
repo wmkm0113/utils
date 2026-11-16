@@ -18,22 +18,24 @@
     <dependencies>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-core</artifactId>
+            <artifactId>utils-commons</artifactId>
         </dependency>
+        <!-- Test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.nervousync</groupId>
-            <artifactId>utils-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>4.1.0</version>
+            <version>4.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>${asm.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -53,6 +55,14 @@
                 <exclusion>
                     <groupId>org.codehaus.plexus</groupId>
                     <artifactId>plexus-utils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm-commons</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

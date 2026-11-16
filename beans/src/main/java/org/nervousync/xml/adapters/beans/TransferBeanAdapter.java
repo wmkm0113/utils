@@ -20,9 +20,9 @@ import jakarta.annotation.Nonnull;
 import org.nervousync.beans.transfer.TransferAdapter;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
-import org.nervousync.utils.core.BeanUtils;
-import org.nervousync.utils.core.ClassUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.beans.BeanUtils;
+import org.nervousync.utils.commons.ClassUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Optional;
 

@@ -28,7 +28,8 @@ import org.nervousync.beans.request.RequestAttribute;
 import org.nervousync.beans.request.RequestInfo;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.web.HttpMethodOption;
-import org.nervousync.utils.core.*;
+import org.nervousync.utils.beans.BeanUtils;
+import org.nervousync.utils.commons.*;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.naming.InvalidNameException;

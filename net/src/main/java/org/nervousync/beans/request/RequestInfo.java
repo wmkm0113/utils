@@ -28,9 +28,9 @@ import org.nervousync.builder.AbstractBuilder;
 import org.nervousync.builder.ParentBuilder;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.web.HttpMethodOption;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.ObjectUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.ObjectUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 /**
  * <h2 class="en-US">Request information define</h2>

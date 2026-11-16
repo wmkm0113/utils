@@ -20,7 +20,7 @@ package org.nervousync.security.password.impl;
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.security.password.PasswordEncoder;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

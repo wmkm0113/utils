@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="https://nervousync.org/schemas/secure" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="https://nervousync.org/schemas/secure" elementFormDefault="qualified" version="1.0">
+    <xsd:complexType name="secure_config">
+        <xsd:all>
+            <xsd:element name="secure_name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Secure configure name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="secure_algorithm">
+                <xsd:annotation>
+                    <xsd:documentation>Secure algorithm</xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="RSA1024"/>
+                        <xsd:enumeration value="RSA2048"/>
+                        <xsd:enumeration value="SM2"/>
+                        <xsd:enumeration value="AES128"/>
+                        <xsd:enumeration value="AES192"/>
+                        <xsd:enumeration value="AES256"/>
+                        <xsd:enumeration value="DES"/>
+                        <xsd:enumeration value="TRIPLE_DES"/>
+                        <xsd:enumeration value="SM4"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="secure_key" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Secure key data bytes, base64 encoded.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:element name="secure_config" type="secure_config"/>
+    <xsd:element name="secure_factory">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="secure_algorithm">
+                    <xsd:annotation>
+                        <xsd:documentation>Secure algorithm</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:enumeration value="RSA1024"/>
+                            <xsd:enumeration value="RSA2048"/>
+                            <xsd:enumeration value="SM2"/>
+                            <xsd:enumeration value="AES128"/>
+                            <xsd:enumeration value="AES192"/>
+                            <xsd:enumeration value="AES256"/>
+                            <xsd:enumeration value="DES"/>
+                            <xsd:enumeration value="TRIPLE_DES"/>
+                            <xsd:enumeration value="SM4"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="secure_key" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Secure key data bytes, base64 encoded.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="secure_settings">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="system_secure" type="secure_config" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>System default secure configure information</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="secure_list" minOccurs="0">
+                    <xsd:annotation>
+                        <xsd:documentation>Custom secure configure information list</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="secure_config" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:annotation>
+                                    <xsd:documentation>Custom secure configure information</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

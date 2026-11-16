@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.nervousync.beans.request.RequestInfo;
 import org.nervousync.enumerations.web.HttpMethodOption;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.net.RequestUtils;
 
 import java.net.http.HttpResponse;

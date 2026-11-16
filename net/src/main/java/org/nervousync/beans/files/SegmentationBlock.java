@@ -20,8 +20,8 @@ import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.nervousync.annotations.beans.OutputConfig;
 import org.nervousync.enumerations.security.EncodeType;
-import org.nervousync.utils.core.StringUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.commons.StringUtils;
+import org.nervousync.utils.security.DigestUtils;
 import org.nervousync.xml.adapters.CDataAdapter;
 import org.nervousync.xml.adapters.DateTimeAdapter;
 
@@ -101,7 +101,7 @@ public final class SegmentationBlock implements Serializable {
 	 *                    <span class="zh-CN">数据的字节数组</span>
 	 */
 	public SegmentationBlock(final long position, final byte[] dataContent) {
-		this.sha = SecurityUtils.SHA256(dataContent, EncodeType.HEX);
+		this.sha = DigestUtils.SHA256(dataContent, EncodeType.HEX);
 		this.position = position;
 		this.blockSize = dataContent.length;
 		this.dataInfo = StringUtils.base64Encode(dataContent);
@@ -174,7 +174,7 @@ public final class SegmentationBlock implements Serializable {
 		byte[] dataBytes = StringUtils.base64Decode(this.dataInfo);
 		try {
 			return dataBytes.length == this.blockSize
-					&& Objects.equals(SecurityUtils.SHA256(dataBytes, EncodeType.HEX), this.sha);
+					&& Objects.equals(DigestUtils.SHA256(dataBytes, EncodeType.HEX), this.sha);
 		} catch (Exception e) {
 			return Boolean.FALSE;
 		}

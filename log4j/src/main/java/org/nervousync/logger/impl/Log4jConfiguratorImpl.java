@@ -27,8 +27,8 @@ import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.logger.LogLevel;
 import org.nervousync.logger.LogConfigurator;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import java.util.*;

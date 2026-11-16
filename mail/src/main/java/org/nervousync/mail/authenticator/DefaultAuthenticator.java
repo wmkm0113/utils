@@ -19,7 +19,7 @@ package org.nervousync.mail.authenticator;
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 /**
  * <h2 class="en-US">Username and password authenticator for SMTP/POP3/IMAP server</h2>

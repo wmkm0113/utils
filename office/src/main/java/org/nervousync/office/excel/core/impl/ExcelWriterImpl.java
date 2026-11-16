@@ -20,7 +20,7 @@ package org.nervousync.office.excel.core.impl;
 import org.nervousync.exceptions.utils.DataInvalidException;
 import org.nervousync.office.excel.SheetWriter;
 import org.nervousync.office.excel.core.AbstractExcelWriter;
-import org.nervousync.utils.core.FileUtils;
+import org.nervousync.utils.commons.FileUtils;
 import org.nervousync.utils.office.OfficeUtils;
 
 import java.io.FileOutputStream;

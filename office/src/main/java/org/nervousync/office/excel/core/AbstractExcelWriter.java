@@ -19,7 +19,7 @@ package org.nervousync.office.excel.core;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.nervousync.office.excel.ExcelWriter;
-import org.nervousync.utils.core.IOUtils;
+import org.nervousync.utils.commons.IOUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import java.io.IOException;

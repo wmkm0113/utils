@@ -18,11 +18,11 @@ package org.nervousync.utils.otp;
 
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.utils.DataInvalidException;
-import org.nervousync.utils.core.DateTimeUtils;
-import org.nervousync.utils.core.RawUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.DateTimeUtils;
+import org.nervousync.utils.commons.RawUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.DigestUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -513,13 +513,13 @@ public final class OTPUtils {
 		byte[] hash;
 		switch (calcType) {
 			case HmacSHA1:
-				hash = SecurityUtils.HmacSHA1(secretBytes, signData);
+				hash = DigestUtils.HmacSHA1(secretBytes, signData);
 				break;
 			case HmacSHA256:
-				hash = SecurityUtils.HmacSHA256(secretBytes, signData);
+				hash = DigestUtils.HmacSHA256(secretBytes, signData);
 				break;
 			case HmacSHA512:
-				hash = SecurityUtils.HmacSHA512(secretBytes, signData);
+				hash = DigestUtils.HmacSHA512(secretBytes, signData);
 				break;
 			default:
 				return Globals.DEFAULT_VALUE_INT;

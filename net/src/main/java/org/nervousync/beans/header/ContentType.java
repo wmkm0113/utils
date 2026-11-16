@@ -20,7 +20,7 @@ package org.nervousync.beans.header;
 import jakarta.annotation.Nonnull;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.beans.StringType;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Arrays;
 

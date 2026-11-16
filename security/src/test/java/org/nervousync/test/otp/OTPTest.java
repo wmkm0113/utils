@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.nervousync.commons.Globals;
 import org.nervousync.test.BaseTest;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.otp.OTPUtils;
 
 public final class OTPTest extends BaseTest {

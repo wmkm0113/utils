@@ -20,8 +20,8 @@ import jakarta.annotation.Nonnull;
 import org.nervousync.beans.image.CutOptions;
 import org.nervousync.beans.image.MarkOptions;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.imageio.ImageIO;

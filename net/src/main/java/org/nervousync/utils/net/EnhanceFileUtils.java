@@ -26,11 +26,11 @@ import org.nervousync.beans.files.SegmentationBlock;
 import org.nervousync.beans.files.SegmentationInfo;
 import org.nervousync.commons.Globals;
 import org.nervousync.enumerations.security.EncodeType;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.IOUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.IOUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.DigestUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -1569,7 +1569,7 @@ public final class EnhanceFileUtils {
 			}
 
 			return new SegmentationInfo(extName, fileSize, blockSize,
-					SecurityUtils.SHA256(fileObject, EncodeType.HEX), segmentationBlockList);
+					DigestUtils.SHA256(fileObject, EncodeType.HEX), segmentationBlockList);
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Not_Found_File_Error", filePath);
 			if (LOGGER.isDebugEnabled()) {

@@ -16,9 +16,9 @@
     <dependencies>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-core</artifactId>
+            <artifactId>utils-commons</artifactId>
         </dependency>
-        <!-- Redirect commons-logging to SLF4j -->
+        <!-- Redirect commons-logging to SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -30,7 +30,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Redirect jdk-logging to SLF4j -->
+        <!-- Redirect jdk-logging to SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>

@@ -20,7 +20,7 @@ package org.nervousync.utils.net;
 import jakarta.annotation.Nonnull;
 import org.nervousync.annotations.jmx.Monitor;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.management.*;

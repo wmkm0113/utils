@@ -25,9 +25,9 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import org.nervousync.beans.image.CodeOptions;
 import org.nervousync.commons.Globals;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.IOUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.IOUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import javax.imageio.ImageIO;

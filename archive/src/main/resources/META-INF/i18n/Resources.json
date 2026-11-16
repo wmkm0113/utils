@@ -1,0 +1,1166 @@
+{
+  "groupId": "org.nervousync",
+  "bundle": "utils",
+  "alias": {
+    "en": "en-US",
+    "zh": "zh-CN"
+  },
+  "errors": {
+    "0x0000001A0001": "Entry_Path_Is_Empty",
+    "0x0000001A0002": "Archive_In_ReadOnly_Mode",
+    "0x0000001A0003": "Archive_Not_In_Edit_Mode",
+    "0x0000001A0004": "Archive_File_Exists",
+    "0x0000001A0005": "Archive_File_Not_Found",
+    "0x0000001A0006": "Archive_Split_Index_Exists",
+    "0x0000001A0007": "Archive_Split_Index_Invalid",
+    "0x0000001A0008": "Archive_Split_Limit_Invalid",
+    "0x0000001A0009": "Archive_Split_File_Invalid",
+    "0x0000001A000A": "Open_Archive_Split_File_Error",
+    "0x0000001A000B": "End_Central_Directory_Record_Length_Invalid",
+    "0x0000001A000C": "Archive_Signature_Invalid",
+    "0x0000001A000D": "Zip64_End_Central_Directory_Extensible_Data_Length_Invalid",
+    "0x0000001A000E": "Zip64_End_Central_Directory_Data_Invalid",
+    "0x0000001A000F": "Read_Data_Parameter_Invalid",
+    "0x0000001A0010": "File_Header_Is_Null",
+    "0x0000001A0011": "Read_Data_Size_Invalid",
+    "0x0000001A0012": "Zip64_Extended_Information_Data_Invalid",
+    "0x0000001A0013": "Zip64_Extended_Information_Duplicate",
+    "0x0000001A0014": "AES_Strength_Invalid",
+    "0x0000001A0015": "AES_Encryption_Data_Length_Invalid",
+    "0x0000001A0016": "AES_Version_Invalid",
+    "0x0000001A0017": "AES_Vendor_Invalid",
+    "0x0000001A0018": "AES_Encryption_Data_Duplicate",
+    "0x0000001A0019": "File_Header_Encryption_Flag_Invalid",
+    "0x0000001A001A": "Open_Archive_File_Error",
+    "0x0000001A001B": "Data_Length_Too_Large",
+    "0x0000001A001C": "Central_Directory_Header_Length_Invalid",
+    "0x0000001A001D": "No_Enough_Data_Bytes",
+    "0x0000001A001E": "Zip64_End_Of_Directory_Protection_Invalid",
+    "0x0000001A001F": "Zip64_Archive_Decryption_Header_Invalid",
+    "0x0000001A0020": "File_Name_Invalid",
+    "0x0000001A0021": "AES_Compression_Method_Invalid",
+    "0x0000001A0022": "AES_Encryption_Data_Missing",
+    "0x0000001A0023": "Zip_Encryption_Method_Invalid",
+    "0x0000001A0024": "Zip_Decrypt_Data_Error",
+    "0x0000001A0025": "Encryption_Method_Invalid",
+    "0x0000001A0026": "Encryption_Format_Invalid",
+    "0x0000001A0027": "Encryption_Information_Invalid",
+    "0x0000001A0028": "Crypto_Mode_Invalid",
+    "0x0000001A0029": "AES_Counter_Exhausted",
+    "0x0000001A002A": "Password_Invalid",
+    "0x0000001A002B": "Create_Parent_Folder_Failed",
+    "0x0000001A002C": "Parent_Path_Not_Folder",
+    "0x0000001A002D": "Last_Modified_Invalid",
+    "0x0000001A002E": "Unknown_Override_Mode",
+    "0x0000001A002F": "Calculate_File_Size_Error",
+    "0x0000001A0030": "Write_File_Size_Error",
+    "0x0000001A0031": "Compression_Ratio_Error",
+    "0x0000001A0032": "CRC32_Check_Failed",
+    "0x0000001A0033": "Archive_Size_Too_Large",
+    "0x0000001A0034": "Unsafe_Entry_Path",
+    "0x0000001A0035": "Absolute_Symbolic_Link_Target",
+    "0x0000001A0036": "Link_Target_Invalid",
+    "0x0000001A0037": "Symbolic_Link_Escapes_Extraction_Root",
+    "0x0000001A0038": "Not_Allow_Symbolic_Link",
+    "0x0000001A0039": "Entry_Type_Not_Supported_Or_Unknown",
+    "0x0000001A003A": "Target_Escapes_Extraction_Root",
+    "0x0000001A003B": "Unsafe_Extraction_Root",
+    "0x0000001A003C": "Target_Invalid",
+    "0x0000001A003D": "Unsafe_Parent_Component",
+    "0x0000001A003E": "Out_Of_Limit",
+    "0x0000001A003F": "Entry_Duplicate_Reject",
+    "0x0000001A0040": "Operate_Aborted",
+    "0x0000001A0041": "Unknown_Split_Type",
+    "0x0000001A0042": "Archive_Entry_Not_Found",
+    "0x0000001A0043": "Archive_Entry_Length_Invalid",
+    "0x0000001A0044": "Zip64_Mode_Unknown",
+    "0x0000001A0045": "Archive_Invalid_Mode",
+    "0x0000001A0046": "Archive_Output_Stream_Closed",
+    "0x0000001A0047": "Zip_Record_Exceeds_Split_Length",
+    "0x0000001A0048": "Zip_Output_Stream_Not_Finished",
+    "0x0000001A0049": "Session_State_Invalid",
+    "0x0000001A004A": "Entry_Write_In_Processing",
+    "0x0000001A004B": "Unsupported_Operate",
+    "0x0000001A004C": "Only_Support_Rsa_Key",
+    "0x0000001A004D": "Only_Support_X509_Certificate",
+    "0x0000001A004E": "Invalid_Java_Key",
+    "0x000000FF0001": "Parameter_Invalid_Error",
+    "0x000000FF0002": "Not_Support_Encoding_Error",
+    "0x0000001B0001": "Not_Supported_Encryption_Mode_Zip_Error",
+    "0x0000001B0002": "Not_Initialized_AES_Engine_Zip_Error",
+    "0x0000001B0003": "Input_Buffer_Too_Short_Zip_Error",
+    "0x0000001B0004": "Invalid_Key_Length_AES_Zip_Error",
+    "0x0000001B0005": "Invalid_Key_Strength_AES_Zip_Error",
+    "0x0000001B0006": "Invalid_Password_Zip_Error",
+    "0x0000001B0007": "Invalid_Derived_Password_Verifier_Zip_Error",
+    "0x0000001B0008": "Invalid_Derived_Key_Zip_Error",
+    "0x0000001B0009": "Invalid_Salt_Length_Zip_Error",
+    "0x0000001B000A": "Init_Crypto_Zip_Error",
+    "0x0000001B000B": "Decrypt_Crypto_Zip_Error",
+    "0x0000001B000C": "Encrypt_Crypto_Zip_Error",
+    "0x0000001B000D": "Wrong_Password_Zip_Error",
+    "0x0000001B000E": "Null_Local_File_Header_Zip_Error",
+    "0x0000001B000F": "Null_General_File_Header_Zip_Error",
+    "0x0000001B0010": "Invalid_AES_Extra_Data_Zip_Error",
+    "0x0000001B0011": "Output_Buffer_Too_Short_Zip_Error",
+    "0x0000001B0012": "Finished_Encryptor_AES_Zip_Error",
+    "0x0000001B0013": "Null_Input_File_Zip_Error",
+    "0x0000001B0014": "Invalid_Encryptor_AES_Zip_Error",
+    "0x0000001B0015": "Failed_Add_File_Zip_Error",
+    "0x0000001B0016": "Null_File_Name_Zip_Error",
+    "0x0000001B0017": "Write_Local_File_Header_Zip_Error",
+    "0x0000001B0018": "Not_Allow_Update_Files_Zip_Error",
+    "0x0000001B0019": "CRC_Failed_Zip_Error",
+    "0x0000001B001A": "Read_Access_Failed_Zip_Error",
+    "0x0000001B001B": "Null_Path_Zip_Error",
+    "0x0000001B001C": "Exists_Path_Zip_Error",
+    "0x0000001B001D": "Invalid_Offset_Local_Header_Zip_Error",
+    "0x0000001B001E": "Null_Input_Path_Zip_Error",
+    "0x0000001B0020": "Determining_File_Name_Zip_Error",
+    "0x0000001B0021": "Null_Options_Zip_Error",
+    "0x0000001B0022": "Null_Input_Stream_Zip_Error",
+    "0x0000001B0023": "Null_Destination_Path_Zip_Error",
+    "0x0000001B0024": "Invalid_Central_Directory_Zip_Error",
+    "0x0000001B0025": "Null_Entry_Path_Zip_Error",
+    "0x0000001B0026": "Entry_Path_Not_Directory_Zip_Error",
+    "0x0000001B0027": "Null_Remove_Entry_Path_Zip_Error",
+    "0x0000001B0028": "Invalid_File_Zip_Error",
+    "0x0000001B0029": "Null_End_Central_Directory_Zip_Error",
+    "0x0000001B002A": "Invalid_Comment_Length_Zip_Error",
+    "0x0000001B002B": "Write_Comment_Zip_Error",
+    "0x0000001B002C": "Not_Split_File_Zip_Error",
+    "0x0000001B002D": "Merge_Split_File_Zip_Error",
+    "0x0000001B002E": "Null_Output_Stream_Zip_Error",
+    "0x0000001B0030": "Unknown_File_Header_Zip_Error",
+    "0x0000001B0031": "Null_Target_File_Zip_Error",
+    "0x0000001B0032": "Process_File_Attribute_ReadOnly_Zip_Error",
+    "0x0000001B0033": "Process_File_Attribute_Last_Modify_Zip_Error",
+    "0x0000001B0034": "Invalid_Last_Modify_Zip_Error",
+    "0x0000001B0035": "Invalid_Binary_Data_Zip_Error",
+    "0x0000001B0036": "Not_Folder_Zip_Error",
+    "0x0000001B0037": "Cannot_Read_Folder_Zip_Error",
+    "0x0000001B0038": "Invalid_Output_Folder_Zip_Error",
+    "0x0000001B0039": "Read_Extra_Data_Zip_Error",
+    "0x0000001B003A": "Read_Zip64_Extend_Data_Zip_Error",
+    "0x0000001B003B": "Process_AES_Extra_Data_Zip_Error",
+    "0x0000001B003C": "Read_Zip64_ECDR_Zip_Error",
+    "0x0000001B003D": "Invalid_Signature_Zip64_ECDR_Zip_Error",
+    "0x0000001B003E": "Read_Central_Directory_Zip_Error",
+    "0x0000001B0040": "Entry_Central_Directory_Not_Found_Zip_Error",
+    "0x0000001B0041": "Read_Zip64_ECDRL_Zip_Error",
+    "0x0000001B0042": "Read_ECDR_Zip_Error",
+    "0x0000001B0043": "Extract_File_Zip_Error",
+    "0x0000001B0044": "Remove_Entry_Zip_Error",
+    "0x0000001B0045": "Write_Zip64_ECDRL_Zip_Error",
+    "0x0000001B0046": "Write_ECDR_Zip_Error",
+    "0x0000001B0047": "Write_Header_Zip_Error",
+    "0x0000001B0048": "Write_Zip64_Header_Zip_Error",
+    "0x0000001B0049": "Read_Entry_Zip_Error",
+    "0x0000001B004A": "Unknown_Compress_Type_Zip_Error",
+    "0x0000001B004B": "Invalid_Compress_Level_Zip_Error",
+    "0x0000001B004C": "Need_Password_Zip_Error",
+    "0x0000001B004D": "Copy_Data_Zip_Error",
+    "0x0000001B004E": "Invalid_CRC_Check_Zip_Error",
+    "0x0000001B0050": "Invalid_Decryptor_Zip_Error",
+    "0x0000001B0051": "Invalid_Local_Header_Signature_Zip_Error",
+    "0x0000001B0052": "Not_Found_Header_Zip_Error",
+    "0x0000001B0053": "Convert_Object_To_Array_Error",
+    "0x0000001B0054": "Convert_Array_To_Object_Error",
+    "0x0000001B0055": "Read_AES_Bytes_Zip_Error",
+    "0x0000001B0056": "Invalid_Buffer_Size_Zip_Error",
+    "0x0000001B0057": "Min_Split_Size_Zip_Error",
+    "0x0000001B0058": "Open_Split_File_Zip_Error",
+    "0x0000001B0059": "Disk_Number_Start_Error",
+    "0x0000001B005A": "Entry_Count_Out_Of_Range"
+  },
+  "messages": {
+    "en-US": {
+      "Entry_Path_Is_Empty": {
+        "pattern": "Archive entry path must not be empty."
+      },
+      "Archive_In_ReadOnly_Mode": {
+        "pattern": "The archive is open in read-only mode."
+      },
+      "Archive_Not_In_Edit_Mode": {
+        "pattern": "This operation requires an archive opened in edit mode."
+      },
+      "Archive_File_Exists": {
+        "pattern": "The target archive file already exists."
+      },
+      "Archive_File_Not_Found": {
+        "pattern": "The archive file does not exist."
+      },
+      "Archive_Split_Index_Exists": {
+        "pattern": "Duplicate archive split part index."
+      },
+      "Archive_Split_Index_Invalid": {
+        "pattern": "Invalid, missing, or out-of-range archive split part index."
+      },
+      "Archive_Split_Limit_Invalid": {
+        "pattern": "Invalid archive split length or split size limit."
+      },
+      "Archive_Split_File_Invalid": {
+        "pattern": "Invalid or inconsistent archive split file."
+      },
+      "Open_Archive_Split_File_Error": {
+        "pattern": "Unable to open or read an archive split file."
+      },
+      "End_Central_Directory_Record_Length_Invalid": {
+        "pattern": "Invalid end of central directory record length."
+      },
+      "Archive_Signature_Invalid": {
+        "pattern": "Invalid or unexpected ZIP record signature."
+      },
+      "Zip64_End_Central_Directory_Extensible_Data_Length_Invalid": {
+        "pattern": "Invalid ZIP64 end of central directory extensible data length."
+      },
+      "Zip64_End_Central_Directory_Data_Invalid": {
+        "pattern": "Invalid ZIP64 end of central directory record or locator data."
+      },
+      "Read_Data_Parameter_Invalid": {
+        "pattern": "Invalid data buffer, offset, length, or read position."
+      },
+      "File_Header_Is_Null": {
+        "pattern": "The file header must not be null."
+      },
+      "Read_Data_Size_Invalid": {
+        "pattern": "Invalid data size, read length, or entry size information."
+      },
+      "Zip64_Extended_Information_Data_Invalid": {
+        "pattern": "Invalid ZIP64 extended information extra field."
+      },
+      "Zip64_Extended_Information_Duplicate": {
+        "pattern": "Duplicate ZIP64 extended information extra field."
+      },
+      "AES_Strength_Invalid": {
+        "pattern": "Invalid or unsupported AES key strength."
+      },
+      "AES_Encryption_Data_Length_Invalid": {
+        "pattern": "Invalid AES encryption extra field length."
+      },
+      "AES_Version_Invalid": {
+        "pattern": "Invalid or unsupported WinZip AES vendor version."
+      },
+      "AES_Vendor_Invalid": {
+        "pattern": "Invalid AES encryption vendor identifier."
+      },
+      "AES_Encryption_Data_Duplicate": {
+        "pattern": "Duplicate AES encryption extra field."
+      },
+      "File_Header_Encryption_Flag_Invalid": {
+        "pattern": "Inconsistent file header encryption flags."
+      },
+      "Open_Archive_File_Error": {
+        "pattern": "Unable to open or initialize the archive file."
+      },
+      "Data_Length_Too_Large": {
+        "pattern": "The data length exceeds the supported range or configured limit."
+      },
+      "Central_Directory_Header_Length_Invalid": {
+        "pattern": "Invalid or truncated central directory header or extra field length."
+      },
+      "No_Enough_Data_Bytes": {
+        "pattern": "Unexpected end of archive or insufficient data bytes."
+      },
+      "Zip64_End_Of_Directory_Protection_Invalid": {
+        "pattern": "Invalid ZIP64 central directory protection structure."
+      },
+      "Zip64_Archive_Decryption_Header_Invalid": {
+        "pattern": "Invalid or inconsistent ZIP header, central directory, or encryption metadata."
+      },
+      "File_Name_Invalid": {
+        "pattern": "Invalid archive file name."
+      },
+      "AES_Compression_Method_Invalid": {
+        "pattern": "Invalid, unsupported, or inconsistent ZIP compression method."
+      },
+      "AES_Encryption_Data_Missing": {
+        "pattern": "Required AES encryption metadata is missing."
+      },
+      "Zip_Encryption_Method_Invalid": {
+        "pattern": "Invalid or unsupported ZIP encryption method."
+      },
+      "Zip_Decrypt_Data_Error": {
+        "pattern": "Unable to generate the ZIP AES cipher keystream."
+      },
+      "Encryption_Method_Invalid": {
+        "pattern": "Invalid or unsupported encryption algorithm or key length."
+      },
+      "Encryption_Format_Invalid": {
+        "pattern": "Invalid or unsupported strong encryption metadata format."
+      },
+      "Encryption_Information_Invalid": {
+        "pattern": "Required encryption information is missing or inconsistent."
+      },
+      "Crypto_Mode_Invalid": {
+        "pattern": "Invalid cryptographic operation mode."
+      },
+      "AES_Counter_Exhausted": {
+        "pattern": "The ZIP AES counter is exhausted; no further data can be processed safely."
+      },
+      "Password_Invalid": {
+        "pattern": "Invalid or missing archive password."
+      },
+      "Create_Parent_Folder_Failed": {
+        "pattern": "Unable to create a parent folder, or the target has no valid parent path."
+      },
+      "Parent_Path_Not_Folder": {
+        "pattern": "The parent path does not exist or is not a directory."
+      },
+      "Last_Modified_Invalid": {
+        "pattern": "Invalid archive timestamp or timestamp extra field."
+      },
+      "Unknown_Override_Mode": {
+        "pattern": "Unknown file overwrite mode."
+      },
+      "Calculate_File_Size_Error": {
+        "pattern": "The actual entry size does not match the declared size, or the size counter overflowed."
+      },
+      "Write_File_Size_Error": {
+        "pattern": "The extracted entry exceeds the configured maximum entry size."
+      },
+      "Compression_Ratio_Error": {
+        "pattern": "The entry exceeds the configured maximum compression ratio."
+      },
+      "CRC32_Check_Failed": {
+        "pattern": "Entry CRC-32 verification failed."
+      },
+      "Archive_Size_Too_Large": {
+        "pattern": "The archive exceeds the configured maximum compressed size."
+      },
+      "Unsafe_Entry_Path": {
+        "pattern": "Unsafe archive entry path: extraction would escape the destination directory."
+      },
+      "Absolute_Symbolic_Link_Target": {
+        "pattern": "An absolute symbolic link target is not permitted."
+      },
+      "Link_Target_Invalid": {
+        "pattern": "Invalid archive entry path or link target."
+      },
+      "Symbolic_Link_Escapes_Extraction_Root": {
+        "pattern": "The symbolic or hard link target escapes the extraction root."
+      },
+      "Not_Allow_Symbolic_Link": {
+        "pattern": "Extraction of this symbolic or hard link is not permitted."
+      },
+      "Entry_Type_Not_Supported_Or_Unknown": {
+        "pattern": "The archive entry type is unsupported or unknown."
+      },
+      "Target_Escapes_Extraction_Root": {
+        "pattern": "The target path escapes the extraction root."
+      },
+      "Unsafe_Extraction_Root": {
+        "pattern": "The extraction root is unsafe or is not a directory."
+      },
+      "Target_Invalid": {
+        "pattern": "Invalid extraction target path."
+      },
+      "Unsafe_Parent_Component": {
+        "pattern": "An unsafe parent path component prevents extraction."
+      },
+      "Out_Of_Limit": {
+        "pattern": "An archive property exceeds a configured extraction or header limit."
+      },
+      "Entry_Duplicate_Reject": {
+        "pattern": "A duplicate archive entry is rejected by the configured policy."
+      },
+      "Operate_Aborted": {
+        "pattern": "The entry operation was aborted or its stream is already closed."
+      },
+      "Unknown_Split_Type": {
+        "pattern": "Unknown archive split type."
+      },
+      "Archive_Entry_Not_Found": {
+        "pattern": "The requested archive entry was not found."
+      },
+      "Archive_Entry_Length_Invalid": {
+        "pattern": "The copied entry data length does not match its declared compressed size."
+      },
+      "Zip64_Mode_Unknown": {
+        "pattern": "Unknown ZIP64 mode."
+      },
+      "Archive_Invalid_Mode": {
+        "pattern": "This operation is not permitted in the current archive open mode."
+      },
+      "Archive_Output_Stream_Closed": {
+        "pattern": "The archive file or archive output stream is already closed."
+      },
+      "Zip_Record_Exceeds_Split_Length": {
+        "pattern": "The ZIP record exceeds the configured split part length."
+      },
+      "Zip_Output_Stream_Not_Finished": {
+        "pattern": "The ZIP output stream has not been finished."
+      },
+      "Session_State_Invalid": {
+        "pattern": "The archive session is not in a state that permits this operation."
+      },
+      "Entry_Write_In_Processing": {
+        "pattern": "One or more archive entry writers are still active."
+      },
+      "Unsupported_Operate": {
+        "pattern": "This operation is not supported for the current archive or layout."
+      },
+      "Only_Support_Rsa_Key": {
+        "pattern": "Only RSA keys are supported for certificate-based ZIP encryption."
+      },
+      "Only_Support_X509_Certificate": {
+        "pattern": "Only X.509 certificates are supported for certificate-based ZIP encryption."
+      },
+      "Invalid_Java_Key": {
+        "pattern": "Invalid cryptographic key material, length, or encoding."
+      },
+      "Not_Supported_Encryption_Mode_Zip_Error": {
+        "pattern": "Unsupported encryption mode"
+      },
+      "Not_Initialized_AES_Engine_Zip_Error": {
+        "pattern": "AES engine was not initialized"
+      },
+      "Input_Buffer_Too_Short_Zip_Error": {
+        "pattern": "Input buffer is too small"
+      },
+      "Invalid_Key_Length_AES_Zip_Error": {
+        "pattern": "Invalid key size (Not 128/192/256)"
+      },
+      "Invalid_Key_Strength_AES_Zip_Error": {
+        "pattern": "Invalid key strength"
+      },
+      "Invalid_Password_Zip_Error": {
+        "pattern": "Password is null or length is zero"
+      },
+      "Invalid_Derived_Password_Verifier_Zip_Error": {
+        "pattern": "Invalid derived password verifier"
+      },
+      "Invalid_Derived_Key_Zip_Error": {
+        "pattern": "Invalid derived key"
+      },
+      "Invalid_Salt_Length_Zip_Error": {
+        "pattern": "Invalid salt data length"
+      },
+      "Init_Crypto_Zip_Error": {
+        "pattern": "Initialize cipher error"
+      },
+      "Decrypt_Crypto_Zip_Error": {
+        "pattern": "Decrypt data error"
+      },
+      "Encrypt_Crypto_Zip_Error": {
+        "pattern": "Encrypt data error"
+      },
+      "Wrong_Password_Zip_Error": {
+        "pattern": "Wrong password"
+      },
+      "Null_Local_File_Header_Zip_Error": {
+        "pattern": "Local file header is null"
+      },
+      "Null_General_File_Header_Zip_Error": {
+        "pattern": "General file header is null"
+      },
+      "Invalid_AES_Extra_Data_Zip_Error": {
+        "pattern": "Invalid AES extra data"
+      },
+      "Output_Buffer_Too_Short_Zip_Error": {
+        "pattern": "Output buffer size is too small"
+      },
+      "Finished_Encryptor_AES_Zip_Error": {
+        "pattern": "AES encryptor was in finished state"
+      },
+      "Null_Input_File_Zip_Error": {
+        "pattern": "Input file is null or not exists"
+      },
+      "Invalid_Encryptor_AES_Zip_Error": {
+        "pattern": "Invalid encryptor, maybe AES encryptor?"
+      },
+      "Failed_Add_File_Zip_Error": {
+        "pattern": "Add files to zip file error"
+      },
+      "Null_File_Name_Zip_Error": {
+        "pattern": "File name is null, cannot create target file header"
+      },
+      "Write_Local_File_Header_Zip_Error": {
+        "pattern": "Write local file header data error"
+      },
+      "Not_Allow_Update_Files_Zip_Error": {
+        "pattern": "Current file is split archive, ZIP format not support update file to split archive"
+      },
+      "CRC_Failed_Zip_Error": {
+        "pattern": "CRC check failed"
+      },
+      "Read_Access_Failed_Zip_Error": {
+        "pattern": "Can not read file"
+      },
+      "Null_Path_Zip_Error": {
+        "pattern": "File path is null"
+      },
+      "Exists_Path_Zip_Error": {
+        "pattern": "Zip file existed, please use addFile method to add files to current zip file"
+      },
+      "Invalid_Offset_Local_Header_Zip_Error": {
+        "pattern": "Invalid offset of local file header"
+      },
+      "Null_Input_Path_Zip_Error": {
+        "pattern": "Input path or filename is null or not existed"
+      },
+      "Determining_File_Name_Zip_Error": {
+        "pattern": "Determining file name error"
+      },
+      "Null_Options_Zip_Error": {
+        "pattern": "ZipOptions argument is null"
+      },
+      "Null_Input_Stream_Zip_Error": {
+        "pattern": "Input stream instance is null"
+      },
+      "Null_Destination_Path_Zip_Error": {
+        "pattern": "Destination path is null!"
+      },
+      "Invalid_Central_Directory_Zip_Error": {
+        "pattern": "Invalid central directory in zip entity"
+      },
+      "Invalid_Last_Modify_Zip_Error": {
+        "pattern": "Invalid last modify time value"
+      },
+      "Invalid_Binary_Data_Zip_Error": {
+        "pattern": "Invalid binary data"
+      },
+      "Not_Folder_Zip_Error": {
+        "pattern": "Current file path is not a folder, path: {0}"
+      },
+      "Cannot_Read_Folder_Zip_Error": {
+        "pattern": "Read folder data error! Folder path: {0}"
+      },
+      "Invalid_Output_Folder_Zip_Error": {
+        "pattern": "Invalid output folder path! Folder path: {0}"
+      },
+      "Read_Extra_Data_Zip_Error": {
+        "pattern": "Read extra data records error!"
+      },
+      "Read_Zip64_Extend_Data_Zip_Error": {
+        "pattern": "Read ZIP64 extend data information error!"
+      },
+      "Process_AES_Extra_Data_Zip_Error": {
+        "pattern": "Read and save AES extra data record error"
+      },
+      "Read_Zip64_ECDR_Zip_Error": {
+        "pattern": "Read Zip64 end central directory record error"
+      },
+      "Invalid_Signature_Zip64_ECDR_Zip_Error": {
+        "pattern": "Invalid signature for Zip64 end central directory record"
+      },
+      "Read_Central_Directory_Zip_Error": {
+        "pattern": "Read central directory data error! "
+      },
+      "Entry_Central_Directory_Not_Found_Zip_Error": {
+        "pattern": "Expected central directory entry not found! Index: {0}"
+      },
+      "Read_Zip64_ECDRL_Zip_Error": {
+        "pattern": "Read Zip64 end central directory locator record error"
+      },
+      "Read_ECDR_Zip_Error": {
+        "pattern": "Read end central directory record error"
+      },
+      "Remove_Entry_Zip_Error": {
+        "pattern": "Remove zip entry error"
+      },
+      "Write_Zip64_ECDRL_Zip_Error": {
+        "pattern": "Write Zip64 end central directory locator record error"
+      },
+      "Write_ECDR_Zip_Error": {
+        "pattern": "Write end central directory record error"
+      },
+      "Write_Header_Zip_Error": {
+        "pattern": "Write zip header bytes error"
+      },
+      "Write_Zip64_Header_Zip_Error": {
+        "pattern": "Write zip64 header bytes error"
+      },
+      "Read_Entry_Zip_Error": {
+        "pattern": "Read zip entry data error"
+      },
+      "Unknown_Compress_Type_Zip_Error": {
+        "pattern": "Unsupported compression type!"
+      },
+      "Invalid_Compress_Level_Zip_Error": {
+        "pattern": "Invalid compression level. compression level dor deflate should be in the range of 0-9"
+      },
+      "Need_Password_Zip_Error": {
+        "pattern": "Need password for encrypt!"
+      },
+      "Copy_Data_Zip_Error": {
+        "pattern": "Copy data error! "
+      },
+      "Invalid_CRC_Check_Zip_Error": {
+        "pattern": "Zip file process crc check error! "
+      },
+      "Invalid_Decryptor_Zip_Error": {
+        "pattern": "Invalid decryptor when trying to calculate compressed size for AES encrypted file: {0}"
+      },
+      "Invalid_Local_Header_Signature_Zip_Error": {
+        "pattern": "Invalid local header signature for file: {0}"
+      },
+      "Not_Found_Header_Zip_Error": {
+        "pattern": "Zip headers not found. probably not a zip file"
+      },
+      "Read_AES_Bytes_Zip_Error": {
+        "pattern": "Error occurred while reading stored AES authentication bytes"
+      },
+      "Invalid_Buffer_Size_Zip_Error": {
+        "pattern": "Negative buffer size"
+      },
+      "Min_Split_Size_Zip_Error": {
+        "pattern": "Split length less than minimum allowed split length of {0} bytes"
+      },
+      "Open_Split_File_Zip_Error": {
+        "pattern": "Check buffer size and start next split file error! "
+      },
+      "Extract_File_Zip_Error": {
+        "pattern": "Extract zip file error"
+      },
+      "Null_Entry_Path_Zip_Error": {
+        "pattern": "Entry path is null or empty string"
+      },
+      "Entry_Path_Not_Directory_Zip_Error": {
+        "pattern": "Entry path: {0} is not directory entry!"
+      },
+      "Null_Remove_Entry_Path_Zip_Error": {
+        "pattern": "Remove entry path arrays is null"
+      },
+      "Invalid_File_Zip_Error": {
+        "pattern": "Invalid zip file! "
+      },
+      "Null_End_Central_Directory_Zip_Error": {
+        "pattern": "End of central directory is null!"
+      },
+      "Invalid_Comment_Length_Zip_Error": {
+        "pattern": "Comment length exceeds maximum length"
+      },
+      "Write_Comment_Zip_Error": {
+        "pattern": "Write comment information error! "
+      },
+      "Not_Split_File_Zip_Error": {
+        "pattern": "Archive not a split zip file"
+      },
+      "Merge_Split_File_Zip_Error": {
+        "pattern": "Merge split zip file error! "
+      },
+      "Null_Output_Stream_Zip_Error": {
+        "pattern": "Output stream parameters is null, cannot finalize zip file"
+      },
+      "Unknown_File_Header_Zip_Error": {
+        "pattern": "Unknown file header"
+      },
+      "Null_Target_File_Zip_Error": {
+        "pattern": "Target file is null"
+      },
+      "Process_File_Attribute_ReadOnly_Zip_Error": {
+        "pattern": "Process file read only attribute error! "
+      },
+      "Process_File_Attribute_Last_Modify_Zip_Error": {
+        "pattern": "Process file last modify time attribute error! "
+      },
+      "Parameter_Invalid_Error": {
+        "pattern": "Invalid arguments"
+      },
+      "Not_Support_Encoding_Error": {
+        "pattern": "Unsupported charset encoding"
+      },
+      "Disk_Number_Start_Error": {
+        "pattern": "Disk number start value invalid"
+      },
+      "Entry_Count_Out_Of_Range": {
+        "pattern": "Total entry count out of range"
+      }
+    },
+    "zh-CN": {
+      "Entry_Path_Is_Empty": {
+        "pattern": "归档条目路径不能为空。"
+      },
+      "Archive_In_ReadOnly_Mode": {
+        "pattern": "归档文件以只读模式打开。"
+      },
+      "Archive_Not_In_Edit_Mode": {
+        "pattern": "此操作要求以编辑模式打开归档文件。"
+      },
+      "Archive_File_Exists": {
+        "pattern": "目标归档文件已存在。"
+      },
+      "Archive_File_Not_Found": {
+        "pattern": "归档文件不存在。"
+      },
+      "Archive_Split_Index_Exists": {
+        "pattern": "归档分卷索引重复。"
+      },
+      "Archive_Split_Index_Invalid": {
+        "pattern": "归档分卷索引无效、缺失或超出范围。"
+      },
+      "Archive_Split_Limit_Invalid": {
+        "pattern": "归档分卷长度或分卷大小限制无效。"
+      },
+      "Archive_Split_File_Invalid": {
+        "pattern": "归档分卷文件无效或不一致。"
+      },
+      "Open_Archive_Split_File_Error": {
+        "pattern": "无法打开或读取归档分卷文件。"
+      },
+      "End_Central_Directory_Record_Length_Invalid": {
+        "pattern": "中央目录结束记录的长度无效。"
+      },
+      "Archive_Signature_Invalid": {
+        "pattern": "ZIP 记录签名无效或与预期不符。"
+      },
+      "Zip64_End_Central_Directory_Extensible_Data_Length_Invalid": {
+        "pattern": "ZIP64 中央目录结束记录的可扩展数据长度无效。"
+      },
+      "Zip64_End_Central_Directory_Data_Invalid": {
+        "pattern": "ZIP64 中央目录结束记录或定位器数据无效。"
+      },
+      "Read_Data_Parameter_Invalid": {
+        "pattern": "数据缓冲区、偏移量、长度或读取位置无效。"
+      },
+      "File_Header_Is_Null": {
+        "pattern": "文件头不能为空。"
+      },
+      "Read_Data_Size_Invalid": {
+        "pattern": "数据大小、读取长度或条目大小信息无效。"
+      },
+      "Zip64_Extended_Information_Data_Invalid": {
+        "pattern": "ZIP64 扩展信息字段无效。"
+      },
+      "Zip64_Extended_Information_Duplicate": {
+        "pattern": "ZIP64 扩展信息字段重复。"
+      },
+      "AES_Strength_Invalid": {
+        "pattern": "AES 密钥强度无效或不受支持。"
+      },
+      "AES_Encryption_Data_Length_Invalid": {
+        "pattern": "AES 加密扩展字段的长度无效。"
+      },
+      "AES_Version_Invalid": {
+        "pattern": "WinZip AES 版本无效或不受支持。"
+      },
+      "AES_Vendor_Invalid": {
+        "pattern": "AES 加密厂商标识无效。"
+      },
+      "AES_Encryption_Data_Duplicate": {
+        "pattern": "AES 加密扩展字段重复。"
+      },
+      "File_Header_Encryption_Flag_Invalid": {
+        "pattern": "文件头中的加密标志不一致。"
+      },
+      "Open_Archive_File_Error": {
+        "pattern": "无法打开或初始化归档文件。"
+      },
+      "Data_Length_Too_Large": {
+        "pattern": "数据长度超出支持范围或配置的限制。"
+      },
+      "Central_Directory_Header_Length_Invalid": {
+        "pattern": "中央目录文件头或扩展字段的长度无效，或数据被截断。"
+      },
+      "No_Enough_Data_Bytes": {
+        "pattern": "归档文件意外结束或可用数据不足。"
+      },
+      "Zip64_End_Of_Directory_Protection_Invalid": {
+        "pattern": "ZIP64 中央目录保护结构无效。"
+      },
+      "Zip64_Archive_Decryption_Header_Invalid": {
+        "pattern": "ZIP 文件头、中央目录或加密元数据无效或不一致。"
+      },
+      "File_Name_Invalid": {
+        "pattern": "归档文件名无效。"
+      },
+      "AES_Compression_Method_Invalid": {
+        "pattern": "ZIP 压缩方法无效、不受支持或不一致。"
+      },
+      "AES_Encryption_Data_Missing": {
+        "pattern": "缺少必需的 AES 加密元数据。"
+      },
+      "Zip_Encryption_Method_Invalid": {
+        "pattern": "ZIP 加密方法无效或不受支持。"
+      },
+      "Zip_Decrypt_Data_Error": {
+        "pattern": "无法生成 ZIP AES 加密密钥流。"
+      },
+      "Encryption_Method_Invalid": {
+        "pattern": "加密算法或密钥长度无效或不受支持。"
+      },
+      "Encryption_Format_Invalid": {
+        "pattern": "强加密元数据格式无效或不受支持。"
+      },
+      "Encryption_Information_Invalid": {
+        "pattern": "缺少必需的加密信息，或加密信息不一致。"
+      },
+      "Crypto_Mode_Invalid": {
+        "pattern": "加解密操作模式无效。"
+      },
+      "AES_Counter_Exhausted": {
+        "pattern": "ZIP AES 计数器已耗尽，无法继续安全地处理数据。"
+      },
+      "Password_Invalid": {
+        "pattern": "归档密码无效或未提供。"
+      },
+      "Create_Parent_Folder_Failed": {
+        "pattern": "无法创建父目录，或目标路径没有有效的父目录。"
+      },
+      "Parent_Path_Not_Folder": {
+        "pattern": "父路径不存在或不是目录。"
+      },
+      "Last_Modified_Invalid": {
+        "pattern": "归档时间戳或时间扩展字段无效。"
+      },
+      "Unknown_Override_Mode": {
+        "pattern": "未知的文件覆盖模式。"
+      },
+      "Calculate_File_Size_Error": {
+        "pattern": "条目实际大小与声明大小不一致，或大小计数器发生溢出。"
+      },
+      "Write_File_Size_Error": {
+        "pattern": "解压后的条目大小超过配置的最大条目大小。"
+      },
+      "Compression_Ratio_Error": {
+        "pattern": "条目的压缩比超过配置的最大压缩比。"
+      },
+      "CRC32_Check_Failed": {
+        "pattern": "条目 CRC-32 校验失败。"
+      },
+      "Archive_Size_Too_Large": {
+        "pattern": "归档文件的压缩后大小超过配置的上限。"
+      },
+      "Unsafe_Entry_Path": {
+        "pattern": "归档条目路径不安全：解压后将超出目标目录范围。"
+      },
+      "Absolute_Symbolic_Link_Target": {
+        "pattern": "不允许使用绝对路径作为符号链接目标。"
+      },
+      "Link_Target_Invalid": {
+        "pattern": "归档条目路径或链接目标无效。"
+      },
+      "Symbolic_Link_Escapes_Extraction_Root": {
+        "pattern": "符号链接或硬链接的目标超出解压根目录范围。"
+      },
+      "Not_Allow_Symbolic_Link": {
+        "pattern": "不允许解压此符号链接或硬链接。"
+      },
+      "Entry_Type_Not_Supported_Or_Unknown": {
+        "pattern": "归档条目类型不受支持或未知。"
+      },
+      "Target_Escapes_Extraction_Root": {
+        "pattern": "目标路径超出解压根目录范围。"
+      },
+      "Unsafe_Extraction_Root": {
+        "pattern": "解压根目录不安全或不是目录。"
+      },
+      "Target_Invalid": {
+        "pattern": "解压目标路径无效。"
+      },
+      "Unsafe_Parent_Component": {
+        "pattern": "父路径中存在不安全的路径组成部分，无法解压。"
+      },
+      "Out_Of_Limit": {
+        "pattern": "某项归档信息超出配置的解压或文件头限制。"
+      },
+      "Entry_Duplicate_Reject": {
+        "pattern": "根据配置的策略，拒绝重复的归档条目。"
+      },
+      "Operate_Aborted": {
+        "pattern": "条目操作已中止，或条目流已关闭。"
+      },
+      "Unknown_Split_Type": {
+        "pattern": "未知的归档分卷类型。"
+      },
+      "Archive_Entry_Not_Found": {
+        "pattern": "未找到指定的归档条目。"
+      },
+      "Archive_Entry_Length_Invalid": {
+        "pattern": "复制的条目数据长度与声明的压缩后大小不一致。"
+      },
+      "Zip64_Mode_Unknown": {
+        "pattern": "未知的 ZIP64 模式。"
+      },
+      "Archive_Invalid_Mode": {
+        "pattern": "当前归档打开模式不允许执行此操作。"
+      },
+      "Archive_Output_Stream_Closed": {
+        "pattern": "归档文件或归档输出流已关闭。"
+      },
+      "Zip_Record_Exceeds_Split_Length": {
+        "pattern": "ZIP 记录长度超过配置的分卷长度。"
+      },
+      "Zip_Output_Stream_Not_Finished": {
+        "pattern": "ZIP 输出流尚未完成写入。"
+      },
+      "Session_State_Invalid": {
+        "pattern": "当前归档会话状态不允许执行此操作。"
+      },
+      "Entry_Write_In_Processing": {
+        "pattern": "仍有一个或多个归档条目写入器处于活动状态。"
+      },
+      "Unsupported_Operate": {
+        "pattern": "当前归档或布局不支持此操作。"
+      },
+      "Only_Support_Rsa_Key": {
+        "pattern": "基于证书的 ZIP 加密仅支持 RSA 密钥。"
+      },
+      "Only_Support_X509_Certificate": {
+        "pattern": "基于证书的 ZIP 加密仅支持 X.509 证书。"
+      },
+      "Invalid_Java_Key": {
+        "pattern": "加密密钥数据、长度或编码无效。"
+      },
+      "Not_Supported_Encryption_Mode_Zip_Error": {
+        "pattern": "不支持的加密方式"
+      },
+      "Not_Initialized_AES_Engine_Zip_Error": {
+        "pattern": "AES引擎未初始化"
+      },
+      "Input_Buffer_Too_Short_Zip_Error": {
+        "pattern": "输入缓冲区太小"
+      },
+      "Invalid_Key_Length_AES_Zip_Error": {
+        "pattern": "非法的密钥长度（不为128/192/256）"
+      },
+      "Invalid_Key_Strength_AES_Zip_Error": {
+        "pattern": "非法的密钥强度"
+      },
+      "Invalid_Password_Zip_Error": {
+        "pattern": "密码为空或长度为0"
+      },
+      "Invalid_Derived_Password_Verifier_Zip_Error": {
+        "pattern": "非法的派生密码验证器"
+      },
+      "Invalid_Derived_Key_Zip_Error": {
+        "pattern": "非法的派生密钥"
+      },
+      "Invalid_Salt_Length_Zip_Error": {
+        "pattern": "非法的盐数据长度"
+      },
+      "Init_Crypto_Zip_Error": {
+        "pattern": "初始化加密解密器出现异常"
+      },
+      "Decrypt_Crypto_Zip_Error": {
+        "pattern": "解密数据出现异常"
+      },
+      "Encrypt_Crypto_Zip_Error": {
+        "pattern": "加密数据出现异常"
+      },
+      "Wrong_Password_Zip_Error": {
+        "pattern": "密码错误"
+      },
+      "Null_Local_File_Header_Zip_Error": {
+        "pattern": "本地文件头为空"
+      },
+      "Null_General_File_Header_Zip_Error": {
+        "pattern": "一般文件头为空"
+      },
+      "Invalid_AES_Extra_Data_Zip_Error": {
+        "pattern": "非法的AES扩展数据记录"
+      },
+      "Output_Buffer_Too_Short_Zip_Error": {
+        "pattern": "输出缓冲区太小"
+      },
+      "Finished_Encryptor_AES_Zip_Error": {
+        "pattern": "AES加密器已经处于完成状态"
+      },
+      "Null_Input_File_Zip_Error": {
+        "pattern": "输入文件为空或不存在"
+      },
+      "Invalid_Encryptor_AES_Zip_Error": {
+        "pattern": "非法的加密器，预期为AES加密器"
+      },
+      "Failed_Add_File_Zip_Error": {
+        "pattern": "添加文件到Zip文件出现异常"
+      },
+      "Null_File_Name_Zip_Error": {
+        "pattern": "文件路径为空，无法创建目标文件头"
+      },
+      "Write_Local_File_Header_Zip_Error": {
+        "pattern": "写入本地文件头时出现异常"
+      },
+      "Not_Allow_Update_Files_Zip_Error": {
+        "pattern": "当前文件是分割文件，ZIP格式不支持更新文件操作"
+      },
+      "CRC_Failed_Zip_Error": {
+        "pattern": "CRC检查未通过"
+      },
+      "Read_Access_Failed_Zip_Error": {
+        "pattern": "文件没有读取权限"
+      },
+      "Null_Path_Zip_Error": {
+        "pattern": "文件路径为空"
+      },
+      "Exists_Path_Zip_Error": {
+        "pattern": "文件已存在，请使用addFile方法添加文件到压缩包"
+      },
+      "Invalid_Offset_Local_Header_Zip_Error": {
+        "pattern": "非法的本地头数据偏移量"
+      },
+      "Null_Input_Path_Zip_Error": {
+        "pattern": "输入路径或文件名为空或不存在"
+      },
+      "Determining_File_Name_Zip_Error": {
+        "pattern": "确定文件名时出错"
+      },
+      "Null_Options_Zip_Error": {
+        "pattern": "压缩选项参数为空"
+      },
+      "Null_Input_Stream_Zip_Error": {
+        "pattern": "输入流为空"
+      },
+      "Null_Destination_Path_Zip_Error": {
+        "pattern": "目标路径为空"
+      },
+      "Invalid_Central_Directory_Zip_Error": {
+        "pattern": "压缩实体中的中心目录无效"
+      },
+      "Invalid_Last_Modify_Zip_Error": {
+        "pattern": "非法的最终修改时间值"
+      },
+      "Invalid_Binary_Data_Zip_Error": {
+        "pattern": "非法二进制数据"
+      },
+      "Not_Folder_Zip_Error": {
+        "pattern": "当前文件路径不是目录，路径信息：{0}"
+      },
+      "Cannot_Read_Folder_Zip_Error": {
+        "pattern": "读取文件夹信息出错！文件夹路径：{0}"
+      },
+      "Invalid_Output_Folder_Zip_Error": {
+        "pattern": "输出文件夹出错！文件夹路径：{0}"
+      },
+      "Read_Extra_Data_Zip_Error": {
+        "pattern": "读取扩展信息数据出错！"
+      },
+      "Read_Zip64_Extend_Data_Zip_Error": {
+        "pattern": "读取ZIP64扩展数据信息出错！"
+      },
+      "Process_AES_Extra_Data_Zip_Error": {
+        "pattern": "读取及保存AES扩展数据记录出错！"
+      },
+      "Read_Zip64_ECDR_Zip_Error": {
+        "pattern": "读取Zip64终止中央目录记录出错！"
+      },
+      "Invalid_Signature_Zip64_ECDR_Zip_Error": {
+        "pattern": "非法的Zip64终止中央目录签名"
+      },
+      "Read_Central_Directory_Zip_Error": {
+        "pattern": "读取中央目录信息出错！"
+      },
+      "Entry_Central_Directory_Not_Found_Zip_Error": {
+        "pattern": "预期的压缩实体中央目录信息未找到！索引值：{0}"
+      },
+      "Read_Zip64_ECDRL_Zip_Error": {
+        "pattern": "读取Zip64终止中央目录记录定位信息出错！"
+      },
+      "Read_ECDR_Zip_Error": {
+        "pattern": "读取终止中央目录记录出错"
+      },
+      "Remove_Entry_Zip_Error": {
+        "pattern": "删除压缩实体出错"
+      },
+      "Write_Zip64_ECDRL_Zip_Error": {
+        "pattern": "写入Zip64终止中央目录记录定位信息出错！"
+      },
+      "Write_ECDR_Zip_Error": {
+        "pattern": "写入终止中央目录记录出错"
+      },
+      "Write_Header_Zip_Error": {
+        "pattern": "写入ZIP头数据出错"
+      },
+      "Write_Zip64_Header_Zip_Error": {
+        "pattern": "写入ZIP64头数据出错"
+      },
+      "Read_Entry_Zip_Error": {
+        "pattern": "读取压缩实体数据出错"
+      },
+      "Unknown_Compress_Type_Zip_Error": {
+        "pattern": "不支持的压缩方式！"
+      },
+      "Invalid_Compress_Level_Zip_Error": {
+        "pattern": "非法的压缩等级。压缩级别应该在0-9的范围内。"
+      },
+      "Need_Password_Zip_Error": {
+        "pattern": "需要设置密码用于数据加密！"
+      },
+      "Copy_Data_Zip_Error": {
+        "pattern": "拷贝数据出错！"
+      },
+      "Invalid_CRC_Check_Zip_Error": {
+        "pattern": "ZIP文件执行CRC检查出错！"
+      },
+      "Invalid_Decryptor_Zip_Error": {
+        "pattern": "错误的解密器用于尝试计算AES压缩大小，压缩文件：{0}"
+      },
+      "Invalid_Local_Header_Signature_Zip_Error": {
+        "pattern": "非法的数据头签名！文件路径：{0}"
+      },
+      "Not_Found_Header_Zip_Error": {
+        "pattern": "ZIP头信息未找到。可能不是ZIP文件"
+      },
+      "Read_AES_Bytes_Zip_Error": {
+        "pattern": "读取存储的AES验证数据出错"
+      },
+      "Invalid_Buffer_Size_Zip_Error": {
+        "pattern": "非法的缓冲区大小"
+      },
+      "Min_Split_Size_Zip_Error": {
+        "pattern": "分卷大小小于允许的最小分卷大小：{0} bytes"
+      },
+      "Open_Split_File_Zip_Error": {
+        "pattern": "检查缓冲区大小及打开下一个分卷文件出错！"
+      },
+      "Extract_File_Zip_Error": {
+        "pattern": "解压缩ZIP文件出错！"
+      },
+      "Null_Entry_Path_Zip_Error": {
+        "pattern": "压缩实体路径为空或空字符串"
+      },
+      "Entry_Path_Not_Directory_Zip_Error": {
+        "pattern": "压缩实体路径：{0} 不是目录！"
+      },
+      "Null_Remove_Entry_Path_Zip_Error": {
+        "pattern": "要删除的压缩实体路径数组为空"
+      },
+      "Invalid_File_Zip_Error": {
+        "pattern": "非法的ZIP文件！"
+      },
+      "Null_End_Central_Directory_Zip_Error": {
+        "pattern": "中央目录结束数据为空！"
+      },
+      "Invalid_Comment_Length_Zip_Error": {
+        "pattern": "备注信息长度超出最大长度"
+      },
+      "Write_Comment_Zip_Error": {
+        "pattern": "写入备注信息出错！"
+      },
+      "Not_Split_File_Zip_Error": {
+        "pattern": "压缩包不是分卷压缩文件"
+      },
+      "Merge_Split_File_Zip_Error": {
+        "pattern": "合并分卷文件出错！"
+      },
+      "Null_Output_Stream_Zip_Error": {
+        "pattern": "输出流参数为空，无法写入压缩文件"
+      },
+      "Unknown_File_Header_Zip_Error": {
+        "pattern": "未知的文件头信息"
+      },
+      "Null_Target_File_Zip_Error": {
+        "pattern": "目标文件为空"
+      },
+      "Process_File_Attribute_ReadOnly_Zip_Error": {
+        "pattern": "处理文件只读属性出错！"
+      },
+      "Process_File_Attribute_Last_Modify_Zip_Error": {
+        "pattern": "处理文件最终修改时间属性出错！"
+      },
+      "Parameter_Invalid_Error": {
+        "pattern": "参数非法"
+      },
+      "Not_Support_Encoding_Error": {
+        "pattern": "不支持的字符集编码"
+      },
+      "Disk_Number_Start_Error": {
+        "pattern": "起始磁盘索引值错误！"
+      },
+      "Entry_Count_Out_Of_Range": {
+        "pattern": "总实体计数超过允许范围"
+      }
+    }
+  }
+}

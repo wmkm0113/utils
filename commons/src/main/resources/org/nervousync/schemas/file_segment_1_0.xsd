@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="https://nervousync.org/schemas/segment" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="https://nervousync.org/schemas/segment" elementFormDefault="qualified" version="1.0">
+    <xsd:complexType name="segment_block">
+        <xsd:all>
+            <xsd:element name="position" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation>Item position in total file</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="block_size" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation>Item block size</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="signature_sha" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Item signature sha256</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="data_info" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Item data, base64 encoded byte arrays</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="current_time" type="xsd:dateTime">
+                <xsd:annotation>
+                    <xsd:documentation>Item signature time</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:element name="segment_info">
+        <xsd:complexType>
+            <xsd:all>
+                <xsd:element name="total_size" type="xsd:long">
+                    <xsd:annotation>
+                        <xsd:documentation>File total size</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="block_size" type="xsd:long">
+                    <xsd:annotation>
+                        <xsd:documentation>Segment block size</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="ext_name" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>File extension name</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="signature_sha" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Item signature sha256</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="block_list">
+                    <xsd:annotation>
+                        <xsd:documentation>Segment item list</xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="segment_block" type="segment_block" maxOccurs="unbounded">
+                                <xsd:annotation>
+                                    <xsd:documentation>Segment item info</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:all>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

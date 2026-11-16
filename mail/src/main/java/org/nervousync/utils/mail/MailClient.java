@@ -47,8 +47,8 @@ import org.nervousync.mail.MailObject;
 import org.nervousync.mail.authenticator.DefaultAuthenticator;
 import org.nervousync.mail.config.MailConfig;
 import org.nervousync.utils.cert.CertificateUtils;
-import org.nervousync.utils.core.FileUtils;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.FileUtils;
+import org.nervousync.utils.commons.StringUtils;
 import org.nervousync.utils.logger.LoggerUtils;
 
 import java.io.*;

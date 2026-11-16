@@ -20,7 +20,7 @@ package org.nervousync.security.password.impl;
 import org.bouncycastle.crypto.generators.OpenBSDBCrypt;
 import org.nervousync.commons.Globals;
 import org.nervousync.security.password.PasswordEncoder;
-import org.nervousync.utils.core.StringUtils;
+import org.nervousync.utils.commons.StringUtils;
 
 import java.util.Arrays;
 

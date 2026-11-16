@@ -18,7 +18,7 @@
 package org.nervousync.beans.cert;
 
 import org.nervousync.enumerations.security.EncodeType;
-import org.nervousync.utils.security.SecurityUtils;
+import org.nervousync.utils.security.DigestUtils;
 
 /**
  * <h2 class="en-US">Trust Certificate Define</h2>
@@ -56,7 +56,7 @@ public class TrustCert {
 	private TrustCert(final byte[] certContent, final String certAlias) {
 		this.certContent = certContent;
 		this.certAlias = certAlias;
-		this.sha256 = SecurityUtils.SHA256(certContent, EncodeType.HEX);
+		this.sha256 = DigestUtils.SHA256(certContent, EncodeType.HEX);
 	}
 
 	/**

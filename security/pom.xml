@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-core</artifactId>
+            <artifactId>utils-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>
@@ -24,9 +24,16 @@
             <artifactId>utils-i18n</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.nervousync</groupId>
-            <artifactId>utils-test</artifactId>
+            <artifactId>utils-id</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- Security Support -->
