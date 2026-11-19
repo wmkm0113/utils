@@ -22,10 +22,14 @@ import org.nervousync.archive.ArchiveEntry;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.ResourceWriter;
 import org.nervousync.archive.enumerations.*;
+import org.nervousync.archive.enumerations.zip.AesVendor;
+import org.nervousync.archive.enumerations.zip.PasswordPurpose;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.io.bzip2.BZip2OutputStream;
 import org.nervousync.archive.io.deflate.DeflateOutputStream;
-import org.nervousync.archive.io.zip.ZipEntryOutputStream;
+import org.nervousync.archive.io.lzma.LZMAOutputStream;
+import org.nervousync.archive.io.xz.XZOutputStream;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.security.StrongKey;
 import org.nervousync.archive.security.password.PasswordCredentials;
@@ -36,6 +40,7 @@ import org.nervousync.archive.zip.crypto.ZipCrypto;
 import org.nervousync.archive.zip.crypto.aes.AesOutputStream;
 import org.nervousync.archive.zip.crypto.standard.StandardOutputStream;
 import org.nervousync.archive.zip.crypto.strong.StrongOutputStream;
+import org.nervousync.archive.zip.io.ZipEntryOutputStream;
 import org.nervousync.archive.zip.models.EntryTimes;
 import org.nervousync.archive.zip.models.ExtraDataRecord;
 import org.nervousync.archive.zip.models.crypto.AesEncryptionInfo;
@@ -100,10 +105,6 @@ public final class ZipEntryResourceWriter implements ResourceWriter {
 	 * <span class="zh-CN">Zip 条目输出流</span>
 	 */
 	private ZipEntryOutputStream outputStream = null;
-	/**
-	 * <span class="en-US">Deflater</span>
-	 * <span class="zh-CN">压缩器</span>
-	 */
 	private int dosTime;
 	private ArchiveEntry sourceEntry = null;
 	private LocalFileHeader completedHeader = null;
@@ -266,8 +267,10 @@ public final class ZipEntryResourceWriter implements ResourceWriter {
 							new BZip2OutputStream(outputStream, Math.max(1, this.zipOptions.getCompressionLevel()));
 					break;
 				case LZMA1:
+					outputStream = new LZMAOutputStream(outputStream, this.zipOptions.getCompressionLevel());
+					break;
 				case LZMA2:
-					//  Not support at this time
+					outputStream = new XZOutputStream(outputStream, this.zipOptions.getCompressionLevel());
 					break;
 				default:
 					throw new ArchiveException(0x0000001A0021L);
@@ -362,6 +365,8 @@ public final class ZipEntryResourceWriter implements ResourceWriter {
 			case DEFLATE -> ZipGlobals.COMP_DEFLATE;
 			case DEFLATE64 -> ZipGlobals.COMP_DEFLATE64;
 			case BZIP2 -> ZipGlobals.COMP_BZIP2;
+			case LZMA1 -> ZipGlobals.COMP_LZMA;
+			case LZMA2 -> ZipGlobals.COMP_XZ;
 			default -> throw new IOException(
 					"Unsupported ZIP compression: " + this.zipOptions.getAlgorithm());
 		};
@@ -416,6 +421,11 @@ public final class ZipEntryResourceWriter implements ResourceWriter {
 				break;
 			default:
 				throw new ArchiveException(0x0000001A0023L);
+		}
+
+		if (!this.isDirectoryEntry() && this.zipOptions.getAlgorithm() == CompressionAlgorithm.LZMA1) {
+			flags |= 0x0002;
+			version = Math.max(version, 63);
 		}
 
 		if (zip64) {

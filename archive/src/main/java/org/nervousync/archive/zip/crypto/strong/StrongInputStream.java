@@ -18,8 +18,8 @@
 package org.nervousync.archive.zip.crypto.strong;
 
 import org.nervousync.archive.commons.ZipGlobals;
-import org.nervousync.archive.enumerations.PasswordPurpose;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.PasswordPurpose;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.security.StrongKey;
 import org.nervousync.archive.security.certificate.CertificateProvider;

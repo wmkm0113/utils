@@ -27,7 +27,7 @@ import org.nervousync.archive.ArchiveFile;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.data.LocalDataFile;
 import org.nervousync.archive.enumerations.CompressionAlgorithm;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.zip.ZipOptions;
 

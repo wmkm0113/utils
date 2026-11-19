@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.archive.enumerations;
+package org.nervousync.archive.enumerations.zip;
 
 import org.nervousync.archive.commons.ZipGlobals;
 

@@ -1,0 +1,38 @@
+/*
+ * Licensed to the Nervousync Studio (NSYC) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.nervousync.test.archive.xz;
+
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/** Independent XZ acceptance fixture. / 独立 XZ 接受性样本。 */
+final class XZStreamTest {
+    /** Decode data written by Python/liblzma. / 解码 Python/liblzma 生成的数据。 */
+    @Test
+    void readsIndependentXz() throws Exception {
+        Class<?> type = assertDoesNotThrow(() -> Class.forName("org.nervousync.archive.io.xz.XZInputStream"));
+        try (InputStream source = this.getClass().getResourceAsStream("/xz/python-check-4.xz");
+             InputStream input = (InputStream) type.getConstructor(InputStream.class).newInstance(source);
+             InputStream expected = this.getClass().getResourceAsStream("/xz/payload.bin")) {
+            assertNotNull(expected);
+            assertArrayEquals(expected.readAllBytes(), input.readAllBytes());
+        }
+    }
+}

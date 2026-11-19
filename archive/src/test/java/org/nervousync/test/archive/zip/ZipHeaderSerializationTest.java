@@ -18,8 +18,8 @@
 package org.nervousync.test.archive.zip;
 
 import org.junit.jupiter.api.Test;
-import org.nervousync.archive.enumerations.AesVendor;
 import org.nervousync.archive.enumerations.Zip64Mode;
+import org.nervousync.archive.enumerations.zip.AesVendor;
 import org.nervousync.archive.zip.models.ExtraDataRecord;
 import org.nervousync.archive.zip.models.central.Zip64EndCentralDirectory;
 import org.nervousync.archive.zip.models.crypto.AesEncryptionInfo;

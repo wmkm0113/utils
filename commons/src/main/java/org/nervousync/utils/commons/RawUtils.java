@@ -19,6 +19,7 @@ package org.nervousync.utils.commons;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.utils.DataInvalidException;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -1000,26 +1001,67 @@ public final class RawUtils {
 	}
 
 	/**
-	 * <h3 class="en-US">Convert a char array to binary data bytes</h3>
-	 * <h3 class="zh-CN">转换字节数组为二进制数组</h3>
+	 * <h3 class="en-US">Cumulative counting</h3>
+	 * <h3 class="zh-CN">累加计数</h3>
 	 *
-	 * @param charArray <span class="en-US">char array</span>
-	 *                  <span class="zh-CN">字节数组</span>
-	 * @return <span class="en-US">Converted Binary data bytes</span>
-	 * <span class="zh-CN">转换后的二进制字节数组</span>
+	 * @param cardinal <span class="en-US">Cardinal number</span>
+	 *                 <span class="zh-CN">基数</span>
+	 * @param additive <span class="en-US">Additive number</span>
+	 *                 <span class="zh-CN">累加数</span>
 	 */
-	public static byte[] charArrayToByteArray(final char[] charArray) {
-		if (charArray == null) {
-			throw new NullPointerException();
+	public static long add(final long cardinal, final long additive) throws IOException {
+		check(cardinal, additive);
+		return cardinal + additive;
+	}
+
+	/**
+	 * <h3 class="en-US">Check cumulative counting parameters</h3>
+	 * <h3 class="zh-CN">检查累加计数参数</h3>
+	 *
+	 * @param cardinal <span class="en-US">Cardinal number</span>
+	 *                 <span class="zh-CN">基数</span>
+	 * @param additive <span class="en-US">Additive number</span>
+	 *                 <span class="zh-CN">累加数</span>
+	 */
+	public static void check(final long cardinal, final long additive) throws IOException {
+		if (cardinal < 0L || additive < 0L || additive > Long.MAX_VALUE - cardinal) {
+			throw new IOException("Counting size overflow");
 		}
+	}
 
-		byte[] bytes = new byte[charArray.length];
+	/**
+	 * <h3 class="en-US">Convert long to byte array/h3>
+	 * <h3 class="zh-CN">转换 long 为字节数组</h3>
+	 *
+	 * @param value     <span class="en-US">Write value</span>
+	 *                  <span class="zh-CN">写入的数据</span>
+	 * @param byteOrder <span class="en-US">Byte order type</span>
+	 *                  <span class="zh-CN">大端/小端</span>
+	 * @return <span class="en-US">Converted byte array</span>
+	 * <span class="zh-CN">转换后的二进制数组</span>
+	 */
+	public static byte[] longToBytes(final long value, final ByteOrder byteOrder) {
+		return longToBytes(value, byteOrder, 8);
+	}
 
-		for (int i = 0; i < charArray.length; i++) {
-			bytes[i] = (byte) charArray[i];
-		}
-
-		return bytes;
+	/**
+	 * <h3 class="en-US">Convert long to byte array/h3>
+	 * <h3 class="zh-CN">转换 long 为字节数组</h3>
+	 *
+	 * @param value     <span class="en-US">Write value</span>
+	 *                  <span class="zh-CN">写入的数据</span>
+	 * @param byteOrder <span class="en-US">Byte order type</span>
+	 *                  <span class="zh-CN">大端/小端</span>
+	 * @param length    <span class="en-US">Byte array length</span>
+	 *                  <span class="zh-CN">字节数组长度</span>
+	 * @return <span class="en-US">Converted byte array</span>
+	 * <span class="zh-CN">转换后的二进制数组</span>
+	 */
+	public static byte[] longToBytes(final long value, final ByteOrder byteOrder, final int length) {
+		byte[] dataBytes = ByteBuffer.allocate(8).order(byteOrder).putLong(value).array();
+		return byteOrder == ByteOrder.LITTLE_ENDIAN
+				? Arrays.copyOfRange(dataBytes, 0, length)
+				: Arrays.copyOfRange(dataBytes, 8- length, 8);
 	}
 
 	/**

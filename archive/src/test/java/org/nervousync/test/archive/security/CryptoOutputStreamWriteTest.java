@@ -22,7 +22,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.nervousync.archive.enumerations.AesVendor;
+import org.nervousync.archive.enumerations.zip.AesVendor;
 import org.nervousync.archive.options.ArchiveLimit;
 import org.nervousync.archive.security.password.PasswordProvider;
 import org.nervousync.archive.zip.crypto.ZipCrypto;
@@ -130,7 +130,7 @@ final class CryptoOutputStreamWriteTest {
 	void finishIsIdempotentAndLeavesSinkOpenForFollowingZipRecords() throws Exception {
 		TrackingSink stored = new TrackingSink();
 		AesOutputStream output = new AesOutputStream(stored, 3, PASSWORD_BYTES);
-		try (output) {
+		try {
 			output.write(payload(17));
 			output.finish();
 			int completedLength = stored.size();
@@ -138,6 +138,8 @@ final class CryptoOutputStreamWriteTest {
 			assertEquals(completedLength, stored.size());
 			assertFalse(stored.closed);
 			assertThrows(IOException.class, () -> output.write(1));
+		} finally {
+			output.close();
 		}
 		assertTrue(stored.closed);
 		assertDoesNotThrow(output::close);

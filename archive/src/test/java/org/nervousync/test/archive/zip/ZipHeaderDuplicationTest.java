@@ -29,7 +29,7 @@ final class ZipHeaderDuplicationTest {
 		GeneralFileHeader source = new GeneralFileHeader();
 		source.setEntryPath("entry.txt");
 		source.setInternalFileAttr(1);
-		source.setExternalFileAttr(0x81A40000L);
+		source.setExternalFileAttr(0x81A40000);
 		source.setDiskNumberStart(2L);
 		source.setOffsetLocalHeader(1234L);
 		source.setFileComment("entry comment");

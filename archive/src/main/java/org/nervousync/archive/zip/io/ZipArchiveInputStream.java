@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.nervousync.archive.io.zip;
+package org.nervousync.archive.zip.io;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.archive.core.DataFile;
-import org.nervousync.archive.enumerations.SplitType;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.zip.ZipOptions;
 import org.nervousync.commons.Globals;
@@ -114,12 +113,12 @@ public final class ZipArchiveInputStream extends InputStream {
 			}
 			String fileName = StringUtils.getFilename(filePath);
 			String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-			SplitType splitType = zipOptions.getSplitType();
-			if (splitType == SplitType.DETECT) {
+			ZipOptions.SplitType splitType = zipOptions.getSplitType();
+			if (splitType == ZipOptions.SplitType.DETECT) {
 				if (fileName.toLowerCase(Locale.ROOT).endsWith(".zip") || NATIVE_PART_PATTERN.matcher(fileName).matches()) {
-					splitType = SplitType.NATIVE;
+					splitType = ZipOptions.SplitType.NATIVE;
 				} else if (NUMBER_PART_PATTERN.matcher(fileName).matches()) {
-					splitType = SplitType.NUMBERED;
+					splitType = ZipOptions.SplitType.NUMBERED;
 				}
 			}
 			Pattern pattern = switch (splitType) {
@@ -137,7 +136,7 @@ public final class ZipArchiveInputStream extends InputStream {
 						splitFile = new SplitFile(splitPath, splitType);
 						diskNumber = Long.parseLong(matcher.group(2)) - 1L;
 					} else if (splitName.equalsIgnoreCase(fileName)) {
-						splitFile = new SplitFile(splitPath, SplitType.FINAL);
+						splitFile = new SplitFile(splitPath, ZipOptions.SplitType.FINAL);
 						diskNumber = Globals.DEFAULT_VALUE_LONG;
 					} else {
 						continue;
@@ -176,7 +175,7 @@ public final class ZipArchiveInputStream extends InputStream {
 			}
 		} else {
 			this.totalSize = FileUtils.fileSize(filePath);
-			this.splitPathMapping.put(0L, new SplitFile(filePath, SplitType.FINAL));
+			this.splitPathMapping.put(0L, new SplitFile(filePath, ZipOptions.SplitType.FINAL));
 			this.splitCount = 1L;
 		}
 		this.openFile(0L);
@@ -510,7 +509,7 @@ public final class ZipArchiveInputStream extends InputStream {
 
 	private boolean numberedArchive() {
 		return this.splitPathMapping.values().stream()
-				.anyMatch(splitFile -> splitFile.getType() == SplitType.NUMBERED);
+				.anyMatch(splitFile -> splitFile.getType() == ZipOptions.SplitType.NUMBERED);
 	}
 
 	/**
@@ -623,7 +622,7 @@ public final class ZipArchiveInputStream extends InputStream {
 		 * <span class="en-US">Part type</span>
 		 * <span class="zh-CN">分卷类型</span>
 		 */
-		private final SplitType type;
+		private final ZipOptions.SplitType type;
 
 		/**
 		 * <h3 class="en-US">Private constructor method for the Zip split file information</h3>
@@ -634,7 +633,7 @@ public final class ZipArchiveInputStream extends InputStream {
 		 * @param type     <span class="en-US">Enumeration value of the archive split type</span>
 		 *                 <span class="zh-CN">分卷类型枚举值</span>
 		 */
-		private SplitFile(final String filePath, final SplitType type) {
+		private SplitFile(final String filePath, final ZipOptions.SplitType type) {
 			this.filePath = filePath;
 			this.fileSize = FileUtils.fileSize(this.filePath);
 			this.type = type;
@@ -669,7 +668,7 @@ public final class ZipArchiveInputStream extends InputStream {
 		 * @return <span class="en-US">Enumeration value of the archive split type</span>
 		 * <span class="zh-CN">分卷类型枚举值</span>
 		 */
-		public SplitType getType() {
+		public ZipOptions.SplitType getType() {
 			return this.type;
 		}
 	}

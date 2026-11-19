@@ -27,12 +27,15 @@ import org.nervousync.archive.core.DataFile;
 import org.nervousync.archive.core.ResourceReader;
 import org.nervousync.archive.core.ResourceWriter;
 import org.nervousync.archive.enumerations.*;
+import org.nervousync.archive.enumerations.zip.AesVendor;
+import org.nervousync.archive.enumerations.zip.PasswordPurpose;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
+import org.nervousync.archive.io.counting.CountingOutputStream;
 import org.nervousync.archive.io.bzip2.BZip2OutputStream;
 import org.nervousync.archive.io.deflate.DeflateOutputStream;
-import org.nervousync.archive.io.zip.BoundedInputStream;
-import org.nervousync.archive.io.zip.ZipArchiveInputStream;
-import org.nervousync.archive.io.zip.ZipArchiveOutputStream;
+import org.nervousync.archive.io.lzma.LZMAOutputStream;
+import org.nervousync.archive.io.xz.XZOutputStream;
 import org.nervousync.archive.options.ArchiveLimit;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.options.ExtractOptions;
@@ -42,6 +45,9 @@ import org.nervousync.archive.security.password.PasswordProvider;
 import org.nervousync.archive.security.password.PasswordRequest;
 import org.nervousync.archive.zip.crypto.ZipCrypto;
 import org.nervousync.archive.zip.crypto.strong.StrongOutputStream;
+import org.nervousync.archive.zip.io.BoundedInputStream;
+import org.nervousync.archive.zip.io.ZipArchiveInputStream;
+import org.nervousync.archive.zip.io.ZipArchiveOutputStream;
 import org.nervousync.archive.zip.models.EntryMetaData;
 import org.nervousync.archive.zip.models.ExtraDataRecord;
 import org.nervousync.archive.zip.models.central.CentralDirectory;
@@ -168,8 +174,8 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 	 * @throws IOException <span class="en-US">If an error occurs when open archive file</span>
 	 *                     <span class="zh-CN">打开归档文件出错</span>
 	 */
-	public ZipAdaptor(final DataFile dataFile, final ArchiveOptions options, final ZipOptions zipOptions)
-			throws IOException {
+	public ZipAdaptor(@Nonnull final DataFile dataFile, @Nonnull final ArchiveOptions options,
+	                  @Nonnull final ZipOptions zipOptions) throws IOException {
 		super(dataFile.filePath(), dataFile.openMode());
 		this.dataFile = dataFile;
 		if (this.openMode() != OpenMode.CREATE) {
@@ -869,19 +875,19 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 			Zip64EndCentralDirectory.Protection protection = this.zip64EndCentralDirectory.getProtection();
 
 			switch (protection.getCompressionMethod()) {
-				case ZipGlobals.COMP_STORE:
-					break;
-				case ZipGlobals.COMP_DEFLATE:
-					optionsBuilder.compressionAlgorithm(CompressionAlgorithm.DEFLATE).enableCentralDirectoryCompress();
-					break;
-				case ZipGlobals.COMP_DEFLATE64:
-					optionsBuilder.compressionAlgorithm(CompressionAlgorithm.DEFLATE64).enableCentralDirectoryCompress();
-					break;
-				case ZipGlobals.COMP_BZIP2:
-					optionsBuilder.compressionAlgorithm(CompressionAlgorithm.BZIP2).enableCentralDirectoryCompress();
-					break;
-				default:
-					throw new ArchiveException(0x0000001B004AL);
+				case ZipGlobals.COMP_STORE -> {}
+				case ZipGlobals.COMP_DEFLATE -> optionsBuilder.compressionAlgorithm(CompressionAlgorithm.DEFLATE);
+				case ZipGlobals.COMP_DEFLATE64 -> optionsBuilder.compressionAlgorithm(CompressionAlgorithm.DEFLATE64);
+				case ZipGlobals.COMP_BZIP2 -> optionsBuilder.compressionAlgorithm(CompressionAlgorithm.BZIP2);
+				case ZipGlobals.COMP_LZMA -> optionsBuilder.compressionAlgorithm(CompressionAlgorithm.LZMA1);
+				case ZipGlobals.COMP_XZ -> optionsBuilder.compressionAlgorithm(CompressionAlgorithm.LZMA2);
+				default -> throw new ArchiveException(0x0000001B004AL);
+			}
+
+			if (protection.compressed()) {
+				optionsBuilder.enableCentralDirectoryCompress();
+			} else {
+				optionsBuilder.disableCentralDirectoryCompress();
 			}
 
 			if (protection.encrypted()) {
@@ -1986,7 +1992,9 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 		OutputStream centralDirectoryOutputStream = outputStream;
 		DeflateOutputStream deflateOutputStream = null;
 		BZip2OutputStream bZip2OutputStream = null;
-		CentralDirectoryCountingOutputStream countingOutputStream = null;
+		LZMAOutputStream lzmaOutputStream = null;
+		XZOutputStream xzOutputStream = null;
+		CountingOutputStream countingOutputStream = null;
 		StrongOutputStream cryptoOutputStream = null;
 		int centralDirectoryCompressionMethod = ZipGlobals.COMP_STORE;
 		long centralDirectoryOriginalSize = 0L, compressedSize, uncompressedSize;
@@ -2002,10 +2010,8 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 				}
 				if (zipOptions.isCompressCentralDirectory()) {
 					switch (zipOptions.getAlgorithm()) {
-						case STORE:
-							break;
-						case DEFLATE:
-						case DEFLATE64:
+						case STORE -> {}
+						case DEFLATE, DEFLATE64 -> {
 							deflateOutputStream = new DeflateOutputStream(centralDirectoryOutputStream,
 									zipOptions.getAlgorithm() == CompressionAlgorithm.DEFLATE64,
 									zipOptions.getCompressionLevel());
@@ -2014,49 +2020,49 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 									(zipOptions.getAlgorithm() == CompressionAlgorithm.DEFLATE64)
 											? ZipGlobals.COMP_DEFLATE64
 											: ZipGlobals.COMP_DEFLATE;
-							break;
-						case BZIP2:
-							countingOutputStream = new CentralDirectoryCountingOutputStream(centralDirectoryOutputStream);
+						}
+						case BZIP2 -> {
+							countingOutputStream = new CountingOutputStream(centralDirectoryOutputStream);
 							bZip2OutputStream =
 									new BZip2OutputStream(countingOutputStream, Math.max(1, zipOptions.getCompressionLevel()));
 							centralDirectoryOutputStream = bZip2OutputStream;
 							centralDirectoryCompressionMethod = ZipGlobals.COMP_BZIP2;
-							break;
-						case LZMA1:
-						case LZMA2:
-						default:
-							throw new ArchiveException(0x0000001A0021L, zipOptions.getAlgorithm());
+						}
+						case LZMA1 -> {
+							countingOutputStream = new CountingOutputStream(centralDirectoryOutputStream);
+							lzmaOutputStream = new LZMAOutputStream(countingOutputStream, zipOptions.getCompressionLevel());
 
+							centralDirectoryOutputStream = lzmaOutputStream;
+							centralDirectoryCompressionMethod = ZipGlobals.COMP_LZMA;
+						}
+						case LZMA2 -> {
+							countingOutputStream = new CountingOutputStream(centralDirectoryOutputStream);
+							xzOutputStream = new XZOutputStream(countingOutputStream, zipOptions.getCompressionLevel());
+
+							centralDirectoryOutputStream = xzOutputStream;
+							centralDirectoryCompressionMethod = ZipGlobals.COMP_XZ;
+						}
+						default -> throw new ArchiveException(0x0000001A0021L, zipOptions.getAlgorithm());
 					}
 				}
 			}
 
 			switch (zipOptions.getCentralDirectoryHashAlgorithm()) {
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_NONE:
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_CRC32:
-					crc = new CRC32();
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_MD5:
-					digest = MessageDigest.getInstance("MD5", BC_PROVIDER);
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA1:
-					digest = MessageDigest.getInstance("SHA-1", BC_PROVIDER);
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_RIPEMD160:
-					digest = MessageDigest.getInstance("RIPEMD160", BC_PROVIDER);
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA256:
-					digest = MessageDigest.getInstance("SHA-256", BC_PROVIDER);
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA384:
-					digest = MessageDigest.getInstance("SHA-384", BC_PROVIDER);
-					break;
-				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA512:
-					digest = MessageDigest.getInstance("SHA-512", BC_PROVIDER);
-					break;
-				default:
-					throw new ArchiveException(0x0000001A001FL);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_NONE -> {}
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_CRC32 -> crc = new CRC32();
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_MD5 ->
+						digest = MessageDigest.getInstance("MD5", BC_PROVIDER);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA1 ->
+						digest = MessageDigest.getInstance("SHA-1", BC_PROVIDER);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_RIPEMD160 ->
+						digest = MessageDigest.getInstance("RIPEMD160", BC_PROVIDER);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA256 ->
+						digest = MessageDigest.getInstance("SHA-256", BC_PROVIDER);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA384 ->
+						digest = MessageDigest.getInstance("SHA-384", BC_PROVIDER);
+				case ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA512 ->
+						digest = MessageDigest.getInstance("SHA-512", BC_PROVIDER);
+				default -> throw new ArchiveException(0x0000001A001FL);
 			}
 		} catch (NoSuchAlgorithmException e) {
 			throw new ArchiveException(0x0000001A001FL, e);
@@ -2087,6 +2093,16 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 
 				compressedSize = deflateOutputStream.getBytesWritten();
 				uncompressedSize = deflateOutputStream.getBytesRead();
+			} else if (xzOutputStream != null) {
+				xzOutputStream.finish();
+
+				compressedSize = countingOutputStream.getCount();
+				uncompressedSize = centralDirectoryOriginalSize;
+			} else if (lzmaOutputStream != null) {
+				lzmaOutputStream.finish();
+
+				compressedSize = countingOutputStream.getCount();
+				uncompressedSize = centralDirectoryOriginalSize;
 			} else if (bZip2OutputStream != null) {
 				bZip2OutputStream.finish();
 
@@ -2189,6 +2205,9 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 			if (protection != null
 					&& (protection.getAlgorithm() == ZipGlobals.ZIP64_HEADER_ENC_ALGORITHM_BLOWFISH
 					|| protection.getAlgorithm() == ZipGlobals.ZIP64_HEADER_ENC_ALGORITHM_TWOFISH)) {
+				extractNeeded = 63;
+			}
+			if (zipOptions.getAlgorithm() == CompressionAlgorithm.LZMA1) {
 				extractNeeded = 63;
 			}
 			int hostSystem;
@@ -2377,74 +2396,6 @@ public final class ZipAdaptor extends ArchiveAdaptor {
 		 */
 		private UnsafeEntryException(long errorCode, String entryPath) {
 			super(errorCode, entryPath);
-		}
-	}
-
-	/**
-	 * <h2 class="en-US">Central directory counting output stream</h2>
-	 * <h2 class="zh-CN">中央仓库计数输出流</h2>
-	 *
-	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
-	 * @version $Revision: 1.0.0 $ $Date: Oct 26, 2026 09:37:28 $
-	 */
-	private static final class CentralDirectoryCountingOutputStream extends OutputStream {
-
-		/**
-		 * <span class="en-US">Source output stream</span>
-		 * <span class="zh-CN">源输出流</span>
-		 */
-		private final OutputStream output;
-		/**
-		 * <span class="en-US">Output counting</span>
-		 * <span class="zh-CN">输出计数</span>
-		 */
-		private long count;
-
-		/**
-		 * <h3 class="en-US">Private constructor method for the central directory counting output stream</h3>
-		 * <h3 class="zh-CN">中央仓库计数输出流的私有构造方法</h3>
-		 *
-		 * @param output <span class="en-US">Source output stream</span>
-		 *               <span class="zh-CN">源输出流</span>
-		 */
-		private CentralDirectoryCountingOutputStream(final OutputStream output) {
-			this.output = Objects.requireNonNull(output, "output");
-		}
-
-		@Override
-		public void write(final int value) throws IOException {
-			this.output.write(value);
-			this.addCount(1);
-		}
-
-		@Override
-		public void write(@Nonnull final byte[] bytes, final int offset, final int length) throws IOException {
-			this.output.write(bytes, offset, length);
-			this.addCount(length);
-		}
-
-		@Override
-		public void flush() throws IOException {
-			this.output.flush();
-		}
-
-		private void addCount(final int length) throws IOException {
-			try {
-				this.count = Math.addExact(this.count, length);
-			} catch (ArithmeticException e) {
-				throw new IOException("Compressed central directory size overflow", e);
-			}
-		}
-
-		/**
-		 * <h3 class="en-US">Getter method for the output counting</h3>
-		 * <h3 class="zh-CN">输出计数的 Getter 方法</h3>
-		 *
-		 * @return <span class="en-US">Output counting</span>
-		 * <span class="zh-CN">输出计数</span>
-		 */
-		public long getCount() {
-			return this.count;
 		}
 	}
 

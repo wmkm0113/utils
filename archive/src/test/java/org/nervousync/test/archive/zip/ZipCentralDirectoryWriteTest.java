@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.nervousync.archive.ArchiveFile;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.SplitType;
 import org.nervousync.archive.enumerations.Zip64Mode;
 import org.nervousync.archive.zip.ZipOptions;
 
@@ -72,7 +71,7 @@ final class ZipCentralDirectoryWriteTest {
 	void readsLargeCentralDirectoryAcrossNativeVolumes(final Zip64Mode mode, final String protection) throws Exception {
 		Path target = this.directory.resolve("large-directory.zip");
 		ZipOptions.Builder builder = ZipOptions.newBuilder().zip64Mode(mode)
-				.splitArchive(true, 65536).splitType(SplitType.NATIVE);
+				.splitArchive(true, 65536).splitType(ZipOptions.SplitType.NATIVE);
 		if ("compress".equals(protection) || "all".equals(protection)) {
 			builder.enableCentralDirectoryCompress();
 		}

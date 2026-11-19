@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.archive.enumerations;
+package org.nervousync.archive.enumerations.zip;
 
 /**
  * <h2 class="en-US">Enumeration value of the AES vendor</h2>

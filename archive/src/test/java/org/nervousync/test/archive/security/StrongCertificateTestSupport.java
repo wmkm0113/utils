@@ -29,8 +29,7 @@ import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.ResourceReader;
 import org.nervousync.archive.core.ResourceWriter;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.SplitType;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.security.certificate.CertificateCredentials;
 import org.nervousync.archive.security.certificate.CertificateProvider;
@@ -131,7 +130,7 @@ final class StrongCertificateTestSupport {
 				.centralDirectoryHash(ZipGlobals.ZIP64_HEADER_HASH_ALGORITHM_SHA256);
 		if (layout != Layout.SINGLE) {
 			builder.splitArchive(true, 65536)
-					.splitType(layout == Layout.NATIVE ? SplitType.NATIVE : SplitType.NUMBERED);
+					.splitType(layout == Layout.NATIVE ? ZipOptions.SplitType.NATIVE : ZipOptions.SplitType.NUMBERED);
 		}
 		return builder;
 	}
@@ -191,7 +190,14 @@ final class StrongCertificateTestSupport {
 		}
 	}
 
-	record Stored(byte[] bytes, StrongEncryptionInfo info) {
+	static final class Stored {
+		final byte[] bytes;
+		final StrongEncryptionInfo info;
+
+		Stored(final byte[] bytes, final StrongEncryptionInfo info) {
+			this.bytes = bytes;
+			this.info = info;
+		}
 	}
 
 	static final class Fixtures {

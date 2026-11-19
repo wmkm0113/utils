@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -90,7 +91,7 @@ final class ZipArchiveEditTest {
 		}
 		try (ZipFile archive = new ZipFile(target.toFile())) {
 			List<String> names = Collections.list(archive.entries()).stream()
-					.map(ZipEntry::getName).toList();
+					.map(ZipEntry::getName).collect(Collectors.toList());
 			assertEquals(2, names.size());
 			assertEquals(1, Collections.frequency(names, "first.txt"));
 			assertArrayEquals(replacement, archive.getInputStream(archive.getEntry("first.txt")).readAllBytes());

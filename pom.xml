@@ -74,6 +74,8 @@
         <module>archive</module>
     </modules>
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.version>3.15.0</maven.compiler.version>
         <maven.jar.version>3.5.0</maven.jar.version>
@@ -82,8 +84,6 @@
         <maven.source.version>3.4.0</maven.source.version>
         <maven.javadoc.version>3.12.0</maven.javadoc.version>
         <maven.gpg.version>3.2.8</maven.gpg.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <slf4j.version>2.0.20</slf4j.version>
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
         <jakarta.activation.version>2.2.0-M2</jakarta.activation.version>

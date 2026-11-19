@@ -17,7 +17,7 @@
 
 package org.nervousync.archive.zip.models.crypto;
 
-import org.nervousync.archive.enumerations.AesVendor;
+import org.nervousync.archive.enumerations.zip.AesVendor;
 import org.nervousync.archive.exceptions.ArchiveException;
 
 import java.util.Objects;

@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>Nervousync Java Beans Utilities</name>
     <properties>
-        <yaml.version>3.1.1</yaml.version>
+        <yaml.version>3.2</yaml.version>
         <jaxb.version>4.0.9</jaxb.version>
         <jakarta.xml.binding.version>4.1.0-M1</jakarta.xml.binding.version>
     </properties>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>4.0.3</version>
+            <version>4.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.22</version>
+            <version>2.23</version>
         </dependency>
         <!-- YAML Support -->
         <dependency>
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.23.2</version>
+            <version>1.24.1</version>
         </dependency>
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>

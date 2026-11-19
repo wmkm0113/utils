@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.nervousync.archive.ArchiveFile;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.security.certificate.CertificateProvider;
 import org.nervousync.archive.security.password.PasswordProvider;

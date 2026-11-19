@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>Nervousync Java Internationalization Utilities</name>
     <properties>
-        <icu4j.version>78.3</icu4j.version>
+        <icu4j.version>79.1</icu4j.version>
     </properties>
     <dependencies>
         <dependency>

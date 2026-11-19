@@ -14,7 +14,7 @@
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.webservice.version>4.0.0</jakarta.webservice.version>
         <jakarta.xml.webservice.version>4.0.3</jakarta.xml.webservice.version>
-        <snmp4j.version>3.13.1</snmp4j.version>
+        <snmp4j.version>3.13.2</snmp4j.version>
         <jcifs.version>2.1.40</jcifs.version>
     </properties>
     <dependencies>

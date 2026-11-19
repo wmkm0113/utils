@@ -30,7 +30,7 @@ import org.nervousync.archive.core.ResourceWriter;
 import org.nervousync.archive.data.LocalDataFile;
 import org.nervousync.archive.enumerations.EntryType;
 import org.nervousync.archive.enumerations.OverrideMode;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.options.ExtractOptions;

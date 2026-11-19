@@ -46,7 +46,7 @@ final class ZipBulkExtractionTest {
 		Path archive = ZipTestFixtures.write(tempDirectory.resolve("unsafe-reject.zip"),
 				ZipTestFixtures.file("../outside.txt", new byte[]{1}));
 
-		@SuppressWarnings("resource") ArchiveException exception = assertThrows(ArchiveException.class, () -> open(archive));
+		ArchiveException exception = assertThrows(ArchiveException.class, () -> open(archive));
 		assertEquals(INVALID_ENTRY_PATH, exception.getErrorCode());
 		assertFalse(Files.exists(tempDirectory.resolve("outside.txt")));
 	}

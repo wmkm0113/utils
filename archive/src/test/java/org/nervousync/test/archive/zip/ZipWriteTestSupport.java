@@ -23,7 +23,6 @@ import org.nervousync.archive.core.ResourceReader;
 import org.nervousync.archive.core.ResourceWriter;
 import org.nervousync.archive.data.LocalDataFile;
 import org.nervousync.archive.enumerations.CompressionAlgorithm;
-import org.nervousync.archive.enumerations.SplitType;
 import org.nervousync.archive.enumerations.Zip64Mode;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.security.password.PasswordProvider;
@@ -43,35 +42,39 @@ import java.util.zip.ZipOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-final class ZipWriteTestSupport {
+public final class ZipWriteTestSupport {
 
 	static final String PASSWORD = "archive-write-test-password";
 
-	enum Layout { SINGLE, NATIVE, NUMBERED }
-	enum Encryption { NONE, STANDARD, AES, STRONG }
+	public enum Layout { SINGLE, NATIVE, NUMBERED }
+	public enum Encryption { NONE, STANDARD, AES, STRONG }
 	enum Protection { HASH, COMPRESS, ENCRYPT, ALL }
 
 	private ZipWriteTestSupport() {
 	}
 
-	static ArchiveOptions archiveOptions() {
+	public static ArchiveOptions archiveOptions() {
 		return ArchiveOptions.newBuilder()
 				.passwordProvider(PasswordProvider.fixed(PASSWORD.toCharArray())).build();
 	}
 
-	static ZipOptions options(final CompressionAlgorithm algorithm, final Zip64Mode mode,
+	public static ZipOptions options(final CompressionAlgorithm algorithm, final Zip64Mode mode,
 	                          final Layout layout, final Encryption encryption) throws Exception {
 		ZipOptions.Builder builder = ZipOptions.newBuilder().compressionAlgorithm(algorithm).zip64Mode(mode);
 		if (layout != Layout.SINGLE) {
 			builder.splitArchive(true, 65536)
-					.splitType(layout == Layout.NATIVE ? SplitType.NATIVE : SplitType.NUMBERED);
+					.splitType(layout == Layout.NATIVE ? ZipOptions.SplitType.NATIVE : ZipOptions.SplitType.NUMBERED);
 		}
-		return switch (encryption) {
-			case STANDARD -> builder.standardCrypto().build();
-			case AES -> builder.aesCrypto(256).build();
-			case STRONG -> builder.strongCrypto(ZipGlobals.ZIP64_HEADER_ENC_ALGORITHM_AES_256, 256).build();
-			default -> builder.build();
-		};
+		switch (encryption) {
+			case STANDARD:
+				return builder.standardCrypto().build();
+			case AES:
+				return builder.aesCrypto(256).build();
+			case STRONG:
+				return builder.strongCrypto(ZipGlobals.ZIP64_HEADER_ENC_ALGORITHM_AES_256, 256).build();
+			default:
+				return builder.build();
+		}
 	}
 
 	static ZipOptions protectedOptions(final Layout layout, final Zip64Mode mode,
@@ -90,17 +93,17 @@ final class ZipWriteTestSupport {
 		return builder.build();
 	}
 
-	static byte[] payload(final int length) {
+	public static byte[] payload(final int length) {
 		byte[] bytes = new byte[length];
 		new Random(42L).nextBytes(bytes);
 		return bytes;
 	}
 
-	static void writeEntry(final ArchiveFile archive, final String name, final byte[] bytes) throws Exception {
+	public static void writeEntry(final ArchiveFile archive, final String name, final byte[] bytes) throws Exception {
 		writeEntry(archive, name, bytes, "");
 	}
 
-	static void writeEntry(final ArchiveFile archive, final String name, final byte[] bytes,
+	public static void writeEntry(final ArchiveFile archive, final String name, final byte[] bytes,
 	                       final String comment) throws Exception {
 		try (ResourceWriter writer = archive.openWriter(name, comment).orElseThrow()) {
 			try (OutputStream output = writer.openStream(0L)) {
@@ -114,7 +117,7 @@ final class ZipWriteTestSupport {
 		}
 	}
 
-	static void assertContent(final Path archivePath, final ZipOptions options,
+	public static void assertContent(final Path archivePath, final ZipOptions options,
 	                          final Map<String, byte[]> entries) throws Exception {
 		try (ArchiveFile archive = ArchiveFile.zipFile(new LocalDataFile(archivePath.toString(), "r"),
 				archiveOptions(), options)) {
@@ -128,7 +131,7 @@ final class ZipWriteTestSupport {
 		}
 	}
 
-	static Path readablePath(final Path target, final Layout layout) {
+	public static Path readablePath(final Path target, final Layout layout) {
 		return layout == Layout.NUMBERED
 				? target.resolveSibling(target.getFileName() + ".001") : target;
 	}

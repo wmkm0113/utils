@@ -17,7 +17,7 @@
 package org.nervousync.test.archive.zip;
 
 import org.junit.jupiter.api.Test;
-import org.nervousync.archive.io.zip.BoundedInputStream;
+import org.nervousync.archive.zip.io.BoundedInputStream;
 
 import java.io.ByteArrayInputStream;
 

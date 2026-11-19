@@ -29,8 +29,7 @@ import org.nervousync.archive.ArchiveFile;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.ResourceReader;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.AesVendor;
-import org.nervousync.archive.enumerations.SplitType;
+import org.nervousync.archive.enumerations.zip.AesVendor;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.security.password.PasswordProvider;
 import org.nervousync.archive.zip.ZipOptions;
@@ -122,14 +121,14 @@ public class ZipFileTest extends BaseTest {
 				.strongCrypto(algorithm, keyBitLength);
 		switch (layout) {
 			case NATIVE:
-				optionsBuilder.splitArchive(true, 1024 * 1024L).splitType(SplitType.NATIVE);
+				optionsBuilder.splitArchive(true, 1024 * 1024L).splitType(ZipOptions.SplitType.NATIVE);
 				break;
 			case NUMBERED:
-				optionsBuilder.splitArchive(true, 1024 * 1024L).splitType(SplitType.NUMBERED);
+				optionsBuilder.splitArchive(true, 1024 * 1024L).splitType(ZipOptions.SplitType.NUMBERED);
 				break;
 			case SINGLE:
 				optionsBuilder.splitArchive(false, Globals.DEFAULT_VALUE_LONG);
-				optionsBuilder.splitType(SplitType.DETECT);
+				optionsBuilder.splitType(ZipOptions.SplitType.DETECT);
 				break;
 		}
 		ZipOptions zipOptions = optionsBuilder.build();
@@ -247,7 +246,7 @@ public class ZipFileTest extends BaseTest {
 	@Order(40)
 	public void createNativeSplitFile() throws IOException {
 		String filePath = tempDirectory + Globals.DEFAULT_PAGE_SEPARATOR + "demoNativeSplit.zip";
-		ZipOptions zipOptions = ZipOptions.newBuilder().splitArchive(true, 1024 * 1024L).splitType(SplitType.NATIVE).build();
+		ZipOptions zipOptions = ZipOptions.newBuilder().splitArchive(true, 1024 * 1024L).splitType(ZipOptions.SplitType.NATIVE).build();
 		this.createFile(filePath, ArchiveOptions.newBuilder().build(), zipOptions);
 		this.validateFile(filePath, ArchiveOptions.newBuilder().build(), zipOptions);
 		this.logger.info("Zip_Create_Success");
@@ -257,7 +256,7 @@ public class ZipFileTest extends BaseTest {
 	@Order(45)
 	public void create7zSplitFile() throws IOException {
 		String filePath = tempDirectory + Globals.DEFAULT_PAGE_SEPARATOR + "demo7zSplit.zip";
-		ZipOptions zipOptions = ZipOptions.newBuilder().splitArchive(true, 1024 * 1024L).splitType(SplitType.NUMBERED).build();
+		ZipOptions zipOptions = ZipOptions.newBuilder().splitArchive(true, 1024 * 1024L).splitType(ZipOptions.SplitType.NUMBERED).build();
 		this.createFile(filePath, ArchiveOptions.newBuilder().build(), zipOptions);
 		this.validateFile(filePath + ".001", ArchiveOptions.newBuilder().build(), zipOptions);
 		this.logger.info("Zip_Create_Success");

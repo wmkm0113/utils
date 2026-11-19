@@ -19,8 +19,8 @@ package org.nervousync.test.archive.zip;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.io.zip.ZipArchiveInputStream;
 import org.nervousync.archive.zip.ZipOptions;
+import org.nervousync.archive.zip.io.ZipArchiveInputStream;
 
 import java.io.IOException;
 import java.nio.file.Files;

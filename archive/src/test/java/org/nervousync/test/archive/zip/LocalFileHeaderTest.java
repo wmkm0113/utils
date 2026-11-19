@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.AesVendor;
+import org.nervousync.archive.enumerations.zip.AesVendor;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.zip.ZipOptions;

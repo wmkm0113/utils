@@ -5,9 +5,6 @@
 `utils-archive` 是 Nervousync Java Utilities 的归档模块，当前主要实现
 ZIP 的创建、读取、解压、修改和分卷合并，并提供密码、证书及中央目录保护功能。
 
-本文以当前分支的 `org.nervousync.archive` 接口为主。模块中还保留了旧的
-`org.nervousync.zip` 接口，两套接口的选项与模型不能混用。
-
 ## 目录
 
 - [功能范围](#功能范围)
@@ -39,7 +36,7 @@ ZIP 的创建、读取、解压、修改和分卷合并，并提供密码、证�
 |----------------|----------------------------------------------------------------------|
 | ZIP 创建与读取 | 支持本地文件和基于 `DataFile` 的可随机访问数据源                     |
 | 文件与目录写入 | 支持文件、显式目录条目、符号链接及带元数据的流式写入                 |
-| 压缩算法 | ZIP 条目读写支持 STORE、DEFLATE、DEFLATE64、BZIP2 |
+| 压缩算法 | ZIP 条目读写支持 STORE、DEFLATE、DEFLATE64、BZIP2、LZMA（方法 14）和 XZ（方法 95） |
 | 查询与解压     | 按路径查询、条目输入流、单条目提取、整包解压                         |
 | 修改           | 在已有包中新增、替换、删除条目，关闭会话时重写并发布                 |
 | 大文件         | ZIP64 AUTO、ALWAYS、NEVER；大小与偏移使用 `long`                     |
@@ -62,14 +59,14 @@ TAR、TAR.GZ、TAR.BZ2、TAR.XZ 或 7z 容器当作本模块当前可用功能�
 
 ## 依赖与运行环境
 
-源码目标版本为 Java 11。仓库 CI 配置包含 JDK
-11、17、21；具体组合是否通过以对应构建结果为准。
+源码目标版本为 Java 17。仓库 CI 配置包含 JDK
+17、21、25；具体组合是否通过以对应构建结果为准。
 
 当前分支的模块坐标为：
 
 ```xml
 <properties>
-    <nervousync.version>1.4.0</nervousync.version>
+    <nervousync.version>2.0.0-SNAPSHOT</nervousync.version>
 </properties>
 
 <dependencies>
@@ -414,6 +411,8 @@ static void extractOne(Path source, String entryPath, Path target,
 | `DEFLATE` | 8 | `0..9`，压缩使用 JDK 原始 DEFLATE 模式 |
 | `DEFLATE64` | 9 | `0` 输出未压缩块；`1..9` 提高匹配长度搜索上限，使用固定 Huffman 编码 |
 | `BZIP2` | 12 | `1..9` 对应 100000..900000 字节的块容量；`0` 映射为 `1` |
+| `LZMA1` | 14 | ZIP LZMA；`0..9` 对应 64 KiB..8 MiB 字典与 32..273 的匹配长度上限；`0` 仍会压缩 |
+| `LZMA2` | 95 | ZIP XZ，内部使用 LZMA2；`0..9` 调整匹配搜索，字典固定为 64 KiB；`0` 仍会压缩 |
 
 `ZipOptions.Builder.compressionLevel(...)` 仅接受 `0..9`，默认值为 `5`，不接受 JDK 的特殊等级 `-1`。BZip2 等级 `0` 仍会压缩数据；需要禁用压缩时请选择 `STORE`。
 
@@ -433,7 +432,12 @@ static void createBzip2Zip(Path target, Path source) throws Exception {
 }
 ```
 
-向同一辅助方法传入 `CompressionAlgorithm.DEFLATE64` 即可选择 Deflate64。需要按相同算法和等级压缩中央目录时，可用 `ZipOptions.newBuilder(options).enableCentralDirectoryCompress().build()` 复制并调整选项。
+向同一辅助方法传入 `CompressionAlgorithm.DEFLATE64`、`CompressionAlgorithm.LZMA1` 或 `CompressionAlgorithm.LZMA2`，即可分别选择 Deflate64、ZIP LZMA（方法 14）或 ZIP XZ（方法 95）。在 ZIP 中，`LZMA2` 选项使用完整 XZ 封装，不会直接把原始 LZMA2 数据作为条目写入。需要按相同算法和等级压缩中央目录时，可用 `ZipOptions.newBuilder(options).enableCentralDirectoryCompress().build()` 复制并调整选项。
+
+```java
+ZipOptions lzmaOptions = compressionOptions(CompressionAlgorithm.LZMA1, 5);
+ZipOptions xzOptions = compressionOptions(CompressionAlgorithm.LZMA2, 5);
+```
 
 需要固定 DOS 时间的时区或在现有配置上调整参数时，可以复制选项：
 
@@ -449,8 +453,11 @@ static ZipOptions utcOptions(ZipOptions source) throws Exception {
 - BZip2 使用模块自身的 `BZip2InputStream` 和 `BZip2OutputStream`。ZIP 条目 CRC-32 与 BZip2 的块/成员 CRC 是分别执行的完整性检查。
 - 目录条目按 STORE 写入，且不进行条目数据加密。
 - 压缩方法与等级通过 `ZipOptions` 配置，不是从 `ArchiveEntry` 读取。同一个会话中逐条选择不同算法的专用配置入口尚未提供。
-- `LZMA1`、`LZMA2` 仅为预留枚举值，尚无可用的 ZIP 编解码实现；XZ、Zstandard 也未实现。描述器或枚举存在不代表相应格式已经可用。
-- 优先考虑 ZIP 通用兼容性时使用 DEFLATE。选择 Deflate64、BZip2 或受保护中央目录前，应确认接收工具支持对应扩展。
+- `LZMA1` 使用模块自身的 LZMA1 编解码器及 ZIP 方法 14 封装。条目写入包含流结束标记，并设置对应的 ZIP 标志位。
+- `LZMA2` 对应 ZIP 方法 95，通过完整 XZ 容器封装原始 LZMA2 数据。XZ 解码支持多个 Block，每个 Block 仅含一个 LZMA2 过滤器，支持 NONE、CRC32、CRC64、SHA256 数据校验类型；不支持 BCJ、Delta 或过滤器链。ZIP XZ 写入默认采用 CRC64。
+- LZMA1 和 LZMA2/XZ 的等级 `0` 仍会压缩数据。这些等级用于调整本实现的字典或匹配搜索行为，不等同于外部 LZMA/XZ 工具的预设等级。
+- Zstandard 尚未实现。独立 LZMA2/XZ 流的支持不代表已经实现 TAR.XZ 或 7z 容器。
+- 优先考虑 ZIP 通用兼容性时使用 DEFLATE。选择 Deflate64、BZip2、LZMA、XZ 或受保护中央目录前，应确认接收工具支持对应扩展。
 
 ## 密码加密
 
@@ -664,7 +671,7 @@ static ZipOptions hashedDirectoryOptions() throws Exception {
 }
 ```
 
-中央目录压缩复用 ZIP 选项的压缩方法与等级，支持 STORE、DEFLATE、DEFLATE64、BZIP2。与条目压缩一致，BZIP2 等级 `0` 映射为块大小 `1`。编辑和分卷合并可以读取并重新生成这些方法压缩的中央目录。哈希针对变换前的中央目录字节计算；它与 AES 条目认证码是不同机制，也不等同于数字签名。
+中央目录压缩复用 ZIP 选项的压缩方法与等级，支持 STORE、DEFLATE、DEFLATE64、BZIP2、LZMA（方法 14）和 XZ（方法 95），分别通过 `CompressionAlgorithm.LZMA1` 和 `CompressionAlgorithm.LZMA2` 选择 LZMA 与 XZ。与条目压缩一致，BZIP2 等级 `0` 映射为块大小 `1`。编辑和分卷合并可以读取并重新生成这些方法压缩的中央目录。哈希针对变换前的中央目录字节计算；它与 AES 条目认证码是不同机制，也不等同于数字签名。
 
 支持的哈希常量后缀包括 `NONE`、`CRC32`、`MD5`、`SHA1`、
 `RIPEMD160`、`SHA256`、`SHA384`、`SHA512`，前缀为
@@ -1045,8 +1052,15 @@ Writer，也不要让提交、关闭或回滚与工作线程重叠。失败时�
 | `StrongInputStream` / `StrongOutputStream`        | PKWARE 强加密数据流                                     |
 | `DeflateInputStream` / `DeflateOutputStream` | 原始 DEFLATE/Deflate64 编解码，不包含 ZIP、zlib 或 GZIP 格式封装 |
 | `BZip2InputStream` / `BZip2OutputStream` | 完整 BZh 数据流，可独立于 ZIP 使用 |
+| `LZMAInputStream` / `LZMAOutputStream` | 默认采用 ZIP 方法 14 的 LZMA1 封装；`raw(...)` 和 `alone(...)` 工厂方法分别支持原始 LZMA1 与 LZMA-Alone（`.lzma`）数据流 |
+| `LZMA2InputStream` / `LZMA2OutputStream` | 原始 LZMA2 数据流，不包含 XZ、ZIP 或 7z 容器封装 |
+| `XZInputStream` / `XZOutputStream` | 使用 LZMA2 过滤器的完整 XZ 数据流，可独立于 ZIP 使用 |
 
-独立 BZip2 解码器默认只读取一个成员，可通过双参数构造方法启用串接成员。解码支持旧版随机化块，编码器输出非随机化块。完整验证 BZip2 块/成员 CRC 需要读取至 EOF；关闭独立解码器不会主动读取剩余数据。ZIP 条目和中央目录采用单成员解码；受保护中央目录读取器还会拒绝尾随数据。两种编码输出流的 `finish()` 都会完成压缩而保留底层流，`close()` 还会关闭底层流。`DeflateOutputStream.release()` 只释放编码资源，不会完成输出。独立使用编解码流时，调用方需自行限制输出大小和压缩比。
+独立 BZip2 解码器默认只读取一个成员，可通过双参数构造方法启用拼接成员。解码支持旧版随机化块，编码器输出非随机化块。完整验证 BZip2 块/成员 CRC 需要读取至 EOF；关闭独立解码器不会主动读取剩余数据。ZIP 条目和中央目录采用单成员解码；受保护中央目录读取器还会拒绝尾随数据。
+
+独立 XZ 解码器默认读取拼接 Stream；向双参数构造方法传入 `false` 可在一个 Stream 结束后停止，ZIP 条目和中央目录读取采用此模式。需要读取至 EOF 才能完整验证 XZ 数据校验、Index 和 Footer。默认允许的声明字典大小上限为 64 MiB，此限制不限制解压后的输出大小。XZ 编码器当前对非空输入写入一个 LZMA2 Block，固定使用 64 KiB 字典；空输入产生不含 Block 的 Stream。独立编码器可通过 `XZCheck` 选择校验类型，默认采用 CRC64。
+
+Deflate、BZip2、LZMA1、LZMA2 和 XZ 编码输出流的 `finish()` 都会完成压缩而保留底层流，`close()` 还会关闭底层流。`DeflateOutputStream.release()` 只释放编码资源，不会完成输出。独立使用编解码流时，调用方需自行限制输出大小和压缩比。
 
 自定义 `DataFile` 时，除了普通读写，还需要正确实现 `seek()`、
 `getFilePointer()`、`length()`、`newFile()` 和 `splitFiles()`
@@ -1072,7 +1086,7 @@ Record 与 Digital Signature 数据。
 
 - 旧的 `ZipFile.openZipFile(...)` 与新的
   `ArchiveFile.zipFile(...)` 是不同入口。
-- 上述压缩支持适用于 `org.nervousync.archive`；保留的旧 ZIP 调用链没有因本次重构而获得 Deflate64/BZip2 支持。
+- 上述压缩支持适用于 `org.nervousync.archive`；保留的旧 ZIP 调用链没有因本次重构而获得 Deflate64、BZip2、LZMA 或 XZ 支持。
 - 新文档示例使用的是
   `org.nervousync.archive.zip.ZipOptions`。
 - 旧包中的头模型和选项不能直接传入新接口。
@@ -1101,12 +1115,13 @@ mvn -pl archive -am -Dtest=ZipFileTest -Dsurefire.failIfNoSpecifiedTests=false t
 mvn -pl archive -am -DrunLargeZipTest=true test
 ```
 
-压缩相关测试包括 `DeflateStreamTest`、`Deflate64ZipTest`、`Deflate64CentralDirectoryTest`、`BZip2StreamTest`、`ZipBZip2IntegrationTest`、`ZipBZip2FailureTest` 和 `ZipBZip2CentralDirectoryTest`，覆盖独立解码器/样本互操作、压缩等级、非法及截断数据、加密、分卷、编辑、合并和受保护中央目录。样本来源见 [`src/test/resources/deflate/README.md`](src/test/resources/deflate/README.md) 与 [`src/test/resources/bzip2/README.md`](src/test/resources/bzip2/README.md)。
+压缩相关测试包括 `DeflateStreamTest`、`Deflate64ZipTest`、`Deflate64CentralDirectoryTest`、`BZip2StreamTest`、`ZipBZip2IntegrationTest`、`ZipBZip2FailureTest` 和 `ZipBZip2CentralDirectoryTest`。LZMA/LZMA2/XZ 测试包括 `LZMAStreamTest`, `LZMACodecTest`, `LZMAZipTest`, `LZMACentralDirectoryTest`, `LZMA2StreamTest`, `LZMA2CodecTest`, `XZStreamTest`, `XZCodecTest`, `XZZipTest`, `XZCentralDirectoryTest`。这些测试覆盖独立解码器/样本互操作、压缩等级、非法及截断数据、加密、分卷、编辑、合并和受保护中央目录。样本来源见 [`src/test/resources/deflate/README.md`](src/test/resources/deflate/README.md), [`src/test/resources/bzip2/README.md`](src/test/resources/bzip2/README.md), [`src/test/resources/lzma/README.md`](src/test/resources/lzma/README.md), [`src/test/resources/lzma2/README.md`](src/test/resources/lzma2/README.md), [`src/test/resources/xz/README.md`](src/test/resources/xz/README.md)。
 
 在仓库根目录执行压缩相关测试：
 
 ```shell
 mvn -pl archive -am "-Dtest=DeflateStreamTest,Deflate64ZipTest,Deflate64CentralDirectoryTest,BZip2StreamTest,ZipBZip2IntegrationTest,ZipBZip2FailureTest,ZipBZip2CentralDirectoryTest" -Dsurefire.failIfNoSpecifiedTests=false test
+mvn -pl archive -am "-Dtest=LZMAStreamTest,LZMACodecTest,LZMAZipTest,LZMACentralDirectoryTest,LZMA2StreamTest,LZMA2CodecTest,XZStreamTest,XZCodecTest,XZZipTest,XZCentralDirectoryTest" -Dsurefire.failIfNoSpecifiedTests=false test
 ```
 
 测试代码位于 `src/test/java/org/nervousync/test/archive`
@@ -1116,7 +1131,7 @@ CI 的实际执行结果判断覆盖情况。
 当前使用时还需了解：
 
 1. 当前可用容器主要为 ZIP；TAR 适配器未完成，未提供 7z 容器实现。
-2. ZIP 条目和受保护中央目录支持 STORE/DEFLATE/DEFLATE64/BZIP2；LZMA1/LZMA2、XZ、Zstandard 尚未实现，Deflate64 写入当前采用未压缩块或固定 Huffman 块。
+2. ZIP 条目和受保护中央目录支持 STORE/DEFLATE/DEFLATE64/BZIP2/LZMA/XZ；`LZMA1` 对应方法 14，`LZMA2` 对应使用 XZ 封装的方法 95。XZ 每个 Block 仅支持单个 LZMA2 过滤器；BCJ、Delta、过滤器链及 Zstandard 尚未实现。Deflate64 写入当前采用未压缩块或固定 Huffman 块。
 3. `WritableOptions`、部分旧式目录选择字段和 `StreamOwner`
    已存在，但尚未完整接入新 `ArchiveFile` 工作流。
    `streamOwner(CALLER)` 不能作为传入 `DataFile` 一定不被关闭的保证。

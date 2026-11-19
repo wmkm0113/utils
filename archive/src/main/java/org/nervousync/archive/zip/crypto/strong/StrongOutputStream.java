@@ -17,7 +17,7 @@
 
 package org.nervousync.archive.zip.crypto.strong;
 
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.options.ArchiveLimit;
 import org.nervousync.archive.security.StrongKey;
 import org.nervousync.archive.zip.crypto.CryptoOutputStream;

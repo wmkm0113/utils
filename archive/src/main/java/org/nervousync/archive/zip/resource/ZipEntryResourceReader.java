@@ -21,13 +21,12 @@ import org.nervousync.archive.ArchiveFile;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.ResourceReader;
 import org.nervousync.archive.enumerations.EntryType;
-import org.nervousync.archive.enumerations.PasswordPurpose;
+import org.nervousync.archive.enumerations.zip.PasswordPurpose;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.io.bzip2.BZip2InputStream;
 import org.nervousync.archive.io.deflate.DeflateInputStream;
-import org.nervousync.archive.io.zip.AbstractFilterInputStream;
-import org.nervousync.archive.io.zip.BoundedInputStream;
-import org.nervousync.archive.io.zip.ZipArchiveInputStream;
+import org.nervousync.archive.io.lzma.LZMAInputStream;
+import org.nervousync.archive.io.xz.XZInputStream;
 import org.nervousync.archive.options.ArchiveLimit;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.options.ExtractOptions;
@@ -39,6 +38,9 @@ import org.nervousync.archive.zip.crypto.ZipCrypto;
 import org.nervousync.archive.zip.crypto.aes.AesInputStream;
 import org.nervousync.archive.zip.crypto.standard.StandardInputStream;
 import org.nervousync.archive.zip.crypto.strong.StrongInputStream;
+import org.nervousync.archive.zip.io.AbstractFilterInputStream;
+import org.nervousync.archive.zip.io.BoundedInputStream;
+import org.nervousync.archive.zip.io.ZipArchiveInputStream;
 import org.nervousync.archive.zip.models.EntryMetaData;
 import org.nervousync.archive.zip.models.crypto.AesEncryptionInfo;
 import org.nervousync.archive.zip.models.crypto.StrongEncryptionInfo;
@@ -46,6 +48,7 @@ import org.nervousync.archive.zip.models.header.FileHeader;
 import org.nervousync.archive.zip.models.header.LocalFileHeader;
 import org.nervousync.archive.zip.models.header.StrongDecryptionHeader;
 import org.nervousync.commons.Globals;
+import org.nervousync.utils.commons.IOUtils;
 import org.nervousync.utils.commons.RawUtils;
 
 import java.io.*;
@@ -195,32 +198,46 @@ public final class ZipEntryResourceReader implements ResourceReader {
 			}
 		}
 
-		switch (this.fileHeader.getCompressionMethod()) {
-			case ZipGlobals.COMP_STORE:
-				this.entryStream = new EntryVerificationInputStream(inputStream, this.fileHeader.getUncompressedSize(),
+		try {
+			switch (this.fileHeader.getCompressionMethod()) {
+				case ZipGlobals.COMP_STORE ->
+						this.entryStream = new EntryVerificationInputStream(inputStream, this.fileHeader.getUncompressedSize(),
+								this.fileHeader.getCompressedSize(), this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
+								this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
+				case ZipGlobals.COMP_DEFLATE, ZipGlobals.COMP_DEFLATE64 ->
+						this.entryStream = new EntryVerificationInputStream(
+								new DeflateInputStream(
+										new BufferedInputStream(inputStream, Globals.DEFAULT_BUFFER_SIZE),
+										this.fileHeader.getCompressionMethod() == ZipGlobals.COMP_DEFLATE64),
+								this.fileHeader.getUncompressedSize(), this.fileHeader.getCompressedSize(),
+								this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
+								this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
+				case ZipGlobals.COMP_BZIP2 -> {
+					inputStream = new BufferedInputStream(inputStream, Globals.DEFAULT_BUFFER_SIZE);
+					this.entryStream = new EntryVerificationInputStream(
+							new BZip2InputStream(inputStream), this.fileHeader.getUncompressedSize(),
+							this.fileHeader.getCompressedSize(), this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
+							this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
+				}
+				case ZipGlobals.COMP_LZMA -> {
+					inputStream = new BufferedInputStream(inputStream, Globals.DEFAULT_BUFFER_SIZE);
+
+					this.entryStream = new EntryVerificationInputStream(
+							new LZMAInputStream(inputStream, this.fileHeader.getUncompressedSize(),
+									(this.fileHeader.getGeneralPurpose() & 0x0002) != 0),
+							this.fileHeader.getUncompressedSize(), this.fileHeader.getCompressedSize(),
+							this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
+							this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
+				}
+				case ZipGlobals.COMP_XZ -> this.entryStream = new EntryVerificationInputStream(
+						new XZInputStream(inputStream, false), this.fileHeader.getUncompressedSize(),
 						this.fileHeader.getCompressedSize(), this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
 						this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
-				break;
-			case ZipGlobals.COMP_DEFLATE:
-			case ZipGlobals.COMP_DEFLATE64:
-				this.entryStream = new EntryVerificationInputStream(
-						new DeflateInputStream(
-								new BufferedInputStream(inputStream, Globals.DEFAULT_BUFFER_SIZE),
-								this.fileHeader.getCompressionMethod() == ZipGlobals.COMP_DEFLATE64),
-						this.fileHeader.getUncompressedSize(), this.fileHeader.getCompressedSize(),
-						this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
-						this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
-				break;
-			case ZipGlobals.COMP_BZIP2:
-				inputStream = new BufferedInputStream(inputStream, Globals.DEFAULT_BUFFER_SIZE);
-				this.entryStream = new EntryVerificationInputStream(
-						new BZip2InputStream(inputStream), this.fileHeader.getUncompressedSize(),
-						this.fileHeader.getCompressedSize(), this.options.getArchiveLimit(), this.fileHeader.getCrc32(),
-						this.options.isVerify() && ZipAdaptor.verifyCRC(this.fileHeader));
-				break;
-			default:
-				inputStream.close();
-				throw new ArchiveException(0x0000001B004AL, fileHeader.getCompressionMethod());
+				default -> throw new ArchiveException(0x0000001B004AL, fileHeader.getCompressionMethod());
+			}
+		} catch (IOException | RuntimeException e) {
+			IOUtils.closeStream(inputStream);
+			throw e;
 		}
 		return this.entryStream;
 	}

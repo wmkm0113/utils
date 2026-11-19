@@ -20,9 +20,8 @@ package org.nervousync.test.archive.zip;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.nervousync.archive.data.LocalDataFile;
-import org.nervousync.archive.enumerations.SplitType;
-import org.nervousync.archive.io.zip.ZipArchiveOutputStream;
 import org.nervousync.archive.zip.ZipOptions;
+import org.nervousync.archive.zip.io.ZipArchiveOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
@@ -31,6 +30,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +61,7 @@ final class ZipArchiveOutputStreamWriteTest {
 		Path target = this.directory.resolve("native.zip");
 		Path staging = Files.createDirectory(this.directory.resolve("staging"));
 		byte[] payload = ZipWriteTestSupport.payload(130001);
-		ZipOptions options = ZipOptions.newBuilder().splitArchive(true, 65536).splitType(SplitType.NATIVE).build();
+		ZipOptions options = ZipOptions.newBuilder().splitArchive(true, 65536).splitType(ZipOptions.SplitType.NATIVE).build();
 		try (LocalDataFile source = new LocalDataFile(target.toString(), "rw");
 		     ZipArchiveOutputStream output = new ZipArchiveOutputStream(staging, source, options)) {
 			output.write(payload);
@@ -90,7 +90,7 @@ final class ZipArchiveOutputStreamWriteTest {
 		for (int i = 0; i < payload.length; i++) {
 			payload[i] = (byte) i;
 		}
-		ZipOptions options = ZipOptions.newBuilder().splitArchive(true, 7).splitType(SplitType.NUMBERED).build();
+		ZipOptions options = ZipOptions.newBuilder().splitArchive(true, 7).splitType(ZipOptions.SplitType.NUMBERED).build();
 		try (LocalDataFile source = new LocalDataFile(target.toString(), "rw");
 		     ZipArchiveOutputStream output = new ZipArchiveOutputStream(staging, source, options)) {
 			output.write(payload);
@@ -99,7 +99,7 @@ final class ZipArchiveOutputStreamWriteTest {
 			assertEquals(1L, output.diskCount());
 			output.finish();
 			List<Path> parts = output.publishFiles().keySet().stream()
-					.sorted(Comparator.comparing(path -> path.getFileName().toString())).toList();
+					.sorted(Comparator.comparing(path -> path.getFileName().toString())).collect(Collectors.toList());
 			assertEquals(3, parts.size());
 			assertEquals(7L, Files.size(parts.get(0)));
 			assertEquals(7L, Files.size(parts.get(1)));

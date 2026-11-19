@@ -18,7 +18,7 @@
 package org.nervousync.archive.zip.crypto;
 
 import jakarta.annotation.Nonnull;
-import org.nervousync.archive.io.zip.AbstractFilterInputStream;
+import org.nervousync.archive.zip.io.AbstractFilterInputStream;
 import org.nervousync.commons.Globals;
 import org.nervousync.utils.commons.RawUtils;
 

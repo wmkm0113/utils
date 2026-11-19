@@ -18,7 +18,7 @@
 package org.nervousync.test.archive.security;
 
 import org.junit.jupiter.api.Test;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.security.password.PasswordProvider;
 
 import java.util.Optional;

@@ -19,6 +19,8 @@ package org.nervousync.archive.zip;
 
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.enumerations.*;
+import org.nervousync.archive.enumerations.zip.AesVendor;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.commons.Globals;
 import org.nervousync.exceptions.builder.BuilderException;
@@ -580,6 +582,17 @@ public final class ZipOptions {
 	 */
 	public void setSourceExternalStream(final boolean sourceExternalStream) {
 		this.sourceExternalStream = sourceExternalStream;
+	}
+
+	/**
+	 * <h2 class="en-US">Enumeration value of the archive split type</h2>
+	 * <h2 class="zh-CN">分卷类型类型枚举值</h2>
+	 *
+	 * @author Steven Wee	<a href="mailto:wmkm0113@gmail.com">wmkm0113@gmail.com</a>
+	 * @version $Revision: 1.0.0 $ $Date: Oct 26, 2026 09:37:28 $
+	 */
+	public enum SplitType {
+		NATIVE, NUMBERED, DETECT, FINAL
 	}
 
 	/**

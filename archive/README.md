@@ -4,8 +4,6 @@
 
 `utils-archive` is the archive module of Nervousync Java Utilities. Its current implementation focuses on ZIP creation, reading, extraction, editing, and merging split archives, with support for passwords, certificates, and central directory protection.
 
-This guide focuses on the `org.nervousync.archive` interfaces in the current branch. The module also retains the legacy `org.nervousync.zip` interfaces. Options and models from the two interfaces are not interchangeable.
-
 ## Contents
 
 - [Features](#features)
@@ -37,7 +35,7 @@ This guide focuses on the `org.nervousync.archive` interfaces in the current bra
 |----------------|----------------------------------------------------------------------|
 | ZIP creation and reading | Local files and random-access data sources based on `DataFile` |
 | File and directory writing | Files, explicit directory entries, symbolic links, and streaming writes with metadata |
-| Compression methods | STORE, DEFLATE, DEFLATE64, and BZIP2 for reading and writing ZIP entries |
+| Compression methods | STORE, DEFLATE, DEFLATE64, BZIP2, LZMA (method 14), and XZ (method 95) for reading and writing ZIP entries |
 | Lookup and extraction | Lookup by path, entry input streams, individual entry extraction, and whole-archive extraction |
 | Editing | Add, replace, and remove entries in existing archives; rewrite and publish changes when the session closes |
 | Large files | ZIP64 AUTO, ALWAYS, and NEVER; sizes and offsets use `long` |
@@ -58,13 +56,13 @@ The `TAR` entry point and related compression enumerations exist, but reading, w
 
 ## Dependencies and Runtime
 
-The source targets Java 11. The repository CI configuration includes JDK 11, 17, and 21; consult the corresponding build results to determine which combinations pass.
+The source targets Java 17. The repository CI configuration includes JDK 17, 21, and 25; consult the corresponding build results to determine which combinations pass.
 
 The module coordinates in the current branch are:
 
 ```xml
 <properties>
-    <nervousync.version>1.4.0</nervousync.version>
+    <nervousync.version>2.0.0-SNAPSHOT</nervousync.version>
 </properties>
 
 <dependencies>
@@ -371,6 +369,8 @@ The current ZIP entry reader/writer and protected central directory support the 
 | `DEFLATE` | 8 | `0..9`; compression uses the JDK in raw mode |
 | `DEFLATE64` | 9 | `0` writes stored blocks; `1..9` increase the match-length search bound using fixed Huffman coding |
 | `BZIP2` | 12 | `1..9` select block capacities of 100000..900000 bytes; `0` is mapped to `1` |
+| `LZMA1` | 14 | ZIP LZMA; `0..9` select dictionaries of 64 KiB..8 MiB and match-length limits of 32..273; `0` still compresses |
+| `LZMA2` | 95 | ZIP XZ, containing LZMA2; `0..9` tune match search with a fixed 64 KiB dictionary; `0` still compresses |
 
 `ZipOptions.Builder.compressionLevel(...)` accepts only `0..9`; the default is `5`. It does not accept the JDK's special level `-1`. BZip2 level `0` still compresses data; select `STORE` to disable compression.
 
@@ -390,7 +390,12 @@ static void createBzip2Zip(Path target, Path source) throws Exception {
 }
 ```
 
-Pass `CompressionAlgorithm.DEFLATE64` to the same helper to select Deflate64. For central directory compression with the same algorithm and level, copy these options with `ZipOptions.newBuilder(options).enableCentralDirectoryCompress().build()`.
+Pass `CompressionAlgorithm.DEFLATE64`, `CompressionAlgorithm.LZMA1`, or `CompressionAlgorithm.LZMA2` to the same helper to select Deflate64, ZIP LZMA (method 14), or ZIP XZ (method 95), respectively. `LZMA2` selects a complete XZ container in ZIP; raw LZMA2 bytes are not written directly as an entry. For central directory compression with the same algorithm and level, copy these options with `ZipOptions.newBuilder(options).enableCentralDirectoryCompress().build()`.
+
+```java
+ZipOptions lzmaOptions = compressionOptions(CompressionAlgorithm.LZMA1, 5);
+ZipOptions xzOptions = compressionOptions(CompressionAlgorithm.LZMA2, 5);
+```
 
 To use a fixed time zone for DOS timestamps or adjust an existing configuration, copy the options:
 
@@ -406,8 +411,11 @@ static ZipOptions utcOptions(ZipOptions source) throws Exception {
 - BZip2 uses the module's own `BZip2InputStream` and `BZip2OutputStream`. ZIP entry CRC-32 and the BZip2 block/member CRCs are separate integrity checks.
 - Directory entries are written using STORE, without entry data encryption.
 - Compression methods and levels are configured through `ZipOptions`, not read from `ArchiveEntry`. A dedicated configuration entry point for selecting a different algorithm for each entry within one session is not yet available.
-- `LZMA1` and `LZMA2` are reserved enumeration values without working ZIP codecs. XZ and Zstandard are not implemented. Do not treat descriptors or enumeration values as implemented format support.
-- Use DEFLATE when broad ZIP interoperability is the priority. Verify the consuming tool's support before selecting Deflate64, BZip2, or protected central directories.
+- `LZMA1` uses the module's own LZMA1 codec with ZIP method-14 framing. Entry writing includes an end-of-stream marker and sets the corresponding ZIP flag.
+- `LZMA2` selects ZIP method 95 and wraps the raw LZMA2 codec in a complete XZ container. XZ decoding supports multiple Blocks, each with a single LZMA2 filter, and the NONE, CRC32, CRC64, and SHA256 data Check types. BCJ, Delta, and filter chains are not supported. ZIP XZ writing uses CRC64 by default.
+- LZMA1 and LZMA2/XZ level `0` still compress data. Their levels tune this implementation's dictionary or match search and do not represent presets from external LZMA/XZ tools.
+- Zstandard remains unimplemented. Standalone LZMA2/XZ streams do not provide TAR.XZ or 7z container support.
+- Use DEFLATE when broad ZIP interoperability is the priority. Verify the consuming tool's support before selecting Deflate64, BZip2, LZMA, XZ, or protected central directories.
 
 ## Password Encryption
 
@@ -599,7 +607,7 @@ static ZipOptions hashedDirectoryOptions() throws Exception {
 }
 ```
 
-Central directory compression reuses the compression method and level from the ZIP options; STORE, DEFLATE, DEFLATE64, and BZIP2 are supported. BZIP2 level `0` is mapped to block size `1`, just as for entry compression. Editing and split-archive merging can read and regenerate directories compressed with these methods. The hash is calculated over the central directory bytes before transformation. It is separate from the AES entry authentication code and is not a digital signature.
+Central directory compression reuses the compression method and level from the ZIP options; STORE, DEFLATE, DEFLATE64, BZIP2, LZMA (method 14), and XZ (method 95) are supported. Select LZMA and XZ with `CompressionAlgorithm.LZMA1` and `CompressionAlgorithm.LZMA2`, respectively. BZIP2 level `0` is mapped to block size `1`, just as for entry compression. Editing and split-archive merging can read and regenerate directories compressed with these methods. The hash is calculated over the central directory bytes before transformation. It is separate from the AES entry authentication code and is not a digital signature.
 
 Supported hash constant suffixes are `NONE`, `CRC32`, `MD5`, `SHA1`, `RIPEMD160`, `SHA256`, `SHA384`, and `SHA512`, with the prefix `ZIP64_HEADER_HASH_ALGORITHM_`.
 
@@ -929,8 +937,15 @@ For callers inspecting structures, diagnosing compatibility issues, or extending
 | `StrongInputStream` / `StrongOutputStream` | PKWARE Strong Encryption streams |
 | `DeflateInputStream` / `DeflateOutputStream` | Raw DEFLATE/Deflate64 codecs; no ZIP, zlib, or GZIP framing |
 | `BZip2InputStream` / `BZip2OutputStream` | Complete BZh streams, usable independently of ZIP |
+| `LZMAInputStream` / `LZMAOutputStream` | ZIP method-14 LZMA1 framing by default; `raw(...)` and `alone(...)` factories support raw LZMA1 and LZMA-Alone (`.lzma`) streams |
+| `LZMA2InputStream` / `LZMA2OutputStream` | Raw LZMA2 streams; no XZ, ZIP, or 7z container framing |
+| `XZInputStream` / `XZOutputStream` | Complete XZ streams using the LZMA2 filter; usable independently of ZIP |
 
-The standalone BZip2 decoder reads one member by default; its two-argument constructor can enable concatenated members. It supports legacy randomized blocks, while the encoder writes non-randomized blocks. Read to EOF to validate all BZip2 block/member CRCs: closing the standalone decoder does not drain unread data. ZIP entry and central directory readers use single-member decoding; the protected central directory reader also rejects trailing data. For both codec output streams, `finish()` completes compressed output while keeping the delegate open; `close()` also closes the delegate. `DeflateOutputStream.release()` only releases codec resources and does not finish output. Standalone codec users must enforce their own output-size and compression-ratio limits.
+The standalone BZip2 decoder reads one member by default; its two-argument constructor can enable concatenated members. It supports legacy randomized blocks, while the encoder writes non-randomized blocks. Read to EOF to validate all BZip2 block/member CRCs: closing the standalone decoder does not drain unread data. ZIP entry and central directory readers use single-member decoding; the protected central directory reader also rejects trailing data.
+
+The standalone XZ decoder accepts concatenated Streams by default. Pass `false` to its two-argument constructor to stop after one Stream; ZIP entry and central directory readers use this mode. Read to EOF to validate the XZ data Checks, Index, and Footer. The default maximum declared dictionary size is 64 MiB; this is not a limit on decompressed output size. The XZ encoder currently writes one LZMA2 Block for nonempty input, using a fixed 64 KiB dictionary; empty input produces a Stream without Blocks. The standalone encoder accepts an `XZCheck` selection; its default is CRC64.
+
+For the Deflate, BZip2, LZMA1, LZMA2, and XZ output streams, `finish()` completes compressed output while keeping the delegate open; `close()` also closes the delegate. `DeflateOutputStream.release()` only releases codec resources and does not finish output. Standalone codec users must enforce their own output-size and compression-ratio limits.
 
 A custom `DataFile` must correctly implement `seek()`, `getFilePointer()`, `length()`, `newFile()`, and `splitFiles()` in addition to normal reads and writes. Splitting code opens other volumes with the same configuration through `newFile()` and locates volumes through `splitFiles()`. Independent Readers also create separate seekable handles. A network stream supporting only sequential reads cannot directly replace this interface.
 
@@ -943,7 +958,7 @@ Preserving Digital Signature bytes does not implement digital signature verifica
 The module retains `org.nervousync.zip.ZipFile` and `org.nervousync.zip.options.ZipOptions`, providing legacy methods for creation, adding, reading, extraction, deletion, password settings, comments, and merging split archives.
 
 - The legacy `ZipFile.openZipFile(...)` and the new `ArchiveFile.zipFile(...)` are different entry points.
-- The compression support described above applies to `org.nervousync.archive`; the retained legacy ZIP pipeline has not acquired Deflate64/BZip2 support through this refactor.
+- The compression support described above applies to `org.nervousync.archive`; the retained legacy ZIP pipeline has not acquired Deflate64, BZip2, LZMA, or XZ support through this refactor.
 - The examples in this guide use `org.nervousync.archive.zip.ZipOptions`.
 - Header models and options from the legacy package cannot be passed directly to the new interfaces.
 - Use the new interfaces for the certificate, dual Provider, and central directory Protection workflows described here. Do not assume equivalent capabilities in the legacy interfaces.
@@ -970,12 +985,13 @@ To enable the large-ZIP tests controlled by a flag:
 mvn -pl archive -am -DrunLargeZipTest=true test
 ```
 
-Compression tests include `DeflateStreamTest`, `Deflate64ZipTest`, `Deflate64CentralDirectoryTest`, `BZip2StreamTest`, `ZipBZip2IntegrationTest`, `ZipBZip2FailureTest`, and `ZipBZip2CentralDirectoryTest`. They cover independent decoder/fixture interoperability, compression levels, malformed and truncated data, encryption, splitting, editing, merging, and protected central directories. Fixture provenance is documented in [`src/test/resources/deflate/README.md`](src/test/resources/deflate/README.md) and [`src/test/resources/bzip2/README.md`](src/test/resources/bzip2/README.md).
+Compression tests include `DeflateStreamTest`, `Deflate64ZipTest`, `Deflate64CentralDirectoryTest`, `BZip2StreamTest`, `ZipBZip2IntegrationTest`, `ZipBZip2FailureTest`, and `ZipBZip2CentralDirectoryTest`. LZMA/LZMA2/XZ coverage is provided by `LZMAStreamTest`, `LZMACodecTest`, `LZMAZipTest`, `LZMACentralDirectoryTest`, `LZMA2StreamTest`, `LZMA2CodecTest`, `XZStreamTest`, `XZCodecTest`, `XZZipTest`, `XZCentralDirectoryTest`. They cover independent decoder/fixture interoperability, compression levels, malformed and truncated data, encryption, splitting, editing, merging, and protected central directories. Fixture provenance is documented in [`src/test/resources/deflate/README.md`](src/test/resources/deflate/README.md), [`src/test/resources/bzip2/README.md`](src/test/resources/bzip2/README.md), [`src/test/resources/lzma/README.md`](src/test/resources/lzma/README.md), [`src/test/resources/lzma2/README.md`](src/test/resources/lzma2/README.md), [`src/test/resources/xz/README.md`](src/test/resources/xz/README.md).
 
 Run the focused compression tests from the repository root:
 
 ```shell
 mvn -pl archive -am "-Dtest=DeflateStreamTest,Deflate64ZipTest,Deflate64CentralDirectoryTest,BZip2StreamTest,ZipBZip2IntegrationTest,ZipBZip2FailureTest,ZipBZip2CentralDirectoryTest" -Dsurefire.failIfNoSpecifiedTests=false test
+mvn -pl archive -am "-Dtest=LZMAStreamTest,LZMACodecTest,LZMAZipTest,LZMACentralDirectoryTest,LZMA2StreamTest,LZMA2CodecTest,XZStreamTest,XZCodecTest,XZZipTest,XZCentralDirectoryTest" -Dsurefire.failIfNoSpecifiedTests=false test
 ```
 
 Tests are located in `src/test/java/org/nervousync/test/archive` and cover regular reads/writes, ZIP64, splitting, editing, merging, paths and links, file attributes, password/certificate credential matrices, AES/Strong Encryption, and central directory protection. Some link tests may be aborted because of local file-system or privilege limitations. Assess coverage alongside actual CI results.
@@ -983,7 +999,7 @@ Tests are located in `src/test/java/org/nervousync/test/archive` and cover regul
 Also note the following current limitations:
 
 1. ZIP is the main usable container. The TAR adapter is unfinished, and no 7z container implementation is provided.
-2. ZIP entries and protected central directories support STORE/DEFLATE/DEFLATE64/BZIP2. LZMA1/LZMA2, XZ, and Zstandard are not implemented; Deflate64 writing currently uses stored or fixed-Huffman blocks.
+2. ZIP entries and protected central directories support STORE/DEFLATE/DEFLATE64/BZIP2/LZMA/XZ. `LZMA1` selects method 14 and `LZMA2` selects method 95 with XZ framing. XZ supports a single LZMA2 filter per Block; BCJ/Delta/filter chains and Zstandard are not implemented. Deflate64 writing currently uses stored or fixed-Huffman blocks.
 3. `WritableOptions`, some legacy directory-selection fields, and `StreamOwner` exist but are not fully integrated into the new `ArchiveFile` workflow. `streamOwner(CALLER)` does not guarantee that a supplied `DataFile` will remain open.
 4. Fields such as `readHiddenFiles`, `includeRootFolder`, `rootFolderInZip`, and `fileNameInZip` do not form a unified directory-selection workflow in the new write path. Control entry names through `addDirectory` arguments or the archive path passed to `openWriter`, and organize hidden-file filtering explicitly in the calling application.
 5. Hard-link creation, full ACL/ownership/arbitrary extended-attribute restoration, automatic certificate revocation checks, and certificate trust-chain policies are outside the current high-level implementation.

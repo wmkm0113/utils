@@ -25,7 +25,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.nervousync.archive.commons.ZipGlobals;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.security.StrongKey;
 import org.nervousync.archive.security.certificate.CertificateCredentials;
@@ -146,10 +146,10 @@ final class StrongCertificateStreamTest {
 	@Test
 	void checksCentralRecipientHashesBeforeRequestingPrivateKey() throws Exception {
 		Stored original = encrypt(AES256, 256, StrongAccessMode.CERTIFICATE, payload(65));
-		byte[] data = original.info().getCertificateData().clone();
+		byte[] data = original.info.getCertificateData().clone();
 		data[data.length - 1] ^= 1;
-		Stored altered = new Stored(original.bytes(), new StrongEncryptionInfo(AES256, 256,
-				original.info().getFlags(), data));
+		Stored altered = new Stored(original.bytes, new StrongEncryptionInfo(AES256, 256,
+				original.info.getFlags(), data));
 		CertificateProvider mustNotBeCalled = request -> {
 			throw new AssertionError("Recipient mismatch must fail before requesting credentials");
 		};

@@ -18,7 +18,7 @@ final class ZipTestFixtures {
 	private static final int VERSION_20 = 20;
 	private static final int DOS_DATE_1980_01_01 = 0x0021;
 	private static final int UNIX_VERSION_20 = (3 << 8) | VERSION_20;
-	private static final long UNIX_REGULAR_0644 = ((long) 0x81A4) << 16;
+	private static final long UNIX_REGULAR_0644 = ((long) 0100644) << 16;
 
 	private ZipTestFixtures() {
 	}
@@ -38,7 +38,7 @@ final class ZipTestFixtures {
 
 	static Entry symbolicLink(final String name, final String target) {
 		return new Entry(name, target.getBytes(StandardCharsets.UTF_8),
-				new byte[0], UNIX_VERSION_20, ((long) 0xA1FF) << 16, null);
+				new byte[0], UNIX_VERSION_20, ((long) 0120777) << 16, null);
 	}
 
 	static Entry hardLink(final String name, final String target) throws IOException {
@@ -150,6 +150,17 @@ final class ZipTestFixtures {
 		}
 	}
 
-	private record CentralEntry(Entry entry, byte[] nameBytes, long crc, long localOffset) {
+	private static final class CentralEntry {
+		private final Entry entry;
+		private final byte[] nameBytes;
+		private final long crc;
+		private final long localOffset;
+
+		private CentralEntry(final Entry entry, final byte[] nameBytes, final long crc, final long localOffset) {
+			this.entry = entry;
+			this.nameBytes = nameBytes;
+			this.crc = crc;
+			this.localOffset = localOffset;
+		}
 	}
 }

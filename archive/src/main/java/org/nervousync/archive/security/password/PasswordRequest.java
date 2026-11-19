@@ -17,7 +17,7 @@
 
 package org.nervousync.archive.security.password;
 
-import org.nervousync.archive.enumerations.PasswordPurpose;
+import org.nervousync.archive.enumerations.zip.PasswordPurpose;
 import org.nervousync.archive.security.SecurityRequest;
 
 /**

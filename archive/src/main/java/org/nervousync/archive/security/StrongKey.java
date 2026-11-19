@@ -18,7 +18,7 @@
 package org.nervousync.archive.security;
 
 import org.nervousync.archive.commons.ZipGlobals;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.security.certificate.CertificateCredentials;
 import org.nervousync.archive.security.certificate.CertificateProvider;

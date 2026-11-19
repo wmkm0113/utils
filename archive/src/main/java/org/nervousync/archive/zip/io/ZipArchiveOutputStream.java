@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.nervousync.archive.io.zip;
+package org.nervousync.archive.zip.io;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.DataFile;
-import org.nervousync.archive.enumerations.SplitType;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.zip.ZipOptions;
 import org.nervousync.commons.Globals;
@@ -130,7 +129,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 	 */
 	public ZipArchiveOutputStream(@Nonnull final Path tempDirectory, final DataFile dataFile,
 	                              final ZipOptions zipOptions) throws IOException {
-		if (zipOptions.isSplitArchive() && zipOptions.getSplitType() == SplitType.DETECT) {
+		if (zipOptions.isSplitArchive() && zipOptions.getSplitType() == ZipOptions.SplitType.DETECT) {
 			throw new ArchiveException(0x0000001A0041L);
 		}
 		this.archivePath = dataFile.filePath();
@@ -142,11 +141,11 @@ public final class ZipArchiveOutputStream extends OutputStream {
 				throw new IllegalArgumentException("Split length must be positive");
 			}
 
-			if (this.zipOptions.getSplitType() == SplitType.NATIVE
+			if (this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE
 					&& (splitLength < 0x10000L || splitLength > ZipGlobals.ZIP_64_LIMIT)) {
 				throw new IllegalArgumentException("Native ZIP split length must be between 65536 and 0xFFFFFFFF");
 			}
-			if (this.zipOptions.getSplitType() == SplitType.NUMBERED) {
+			if (this.zipOptions.getSplitType() == ZipOptions.SplitType.NUMBERED) {
 				this.templatePath =
 						tempDirectory.toAbsolutePath().normalize() + Globals.DEFAULT_PAGE_SEPARATOR + fileName + ".";
 			} else {
@@ -158,7 +157,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 			this.templatePath = tempDirectory.toAbsolutePath().normalize() + Globals.DEFAULT_PAGE_SEPARATOR + fileName;
 		}
 		this.dataFile = dataFile.newFile(this.currentPath());
-		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == SplitType.NATIVE) {
+		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE) {
 			//  Write temporary header id
 			this.dataFile.write(ByteBuffer.allocate(Integer.BYTES)
 					.order(ByteOrder.LITTLE_ENDIAN)
@@ -254,7 +253,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 			return Globals.DEFAULT_VALUE_STRING;
 		}
 		StringBuilder number = new StringBuilder(Long.toString(splitCount));
-		int minLength = (this.zipOptions.getSplitType() == SplitType.NUMBERED) ? 3 : 2;
+		int minLength = (this.zipOptions.getSplitType() == ZipOptions.SplitType.NUMBERED) ? 3 : 2;
 		while (number.length() < minLength) {
 			number.insert(0, "0");
 		}
@@ -335,7 +334,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 		this.ensureOpen();
 
 		if (this.zipOptions.isSplitArchive()
-				&& this.zipOptions.getSplitType() == SplitType.NATIVE
+				&& this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE
 				&& this.splitCount > 1L) {
 			try (DataFile dataFile = this.dataFile.newFile(this.templatePath + this.numberSuffix(1L))) {
 				dataFile.seek(0L);
@@ -375,7 +374,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 				String numberSuffix = this.numberSuffix(number);
 				Path temporary = Path.of(this.templatePath + numberSuffix);
 				Path destination;
-				if (this.zipOptions.getSplitType() == SplitType.NATIVE) {
+				if (this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE) {
 					destination =
 							(number == this.splitCount) ? target : target.resolveSibling(stem + ".z" + numberSuffix);
 				} else {
@@ -421,7 +420,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 			throw new ArchiveException(0x0000001A0011L);
 		}
 
-		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == SplitType.NATIVE) {
+		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE) {
 			final long splitLength = this.zipOptions.getSplitLength();
 			if (length > splitLength) {
 				throw new ArchiveException(0x0000001A0047L);
@@ -454,7 +453,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 	}
 
 	public long diskCount() {
-		return (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == SplitType.NATIVE)
+		return (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE)
 				? this.splitCount
 				: 1L;
 	}
@@ -464,7 +463,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 	}
 
 	public long offset() throws IOException {
-		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == SplitType.NUMBERED) {
+		if (this.zipOptions.isSplitArchive() && this.zipOptions.getSplitType() == ZipOptions.SplitType.NUMBERED) {
 			return this.totalSize;
 		}
 		return this.dataFile.getFilePointer();
@@ -503,7 +502,7 @@ public final class ZipArchiveOutputStream extends OutputStream {
 		this.dataFile = splitFile;
 		this.splitCount = nextCount;
 
-		if (this.zipOptions.getSplitType() == SplitType.NATIVE) {
+		if (this.zipOptions.getSplitType() == ZipOptions.SplitType.NATIVE) {
 			this.diskNumber = nextCount - 1L;
 			this.diskEntries = 0L;
 		}

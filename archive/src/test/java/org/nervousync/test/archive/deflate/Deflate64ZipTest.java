@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.test.archive.zip;
+package org.nervousync.test.archive.deflate;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

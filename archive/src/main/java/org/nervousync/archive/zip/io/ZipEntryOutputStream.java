@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.nervousync.archive.io.zip;
+package org.nervousync.archive.zip.io;
 
 import jakarta.annotation.Nonnull;
 import org.nervousync.archive.exceptions.ArchiveException;

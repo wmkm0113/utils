@@ -21,13 +21,15 @@ import jakarta.annotation.Nonnull;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.nervousync.archive.commons.ZipGlobals;
 import org.nervousync.archive.core.DataFile;
-import org.nervousync.archive.enumerations.AesVendor;
-import org.nervousync.archive.enumerations.StrongAccessMode;
+import org.nervousync.archive.enumerations.zip.AesVendor;
+import org.nervousync.archive.enumerations.zip.StrongAccessMode;
 import org.nervousync.archive.exceptions.ArchiveException;
 import org.nervousync.archive.io.bzip2.BZip2InputStream;
 import org.nervousync.archive.io.deflate.DeflateInputStream;
-import org.nervousync.archive.io.zip.BoundedInputStream;
-import org.nervousync.archive.io.zip.ZipArchiveInputStream;
+import org.nervousync.archive.io.lzma.LZMAInputStream;
+import org.nervousync.archive.io.xz.XZInputStream;
+import org.nervousync.archive.zip.io.BoundedInputStream;
+import org.nervousync.archive.zip.io.ZipArchiveInputStream;
 import org.nervousync.archive.options.ArchiveOptions;
 import org.nervousync.archive.zip.ZipOptions;
 import org.nervousync.archive.zip.crypto.ZipCrypto;
@@ -1168,7 +1170,8 @@ public final class ZipFileOperator implements AutoCloseable {
 	 */
 	private static boolean supportedCompressionMethod(final int compressionMethod) {
 		return switch (compressionMethod) {
-			case ZipGlobals.COMP_STORE, ZipGlobals.COMP_DEFLATE, ZipGlobals.COMP_DEFLATE64, ZipGlobals.COMP_BZIP2 -> true;
+			case ZipGlobals.COMP_STORE, ZipGlobals.COMP_DEFLATE, ZipGlobals.COMP_DEFLATE64,
+			     ZipGlobals.COMP_BZIP2, ZipGlobals.COMP_LZMA, ZipGlobals.COMP_XZ -> true;
 			default -> false;
 		};
 	}
@@ -1287,6 +1290,14 @@ public final class ZipFileOperator implements AutoCloseable {
 					case ZipGlobals.COMP_BZIP2:
 						sourceStream = new BufferedInputStream(decryptedStream, Globals.DEFAULT_BUFFER_SIZE);
 						inputStream = new BZip2InputStream(sourceStream);
+						break;
+					case ZipGlobals.COMP_LZMA:
+						sourceStream = new BufferedInputStream(decryptedStream, Globals.DEFAULT_BUFFER_SIZE);
+						inputStream = LZMAInputStream.knownSize(sourceStream, protection.getUncompressedSize());
+						break;
+					case ZipGlobals.COMP_XZ:
+						sourceStream = new BufferedInputStream(decryptedStream, Globals.DEFAULT_BUFFER_SIZE);
+						inputStream = new XZInputStream(sourceStream, false);
 						break;
 					default:
 						throw new ArchiveException(0x0000001B004AL);
